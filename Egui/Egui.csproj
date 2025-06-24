@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+		<CargoProfile Condition="'$(Configuration)'=='Debug'">dev</CargoProfile>
+		<CargoProfile Condition="'$(Configuration)'=='Release'">release</CargoProfile>
+		
+		<CargoFeatures Condition="'$(Configuration)'=='Debug'"></CargoFeatures>
+		<CargoFeatures Condition="'$(Configuration)'=='Release'"></CargoFeatures>
+
+		<CargoUnstableOptions Condition="'$(Configuration)'=='Debug'"></CargoUnstableOptions>
+		<CargoUnstableOptions Condition="'$(Configuration)'=='Release'">-Z build-std=panic_abort,std</CargoUnstableOptions>
+
+		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('Windows'))">x86_64-pc-windows-msvc</CargoTarget>
+		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('OSX'))">aarch64-apple-darwin</CargoTarget>
+		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('Linux'))">x86_64-unknown-linux-gnu</CargoTarget>
+
+		<CargoProfileOutput Condition="'$(Configuration)'=='Debug'">debug</CargoProfileOutput>
+		<CargoProfileOutput Condition="'$(Configuration)'=='Release'">release</CargoProfileOutput>
+	</PropertyGroup>
+
+  <ItemGroup>
+		<Compile Include="../egui_capi/ag/Bindings.g.cs" />
+	</ItemGroup>
+
+  <ItemGroup>
+		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/vxcore_capi.dll" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/libvxcore_capi.dylib" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/libvxcore_capi.so" Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+</Project>

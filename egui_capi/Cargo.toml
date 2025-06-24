@@ -1,0 +1,17 @@
+[package]
+name = "egui_capi"
+version = "0.1.0"
+edition = "2024"
+build = "build/main.rs"
+
+[dependencies]
+
+
+[build-dependencies]
+convert_case = { version = "0.7.1", default-features = false, optional = true }
+csbindgen = { version = "1.9.3", default-features = false }
+rustdoc-types = { version = "0.35.0", default-features = false, optional = true }
+serde_json = { version = "1.0.138", default-features = false, features = [ "std" ], optional = true }
+
+[features]
+bindgen = [ "dep:convert_case", "dep:rustdoc-types", "dep:serde_json" ]
