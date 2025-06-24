@@ -1,15 +1,17 @@
 /// Indicate whether a popup will be shown above or below the box.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxAboveOrBelow {
+pub enum EguiAboveOrBelow {
+    #[default]
     Above,
     Below,
 }
 
 /// What options to show for alpha
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxAlpha {
+pub enum EguiAlpha {
+    #[default]
     /// Set alpha to 1.0, and show no option for it.
     Opaque,
     /// Only show normal blend options for alpha.
@@ -18,9 +20,10 @@ pub enum VxAlpha {
     BlendOrAdditive,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxCursorGrab {
+pub enum EguiCursorGrab {
+    #[default]
     None,
     Confined,
     Locked,
@@ -31,9 +34,10 @@ pub enum VxCursorGrab {
 /// egui emits a [`CursorIcon`] in [`PlatformOutput`] each frame as a request to the integration.
 /// 
 /// Loosely based on <https://developer.mozilla.org/en-US/docs/Web/CSS/cursor>.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxCursorIcon {
+pub enum EguiCursorIcon {
+    #[default]
     /// Normal cursor icon, whatever that is.
     Default,
     /// Show no cursor
@@ -107,27 +111,30 @@ pub enum VxCursorIcon {
 }
 
 /// Layout direction, one of [`LeftToRight`](Direction::LeftToRight), [`RightToLeft`](Direction::RightToLeft), [`TopDown`](Direction::TopDown), [`BottomUp`](Direction::BottomUp).
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxDirection {
+pub enum EguiDirection {
+    #[default]
     LeftToRight,
     RightToLeft,
     TopDown,
     BottomUp,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxIMEPurpose {
+pub enum EguiIMEPurpose {
+    #[default]
     Normal,
     Password,
     Terminal,
 }
 
 /// The unit associated with the numeric value of a mouse wheel event
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxMouseWheelUnit {
+pub enum EguiMouseWheelUnit {
+    #[default]
     /// Number of ui points (logical pixels)
     Point,
     /// Number of lines
@@ -137,9 +144,10 @@ pub enum VxMouseWheelUnit {
 }
 
 /// How to display numeric color values.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxNumericColorSpace {
+pub enum EguiNumericColorSpace {
+    #[default]
     /// RGB is 0-255 in gamma space.
     /// 
     /// Alpha is 0-255 in linear space.
@@ -149,9 +157,10 @@ pub enum VxNumericColorSpace {
 }
 
 /// Different layer categories
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxOrder {
+pub enum EguiOrder {
+    #[default]
     /// Painted behind all floating windows
     Background,
     /// Normal moveable windows that you reorder by click
@@ -167,9 +176,10 @@ pub enum VxOrder {
 }
 
 /// Mouse button (or similar for touch input)
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxPointerButton {
+pub enum EguiPointerButton {
+    #[default]
     /// The primary mouse button is usually the left one.
     Primary = 0,
     /// The secondary mouse button is usually the right one,
@@ -184,9 +194,10 @@ pub enum VxPointerButton {
 }
 
 /// Determines popup's close behavior
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxPopupCloseBehavior {
+pub enum EguiPopupCloseBehavior {
+    #[default]
     /// Popup will be closed on click anywhere, inside or outside the popup.
     /// 
     /// It is used in [`crate::ComboBox`].
@@ -199,9 +210,10 @@ pub enum VxPopupCloseBehavior {
     IgnoreClicks,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxResizeDirection {
+pub enum EguiResizeDirection {
+    #[default]
     North,
     South,
     East,
@@ -213,9 +225,10 @@ pub enum VxResizeDirection {
 }
 
 /// Indicate whether the horizontal and vertical scroll bars must be always visible, hidden or visible when needed.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxScrollBarVisibility {
+pub enum EguiScrollBarVisibility {
+    #[default]
     /// Hide scroll bar even if they are needed.
     /// 
     /// You can still scroll, with the scroll-wheel
@@ -233,17 +246,19 @@ pub enum VxScrollBarVisibility {
 }
 
 /// [`Left`](Side::Left) or [`Right`](Side::Right)
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxSide {
+pub enum EguiSide {
+    #[default]
     Left,
     Right,
 }
 
 /// Specifies how values in a [`Slider`] are clamped.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxSliderClamping {
+pub enum EguiSliderClamping {
+    #[default]
     /// Values are not clamped.
     /// 
     /// This means editing the value with the keyboard,
@@ -260,25 +275,28 @@ pub enum VxSliderClamping {
 }
 
 /// Specifies the orientation of a [`Slider`].
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxSliderOrientation {
+pub enum EguiSliderOrientation {
+    #[default]
     Horizontal,
     Vertical,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxSystemTheme {
+pub enum EguiSystemTheme {
+    #[default]
     SystemDefault,
     Light,
     Dark,
 }
 
 /// Dark or Light theme.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxTheme {
+pub enum EguiTheme {
+    #[default]
     /// Dark mode: light text on a dark background.
     Dark,
     /// Light mode: dark text on a light background.
@@ -286,9 +304,10 @@ pub enum VxTheme {
 }
 
 /// The user's theme preference.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxThemePreference {
+pub enum EguiThemePreference {
+    #[default]
     /// Dark mode: light text on a dark background.
     Dark,
     /// Light mode: dark text on a light background.
@@ -298,17 +317,19 @@ pub enum VxThemePreference {
 }
 
 /// [`Top`](TopBottomSide::Top) or [`Bottom`](TopBottomSide::Bottom)
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxTopBottomSide {
+pub enum EguiTopBottomSide {
+    #[default]
     Top,
     Bottom,
 }
 
 /// In what phase a touch event is in.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxTouchPhase {
+pub enum EguiTouchPhase {
+    #[default]
     /// User just placed a touch point on the touch surface
     Start,
     /// User moves a touch point along the surface. This event is also sent when
@@ -324,9 +345,10 @@ pub enum VxTouchPhase {
 }
 
 /// What kind is this [`crate::Ui`]?
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxUiKind {
+pub enum EguiUiKind {
+    #[default]
     /// A [`crate::Window`].
     Window,
     /// A [`crate::CentralPanel`].
@@ -366,9 +388,10 @@ pub enum VxUiKind {
 /// See [winit's documentation][user_attention_type] for platform-specific meaning of the attention types.
 /// 
 /// [user_attention_type]: https://docs.rs/winit/latest/winit/window/enum.UserAttentionType.html
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxUserAttentionType {
+pub enum EguiUserAttentionType {
+    #[default]
     /// Request an elevated amount of animations and flair for the window and the task bar or dock icon.
     Critical,
     /// Request a standard amount of attention-grabbing actions.
@@ -378,9 +401,10 @@ pub enum VxUserAttentionType {
 }
 
 /// The different types of viewports supported by egui.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxViewportClass {
+pub enum EguiViewportClass {
+    #[default]
     /// The root viewport; i.e. the original window.
     Root,
     /// A viewport run independently from the parent viewport.
@@ -403,9 +427,10 @@ pub enum VxViewportClass {
 }
 
 /// An input event from the backend into egui, about a specific [viewport](crate::viewport).
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxViewportEvent {
+pub enum EguiViewportEvent {
+    #[default]
     /// The user clicked the close-button on the window, or similar.
     /// 
     /// If this is the root viewport, the application will exit
@@ -420,9 +445,10 @@ pub enum VxViewportEvent {
 }
 
 /// The different types of built-in widgets in egui
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxWidgetType {
+pub enum EguiWidgetType {
+    #[default]
     Label,
     /// e.g. a hyperlink
     Link,
@@ -448,783 +474,100 @@ pub enum VxWidgetType {
     Other,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub enum VxWindowLevel {
+pub enum EguiWindowLevel {
+    #[default]
     Normal,
     AlwaysOnBottom,
     AlwaysOnTop,
 }
 
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_area_drop(value: *mut VxObject<::egui::containers::area::Area>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_areas_drop(value: *mut VxObject<::egui::memory::Areas>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_bar_state_drop(value: *mut VxObject<::egui::menu::BarState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_button_drop(value: *mut VxObject<::egui::widgets::button::Button>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_cache_storage_drop(value: *mut VxObject<::egui::cache::cache_storage::CacheStorage>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_central_panel_drop(value: *mut VxObject<::egui::containers::panel::CentralPanel>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_checkbox_drop(value: *mut VxObject<::egui::widgets::checkbox::Checkbox>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_collapsing_header_drop(value: *mut VxObject<::egui::containers::collapsing_header::CollapsingHeader>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_collapsing_response_drop(value: *mut VxObject<::egui::containers::collapsing_header::CollapsingResponse>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_collapsing_state_drop(value: *mut VxObject<::egui::containers::collapsing_header::CollapsingState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_combo_box_drop(value: *mut VxObject<::egui::containers::combo_box::ComboBox>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_debug_rect_drop(value: *mut VxObject<::egui::pass_state::DebugRect>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_default_bytes_loader_drop(value: *mut VxObject<::egui::load::bytes_loader::DefaultBytesLoader>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_default_texture_loader_drop(value: *mut VxObject<::egui::load::texture_loader::DefaultTextureLoader>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_drag_and_drop_drop(value: *mut VxObject<::egui::drag_and_drop::DragAndDrop>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_drag_value_drop(value: *mut VxObject<::egui::widgets::drag_value::DragValue>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_frame_cache_drop(value: *mut VxObject<::egui::cache::frame_cache::FrameCache>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_frame_publisher_drop(value: *mut VxObject<::egui::cache::frame_publisher::FramePublisher>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_grid_drop(value: *mut VxObject<::egui::grid::Grid>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_header_response_drop(value: *mut VxObject<::egui::containers::collapsing_header::HeaderResponse>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_hyperlink_drop(value: *mut VxObject<::egui::widgets::hyperlink::Hyperlink>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_id_type_map_drop(value: *mut VxObject<::egui::util::id_type_map::IdTypeMap>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_image_drop(value: *mut VxObject<::egui::widgets::image::Image>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_image_button_drop(value: *mut VxObject<::egui::widgets::image_button::ImageButton>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_immediate_viewport_drop(value: *mut VxObject<::egui::viewport::ImmediateViewport>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_inner_response_drop(value: *mut VxObject<::egui::response::InnerResponse>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_input_options_drop(value: *mut VxObject<::egui::input_state::InputOptions>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_input_state_drop(value: *mut VxObject<::egui::input_state::InputState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_interaction_snapshot_drop(value: *mut VxObject<::egui::interaction::InteractionSnapshot>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_label_drop(value: *mut VxObject<::egui::widgets::label::Label>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_label_selection_state_drop(value: *mut VxObject<::egui::text_selection::label_text_selection::LabelSelectionState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_link_drop(value: *mut VxObject<::egui::widgets::hyperlink::Link>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_memory_drop(value: *mut VxObject<::egui::memory::Memory>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_menu_root_manager_drop(value: *mut VxObject<::egui::menu::MenuRootManager>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_menu_state_drop(value: *mut VxObject<::egui::menu::MenuState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_modal_drop(value: *mut VxObject<::egui::containers::modal::Modal>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_modal_response_drop(value: *mut VxObject<::egui::containers::modal::ModalResponse>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_options_drop(value: *mut VxObject<::egui::memory::Options>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_painter_drop(value: *mut VxObject<::egui::painter::Painter>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_pass_state_drop(value: *mut VxObject<::egui::pass_state::PassState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_per_layer_state_drop(value: *mut VxObject<::egui::pass_state::PerLayerState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_per_widget_tooltip_state_drop(value: *mut VxObject<::egui::pass_state::PerWidgetTooltipState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_pointer_state_drop(value: *mut VxObject<::egui::input_state::PointerState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_prepared_drop(value: *mut VxObject<::egui::containers::frame::Prepared>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_progress_bar_drop(value: *mut VxObject<::egui::widgets::progress_bar::ProgressBar>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_radio_button_drop(value: *mut VxObject<::egui::widgets::radio_button::RadioButton>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_resize_drop(value: *mut VxObject<::egui::containers::resize::Resize>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_response_drop(value: *mut VxObject<::egui::response::Response>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_rich_text_drop(value: *mut VxObject<::egui::widget_text::RichText>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_scene_drop(value: *mut VxObject<::egui::containers::scene::Scene>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_scroll_area_drop(value: *mut VxObject<::egui::containers::scroll_area::ScrollArea>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_scroll_area_output_drop(value: *mut VxObject<::egui::containers::scroll_area::ScrollAreaOutput>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_scroll_target_drop(value: *mut VxObject<::egui::pass_state::ScrollTarget>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_selectable_label_drop(value: *mut VxObject<::egui::widgets::selected_label::SelectableLabel>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_separator_drop(value: *mut VxObject<::egui::widgets::separator::Separator>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_side_panel_drop(value: *mut VxObject<::egui::containers::panel::SidePanel>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_sides_drop(value: *mut VxObject<::egui::containers::sides::Sides>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_slider_drop(value: *mut VxObject<::egui::widgets::slider::Slider>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_spinner_drop(value: *mut VxObject<::egui::widgets::spinner::Spinner>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_state_drop(value: *mut VxObject<::egui::containers::scroll_area::State>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_sub_menu_drop(value: *mut VxObject<::egui::menu::SubMenu>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_sub_menu_button_drop(value: *mut VxObject<::egui::menu::SubMenuButton>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_text_cursor_state_drop(value: *mut VxObject<::egui::text_selection::text_cursor_state::TextCursorState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_text_edit_drop(value: *mut VxObject<::egui::widgets::text_edit::builder::TextEdit>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_text_edit_output_drop(value: *mut VxObject<::egui::widgets::text_edit::output::TextEditOutput>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_text_edit_state_drop(value: *mut VxObject<::egui::widgets::text_edit::state::TextEditState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_tooltip_pass_state_drop(value: *mut VxObject<::egui::pass_state::TooltipPassState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_top_bottom_panel_drop(value: *mut VxObject<::egui::containers::panel::TopBottomPanel>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_ui_drop(value: *mut VxObject<::egui::ui::Ui>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_ui_stack_drop(value: *mut VxObject<::egui::ui_stack::UiStack>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_ui_stack_iterator_drop(value: *mut VxObject<::egui::ui_stack::UiStackIterator>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_undoer_drop(value: *mut VxObject<::egui::util::undoer::Undoer>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_viewport_state_drop(value: *mut VxObject<::egui::context::ViewportState>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_widget_hits_drop(value: *mut VxObject<::egui::hit_test::WidgetHits>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_widget_rects_drop(value: *mut VxObject<::egui::widget_rect::WidgetRects>) {
-    VxHandle::from_heap(value);
-}
-
-/// Frees the provided object.
-///
-/// # Safety
-///
-/// For this call to be sound, the pointer must refer to a live object of the corret type.
-#[no_mangle]
-pub unsafe extern "C" fn vx_gui_window_drop(value: *mut VxObject<::egui::containers::window::Window>) {
-    VxHandle::from_heap(value);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /// State of an [`Area`] that is persisted between frames.
 /// 
 /// Areas back [`crate::Window`]s and other floating containers,
 /// like tooltips and the popups of [`crate::ComboBox`].
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxAreaState {
+pub struct EguiAreaState {
     /// Last known position of the pivot.
-    pub pivot_pos: VxOptionPos2,
+    pub pivot_pos: EguiOptionPos2,
     /* UNIMPLEMENTED (field) 
     /// The anchor point of the area, i.e. where on the area the [`Self::pivot_pos`] refers to.
     pub pivot: crate::Align2,*/
@@ -1235,83 +578,50 @@ pub struct VxAreaState {
     /// so that a bad tooltip or menu size won't be remembered forever.
     /// A resizable [`crate::Window`] remembers the size the user picked using
     /// the state in the [`crate::Resize`] container.
-    pub size: VxOptionVec2,
+    pub size: EguiOptionVec2,
     /// If false, clicks goes straight through to what is behind us. Useful for tooltips etc.
     pub interactable: bool,
     /// At what time was this area first shown?
     /// 
     /// Used to fade in the area.
-    pub last_became_visible_at: VxOptionF64,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_area_state_default() -> VxAreaState {
-    let value = ::egui::containers::area::AreaState::default();
-    VxAreaState {
-        pivot_pos: value.pivot_pos.into(),
-        pivot: value.pivot.into(),
-        size: value.size.into(),
-        interactable: value.interactable.into(),
-        last_became_visible_at: value.last_became_visible_at.into(),
-    }
+    pub last_became_visible_at: EguiOptionF64,
 }
 
 
 /// A selected text range (could be a range of length zero).
 /// 
 /// The selection is based on character count (NOT byte count!).
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxCCursorRange {
+pub struct EguiCCursorRange {
     /// When selecting with a mouse, this is where the mouse was released.
     /// When moving with e.g. shift+arrows, this is what moves.
     /// Note that the two ends can come in any order, and also be equal (no selection).
-    pub primary: VxCCursor,
+    pub primary: EguiCCursor,
     /// When selecting with a mouse, this is where the mouse was first pressed.
     /// This part of the cursor does not move when shift is down.
-    pub secondary: VxCCursor,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_c_cursor_range_default() -> VxCCursorRange {
-    let value = ::egui::text_selection::cursor_range::CCursorRange::default();
-    VxCCursorRange {
-        primary: value.primary.into(),
-        secondary: value.secondary.into(),
-    }
+    pub secondary: EguiCCursor,
 }
 
 
 /// A selected text range (could be a range of length zero).
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxCursorRange {
+pub struct EguiCursorRange {
     /// When selecting with a mouse, this is where the mouse was released.
     /// When moving with e.g. shift+arrows, this is what moves.
     /// Note that the two ends can come in any order, and also be equal (no selection).
-    pub primary: VxCursor,
+    pub primary: EguiCursor,
     /// When selecting with a mouse, this is where the mouse was first pressed.
     /// This part of the cursor does not move when shift is down.
-    pub secondary: VxCursor,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_cursor_range_default() -> VxCursorRange {
-    let value = ::egui::text_selection::cursor_range::CursorRange::default();
-    VxCursorRange {
-        primary: value.primary.into(),
-        secondary: value.secondary.into(),
-    }
+    pub secondary: EguiCursor,
 }
 
 
 /// Options for help debug egui by adding extra visualization
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxDebugOptions {
+pub struct EguiDebugOptions {
     /// Always show callstack to ui on hover.
     /// 
     /// Useful for figuring out where in the code some UI is being created.
@@ -1347,54 +657,24 @@ pub struct VxDebugOptions {
     pub show_unaligned: bool,
 }
 
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_debug_options_default() -> VxDebugOptions {
-    let value = ::egui::style::DebugOptions::default();
-    VxDebugOptions {
-        debug_on_hover: value.debug_on_hover.into(),
-        debug_on_hover_with_all_modifiers: value.debug_on_hover_with_all_modifiers.into(),
-        hover_shows_next: value.hover_shows_next.into(),
-        show_expand_width: value.show_expand_width.into(),
-        show_expand_height: value.show_expand_height.into(),
-        show_resize: value.show_resize.into(),
-        show_interactive_widgets: value.show_interactive_widgets.into(),
-        show_widget_hits: value.show_widget_hits.into(),
-        show_unaligned: value.show_unaligned.into(),
-    }
-}
-
 
 /// A file dropped into egui.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxDroppedFile {
+pub struct EguiDroppedFile {
     /* UNIMPLEMENTED (field) 
     /// Set by the `egui-winit` backend.
-    pub path: VxOptionStd::path::pathBuf,*/
+    pub path: EguiOptionStd::path::pathBuf,*/
     
     /// Name of the file. Set by the `eframe` web backend.
-    pub name: VxString,
+    pub name: EguiString,
     /// With the `eframe` web backend, this is set to the mime-type of the file (if available).
-    pub mime: VxString,
+    pub mime: EguiString,
     /// Set by the `eframe` web backend.
-    pub last_modified: VxOptionPosixTime,
+    pub last_modified: EguiOptionPosixTime,
     /* UNIMPLEMENTED (field) 
     /// Set by the `eframe` web backend.
-    pub bytes: VxOptionStd::sync::arc,*/
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_dropped_file_default() -> VxDroppedFile {
-    let value = ::egui::data::input::DroppedFile::default();
-    VxDroppedFile {
-        path: value.path.into(),
-        name: value.name.into(),
-        mime: value.mime.into(),
-        last_modified: value.last_modified.into(),
-        bytes: value.bytes.into(),
-    }
+    pub bytes: EguiOptionStd::sync::arc,*/
 }
 
 
@@ -1404,9 +684,9 @@ pub extern "C" fn vx_dropped_file_default() -> VxDroppedFile {
 /// but in the future this `struct` should be extended into a full callback thing.
 /// 
 /// Any events not covered by the filter are given to the widget, but are not exclusive.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxEventFilter {
+pub struct EguiEventFilter {
     /// If `true`, pressing tab will act on the widget,
     /// and NOT move focus away from the focused widget.
     /// 
@@ -1427,18 +707,6 @@ pub struct VxEventFilter {
     /// 
     /// Default: `false`
     pub escape: bool,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_event_filter_default() -> VxEventFilter {
-    let value = ::egui::data::input::EventFilter::default();
-    VxEventFilter {
-        tab: value.tab.into(),
-        horizontal_arrows: value.horizontal_arrows.into(),
-        vertical_arrows: value.vertical_arrows.into(),
-        escape: value.escape.into(),
-    }
 }
 
 
@@ -1525,26 +793,26 @@ pub extern "C" fn vx_event_filter_default() -> VxEventFilter {
 /// ```
 /// 
 /// Note that you cannot change the margins after calling `begin`.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxFrame {
+pub struct EguiFrame {
     /// Margin within the painted frame.
     /// 
     /// Known as `padding` in CSS.
-    pub inner_margin: VxMargin,
+    pub inner_margin: EguiMargin,
     /// The background fill color of the frame, within the [`Self::stroke`].
     /// 
     /// Known as `background` in CSS.
-    pub fill: VxColor4,
+    pub fill: EguiColor32,
     /// The width and color of the outline around the frame.
     /// 
     /// The width of the stroke is part of the total margin/padding of the frame.
-    pub stroke: VxStroke,
+    pub stroke: EguiStroke,
     /// The rounding of the _outer_ corner of the [`Self::stroke`]
     /// (or, if there is no stroke, the outer corner of [`Self::fill`]).
     /// 
     /// In other words, this is the corner radius of the _widget rect_.
-    pub corner_radius: VxCornerRadius,
+    pub corner_radius: EguiCornerRadius,
     /// Margin outside the painted frame.
     /// 
     /// Similar to what is called `margin` in CSS.
@@ -1558,73 +826,49 @@ pub struct VxFrame {
     /// 
     /// Consider using [`crate::Spacing::item_spacing`]
     /// for adding space between widgets.
-    pub outer_margin: VxMargin,
+    pub outer_margin: EguiMargin,
     /// Optional drop-shadow behind the frame.
-    pub shadow: VxShadow,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_frame_default() -> VxFrame {
-    let value = ::egui::containers::frame::Frame::default();
-    VxFrame {
-        inner_margin: value.inner_margin.into(),
-        fill: value.fill.into(),
-        stroke: value.stroke.into(),
-        corner_radius: value.corner_radius.into(),
-        outer_margin: value.outer_margin.into(),
-        shadow: value.shadow.into(),
-    }
+    pub shadow: EguiShadow,
 }
 
 
 /// A file about to be dropped into egui.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxHoveredFile {
+pub struct EguiHoveredFile {
     /* UNIMPLEMENTED (field) 
     /// Set by the `egui-winit` backend.
-    pub path: VxOptionStd::path::pathBuf,*/
+    pub path: EguiOptionStd::path::pathBuf,*/
     
     /// With the `eframe` web backend, this is set to the mime-type of the file (if available).
-    pub mime: VxString,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_hovered_file_default() -> VxHoveredFile {
-    let value = ::egui::data::input::HoveredFile::default();
-    VxHoveredFile {
-        path: value.path.into(),
-        mime: value.mime.into(),
-    }
+    pub mime: EguiString,
 }
 
 
 /// Information about text being edited.
 /// 
 /// Useful for IME.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxIMEOutput {
+pub struct EguiIMEOutput {
     /// Where the [`crate::TextEdit`] is located on screen.
-    pub rect: VxIBox2,
+    pub rect: EguiRect,
     /// Where the primary cursor is.
     /// 
     /// This is a very thin rectangle.
-    pub cursor_rect: VxIBox2,
+    pub cursor_rect: EguiRect,
 }
 
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxImageOptions {
+pub struct EguiImageOptions {
     /// Select UV range. Default is (0,0) in top-left, (1,1) bottom right.
-    pub uv: VxIBox2,
+    pub uv: EguiRect,
     /// A solid color to put behind the image. Useful for transparent images.
-    pub bg_fill: VxColor4,
+    pub bg_fill: EguiColor32,
     /// Multiply image color with this. Default is WHITE (no tint).
-    pub tint: VxColor4,
+    pub tint: EguiColor32,
     /* UNIMPLEMENTED (field) 
     /// Rotate the image about an origin by some angle
     /// 
@@ -1635,7 +879,7 @@ pub struct VxImageOptions {
     /// 
     /// Due to limitations in the current implementation,
     /// this will turn off rounding of the image.
-    pub rotation: VxOptionTuple([resolvedPath(path{Path:"emath::rot2",Id:Id(6930),Args:Some(angleBracketed{Args:[],Constraints:[]})}),ResolvedPath(path{Path:"crate::vec2",Id:Id(150),Args:Some(angleBracketed{Args:[],Constraints:[]})})]),*/
+    pub rotation: EguiOptionTuple([resolvedPath(path{Path:"emath::rot2",Id:Id(6930),Args:Some(angleBracketed{Args:[],Constraints:[]})}),ResolvedPath(path{Path:"crate::vec2",Id:Id(150),Args:Some(angleBracketed{Args:[],Constraints:[]})})]),*/
     
     /// Round the corners of the image.
     /// 
@@ -1643,28 +887,15 @@ pub struct VxImageOptions {
     /// 
     /// Due to limitations in the current implementation,
     /// this will turn off any rotation of the image.
-    pub corner_radius: VxCornerRadius,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_image_options_default() -> VxImageOptions {
-    let value = ::egui::widgets::image::ImageOptions::default();
-    VxImageOptions {
-        uv: value.uv.into(),
-        bg_fill: value.bg_fill.into(),
-        tint: value.tint.into(),
-        rotation: value.rotation.into(),
-        corner_radius: value.corner_radius.into(),
-    }
+    pub corner_radius: EguiCornerRadius,
 }
 
 
 /// This type determines the constraints on how
 /// the size of an image should be calculated.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxImageSize {
+pub struct EguiImageSize {
     /// Whether or not the final size should maintain the original aspect ratio.
     /// 
     /// This setting is applied last.
@@ -1674,7 +905,7 @@ pub struct VxImageSize {
     /// Determines the maximum size of the image.
     /// 
     /// Defaults to `Vec2::INFINITY` (no limit).
-    pub max_size: VxVec2,
+    pub max_size: EguiVec2,
     /* UNIMPLEMENTED (field) 
     /// Determines how the image should shrink/expand/stretch/etc. to fit within its allocated space.
     /// 
@@ -1684,22 +915,11 @@ pub struct VxImageSize {
     pub fit: ImageFit,*/
 }
 
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_image_size_default() -> VxImageSize {
-    let value = ::egui::widgets::image::ImageSize::default();
-    VxImageSize {
-        maintain_aspect_ratio: value.maintain_aspect_ratio.into(),
-        max_size: value.max_size.into(),
-        fit: value.fit.into(),
-    }
-}
-
 
 /// How and when interaction happens.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxInteraction {
+pub struct EguiInteraction {
     /// How close a widget must be to the mouse to have a chance to register as a click or drag.
     /// 
     /// If this is larger than zero, it gets easier to hit widgets,
@@ -1728,42 +948,26 @@ pub struct VxInteraction {
     pub multi_widget_text_select: bool,
 }
 
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_interaction_default() -> VxInteraction {
-    let value = ::egui::style::Interaction::default();
-    VxInteraction {
-        interact_radius: value.interact_radius.into(),
-        resize_grab_radius_side: value.resize_grab_radius_side.into(),
-        resize_grab_radius_corner: value.resize_grab_radius_corner.into(),
-        show_tooltips_only_when_still: value.show_tooltips_only_when_still.into(),
-        tooltip_delay: value.tooltip_delay.into(),
-        tooltip_grace_time: value.tooltip_grace_time.into(),
-        selectable_labels: value.selectable_labels.into(),
-        multi_widget_text_select: value.multi_widget_text_select.into(),
-    }
-}
-
 
 /// A keyboard shortcut, e.g. `Ctrl+Alt+W`.
 /// 
 /// Can be used with [`crate::InputState::consume_shortcut`]
 /// and [`crate::Context::format_shortcut`].
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxKeyboardShortcut {
-    pub modifiers: VxModifiers,
-    pub logical_key: VxKey,
+pub struct EguiKeyboardShortcut {
+    pub modifiers: EguiModifiers,
+    pub logical_key: EguiKey,
 }
 
 
 /// An identifier for a paint layer.
 /// Also acts as an identifier for [`crate::Area`]:s.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxLayerId {
-    pub order: VxOrder,
-    pub id: VxId,
+pub struct EguiLayerId {
+    pub order: EguiOrder,
+    pub id: EguiId,
 }
 
 
@@ -1777,69 +981,66 @@ pub struct VxLayerId {
 /// });
 /// # });
 /// ```
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxLayout {
+pub struct EguiLayout {
     /// Main axis direction
-    pub main_dir: VxDirection,
+    pub main_dir: EguiDirection,
     /// If true, wrap around when reading the end of the main direction.
     /// For instance, for `main_dir == Direction::LeftToRight` this will
     /// wrap to a new row when we reach the right side of the `max_rect`.
     pub main_wrap: bool,
     /// How to align things on the main axis.
-    pub main_align: VxAlign,
+    pub main_align: EguiAlign,
     /// Justify the main axis?
     pub main_justify: bool,
     /// How to align things on the cross axis.
     /// For vertical layouts: put things to left, center or right?
     /// For horizontal layouts: put things to top, center or bottom?
-    pub cross_align: VxAlign,
+    pub cross_align: EguiAlign,
     /// Justify the cross axis?
     /// For vertical layouts justify mean all widgets get maximum width.
     /// For horizontal layouts justify mean all widgets get maximum height.
     pub cross_justify: bool,
 }
 
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_layout_default() -> VxLayout {
-    let value = ::egui::layout::Layout::default();
-    VxLayout {
-        main_dir: value.main_dir.into(),
-        main_wrap: value.main_wrap.into(),
-        main_align: value.main_align.into(),
-        main_justify: value.main_justify.into(),
-        cross_align: value.cross_align.into(),
-        cross_justify: value.cross_justify.into(),
-    }
-}
-
 
 /// Menu root associated with an Id from a Response
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxMenuRoot {
+pub struct EguiMenuRoot {
     /* UNIMPLEMENTED (field) 
     pub menu_state: std::sync::Arc,*/
     
-    pub id: VxId,
+    pub id: EguiId,
 }
 
 
 /// Names of different modifier keys.
 /// 
 /// Used to name modifiers.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxModifierNames {
+pub struct EguiModifierNames {
     pub is_short: bool,
-    pub alt: VxString,
-    pub ctrl: VxString,
-    pub shift: VxString,
-    pub mac_cmd: VxString,
-    pub mac_alt: VxString,
+    /* UNIMPLEMENTED (field) 
+    pub alt: str,*/
+    
+    /* UNIMPLEMENTED (field) 
+    pub ctrl: str,*/
+    
+    /* UNIMPLEMENTED (field) 
+    pub shift: str,*/
+    
+    /* UNIMPLEMENTED (field) 
+    pub mac_cmd: str,*/
+    
+    /* UNIMPLEMENTED (field) 
+    pub mac_alt: str,*/
+    
+    /* UNIMPLEMENTED (field) 
     /// What goes between the names
-    pub concat: VxString,
+    pub concat: str,*/
 }
 
 
@@ -1850,9 +1051,9 @@ pub struct VxModifierNames {
 /// NOTE: For cross-platform uses, ALT+SHIFT is a bad combination of modifiers
 /// as on mac that is how you type special characters,
 /// so those key presses are usually not reported to egui.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxModifiers {
+pub struct EguiModifiers {
     /// Either of the alt keys are down (option ⌥ on Mac).
     pub alt: bool,
     /// Either of the control keys are down.
@@ -1869,30 +1070,17 @@ pub struct VxModifiers {
     pub command: bool,
 }
 
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_modifiers_default() -> VxModifiers {
-    let value = ::egui::data::input::Modifiers::default();
-    VxModifiers {
-        alt: value.alt.into(),
-        ctrl: value.ctrl.into(),
-        shift: value.shift.into(),
-        mac_cmd: value.mac_cmd.into(),
-        command: value.command.into(),
-    }
-}
-
 
 /// All you probably need to know about a multi-touch gesture.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxMultiTouchInfo {
+pub struct EguiMultiTouchInfo {
     /// Point in time when the gesture started.
     pub start_time: f64,
     /// Position of the pointer at the time the gesture started.
-    pub start_pos: VxPos2,
+    pub start_pos: EguiPos2,
     /// Center position of the current gesture (average of all touch points).
-    pub center_pos: VxPos2,
+    pub center_pos: EguiPos2,
     /// Number of touches (fingers) on the surface. Value is ≥ 2 since for a single touch no
     /// [`MultiTouchInfo`] is created.
     pub num_touches: usize,
@@ -1910,7 +1098,7 @@ pub struct VxMultiTouchInfo {
     /// * `zoom = 1`: no change
     /// * `zoom < 1`: pinch together
     /// * `zoom > 1`: pinch spread
-    pub zoom_delta_2d: VxVec2,
+    pub zoom_delta_2d: EguiVec2,
     /// Rotation in radians. Moving fingers around each other will change this value. This is a
     /// relative value, comparing the orientation of fingers in the current frame with the previous
     /// frame. If all fingers are resting, this value is `0.0`.
@@ -1923,7 +1111,7 @@ pub struct VxMultiTouchInfo {
     /// be directly mapped to the screen. A touch always is considered to start at the position of
     /// the pointer, but touch movement is always measured in the units delivered by the device,
     /// and may depend on hardware and system settings.
-    pub translation_delta: VxVec2,
+    pub translation_delta: EguiVec2,
     /// Current force of the touch (average of the forces of the individual fingers). This is a
     /// value in the interval `[0.0 .. =1.0]`.
     /// 
@@ -1939,10 +1127,10 @@ pub struct VxMultiTouchInfo {
 /// What URL to open, and how.
 /// 
 /// Use with [`crate::Context::open_url`].
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOpenUrl {
-    pub url: VxString,
+pub struct EguiOpenUrl {
+    pub url: EguiString,
     /// If `true`, open the url in a new tab.
     /// If `false` open it in the same tab.
     /// Only matters when in a web browser.
@@ -1950,26 +1138,16 @@ pub struct VxOpenUrl {
 }
 
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxPCursorRange {
+pub struct EguiPCursorRange {
     /// When selecting with a mouse, this is where the mouse was released.
     /// When moving with e.g. shift+arrows, this is what moves.
     /// Note that the two ends can come in any order, and also be equal (no selection).
-    pub primary: VxPCursor,
+    pub primary: EguiPCursor,
     /// When selecting with a mouse, this is where the mouse was first pressed.
     /// This part of the cursor does not move when shift is down.
-    pub secondary: VxPCursor,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_p_cursor_range_default() -> VxPCursorRange {
-    let value = ::egui::text_selection::cursor_range::PCursorRange::default();
-    VxPCursorRange {
-        primary: value.primary.into(),
-        secondary: value.secondary.into(),
-    }
+    pub secondary: EguiPCursor,
 }
 
 
@@ -1978,17 +1156,17 @@ pub extern "C" fn vx_p_cursor_range_default() -> VxPCursorRange {
 /// You can access (and modify) this with [`crate::Context::output`].
 /// 
 /// The backend should use this.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxPlatformOutput {
+pub struct EguiPlatformOutput {
     /* UNIMPLEMENTED (field) 
     /// Commands that the egui integration should execute at the end of a frame.
     pub commands: VEC_TY_TODO(OutputCommand),*/
     
     /// Set the cursor to this icon.
-    pub cursor_icon: VxCursorIcon,
+    pub cursor_icon: EguiCursorIcon,
     /// If set, open this url.
-    pub open_url: VxOptionOpenUrl,
+    pub open_url: EguiOptionOpenUrl,
     /// If set, put this text in the system clipboard. Ignore if empty.
     /// 
     /// This is often a response to [`crate::Event::Copy`] or [`crate::Event::Cut`].
@@ -2000,7 +1178,7 @@ pub struct VxPlatformOutput {
     /// }
     /// # });
     /// ```
-    pub copied_text: VxString,
+    pub copied_text: EguiString,
     /* UNIMPLEMENTED (field) 
     /// Events that may be useful to e.g. a screen reader.
     pub events: VEC_TY_TODO(OutputEvent),*/
@@ -2011,7 +1189,7 @@ pub struct VxPlatformOutput {
     /// This is set if, and only if, the user is currently editing text.
     /// 
     /// Useful for IME.
-    pub ime: VxOptionImeOutput,
+    pub ime: EguiOptionImeOutput,
     /// How many ui passes is this the sum of?
     /// 
     /// See [`crate::Context::request_discard`] for details.
@@ -2019,29 +1197,13 @@ pub struct VxPlatformOutput {
     /// This is incremented at the END of each frame,
     /// so this will be `0` for the first pass.
     pub num_completed_passes: usize,
+    /* UNIMPLEMENTED (field) 
     /// Was [`crate::Context::request_discard`] called during the latest pass?
     /// 
     /// If so, what was the reason(s) for it?
     /// 
     /// If empty, there was never any calls.
-    pub request_discard_reasons: VEC_TY_TODO(VxRepaintCause),
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_platform_output_default() -> VxPlatformOutput {
-    let value = ::egui::data::output::PlatformOutput::default();
-    VxPlatformOutput {
-        commands: value.commands.into(),
-        cursor_icon: value.cursor_icon.into(),
-        open_url: value.open_url.into(),
-        copied_text: value.copied_text.into(),
-        events: value.events.into(),
-        mutable_text_under_cursor: value.mutable_text_under_cursor.into(),
-        ime: value.ime.into(),
-        num_completed_passes: value.num_completed_passes.into(),
-        request_discard_reasons: value.request_discard_reasons.into(),
-    }
+    pub request_discard_reasons: VEC_TY_TODO(EguiRepaintCause),*/
 }
 
 
@@ -2056,9 +1218,9 @@ pub extern "C" fn vx_platform_output_default() -> VxPlatformOutput {
 /// 
 /// Ii "points" can be calculated from native physical pixels
 /// using `pixels_per_point` = [`crate::Context::zoom_factor`] * `native_pixels_per_point`;
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxRawInput {
+pub struct EguiRawInput {
     /* UNIMPLEMENTED (field) 
     /// The id of the active viewport.
     pub viewport_id: crate::ViewportId,*/
@@ -2075,22 +1237,22 @@ pub struct VxRawInput {
     /// but you could also constrain egui to some smaller portion of your window if you like.
     /// 
     /// `None` will be treated as "same as last frame", with the default being a very big area.
-    pub screen_rect: VxOptionIBox2,
+    pub screen_rect: EguiOptionRect,
     /// Maximum size of one side of the font texture.
     /// 
     /// Ask your graphics drivers about this. This corresponds to `GL_MAX_TEXTURE_SIZE`.
     /// 
     /// The default is a very small (but very portable) 2048.
-    pub max_texture_side: VxOptionUsize,
+    pub max_texture_side: EguiOptionUsize,
     /// Monotonically increasing time, in seconds. Relative to whatever. Used for animations.
     /// If `None` is provided, egui will assume a time delta of `predicted_dt` (default 1/60 seconds).
-    pub time: VxOptionF64,
+    pub time: EguiOptionF64,
     /// Should be set to the expected time between frames when painting at vsync speeds.
     /// The default for this is 1/60.
     /// Can safely be left at its default value.
     pub predicted_dt: f32,
     /// Which modifier keys are down at the start of the frame?
-    pub modifiers: VxModifiers,
+    pub modifiers: EguiModifiers,
     /* UNIMPLEMENTED (field) 
     /// In-order events received this frame.
     /// 
@@ -2099,13 +1261,17 @@ pub struct VxRawInput {
     /// and/or the pointer (mouse/touch) with [`crate::Context::is_using_pointer`].
     pub events: VEC_TY_TODO(Event),*/
     
+    /* UNIMPLEMENTED (field) 
     /// Dragged files hovering over egui.
-    pub hovered_files: VEC_TY_TODO(VxHoveredFile),
+    pub hovered_files: VEC_TY_TODO(EguiHoveredFile),*/
+    
+    /* UNIMPLEMENTED (field) 
     /// Dragged files dropped into egui.
     /// 
     /// Note: when using `eframe` on Windows, this will always be empty if drag-and-drop support has
     /// been disabled in [`crate::viewport::ViewportBuilder`].
-    pub dropped_files: VEC_TY_TODO(VxDroppedFile),
+    pub dropped_files: VEC_TY_TODO(EguiDroppedFile),*/
+    
     /// The native window has the keyboard focus (i.e. is receiving key presses).
     /// 
     /// False when the user alt-tab away from the application, for instance.
@@ -2113,36 +1279,18 @@ pub struct VxRawInput {
     /// Does the OS use dark or light mode?
     /// 
     /// `None` means "don't know".
-    pub system_theme: VxOptionTheme,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_raw_input_default() -> VxRawInput {
-    let value = ::egui::data::input::RawInput::default();
-    VxRawInput {
-        viewport_id: value.viewport_id.into(),
-        viewports: value.viewports.into(),
-        screen_rect: value.screen_rect.into(),
-        max_texture_side: value.max_texture_side.into(),
-        time: value.time.into(),
-        predicted_dt: value.predicted_dt.into(),
-        modifiers: value.modifiers.into(),
-        events: value.events.into(),
-        hovered_files: value.hovered_files.into(),
-        dropped_files: value.dropped_files.into(),
-        focused: value.focused.into(),
-        system_theme: value.system_theme.into(),
-    }
+    pub system_theme: EguiOptionTheme,
 }
 
 
 /// What called [`Context::request_repaint`] or [`Context::request_discard`]?
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxRepaintCause {
+pub struct EguiRepaintCause {
+    /* UNIMPLEMENTED (field) 
     /// What file had the call that requested the repaint?
-    pub file: VxString,
+    pub file: str,*/
+    
     /// What line number of the call that requested the repaint?
     pub line: u32,
     /* UNIMPLEMENTED (field) 
@@ -2154,15 +1302,15 @@ pub struct VxRepaintCause {
 /// Information given to the backend about when it is time to repaint the ui.
 /// 
 /// This is given in the callback set by [`Context::set_request_repaint_callback`].
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxRequestRepaintInfo {
+pub struct EguiRequestRepaintInfo {
     /* UNIMPLEMENTED (field) 
     /// This is used to specify what viewport that should repaint.
     pub viewport_id: crate::ViewportId,*/
     
     /// Repaint after this duration. If zero, repaint as soon as possible.
-    pub delay: VxDuration,
+    pub delay: EguiDuration,
     /// The number of fully completed passes, of the entire lifetime of the [`Context`].
     /// 
     /// This can be compared to [`Context::cumulative_pass_nr`] to see if we we still
@@ -2171,9 +1319,9 @@ pub struct VxRequestRepaintInfo {
 }
 
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxRowVertexIndices {
+pub struct EguiRowVertexIndices {
     pub row: usize,
     /* UNIMPLEMENTED (field) 
     pub vertex_indices: Array { type_: Primitive("u32"), len: "6" },*/
@@ -2183,23 +1331,13 @@ pub struct VxRowVertexIndices {
 /// Scroll animation configuration, used when programmatically scrolling somewhere (e.g. with `[crate::Ui::scroll_to_cursor]`)
 /// The animation duration is calculated based on the distance to be scrolled via `[ScrollAnimation::points_per_second]`
 /// and can be clamped to a min / max duration via `[ScrollAnimation::duration]`.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxScrollAnimation {
+pub struct EguiScrollAnimation {
     /// With what speed should we scroll? (Default: 1000.0)
     pub points_per_second: f32,
     /// The min / max scroll duration.
-    pub duration: VxRangef,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_scroll_animation_default() -> VxScrollAnimation {
-    let value = ::egui::style::ScrollAnimation::default();
-    VxScrollAnimation {
-        points_per_second: value.points_per_second.into(),
-        duration: value.duration.into(),
-    }
+    pub duration: EguiRangef,
 }
 
 
@@ -2209,9 +1347,9 @@ pub extern "C" fn vx_scroll_animation_default() -> VxScrollAnimation {
 /// * [`Self::solid`]
 /// * [`Self::thin`]
 /// * [`Self::floating`]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxScrollStyle {
+pub struct EguiScrollStyle {
     /// If `true`, scroll bars float above the content, partially covering it.
     /// 
     /// If `false`, the scroll bars allocate space, shrinking the area
@@ -2280,51 +1418,19 @@ pub struct VxScrollStyle {
     pub interact_handle_opacity: f32,
 }
 
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_scroll_style_default() -> VxScrollStyle {
-    let value = ::egui::style::ScrollStyle::default();
-    VxScrollStyle {
-        floating: value.floating.into(),
-        bar_width: value.bar_width.into(),
-        handle_min_length: value.handle_min_length.into(),
-        bar_inner_margin: value.bar_inner_margin.into(),
-        bar_outer_margin: value.bar_outer_margin.into(),
-        floating_width: value.floating_width.into(),
-        floating_allocated_width: value.floating_allocated_width.into(),
-        foreground_color: value.foreground_color.into(),
-        dormant_background_opacity: value.dormant_background_opacity.into(),
-        active_background_opacity: value.active_background_opacity.into(),
-        interact_background_opacity: value.interact_background_opacity.into(),
-        dormant_handle_opacity: value.dormant_handle_opacity.into(),
-        active_handle_opacity: value.active_handle_opacity.into(),
-        interact_handle_opacity: value.interact_handle_opacity.into(),
-    }
-}
-
 
 /// Selected text, selected elements etc
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxSelection {
-    pub bg_fill: VxColor4,
-    pub stroke: VxStroke,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_selection_default() -> VxSelection {
-    let value = ::egui::style::Selection::default();
-    VxSelection {
-        bg_fill: value.bg_fill.into(),
-        stroke: value.stroke.into(),
-    }
+pub struct EguiSelection {
+    pub bg_fill: EguiColor32,
+    pub stroke: EguiStroke,
 }
 
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxSettings {
+pub struct EguiSettings {
     /// Maximum number of undos.
     /// If your state is resource intensive, you should keep this low.
     /// 
@@ -2343,50 +1449,39 @@ pub struct VxSettings {
     pub auto_save_interval: f32,
 }
 
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_settings_default() -> VxSettings {
-    let value = ::egui::util::undoer::Settings::default();
-    VxSettings {
-        max_undos: value.max_undos.into(),
-        stable_time: value.stable_time.into(),
-        auto_save_interval: value.auto_save_interval.into(),
-    }
-}
-
 
 /// A texture with a known size.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxSizedTexture {
-    pub id: VxTextureId,
-    pub size: VxVec2,
+pub struct EguiSizedTexture {
+    pub id: EguiTextureId,
+    pub size: EguiVec2,
 }
 
 
 /// Controls the sizes and distances between widgets.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxSpacing {
+pub struct EguiSpacing {
     /// Horizontal and vertical spacing between widgets.
     /// 
     /// To add extra space between widgets, use [`Ui::add_space`].
     /// 
     /// `item_spacing` is inserted _after_ adding a widget, so to increase the spacing between
     /// widgets `A` and `B` you need to change `item_spacing` before adding `A`.
-    pub item_spacing: VxVec2,
+    pub item_spacing: EguiVec2,
     /// Horizontal and vertical margins within a window frame.
-    pub window_margin: VxMargin,
+    pub window_margin: EguiMargin,
     /// Button size is text size plus this on each side
-    pub button_padding: VxVec2,
+    pub button_padding: EguiVec2,
     /// Horizontal and vertical margins within a menu frame.
-    pub menu_margin: VxMargin,
+    pub menu_margin: EguiMargin,
     /// Indent collapsing regions etc by this much.
     pub indent: f32,
     /// Minimum size of a [`DragValue`], color picker button, and other small widgets.
     /// `interact_size.y` is the default height of button, slider, etc.
     /// Anything clickable should be (at least) this size.
-    pub interact_size: VxVec2,
+    pub interact_size: EguiVec2,
     /// Default width of a [`Slider`].
     pub slider_width: f32,
     /// Default rail height of a [`Slider`].
@@ -2411,7 +1506,7 @@ pub struct VxSpacing {
     /// 
     /// If the contents are smaller than this size, the area will shrink to fit the contents.
     /// If the contents overflow, the area will grow.
-    pub default_area_size: VxVec2,
+    pub default_area_size: EguiVec2,
     /// Width of a tooltip (`on_hover_ui`, `on_hover_text` etc).
     pub tooltip_width: f32,
     /// The default wrapping width of a menu.
@@ -2425,35 +1520,7 @@ pub struct VxSpacing {
     /// Height of a combo-box before showing scroll bars.
     pub combo_height: f32,
     /// Controls the spacing of a [`crate::ScrollArea`].
-    pub scroll: VxScrollStyle,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_spacing_default() -> VxSpacing {
-    let value = ::egui::style::Spacing::default();
-    VxSpacing {
-        item_spacing: value.item_spacing.into(),
-        window_margin: value.window_margin.into(),
-        button_padding: value.button_padding.into(),
-        menu_margin: value.menu_margin.into(),
-        indent: value.indent.into(),
-        interact_size: value.interact_size.into(),
-        slider_width: value.slider_width.into(),
-        slider_rail_height: value.slider_rail_height.into(),
-        combo_width: value.combo_width.into(),
-        text_edit_width: value.text_edit_width.into(),
-        icon_width: value.icon_width.into(),
-        icon_width_inner: value.icon_width_inner.into(),
-        icon_spacing: value.icon_spacing.into(),
-        default_area_size: value.default_area_size.into(),
-        tooltip_width: value.tooltip_width.into(),
-        menu_width: value.menu_width.into(),
-        menu_spacing: value.menu_spacing.into(),
-        indent_ends_with_horizontal_line: value.indent_ends_with_horizontal_line.into(),
-        combo_height: value.combo_height.into(),
-        scroll: value.scroll.into(),
-    }
+    pub scroll: EguiScrollStyle,
 }
 
 
@@ -2464,27 +1531,27 @@ pub extern "C" fn vx_spacing_default() -> VxSpacing {
 /// To choose between dark and light style, use [`crate::Context::set_theme`].
 /// 
 /// If you want to change fonts, use [`crate::Context::set_fonts`] instead.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxStyle {
+pub struct EguiStyle {
     /* UNIMPLEMENTED (field) 
     /// If set this will change the default [`TextStyle`] for all widgets.
     /// 
     /// On most widgets you can also set an explicit text style,
     /// which will take precedence over this.
-    pub override_text_style: VxOptionTextStyle,*/
+    pub override_text_style: EguiOptionTextStyle,*/
     
     /* UNIMPLEMENTED (field) 
     /// If set this will change the font family and size for all widgets.
     /// 
     /// On most widgets you can also set an explicit text style,
     /// which will take precedence over this.
-    pub override_font_id: VxOptionCrate::fontId,*/
+    pub override_font_id: EguiOptionCrate::fontId,*/
     
     /// How to vertically align text.
     /// 
     /// Set to `None` to use align that depends on the current layout.
-    pub override_text_valign: VxOptionAlign,
+    pub override_text_valign: EguiOptionAlign,
     /* UNIMPLEMENTED (field) 
     /// The [`FontFamily`] and size you want to use for a specific [`TextStyle`].
     /// 
@@ -2533,7 +1600,7 @@ pub struct VxStyle {
     /// * `None`: use `wrap_mode` instead
     /// * `Some(true)`: wrap mode defaults to [`crate::TextWrapMode::Wrap`]
     /// * `Some(false)`: wrap mode defaults to [`crate::TextWrapMode::Extend`]
-    pub wrap: VxOptionBool,
+    pub wrap: EguiOptionBool,
     /* UNIMPLEMENTED (field) 
     /// If set, labels, buttons, etc. will use this to determine whether to wrap or truncate the
     /// text at the right edge of the [`Ui`] they are in, or to extend it. By default, this is
@@ -2541,20 +1608,20 @@ pub struct VxStyle {
     /// 
     /// * `None`: follow layout (with may wrap)
     /// * `Some(mode)`: use the specified mode as default
-    pub wrap_mode: VxOptionCrate::textWrapMode,*/
+    pub wrap_mode: EguiOptionCrate::textWrapMode,*/
     
     /// Sizes and distances between widgets
-    pub spacing: VxSpacing,
+    pub spacing: EguiSpacing,
     /// How and when interaction happens.
-    pub interaction: VxInteraction,
+    pub interaction: EguiInteraction,
     /// Colors etc.
-    pub visuals: VxVisuals,
+    pub visuals: EguiVisuals,
     /// How many seconds a typical animation should last.
     pub animation_time: f32,
     /// Options to help debug why egui behaves strangely.
     /// 
     /// Only available in debug builds.
-    pub debug: VxDebugOptions,
+    pub debug: EguiDebugOptions,
     /// Show tooltips explaining [`DragValue`]:s etc when hovered.
     /// 
     /// This only affects a few egui widgets.
@@ -2564,41 +1631,16 @@ pub struct VxStyle {
     /// If true and scrolling is enabled for only one direction, allow horizontal scrolling without pressing shift
     pub always_scroll_the_only_direction: bool,
     /// The animation that should be used when scrolling a [`crate::ScrollArea`] using e.g. [`Ui::scroll_to_rect`].
-    pub scroll_animation: VxScrollAnimation,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_style_default() -> VxStyle {
-    let value = ::egui::style::Style::default();
-    VxStyle {
-        override_text_style: value.override_text_style.into(),
-        override_font_id: value.override_font_id.into(),
-        override_text_valign: value.override_text_valign.into(),
-        text_styles: value.text_styles.into(),
-        drag_value_text_style: value.drag_value_text_style.into(),
-        number_formatter: value.number_formatter.into(),
-        wrap: value.wrap.into(),
-        wrap_mode: value.wrap_mode.into(),
-        spacing: value.spacing.into(),
-        interaction: value.interaction.into(),
-        visuals: value.visuals.into(),
-        animation_time: value.animation_time.into(),
-        debug: value.debug.into(),
-        explanation_tooltips: value.explanation_tooltips.into(),
-        url_in_tooltip: value.url_in_tooltip.into(),
-        always_scroll_the_only_direction: value.always_scroll_the_only_direction.into(),
-        scroll_animation: value.scroll_animation.into(),
-    }
+    pub scroll_animation: EguiScrollAnimation,
 }
 
 
 /// Look and feel of the text cursor.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxTextCursorStyle {
+pub struct EguiTextCursorStyle {
     /// The color and width of the text cursor
-    pub stroke: VxStroke,
+    pub stroke: EguiStroke,
     /// Show where the text cursor would be if you clicked?
     pub preview: bool,
     /// Should the cursor blink?
@@ -2609,123 +1651,62 @@ pub struct VxTextCursorStyle {
     pub off_duration: f32,
 }
 
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_text_cursor_style_default() -> VxTextCursorStyle {
-    let value = ::egui::style::TextCursorStyle::default();
-    VxTextCursorStyle {
-        stroke: value.stroke.into(),
-        preview: value.preview.into(),
-        blink: value.blink.into(),
-        on_duration: value.on_duration.into(),
-        off_duration: value.off_duration.into(),
-    }
-}
-
 
 /// Build a [`Ui`] as the child of another [`Ui`].
 /// 
 /// By default, everything is inherited from the parent,
 /// except for `max_rect` which by default is set to
 /// the parent [`Ui::available_rect_before_wrap`].
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxUiBuilder {
-    pub id_salt: VxOptionId,
-    pub ui_stack_info: VxUiStackInfo,
-    pub layer_id: VxOptionLayerId,
-    pub max_rect: VxOptionIBox2,
-    pub layout: VxOptionLayout,
+pub struct EguiUiBuilder {
+    pub id_salt: EguiOptionId,
+    pub ui_stack_info: EguiUiStackInfo,
+    pub layer_id: EguiOptionLayerId,
+    pub max_rect: EguiOptionRect,
+    pub layout: EguiOptionLayout,
     pub disabled: bool,
     pub invisible: bool,
     pub sizing_pass: bool,
     /* UNIMPLEMENTED (field) 
-    pub style: VxOptionStd::sync::arc,*/
+    pub style: EguiOptionStd::sync::arc,*/
     
-    pub sense: VxOptionSense,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_ui_builder_default() -> VxUiBuilder {
-    let value = ::egui::ui_builder::UiBuilder::default();
-    VxUiBuilder {
-        id_salt: value.id_salt.into(),
-        ui_stack_info: value.ui_stack_info.into(),
-        layer_id: value.layer_id.into(),
-        max_rect: value.max_rect.into(),
-        layout: value.layout.into(),
-        disabled: value.disabled.into(),
-        invisible: value.invisible.into(),
-        sizing_pass: value.sizing_pass.into(),
-        style: value.style.into(),
-        sense: value.sense.into(),
-    }
+    pub sense: EguiOptionSense,
 }
 
 
 /// Information about a [`crate::Ui`] to be included in the corresponding [`UiStack`].
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxUiStackInfo {
-    pub kind: VxOptionUiKind,
-    pub frame: VxFrame,
+pub struct EguiUiStackInfo {
+    pub kind: EguiOptionUiKind,
+    pub frame: EguiFrame,
     /* UNIMPLEMENTED (field) 
     pub tags: UiTags,*/
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_ui_stack_info_default() -> VxUiStackInfo {
-    let value = ::egui::ui_stack::UiStackInfo::default();
-    VxUiStackInfo {
-        kind: value.kind.into(),
-        frame: value.frame.into(),
-        tags: value.tags.into(),
-    }
 }
 
 
 /// A wrapper around `dyn Any`, used for passing custom user data
 /// to [`crate::ViewportCommand::Screenshot`].
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxUserData {
+pub struct EguiUserData {
     /* UNIMPLEMENTED (field) 
     /// A user value given to the screenshot command,
     /// that will be returned in [`crate::Event::Screenshot`].
-    pub data: VxOptionStd::sync::arc,*/
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_user_data_default() -> VxUserData {
-    let value = ::egui::data::user_data::UserData::default();
-    VxUserData {
-        data: value.data.into(),
-    }
+    pub data: EguiOptionStd::sync::arc,*/
 }
 
 
 /// A pair of [`ViewportId`], used to identify a viewport and its parent.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxViewportIdPair {
+pub struct EguiViewportIdPair {
     /* UNIMPLEMENTED (field) 
     pub this: ViewportId,*/
     
     /* UNIMPLEMENTED (field) 
     pub parent: ViewportId,*/
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_viewport_id_pair_default() -> VxViewportIdPair {
-    let value = ::egui::viewport::ViewportIdPair::default();
-    VxViewportIdPair {
-        this: value.this.into(),
-        parent: value.parent.into(),
-    }
 }
 
 
@@ -2735,62 +1716,45 @@ pub extern "C" fn vx_viewport_id_pair_default() -> VxViewportIdPair {
 /// 
 /// All units are in ui "points", which can be calculated from native physical pixels
 /// using `pixels_per_point` = [`crate::Context::zoom_factor`] * `[Self::native_pixels_per_point`];
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxViewportInfo {
+pub struct EguiViewportInfo {
     /* UNIMPLEMENTED (field) 
     /// Parent viewport, if known.
-    pub parent: VxOptionCrate::viewportId,*/
+    pub parent: EguiOptionCrate::viewportId,*/
     
     /// Name of the viewport, if known.
-    pub title: VxOptionString,
-    pub events: VEC_TY_TODO(VxViewportEvent),
+    pub title: EguiOptionString,
+    /* UNIMPLEMENTED (field) 
+    pub events: VEC_TY_TODO(EguiViewportEvent),*/
+    
     /// The OS native pixels-per-point.
     /// 
     /// This should always be set, if known.
     /// 
     /// On web this takes browser scaling into account,
     /// and corresponds to [`window.devicePixelRatio`](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio) in JavaScript.
-    pub native_pixels_per_point: VxOptionF32,
+    pub native_pixels_per_point: EguiOptionF32,
     /// Current monitor size in egui points.
-    pub monitor_size: VxOptionVec2,
+    pub monitor_size: EguiOptionVec2,
     /// The inner rectangle of the native window, in monitor space and ui points scale.
     /// 
     /// This is the content rectangle of the viewport.
-    pub inner_rect: VxOptionIBox2,
+    pub inner_rect: EguiOptionRect,
     /// The outer rectangle of the native window, in monitor space and ui points scale.
     /// 
     /// This is the content rectangle plus decoration chrome.
-    pub outer_rect: VxOptionIBox2,
+    pub outer_rect: EguiOptionRect,
     /// Are we minimized?
-    pub minimized: VxOptionBool,
+    pub minimized: EguiOptionBool,
     /// Are we maximized?
-    pub maximized: VxOptionBool,
+    pub maximized: EguiOptionBool,
     /// Are we in fullscreen mode?
-    pub fullscreen: VxOptionBool,
+    pub fullscreen: EguiOptionBool,
     /// Is the window focused and able to receive input?
     /// 
     /// This should be the same as [`RawInput::focused`].
-    pub focused: VxOptionBool,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_viewport_info_default() -> VxViewportInfo {
-    let value = ::egui::data::input::ViewportInfo::default();
-    VxViewportInfo {
-        parent: value.parent.into(),
-        title: value.title.into(),
-        events: value.events.into(),
-        native_pixels_per_point: value.native_pixels_per_point.into(),
-        monitor_size: value.monitor_size.into(),
-        inner_rect: value.inner_rect.into(),
-        outer_rect: value.outer_rect.into(),
-        minimized: value.minimized.into(),
-        maximized: value.maximized.into(),
-        fullscreen: value.fullscreen.into(),
-        focused: value.focused.into(),
-    }
+    pub focused: EguiOptionBool,
 }
 
 
@@ -2800,9 +1764,9 @@ pub extern "C" fn vx_viewport_info_default() -> VxViewportInfo {
 /// and of everything with [`crate::Context::set_visuals_of`].
 /// 
 /// If you want to change fonts, use [`crate::Context::set_fonts`] instead.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxVisuals {
+pub struct EguiVisuals {
     /// If true, the visuals are overall dark with light text.
     /// If false, the visuals are overall light with dark text.
     /// 
@@ -2822,38 +1786,38 @@ pub struct VxVisuals {
     /// so that `visuals.text_color` is always used,
     /// but its alpha may be different based on whether or not
     /// it is disabled, non-interactive, hovered etc.
-    pub override_text_color: VxOptionColor4,
+    pub override_text_color: EguiOptionColor32,
     /// Visual styles of widgets
-    pub widgets: VxWidgets,
-    pub selection: VxSelection,
+    pub widgets: EguiWidgets,
+    pub selection: EguiSelection,
     /// The color used for [`crate::Hyperlink`],
-    pub hyperlink_color: VxColor4,
+    pub hyperlink_color: EguiColor32,
     /// Something just barely different from the background color.
     /// Used for [`crate::Grid::striped`].
-    pub faint_bg_color: VxColor4,
+    pub faint_bg_color: EguiColor32,
     /// Very dark or light color (for corresponding theme).
     /// Used as the background of text edits, scroll bars and others things
     /// that needs to look different from other interactive stuff.
-    pub extreme_bg_color: VxColor4,
+    pub extreme_bg_color: EguiColor32,
     /// Background color behind code-styled monospaced labels.
-    pub code_bg_color: VxColor4,
+    pub code_bg_color: EguiColor32,
     /// A good color for warning text (e.g. orange).
-    pub warn_fg_color: VxColor4,
+    pub warn_fg_color: EguiColor32,
     /// A good color for error text (e.g. red).
-    pub error_fg_color: VxColor4,
-    pub window_corner_radius: VxCornerRadius,
-    pub window_shadow: VxShadow,
-    pub window_fill: VxColor4,
-    pub window_stroke: VxStroke,
+    pub error_fg_color: EguiColor32,
+    pub window_corner_radius: EguiCornerRadius,
+    pub window_shadow: EguiShadow,
+    pub window_fill: EguiColor32,
+    pub window_stroke: EguiStroke,
     /// Highlight the topmost window.
     pub window_highlight_topmost: bool,
-    pub menu_corner_radius: VxCornerRadius,
+    pub menu_corner_radius: EguiCornerRadius,
     /// Panel background color
-    pub panel_fill: VxColor4,
-    pub popup_shadow: VxShadow,
+    pub panel_fill: EguiColor32,
+    pub popup_shadow: EguiShadow,
     pub resize_corner_size: f32,
     /// How the text cursor acts.
-    pub text_cursor: VxTextCursorStyle,
+    pub text_cursor: EguiTextCursorStyle,
     /// Allow child widgets to be just on the border and still have a stroke with some thickness
     pub clip_rect_margin: f32,
     /// Show a background behind buttons.
@@ -2872,87 +1836,49 @@ pub struct VxVisuals {
     /// Shape of the handle for sliders and similar widgets.
     /// 
     /// Changing this will affect ALL sliders, and can be enabled/disabled per slider with [`Slider::handle_shape`].
-    pub handle_shape: VxHandleShape,
+    pub handle_shape: EguiHandleShape,
     /// Should the cursor change when the user hovers over an interactive/clickable item?
     /// 
     /// This is consistent with a lot of browser-based applications (vscode, github
     /// all turn your cursor into [`CursorIcon::PointingHand`] when a button is
     /// hovered) but it is inconsistent with native UI toolkits.
-    pub interact_cursor: VxOptionCursorIcon,
+    pub interact_cursor: EguiOptionCursorIcon,
     /// Show a spinner when loading an image.
     pub image_loading_spinners: bool,
     /// How to display numeric color values.
-    pub numeric_color_space: VxNumericColorSpace,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_visuals_default() -> VxVisuals {
-    let value = ::egui::style::Visuals::default();
-    VxVisuals {
-        dark_mode: value.dark_mode.into(),
-        override_text_color: value.override_text_color.into(),
-        widgets: value.widgets.into(),
-        selection: value.selection.into(),
-        hyperlink_color: value.hyperlink_color.into(),
-        faint_bg_color: value.faint_bg_color.into(),
-        extreme_bg_color: value.extreme_bg_color.into(),
-        code_bg_color: value.code_bg_color.into(),
-        warn_fg_color: value.warn_fg_color.into(),
-        error_fg_color: value.error_fg_color.into(),
-        window_corner_radius: value.window_corner_radius.into(),
-        window_shadow: value.window_shadow.into(),
-        window_fill: value.window_fill.into(),
-        window_stroke: value.window_stroke.into(),
-        window_highlight_topmost: value.window_highlight_topmost.into(),
-        menu_corner_radius: value.menu_corner_radius.into(),
-        panel_fill: value.panel_fill.into(),
-        popup_shadow: value.popup_shadow.into(),
-        resize_corner_size: value.resize_corner_size.into(),
-        text_cursor: value.text_cursor.into(),
-        clip_rect_margin: value.clip_rect_margin.into(),
-        button_frame: value.button_frame.into(),
-        collapsing_header_frame: value.collapsing_header_frame.into(),
-        indent_has_left_vline: value.indent_has_left_vline.into(),
-        striped: value.striped.into(),
-        slider_trailing_fill: value.slider_trailing_fill.into(),
-        handle_shape: value.handle_shape.into(),
-        interact_cursor: value.interact_cursor.into(),
-        image_loading_spinners: value.image_loading_spinners.into(),
-        numeric_color_space: value.numeric_color_space.into(),
-    }
+    pub numeric_color_space: EguiNumericColorSpace,
 }
 
 
 /// Describes a widget such as a [`crate::Button`] or a [`crate::TextEdit`].
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxWidgetInfo {
+pub struct EguiWidgetInfo {
     /// The type of widget this is.
-    pub typ: VxWidgetType,
+    pub typ: EguiWidgetType,
     /// Whether the widget is enabled.
     pub enabled: bool,
     /// The text on labels, buttons, checkboxes etc.
-    pub label: VxOptionString,
+    pub label: EguiOptionString,
     /// The contents of some editable text (for [`TextEdit`](crate::TextEdit) fields).
-    pub current_text_value: VxOptionString,
+    pub current_text_value: EguiOptionString,
     /// The previous text value.
-    pub prev_text_value: VxOptionString,
+    pub prev_text_value: EguiOptionString,
     /// The current value of checkboxes and radio buttons.
-    pub selected: VxOptionBool,
+    pub selected: EguiOptionBool,
     /// The current value of sliders etc.
-    pub value: VxOptionF64,
+    pub value: EguiOptionF64,
     /// Selected range of characters in [`Self::current_text_value`].
-    pub text_selection: VxOptionRangeInclusive,
+    pub text_selection: EguiOptionRangeInclusive,
 }
 
 
 /// Used to store each widget's [Id], [Rect] and [Sense] each frame.
 /// 
 /// Used to check which widget gets input when a user clicks somewhere.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxWidgetRect {
+pub struct EguiWidgetRect {
     /// The globally unique widget id.
     /// 
     /// For interactive widgets, this better be globally unique.
@@ -2961,15 +1887,15 @@ pub struct VxWidgetRect {
     /// (see [`crate::Options::warn_on_id_clash`]).
     /// 
     /// You can ensure globally unique ids using [`crate::Ui::push_id`].
-    pub id: VxId,
+    pub id: EguiId,
     /// What layer the widget is on.
-    pub layer_id: VxLayerId,
+    pub layer_id: EguiLayerId,
     /// The full widget rectangle, in local layer coordinates.
-    pub rect: VxIBox2,
+    pub rect: EguiRect,
     /// Where the widget is, in local layer coordinates.
     /// 
     /// This is after clipping with the parent ui clip rect.
-    pub interact_rect: VxIBox2,
+    pub interact_rect: EguiRect,
     /// How the widget responds to interaction.
     /// 
     /// Note: if [`Self::enabled`] is `false`, then
@@ -2978,157 +1904,144 @@ pub struct VxWidgetRect {
     /// This is because the sense informs the styling of the widget,
     /// but we don't want to change the style when a widget is disabled
     /// (that is handled by the `Painter` directly).
-    pub sense: VxSense,
+    pub sense: EguiSense,
     /// Is the widget enabled?
     pub enabled: bool,
 }
 
 
 /// bg = background, fg = foreground.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxWidgetVisuals {
+pub struct EguiWidgetVisuals {
     /// Background color of widgets that must have a background fill,
     /// such as the slider background, a checkbox background, or a radio button background.
     /// 
     /// Must never be [`Color32::TRANSPARENT`].
-    pub bg_fill: VxColor4,
+    pub bg_fill: EguiColor32,
     /// Background color of widgets that can _optionally_ have a background fill, such as buttons.
     /// 
     /// May be [`Color32::TRANSPARENT`].
-    pub weak_bg_fill: VxColor4,
+    pub weak_bg_fill: EguiColor32,
     /// For surrounding rectangle of things that need it,
     /// like buttons, the box of the checkbox, etc.
     /// Should maybe be called `frame_stroke`.
-    pub bg_stroke: VxStroke,
+    pub bg_stroke: EguiStroke,
     /// Button frames etc.
-    pub corner_radius: VxCornerRadius,
+    pub corner_radius: EguiCornerRadius,
     /// Stroke and text color of the interactive part of a component (button text, slider grab, check-mark, …).
-    pub fg_stroke: VxStroke,
+    pub fg_stroke: EguiStroke,
     /// Make the frame this much larger.
     pub expansion: f32,
 }
 
 
 /// The visuals of widgets for different states of interaction.
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxWidgets {
+pub struct EguiWidgets {
     /// The style of a widget that you cannot interact with.
     /// * `noninteractive.bg_stroke` is the outline of windows.
     /// * `noninteractive.bg_fill` is the background color of windows.
     /// * `noninteractive.fg_stroke` is the normal text color.
-    pub noninteractive: VxWidgetVisuals,
+    pub noninteractive: EguiWidgetVisuals,
     /// The style of an interactive widget, such as a button, at rest.
-    pub inactive: VxWidgetVisuals,
+    pub inactive: EguiWidgetVisuals,
     /// The style of an interactive widget while you hover it, or when it is highlighted.
     /// 
     /// See [`Response::hovered`], [`Response::highlighted`] and [`Response::highlight`].
-    pub hovered: VxWidgetVisuals,
+    pub hovered: EguiWidgetVisuals,
     /// The style of an interactive widget as you are clicking or dragging it.
-    pub active: VxWidgetVisuals,
+    pub active: EguiWidgetVisuals,
     /// The style of a button that has an open menu beneath it (e.g. a combo-box)
-    pub open: VxWidgetVisuals,
-}
-
-/// Returns the "default value" for a type.
-#[no_mangle]
-pub extern "C" fn vx_widgets_default() -> VxWidgets {
-    let value = ::egui::style::Widgets::default();
-    VxWidgets {
-        noninteractive: value.noninteractive.into(),
-        inactive: value.inactive.into(),
-        hovered: value.hovered.into(),
-        active: value.active.into(),
-        open: value.open.into(),
-    }
+    pub open: EguiWidgetVisuals,
 }
 
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionPosixTime {
+pub struct EguiOptionPosixTime {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxPosixTime,
+    pub value: EguiPosixTime,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionString {
+pub struct EguiOptionString {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxString,
+    pub value: EguiString,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionCollapsingState {
+pub struct EguiOptionCollapsingState {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxCollapsingState,
+    pub value: EguiCollapsingState,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionState {
+pub struct EguiOptionState {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxState,
+    pub value: EguiState,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionTextEditState {
+pub struct EguiOptionTextEditState {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxTextEditState,
+    pub value: EguiTextEditState,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionCursorIcon {
+pub struct EguiOptionCursorIcon {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxCursorIcon,
+    pub value: EguiCursorIcon,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionTheme {
+pub struct EguiOptionTheme {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxTheme,
+    pub value: EguiTheme,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionUiKind {
+pub struct EguiOptionUiKind {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxUiKind,
+    pub value: EguiUiKind,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionBool {
+pub struct EguiOptionBool {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
@@ -3138,7 +2051,7 @@ pub struct VxOptionBool {
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionF32 {
+pub struct EguiOptionF32 {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
@@ -3148,7 +2061,7 @@ pub struct VxOptionF32 {
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionF64 {
+pub struct EguiOptionF64 {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
@@ -3158,7 +2071,7 @@ pub struct VxOptionF64 {
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionUsize {
+pub struct EguiOptionUsize {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
@@ -3168,430 +2081,210 @@ pub struct VxOptionUsize {
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionString {
+pub struct EguiOptionAlign {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxString,
+    pub value: EguiAlign,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionAlign {
+pub struct EguiOptionAreaState {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxAlign,
+    pub value: EguiAreaState,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionAreaState {
+pub struct EguiOptionCCursorRange {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxAreaState,
+    pub value: EguiCCursorRange,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionCCursorRange {
+pub struct EguiOptionColor32 {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxCCursorRange,
+    pub value: EguiColor32,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionColor4 {
+pub struct EguiOptionCursor {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxColor4,
+    pub value: EguiCursor,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionCursor {
+pub struct EguiOptionCursorRange {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxCursor,
+    pub value: EguiCursorRange,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionCursorRange {
+pub struct EguiOptionFrame {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxCursorRange,
+    pub value: EguiFrame,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionFrame {
+pub struct EguiOptionImeOutput {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxFrame,
+    pub value: EguiIMEOutput,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionIBox2 {
+pub struct EguiOptionId {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxIBox2,
+    pub value: EguiId,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionImeOutput {
+pub struct EguiOptionLayerId {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxIMEOutput,
+    pub value: EguiLayerId,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionId {
+pub struct EguiOptionLayout {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxId,
+    pub value: EguiLayout,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionLayerId {
+pub struct EguiOptionMultiTouchInfo {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxLayerId,
+    pub value: EguiMultiTouchInfo,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionLayout {
+pub struct EguiOptionOpenUrl {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxLayout,
+    pub value: EguiOpenUrl,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionMultiTouchInfo {
+pub struct EguiOptionPos2 {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxMultiTouchInfo,
+    pub value: EguiPos2,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionOpenUrl {
+pub struct EguiOptionRangeInclusive {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxOpenUrl,
+    pub value: EguiRangeInclusive,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionPos2 {
+pub struct EguiOptionRect {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxPos2,
+    pub value: EguiRect,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionRangeInclusive {
+pub struct EguiOptionSense {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxRangeInclusive,
+    pub value: EguiSense,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionSense {
+pub struct EguiOptionUiStackInfo {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxSense,
+    pub value: EguiUiStackInfo,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionUiStackInfo {
+pub struct EguiOptionVec2 {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxUiStackInfo,
+    pub value: EguiVec2,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionVec2 {
+pub struct EguiOptionWidgetInfo {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxVec2,
+    pub value: EguiWidgetInfo,
 }
 
 /// A type that may contain a value or nothing.
 #[derive(Copy, Clone, Default)]
 #[repr(C)]
-pub struct VxOptionWidgetInfo {
+pub struct EguiOptionWidgetRect {
     /// True if this is `Some`.
     pub has_value: bool,
     /// The underlying value if this is `Some`.
-    pub value: VxWidgetInfo,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionWidgetRect {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: VxWidgetRect,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionArc {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: Arc,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionDebugRect {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: DebugRect,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionDuration {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: Duration,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionGeneric("r") {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: Generic("R"),
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionGeneric("state") {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: Generic("State"),
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionGeneric("t") {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: Generic("T"),
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionGeneric("value") {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: Generic("Value"),
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionImage {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: Image,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionInnerResponse {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: InnerResponse,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionTsTransform {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: TSTransform,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionTextEditState {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: TextEditState,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionTextStyle {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: TextStyle,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionTuple([resolvedPath(path{Path:"layerId",Id:Id(209),Args:Some(angleBracketed{Args:[],Constraints:[]})}),Primitive("usize")]) {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: Tuple([ResolvedPath(Path { path: "LayerId", id: Id(209), args: Some(AngleBracketed { args: [], constraints: [] }) }), Primitive("usize")]),
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionTuple([resolvedPath(path{Path:"emath::rot2",Id:Id(6930),Args:Some(angleBracketed{Args:[],Constraints:[]})}),ResolvedPath(path{Path:"crate::vec2",Id:Id(150),Args:Some(angleBracketed{Args:[],Constraints:[]})})]) {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: Tuple([ResolvedPath(Path { path: "emath::Rot2", id: Id(6930), args: Some(AngleBracketed { args: [], constraints: [] }) }), ResolvedPath(Path { path: "crate::Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) })]),
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionWidgetText {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: WidgetText,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionCrate::fontId {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: crate::FontId,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionCrate::response {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: crate::Response,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionCrate::textWrapMode {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: crate::TextWrapMode,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionCrate::viewportId {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: crate::ViewportId,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionStd::path::pathBuf {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: std::path::PathBuf,
-}
-
-/// A type that may contain a value or nothing.
-#[derive(Copy, Clone, Default)]
-#[repr(C)]
-pub struct VxOptionStd::sync::arc {
-    /// True if this is `Some`.
-    pub has_value: bool,
-    /// The underlying value if this is `Some`.
-    pub value: std::sync::Arc,
+    pub value: EguiWidgetRect,
 }
 

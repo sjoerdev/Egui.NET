@@ -75,7 +75,7 @@ impl BindgenContext {
     /// Gathers the types for which options must be generated.
     fn collect_optional_types(&mut self) {
         let referenced_types = self.items.iter().flat_map(ag::Type::referenced_types).collect::<BTreeSet<ag::TypeReference>>();
-        for ty in referenced_types {
+        for ty in referenced_types.into_iter().filter(|x| !x.contains_unknown()) {
             if let ag::TypeReference::Builtin(ag::BuiltinType::Option(x)) = ty {
                 self.optional_types.push(*x);
             }
@@ -284,7 +284,6 @@ impl BindgenContext {
                 "f64" => ag::PrimitiveType::F64,
                 "isize" => ag::PrimitiveType::ISize,
                 "usize" => ag::PrimitiveType::USize,
-                "String" | "str" => ag::PrimitiveType::String,
                 _ => return ag::TypeReference::Unknown(name.clone())
             }),
             Type::BorrowedRef { is_mutable: false, type_, .. } => self.resolve_type(self_ty, &type_),
@@ -340,23 +339,10 @@ pub fn autogenerate_rs(items: &[ag::Type], optional_types: &[ag::TypeReference])
 pub fn autogenerate(directory: &std::path::Path) {
     let mut ctx = BindgenContext::new(&[
         ag::TypeReference::Struct(ag::TypeName::from_path(&["egui".to_string(), "emath".to_string(), "Align".to_string()])),
-        //ag::TypeReference::Struct(ag::TypeName::from_path(&["egui".to_string(), "emath".to_string(), "Color32".to_string()])),
-        ag::TypeReference::Struct(ag::TypeName {
-            cs: "Color4".to_string(),
-            rs: "VxColor4".to_string(),
-            rs_fn: "color4".to_string(),
-            original: "::egui::emath::Color32".to_string(),
-            simple: "Color32".to_string()
-        }),
+        ag::TypeReference::Struct(ag::TypeName::from_path(&["egui".to_string(), "emath".to_string(), "Color32".to_string()])),
         ag::TypeReference::Struct(ag::TypeName::from_path(&["egui".to_string(), "emath".to_string(), "Pos2".to_string()])),
         ag::TypeReference::Struct(ag::TypeName::from_path(&["egui".to_string(), "emath".to_string(), "Rangef".to_string()])),
-        ag::TypeReference::Struct(ag::TypeName {
-            cs: "IBox2".to_string(),
-            rs: "VxIBox2".to_string(),
-            rs_fn: "ibox2".to_string(),
-            original: "::egui::emath::Rect".to_string(),
-            simple: "Rect".to_string()
-        }),
+        ag::TypeReference::Struct(ag::TypeName::from_path(&["egui".to_string(), "emath".to_string(), "Rect".to_string()])),
         ag::TypeReference::Struct(ag::TypeName::from_path(&["egui".to_string(), "emath".to_string(), "Rot2".to_string()])),
         ag::TypeReference::Struct(ag::TypeName::from_path(&["egui".to_string(), "emath".to_string(), "Vec2".to_string()])),
         ag::TypeReference::Struct(ag::TypeName::from_path(&["egui".to_string(), "epaint".to_string(), "CornerRadius".to_string()])),
@@ -386,8 +372,8 @@ pub fn autogenerate(directory: &std::path::Path) {
 
     ctx.collect();
 
-    std::fs::write(directory.join("Gui.g.cs"), autogenerate_cs(ctx.items())).expect("Failed to write C# bindings");
-    std::fs::write(directory.join("gui.rs"), autogenerate_rs(ctx.items(), ctx.optional_types())).expect("Failed to write Rust bindings");
+    std::fs::write(directory.join("Egui.g.cs"), autogenerate_cs(ctx.items())).expect("Failed to write C# bindings");
+    std::fs::write(directory.join("egui.rs"), autogenerate_rs(ctx.items(), ctx.optional_types())).expect("Failed to write Rust bindings");
 }
 
 /*

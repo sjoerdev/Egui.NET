@@ -48,8 +48,8 @@ impl BuiltinType {
     /// Whether this reference contains a type that could not be resolved.
     pub fn contains_unknown(&self) -> bool {
         match self {
-            Self::Option(x)
-            | Self::Vec(x) => x.contains_unknown(),
+            Self::Option(x) => x.contains_unknown(),
+            Self::Vec(_) => true,
             _ => false
         }
     }
@@ -65,7 +65,7 @@ impl BuiltinType {
                 write!(f, "}}")
             },
             Self::String => write!(f, "STRING_CONV_TODO"),
-            Self::TimeSpan => write!(f, "Vx.TIME_SECOND * {value}.TotalSeconds"),
+            Self::TimeSpan => write!(f, "Egui.TIME_SECOND * {value}.TotalSeconds"),
             Self::Vec(_) => write!(f, "VEC_CONV_TODO({value})"),
         }
     }
@@ -80,7 +80,7 @@ impl BuiltinType {
                 write!(f, " : null")
             },
             Self::String => write!(f, "STRING_CONV_TODO"),
-            Self::TimeSpan => write!(f, "TimeSpan.FromSeconds({value} / Vx.TIME_SECOND)"),
+            Self::TimeSpan => write!(f, "TimeSpan.FromSeconds({value} / Egui.TIME_SECOND)"),
             Self::Vec(_) => write!(f, "VEC_CONV_TODO({value})"),
         }
     }
@@ -99,13 +99,13 @@ impl DisplayBindings for BuiltinType {
 
     fn write_rs(&self, f: &mut Formatter) -> Result {
         match self {
-            Self::DateTime => write!(f, "VxPosixTime"),
+            Self::DateTime => write!(f, "EguiPosixTime"),
             Self::Option(ty) => {
                 let rs_name = format!("{}", DisplayRs(&**ty));
-                write!(f, "VxOption{}", rs_name.strip_prefix("Vx").unwrap_or(&rs_name).to_case(Case::Pascal))
+                write!(f, "EguiOption{}", rs_name.strip_prefix("Egui").unwrap_or(&rs_name).to_case(Case::Pascal))
             },
-            Self::String => write!(f, "VxString"),
-            Self::TimeSpan => write!(f, "VxDuration"),
+            Self::String => write!(f, "EguiString"),
+            Self::TimeSpan => write!(f, "EguiDuration"),
             Self::Vec(ty) => write!(f, "VEC_TY_TODO({})", DisplayRs(&**ty)),
         }
     }
@@ -139,9 +139,7 @@ pub enum PrimitiveType {
     /// The [`isize`] type.
     ISize,
     /// The [`usize`] type.
-    USize,
-    /// The [`String`] or [`str`] types.
-    String
+    USize
 }
 
 impl DisplayBindings for PrimitiveType {
@@ -160,7 +158,6 @@ impl DisplayBindings for PrimitiveType {
             PrimitiveType::F64 => "double",
             PrimitiveType::ISize => "nint",
             PrimitiveType::USize => "nuint",
-            PrimitiveType::String => "string",
         })
     }
 
@@ -179,7 +176,6 @@ impl DisplayBindings for PrimitiveType {
             PrimitiveType::F64 => "f64",
             PrimitiveType::ISize => "isize",
             PrimitiveType::USize => "usize",
-            PrimitiveType::String => "VxString",
         })
     }
 }
@@ -235,7 +231,7 @@ impl TypeReference {
         }
     }
 
-    /// Writes the definition of a `VxOption...` struct that can hold this type.
+    /// Writes the definition of an `EguiOption...` struct that can hold this type.
     pub fn rs_option_wrapper(&self, f: &mut Formatter) -> Result {
         write!(f, "/// A type that may contain a value or nothing.\n")?;
         write!(f, "#[derive(Copy, Clone, Default)]\n")?;
@@ -392,14 +388,14 @@ impl Type {
     /// Creates the casts between the idiomatic-C# and Rust-FFI bindings.
     fn write_cs_struct_casts(&self, f: &mut Formatter) -> Result {
         write_cs_docs(f, "Converts between .")?;
-        write!(f, "public static readonly {} Default = ({})Vx.{}_default();\n", self.name().cs, self.name().cs, self.name().rs_fn)?;
+        write!(f, "public static readonly {} Default = ({})Egui.{}_default();\n", self.name().cs, self.name().cs, self.name().rs_fn)?;
         Ok(())
     }
 
     /// Creates the default field for a struct type in C#.
     fn write_cs_struct_default(&self, f: &mut Formatter) -> Result {
         write_cs_docs(f, "Returns the \"default value\" for a type.")?;
-        write!(f, "public static readonly {} Default = ({})Vx.{}_default();\n", self.name().cs, self.name().cs, self.name().rs_fn)?;
+        write!(f, "public static readonly {} Default = ({})Egui.{}_default();\n", self.name().cs, self.name().cs, self.name().rs_fn)?;
         Ok(())
     }
 
@@ -466,8 +462,8 @@ impl Type {
     /// Creates the C#-side destructor for this type, assuming that it is a handle.
     fn write_cs_destructor(&self, f: &mut Formatter) -> Result {
         write!(f, "/// <inheritdoc/>\n")?;
-        write!(f, "protected override void Free(VxObject* pointer) {{\n")?;
-        write!(f, "    Vx.gui_{}_drop(pointer);\n", self.name().rs_fn)?;
+        write!(f, "protected override void Free(EguiObject* pointer) {{\n")?;
+        write!(f, "    Egui.gui_{}_drop(pointer);\n", self.name().rs_fn)?;
         write!(f, "}}\n")?;
         Ok(())
     }
@@ -476,7 +472,7 @@ impl Type {
     fn write_rs_struct_default(&self, f: &mut Formatter) -> Result {
         write_rs_docs(f, "Returns the \"default value\" for a type.")?;
         write!(f, "#[no_mangle]\n")?;
-        write!(f, "pub extern \"C\" fn vx_{}_default() -> {} {{\n", self.name().rs_fn, self.name().rs)?;
+        write!(f, "pub extern \"C\" fn egui_{}_default() -> {} {{\n", self.name().rs_fn, self.name().rs)?;
         write!(f, "    let value = {}::default();\n", self.name().original)?;
         write!(f, "    {} {{\n", self.name().rs)?;
 
@@ -498,9 +494,9 @@ impl Type {
         write!(f, "///\n")?;
         write!(f, "/// For this call to be sound, the pointer must refer to a live object of the corret type.\n");
         write!(f, "#[no_mangle]\n")?;
-        write!(f, "pub unsafe extern \"C\" fn vx_gui_{}_drop(value: *mut VxObject<{}>) {{\n",
+        write!(f, "pub unsafe extern \"C\" fn egui_gui_{}_drop(value: *mut EguiObject<{}>) {{\n",
             self.name().rs_fn, self.name().original)?;
-        write!(f, "    VxHandle::from_heap(value);\n")?;
+        write!(f, "    EguiHandle::from_heap(value);\n")?;
         write!(f, "}}\n")?;
         Ok(())
     }
@@ -522,7 +518,7 @@ impl DisplayBindings for Type {
                 write!(f, "}}\n")?;
             },
             Type::Class { fields, has_default, methods, .. } => {
-                write!(f, "public unsafe partial sealed class {} : VxHandle {{\n", self.name().cs)?;
+                write!(f, "public unsafe partial sealed class {} : EguiHandle {{\n", self.name().cs)?;
 
                 let mut members = String::new();
                 let mut member_names = Vec::new();
@@ -580,12 +576,16 @@ impl DisplayBindings for Type {
         match self {
             Type::Enum { variants, .. } => {
                 write_rs_docs(f, self.docs())?;
-                write!(f, "#[derive(Copy, Clone)]\n")?;
+                write!(f, "#[derive(Copy, Clone, Default)]\n")?;
                 write!(f, "#[repr(C)]\n")?;
                 write!(f, "pub enum {} {{\n", self.name().rs)?;
                 
                 let mut members = String::new();
-                for variant in variants {
+                for (i, variant) in variants.into_iter().enumerate() {
+                    if i == 0 {
+                        write!(&mut members, "#[default]\n")?;
+                    }
+
                     write!(&mut members, "{}\n", DisplayRs(variant))?;
                 }
                 write!(f, "{}", &indent(&members))?;
@@ -593,11 +593,11 @@ impl DisplayBindings for Type {
                 write!(f, "}}\n")?;
             },
             Type::Class { .. } => {
-                self.write_rs_destructor(f);
+                //self.write_rs_destructor(f);
             },
             Type::Struct { fields, has_default, .. } => {
                 write_rs_docs(f, self.docs())?;
-                write!(f, "#[derive(Copy, Clone)]\n")?;
+                write!(f, "#[derive(Copy, Clone, Default)]\n")?;
                 write!(f, "#[repr(C)]\n")?;
                 write!(f, "pub struct {} {{\n", self.name().rs)?;
                 
@@ -609,10 +609,10 @@ impl DisplayBindings for Type {
 
                 write!(f, "}}\n\n")?;
 
-                if *has_default {
+                /*if *has_default {
                     self.write_rs_struct_default(f)?;
                     write!(f, "\n")?;
-                }
+                }*/
             }
         }
         Ok(())
@@ -716,7 +716,7 @@ impl DisplayBindings for Method {
 
         let mut body = String::new();
         let mut body_f = Formatter::new(&mut body, f.options());
-        write!(body_f, "Vx.{}(", self.rs_name())?;
+        write!(body_f, "Egui.{}(", self.rs_name())?;
 
         for (index, parameter) in self.parameters.iter().enumerate() {
             if 0 < index {
@@ -835,7 +835,7 @@ impl TypeName {
     pub fn from_path(parts: &[String]) -> Self {
         let name = parts.last().expect("Path list was empty.");
         let cs = name.clone();
-        let rs = "Vx".to_string() + name;
+        let rs = "Egui".to_string() + name;
         let rs_fn = name.to_case(Case::Snake);
         let original = "::".to_string() + &parts.join("::");
         let simple = name.clone();

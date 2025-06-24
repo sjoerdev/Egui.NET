@@ -702,123 +702,123 @@ public enum WindowLevel {
 /// 
 /// This forms the base of the <c>Window</c> container.The previous rectangle used by this area can be obtained through <c>AreaRect()</c>.
 /// </summary>
-public unsafe partial sealed class Area : VxHandle {
+public unsafe partial sealed class Area : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_area_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_area_drop(pointer);
     }
     public Area(Id id) {
-        Vx.area_new(TODO_ARG(id));
+        Egui.area_new(TODO_ARG(id));
     
     }
     
     public Area Id(Id id) {
-        Vx.area_id(TODO_ARG(id));
+        Egui.area_id(TODO_ARG(id));
     
     }
     
     public Area Kind(UiKind kind) {
-        Vx.area_kind(TODO_ARG(kind));
+        Egui.area_kind(TODO_ARG(kind));
     
     }
     
     public LayerId Layer() {
-        Vx.area_layer();
+        Egui.area_layer();
     
     }
     
     public Area Enabled(bool enabled) {
-        Vx.area_enabled(TODO_ARG(enabled));
+        Egui.area_enabled(TODO_ARG(enabled));
     
     }
     
     public Area Movable(bool movable) {
-        Vx.area_movable(TODO_ARG(movable));
+        Egui.area_movable(TODO_ARG(movable));
     
     }
     
     public bool IsEnabled() {
-        Vx.area_is_enabled();
+        Egui.area_is_enabled();
     
     }
     
     public bool IsMovable() {
-        Vx.area_is_movable();
+        Egui.area_is_movable();
     
     }
     
     public Area Interactable(bool interactable) {
-        Vx.area_interactable(TODO_ARG(interactable));
+        Egui.area_interactable(TODO_ARG(interactable));
     
     }
     
     public Area Sense(Sense sense) {
-        Vx.area_sense(TODO_ARG(sense));
+        Egui.area_sense(TODO_ARG(sense));
     
     }
     
     public Area Order(Order order) {
-        Vx.area_order(TODO_ARG(order));
+        Egui.area_order(TODO_ARG(order));
     
     }
     
     public Area DefaultPos(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Pos2", id: Id(144), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) defaultPos) {
-        Vx.area_default_pos(TODO_ARG(defaultPos));
+        Egui.area_default_pos(TODO_ARG(defaultPos));
     
     }
     
     public Area DefaultSize(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) defaultSize) {
-        Vx.area_default_size(TODO_ARG(defaultSize));
+        Egui.area_default_size(TODO_ARG(defaultSize));
     
     }
     
     public Area DefaultWidth(float defaultWidth) {
-        Vx.area_default_width(TODO_ARG(defaultWidth));
+        Egui.area_default_width(TODO_ARG(defaultWidth));
     
     }
     
     public Area DefaultHeight(float defaultHeight) {
-        Vx.area_default_height(TODO_ARG(defaultHeight));
+        Egui.area_default_height(TODO_ARG(defaultHeight));
     
     }
     
     public Area FixedPos(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Pos2", id: Id(144), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) fixedPos) {
-        Vx.area_fixed_pos(TODO_ARG(fixedPos));
+        Egui.area_fixed_pos(TODO_ARG(fixedPos));
     
     }
     
     public Area Constrain(bool constrain) {
-        Vx.area_constrain(TODO_ARG(constrain));
+        Egui.area_constrain(TODO_ARG(constrain));
     
     }
     
-    public Area ConstrainTo(IBox2 constrainRect) {
-        Vx.area_constrain_to(TODO_ARG(constrainRect));
+    public Area ConstrainTo(Rect constrainRect) {
+        Egui.area_constrain_to(TODO_ARG(constrainRect));
     
     }
     
     public Area Pivot(Align2 pivot) {
-        Vx.area_pivot(TODO_ARG(pivot));
+        Egui.area_pivot(TODO_ARG(pivot));
     
     }
     
     public Area CurrentPos(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Pos2", id: Id(144), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) currentPos) {
-        Vx.area_current_pos(TODO_ARG(currentPos));
+        Egui.area_current_pos(TODO_ARG(currentPos));
     
     }
     
     public Area Anchor(Align2 align, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) offset) {
-        Vx.area_anchor(TODO_ARG(align), TODO_ARG(offset));
+        Egui.area_anchor(TODO_ARG(align), TODO_ARG(offset));
     
     }
     
     public Area FadeIn(bool fadeIn) {
-        Vx.area_fade_in(TODO_ARG(fadeIn));
+        Egui.area_fade_in(TODO_ARG(fadeIn));
     
     }
     
     public InnerResponse Show(Context ctx, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.area_show(TODO_ARG(ctx), TODO_ARG(addContents));
+        Egui.area_show(TODO_ARG(ctx), TODO_ARG(addContents));
     
     }
 }
@@ -827,33 +827,33 @@ public unsafe partial sealed class Area : VxHandle {
 /// Keeps track of <c>Area</c>s, which are free-floating <c>Ui</c>s.
 /// These <c>Area</c>s can be in any <c>Order</c>.
 /// </summary>
-public unsafe partial sealed class Areas : VxHandle {
+public unsafe partial sealed class Areas : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_areas_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_areas_drop(pointer);
     }
 }
 
 /// <summary>
 /// What is saved between frames.
 /// </summary>
-public unsafe partial sealed class BarState : VxHandle {
+public unsafe partial sealed class BarState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_bar_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_bar_state_drop(pointer);
     }
     public static BarState Load(Context ctx, Id barId) {
-        Vx.bar_state_load(TODO_ARG(ctx), TODO_ARG(barId));
+        Egui.bar_state_load(TODO_ARG(ctx), TODO_ARG(barId));
     
     }
     
     public void Store(Context ctx, Id barId) {
-        Vx.bar_state_store(TODO_ARG(ctx), TODO_ARG(barId));
+        Egui.bar_state_store(TODO_ARG(ctx), TODO_ARG(barId));
     
     }
     
     public InnerResponse? BarMenu(Response button, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.bar_state_bar_menu(TODO_ARG(button), TODO_ARG(addContents));
+        Egui.bar_state_bar_menu(TODO_ARG(button), TODO_ARG(addContents));
     
     }
 }
@@ -863,98 +863,98 @@ public unsafe partial sealed class BarState : VxHandle {
 /// 
 /// See also <c>Button</c>.
 /// </summary>
-public unsafe partial sealed class Button : VxHandle {
+public unsafe partial sealed class Button : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_button_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_button_drop(pointer);
     }
     public Button(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.button_new(TODO_ARG(text));
+        Egui.button_new(TODO_ARG(text));
     
     }
     
     public static Button Image(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Image", id: Id(1424), args: Some(AngleBracketed { args: [Lifetime("'a")], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) image) {
-        Vx.button_image(TODO_ARG(image));
+        Egui.button_image(TODO_ARG(image));
     
     }
     
     public static Button ImageAndText(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Image", id: Id(1424), args: Some(AngleBracketed { args: [Lifetime("'a")], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) image, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.button_image_and_text(TODO_ARG(image), TODO_ARG(text));
+        Egui.button_image_and_text(TODO_ARG(image), TODO_ARG(text));
     
     }
     
     public static Button OptImageAndText(Image? image, WidgetText? text) {
-        Vx.button_opt_image_and_text(TODO_ARG(image), TODO_ARG(text));
+        Egui.button_opt_image_and_text(TODO_ARG(image), TODO_ARG(text));
     
     }
     
     public Button WrapMode(TextWrapMode wrapMode) {
-        Vx.button_wrap_mode(TODO_ARG(wrapMode));
+        Egui.button_wrap_mode(TODO_ARG(wrapMode));
     
     }
     
     public Button Wrap() {
-        Vx.button_wrap();
+        Egui.button_wrap();
     
     }
     
     public Button Truncate() {
-        Vx.button_truncate();
+        Egui.button_truncate();
     
     }
     
     public Button Fill(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) fill) {
-        Vx.button_fill(TODO_ARG(fill));
+        Egui.button_fill(TODO_ARG(fill));
     
     }
     
     public Button Stroke(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke) {
-        Vx.button_stroke(TODO_ARG(stroke));
+        Egui.button_stroke(TODO_ARG(stroke));
     
     }
     
     public Button Small() {
-        Vx.button_small();
+        Egui.button_small();
     
     }
     
     public Button Frame(bool frame) {
-        Vx.button_frame(TODO_ARG(frame));
+        Egui.button_frame(TODO_ARG(frame));
     
     }
     
     public Button Sense(Sense sense) {
-        Vx.button_sense(TODO_ARG(sense));
+        Egui.button_sense(TODO_ARG(sense));
     
     }
     
     public Button MinSize(Vec2 minSize) {
-        Vx.button_min_size(TODO_ARG(minSize));
+        Egui.button_min_size(TODO_ARG(minSize));
     
     }
     
     public Button CornerRadius(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius) {
-        Vx.button_corner_radius(TODO_ARG(cornerRadius));
+        Egui.button_corner_radius(TODO_ARG(cornerRadius));
     
     }
     
     public Button Rounding(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius) {
-        Vx.button_rounding(TODO_ARG(cornerRadius));
+        Egui.button_rounding(TODO_ARG(cornerRadius));
     
     }
     
     public Button ImageTintFollowsTextColor(bool imageTintFollowsTextColor) {
-        Vx.button_image_tint_follows_text_color(TODO_ARG(imageTintFollowsTextColor));
+        Egui.button_image_tint_follows_text_color(TODO_ARG(imageTintFollowsTextColor));
     
     }
     
     public Button ShortcutText(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) shortcutText) {
-        Vx.button_shortcut_text(TODO_ARG(shortcutText));
+        Egui.button_shortcut_text(TODO_ARG(shortcutText));
     
     }
     
     public Button Selected(bool selected) {
-        Vx.button_selected(TODO_ARG(selected));
+        Egui.button_selected(TODO_ARG(selected));
     
     }
 }
@@ -965,18 +965,18 @@ public unsafe partial sealed class Button : VxHandle {
 /// You can access egui's caches via <c>Caches</c>,
 /// found with <c>MemoryMut</c>.
 /// </summary>
-public unsafe partial sealed class CacheStorage : VxHandle {
+public unsafe partial sealed class CacheStorage : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_cache_storage_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_cache_storage_drop(pointer);
     }
     public BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Cache") } Cache() {
-        Vx.cache_storage_cache();
+        Egui.cache_storage_cache();
     
     }
     
     public void Update() {
-        Vx.cache_storage_update();
+        Egui.cache_storage_update();
     
     }
 }
@@ -994,23 +994,23 @@ public unsafe partial sealed class CacheStorage : VxHandle {
 /// 
 /// See the module level docs for more details.
 /// </summary>
-public unsafe partial sealed class CentralPanel : VxHandle {
+public unsafe partial sealed class CentralPanel : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_central_panel_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_central_panel_drop(pointer);
     }
     public CentralPanel Frame(Frame frame) {
-        Vx.central_panel_frame(TODO_ARG(frame));
+        Egui.central_panel_frame(TODO_ARG(frame));
     
     }
     
     public InnerResponse ShowInside(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.central_panel_show_inside(TODO_ARG(ui), TODO_ARG(addContents));
+        Egui.central_panel_show_inside(TODO_ARG(ui), TODO_ARG(addContents));
     
     }
     
     public InnerResponse Show(Context ctx, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.central_panel_show(TODO_ARG(ctx), TODO_ARG(addContents));
+        Egui.central_panel_show(TODO_ARG(ctx), TODO_ARG(addContents));
     
     }
 }
@@ -1020,23 +1020,23 @@ public unsafe partial sealed class CentralPanel : VxHandle {
 /// 
 /// Usually you'd use <c>Checkbox</c> instead.
 /// </summary>
-public unsafe partial sealed class Checkbox : VxHandle {
+public unsafe partial sealed class Checkbox : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_checkbox_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_checkbox_drop(pointer);
     }
     public Checkbox(BorrowedRef { lifetime: Some("'a"), is_mutable: true, type_: Primitive("bool") } checked, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.checkbox_new(TODO_ARG(checked), TODO_ARG(text));
+        Egui.checkbox_new(TODO_ARG(checked), TODO_ARG(text));
     
     }
     
     public static Checkbox WithoutText(BorrowedRef { lifetime: Some("'a"), is_mutable: true, type_: Primitive("bool") } checked) {
-        Vx.checkbox_without_text(TODO_ARG(checked));
+        Egui.checkbox_without_text(TODO_ARG(checked));
     
     }
     
     public Checkbox Indeterminate(bool indeterminate) {
-        Vx.checkbox_indeterminate(TODO_ARG(indeterminate));
+        Egui.checkbox_indeterminate(TODO_ARG(indeterminate));
     
     }
 }
@@ -1044,58 +1044,58 @@ public unsafe partial sealed class Checkbox : VxHandle {
 /// <summary>
 /// A header which can be collapsed/expanded, revealing a contained <c>Ui</c> region.If you want to customize the header contents, see <c>ShowHeader</c>.
 /// </summary>
-public unsafe partial sealed class CollapsingHeader : VxHandle {
+public unsafe partial sealed class CollapsingHeader : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_collapsing_header_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_collapsing_header_drop(pointer);
     }
     public CollapsingHeader(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.collapsing_header_new(TODO_ARG(text));
+        Egui.collapsing_header_new(TODO_ARG(text));
     
     }
     
     public CollapsingHeader DefaultOpen(bool open) {
-        Vx.collapsing_header_default_open(TODO_ARG(open));
+        Egui.collapsing_header_default_open(TODO_ARG(open));
     
     }
     
     public CollapsingHeader Open(bool? open) {
-        Vx.collapsing_header_open(TODO_ARG(open));
+        Egui.collapsing_header_open(TODO_ARG(open));
     
     }
     
     public CollapsingHeader IdSalt(ImplTrait([TraitBound { trait_: Path { path: "Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.collapsing_header_id_salt(TODO_ARG(idSalt));
+        Egui.collapsing_header_id_salt(TODO_ARG(idSalt));
     
     }
     
     public CollapsingHeader IdSource(ImplTrait([TraitBound { trait_: Path { path: "Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.collapsing_header_id_source(TODO_ARG(idSalt));
+        Egui.collapsing_header_id_source(TODO_ARG(idSalt));
     
     }
     
     public CollapsingHeader Enabled(bool enabled) {
-        Vx.collapsing_header_enabled(TODO_ARG(enabled));
+        Egui.collapsing_header_enabled(TODO_ARG(enabled));
     
     }
     
     public CollapsingHeader ShowBackground(bool showBackground) {
-        Vx.collapsing_header_show_background(TODO_ARG(showBackground));
+        Egui.collapsing_header_show_background(TODO_ARG(showBackground));
     
     }
     
     public CollapsingHeader Icon(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, Primitive("f32"), BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "Response", id: Id(282), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: None }) }, generic_params: [], modifier: None }, Outlives("'static")]) iconFn) {
-        Vx.collapsing_header_icon(TODO_ARG(iconFn));
+        Egui.collapsing_header_icon(TODO_ARG(iconFn));
     
     }
     
     public CollapsingResponse Show(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addBody) {
-        Vx.collapsing_header_show(TODO_ARG(ui), TODO_ARG(addBody));
+        Egui.collapsing_header_show(TODO_ARG(ui), TODO_ARG(addBody));
     
     }
     
     public CollapsingResponse ShowUnindented(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addBody) {
-        Vx.collapsing_header_show_unindented(TODO_ARG(ui), TODO_ARG(addBody));
+        Egui.collapsing_header_show_unindented(TODO_ARG(ui), TODO_ARG(addBody));
     
     }
 }
@@ -1103,18 +1103,18 @@ public unsafe partial sealed class CollapsingHeader : VxHandle {
 /// <summary>
 /// The response from showing a <c>CollapsingHeader</c>.
 /// </summary>
-public unsafe partial sealed class CollapsingResponse : VxHandle {
+public unsafe partial sealed class CollapsingResponse : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_collapsing_response_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_collapsing_response_drop(pointer);
     }
     public bool FullyClosed() {
-        Vx.collapsing_response_fully_closed();
+        Egui.collapsing_response_fully_closed();
     
     }
     
     public bool FullyOpen() {
-        Vx.collapsing_response_fully_open();
+        Egui.collapsing_response_fully_open();
     
     }
 }
@@ -1126,73 +1126,73 @@ public unsafe partial sealed class CollapsingResponse : VxHandle {
 /// 
 /// See <c>ShowHeader</c> for how to show a collapsing header with a custom header.
 /// </summary>
-public unsafe partial sealed class CollapsingState : VxHandle {
+public unsafe partial sealed class CollapsingState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_collapsing_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_collapsing_state_drop(pointer);
     }
     public static CollapsingState? Load(Context ctx, Id id) {
-        Vx.collapsing_state_load(TODO_ARG(ctx), TODO_ARG(id));
+        Egui.collapsing_state_load(TODO_ARG(ctx), TODO_ARG(id));
     
     }
     
     public void Store(Context ctx) {
-        Vx.collapsing_state_store(TODO_ARG(ctx));
+        Egui.collapsing_state_store(TODO_ARG(ctx));
     
     }
     
     public void Remove(Context ctx) {
-        Vx.collapsing_state_remove(TODO_ARG(ctx));
+        Egui.collapsing_state_remove(TODO_ARG(ctx));
     
     }
     
     public Id Id() {
-        Vx.collapsing_state_id();
+        Egui.collapsing_state_id();
     
     }
     
     public static CollapsingState LoadWithDefaultOpen(Context ctx, Id id, bool defaultOpen) {
-        Vx.collapsing_state_load_with_default_open(TODO_ARG(ctx), TODO_ARG(id), TODO_ARG(defaultOpen));
+        Egui.collapsing_state_load_with_default_open(TODO_ARG(ctx), TODO_ARG(id), TODO_ARG(defaultOpen));
     
     }
     
     public bool IsOpen() {
-        Vx.collapsing_state_is_open();
+        Egui.collapsing_state_is_open();
     
     }
     
     public void SetOpen(bool open) {
-        Vx.collapsing_state_set_open(TODO_ARG(open));
+        Egui.collapsing_state_set_open(TODO_ARG(open));
     
     }
     
     public void Toggle(Ui ui) {
-        Vx.collapsing_state_toggle(TODO_ARG(ui));
+        Egui.collapsing_state_toggle(TODO_ARG(ui));
     
     }
     
     public float Openness(Context ctx) {
-        Vx.collapsing_state_openness(TODO_ARG(ctx));
+        Egui.collapsing_state_openness(TODO_ARG(ctx));
     
     }
     
     public HeaderResponse ShowHeader(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("HeaderRet")) }) }, generic_params: [], modifier: None }]) addHeader) {
-        Vx.collapsing_state_show_header(TODO_ARG(ui), TODO_ARG(addHeader));
+        Egui.collapsing_state_show_header(TODO_ARG(ui), TODO_ARG(addHeader));
     
     }
     
     public InnerResponse? ShowBodyIndented(Response headerResponse, BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addBody) {
-        Vx.collapsing_state_show_body_indented(TODO_ARG(headerResponse), TODO_ARG(ui), TODO_ARG(addBody));
+        Egui.collapsing_state_show_body_indented(TODO_ARG(headerResponse), TODO_ARG(ui), TODO_ARG(addBody));
     
     }
     
     public InnerResponse? ShowBodyUnindented(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addBody) {
-        Vx.collapsing_state_show_body_unindented(TODO_ARG(ui), TODO_ARG(addBody));
+        Egui.collapsing_state_show_body_unindented(TODO_ARG(ui), TODO_ARG(addBody));
     
     }
     
     public Response ShowToggleButton(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, Primitive("f32"), BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "Response", id: Id(282), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: None }) }, generic_params: [], modifier: None }, Outlives("'static")]) iconFn) {
-        Vx.collapsing_state_show_toggle_button(TODO_ARG(ui), TODO_ARG(iconFn));
+        Egui.collapsing_state_show_toggle_button(TODO_ARG(ui), TODO_ARG(iconFn));
     
     }
 }
@@ -1200,91 +1200,91 @@ public unsafe partial sealed class CollapsingState : VxHandle {
 /// <summary>
 /// A drop-down selection menu with a descriptive label.
 /// </summary>
-public unsafe partial sealed class ComboBox : VxHandle {
+public unsafe partial sealed class ComboBox : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_combo_box_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_combo_box_drop(pointer);
     }
     public ComboBox(ImplTrait([TraitBound { trait_: Path { path: "std::hash::Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) label) {
-        Vx.combo_box_new(TODO_ARG(idSalt), TODO_ARG(label));
+        Egui.combo_box_new(TODO_ARG(idSalt), TODO_ARG(label));
     
     }
     
     public static ComboBox FromLabel(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) label) {
-        Vx.combo_box_from_label(TODO_ARG(label));
+        Egui.combo_box_from_label(TODO_ARG(label));
     
     }
     
     public static ComboBox FromIdSalt(ImplTrait([TraitBound { trait_: Path { path: "std::hash::Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.combo_box_from_id_salt(TODO_ARG(idSalt));
+        Egui.combo_box_from_id_salt(TODO_ARG(idSalt));
     
     }
     
     public static ComboBox FromIdSource(ImplTrait([TraitBound { trait_: Path { path: "std::hash::Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.combo_box_from_id_source(TODO_ARG(idSalt));
+        Egui.combo_box_from_id_source(TODO_ARG(idSalt));
     
     }
     
     public ComboBox Width(float width) {
-        Vx.combo_box_width(TODO_ARG(width));
+        Egui.combo_box_width(TODO_ARG(width));
     
     }
     
     public ComboBox Height(float height) {
-        Vx.combo_box_height(TODO_ARG(height));
+        Egui.combo_box_height(TODO_ARG(height));
     
     }
     
     public ComboBox SelectedText(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) selectedText) {
-        Vx.combo_box_selected_text(TODO_ARG(selectedText));
+        Egui.combo_box_selected_text(TODO_ARG(selectedText));
     
     }
     
     public ComboBox Icon(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) }), BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "WidgetVisuals", id: Id(424), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, Primitive("bool"), ResolvedPath(Path { path: "AboveOrBelow", id: Id(392), args: Some(AngleBracketed { args: [], constraints: [] }) })], output: None }) }, generic_params: [], modifier: None }, Outlives("'static")]) iconFn) {
-        Vx.combo_box_icon(TODO_ARG(iconFn));
+        Egui.combo_box_icon(TODO_ARG(iconFn));
     
     }
     
     public ComboBox WrapMode(TextWrapMode wrapMode) {
-        Vx.combo_box_wrap_mode(TODO_ARG(wrapMode));
+        Egui.combo_box_wrap_mode(TODO_ARG(wrapMode));
     
     }
     
     public ComboBox Wrap() {
-        Vx.combo_box_wrap();
+        Egui.combo_box_wrap();
     
     }
     
     public ComboBox Truncate() {
-        Vx.combo_box_truncate();
+        Egui.combo_box_truncate();
     
     }
     
     public ComboBox CloseBehavior(PopupCloseBehavior closeBehavior) {
-        Vx.combo_box_close_behavior(TODO_ARG(closeBehavior));
+        Egui.combo_box_close_behavior(TODO_ARG(closeBehavior));
     
     }
     
     public InnerResponse ShowUi(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) menuContents) {
-        Vx.combo_box_show_ui(TODO_ARG(ui), TODO_ARG(menuContents));
+        Egui.combo_box_show_ui(TODO_ARG(ui), TODO_ARG(menuContents));
     
     }
     
     public Response ShowIndex(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, BorrowedRef { lifetime: None, is_mutable: true, type_: Primitive("usize") } selected, nuint len, ImplTrait([TraitBound { trait_: Path { path: "Fn", id: Id(455), args: Some(Parenthesized { inputs: [Primitive("usize")], output: Some(Generic("Text")) }) }, generic_params: [], modifier: None }]) get) {
-        Vx.combo_box_show_index(TODO_ARG(ui), TODO_ARG(selected), TODO_ARG(len), TODO_ARG(get));
+        Egui.combo_box_show_index(TODO_ARG(ui), TODO_ARG(selected), TODO_ARG(len), TODO_ARG(get));
     
     }
     
     public static bool IsOpen(Context ctx, Id id) {
-        Vx.combo_box_is_open(TODO_ARG(ctx), TODO_ARG(id));
+        Egui.combo_box_is_open(TODO_ARG(ctx), TODO_ARG(id));
     
     }
 }
 
-public unsafe partial sealed class DebugRect : VxHandle {
+public unsafe partial sealed class DebugRect : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_debug_rect_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_debug_rect_drop(pointer);
     }
 }
 
@@ -1293,21 +1293,21 @@ public unsafe partial sealed class DebugRect : VxHandle {
 /// 
 /// By convention, the URI:s should be prefixed with <c>Bytes://</c>.
 /// </summary>
-public unsafe partial sealed class DefaultBytesLoader : VxHandle {
+public unsafe partial sealed class DefaultBytesLoader : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_default_bytes_loader_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_default_bytes_loader_drop(pointer);
     }
     public void Insert(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Cow", id: Id(1271), args: Some(AngleBracketed { args: [Lifetime("'static"), Type(Primitive("str"))], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) uri, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Bytes", id: Id(1489), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) bytes) {
-        Vx.default_bytes_loader_insert(TODO_ARG(uri), TODO_ARG(bytes));
+        Egui.default_bytes_loader_insert(TODO_ARG(uri), TODO_ARG(bytes));
     
     }
 }
 
-public unsafe partial sealed class DefaultTextureLoader : VxHandle {
+public unsafe partial sealed class DefaultTextureLoader : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_default_texture_loader_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_default_texture_loader_drop(pointer);
     }
 }
 
@@ -1325,38 +1325,38 @@ public unsafe partial sealed class DefaultTextureLoader : VxHandle {
 /// 
 /// See this example.
 /// </summary>
-public unsafe partial sealed class DragAndDrop : VxHandle {
+public unsafe partial sealed class DragAndDrop : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_drag_and_drop_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_drag_and_drop_drop(pointer);
     }
     public static void SetPayload(Context ctx, Generic("Payload") payload) {
-        Vx.drag_and_drop_set_payload(TODO_ARG(ctx), TODO_ARG(payload));
+        Egui.drag_and_drop_set_payload(TODO_ARG(ctx), TODO_ARG(payload));
     
     }
     
     public static void ClearPayload(Context ctx) {
-        Vx.drag_and_drop_clear_payload(TODO_ARG(ctx));
+        Egui.drag_and_drop_clear_payload(TODO_ARG(ctx));
     
     }
     
     public static Arc? Payload(Context ctx) {
-        Vx.drag_and_drop_payload(TODO_ARG(ctx));
+        Egui.drag_and_drop_payload(TODO_ARG(ctx));
     
     }
     
     public static Arc? TakePayload(Context ctx) {
-        Vx.drag_and_drop_take_payload(TODO_ARG(ctx));
+        Egui.drag_and_drop_take_payload(TODO_ARG(ctx));
     
     }
     
     public static bool HasPayloadOfType(Context ctx) {
-        Vx.drag_and_drop_has_payload_of_type(TODO_ARG(ctx));
+        Egui.drag_and_drop_has_payload_of_type(TODO_ARG(ctx));
     
     }
     
     public static bool HasAnyPayload(Context ctx) {
-        Vx.drag_and_drop_has_any_payload(TODO_ARG(ctx));
+        Egui.drag_and_drop_has_any_payload(TODO_ARG(ctx));
     
     }
 }
@@ -1364,103 +1364,103 @@ public unsafe partial sealed class DragAndDrop : VxHandle {
 /// <summary>
 /// A numeric value that you can change by dragging the number. More compact than a <c>Slider</c>.
 /// </summary>
-public unsafe partial sealed class DragValue : VxHandle {
+public unsafe partial sealed class DragValue : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_drag_value_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_drag_value_drop(pointer);
     }
     public DragValue(BorrowedRef { lifetime: Some("'a"), is_mutable: true, type_: Generic("Num") } value) {
-        Vx.drag_value_new(TODO_ARG(value));
+        Egui.drag_value_new(TODO_ARG(value));
     
     }
     
     public static DragValue FromGetSet(ImplTrait([Outlives("'a"), TraitBound { trait_: Path { path: "FnMut", id: Id(1319), args: Some(Parenthesized { inputs: [ResolvedPath(Path { path: "Option", id: Id(118), args: Some(AngleBracketed { args: [Type(Primitive("f64"))], constraints: [] }) })], output: Some(Primitive("f64")) }) }, generic_params: [], modifier: None }]) getSetValue) {
-        Vx.drag_value_from_get_set(TODO_ARG(getSetValue));
+        Egui.drag_value_from_get_set(TODO_ARG(getSetValue));
     
     }
     
     public DragValue Speed(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(Primitive("f64"))], constraints: [] }) }, generic_params: [], modifier: None }]) speed) {
-        Vx.drag_value_speed(TODO_ARG(speed));
+        Egui.drag_value_speed(TODO_ARG(speed));
     
     }
     
     public DragValue ClampRange(RangeInclusive range) {
-        Vx.drag_value_clamp_range(TODO_ARG(range));
+        Egui.drag_value_clamp_range(TODO_ARG(range));
     
     }
     
     public DragValue Range(RangeInclusive range) {
-        Vx.drag_value_range(TODO_ARG(range));
+        Egui.drag_value_range(TODO_ARG(range));
     
     }
     
     public DragValue ClampExistingToRange(bool clampExistingToRange) {
-        Vx.drag_value_clamp_existing_to_range(TODO_ARG(clampExistingToRange));
+        Egui.drag_value_clamp_existing_to_range(TODO_ARG(clampExistingToRange));
     
     }
     
     public DragValue ClampToRange(bool clampToRange) {
-        Vx.drag_value_clamp_to_range(TODO_ARG(clampToRange));
+        Egui.drag_value_clamp_to_range(TODO_ARG(clampToRange));
     
     }
     
     public DragValue Prefix(ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) prefix) {
-        Vx.drag_value_prefix(TODO_ARG(prefix));
+        Egui.drag_value_prefix(TODO_ARG(prefix));
     
     }
     
     public DragValue Suffix(ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) suffix) {
-        Vx.drag_value_suffix(TODO_ARG(suffix));
+        Egui.drag_value_suffix(TODO_ARG(suffix));
     
     }
     
     public DragValue MinDecimals(nuint minDecimals) {
-        Vx.drag_value_min_decimals(TODO_ARG(minDecimals));
+        Egui.drag_value_min_decimals(TODO_ARG(minDecimals));
     
     }
     
     public DragValue MaxDecimals(nuint maxDecimals) {
-        Vx.drag_value_max_decimals(TODO_ARG(maxDecimals));
+        Egui.drag_value_max_decimals(TODO_ARG(maxDecimals));
     
     }
     
     public DragValue MaxDecimalsOpt(nuint? maxDecimals) {
-        Vx.drag_value_max_decimals_opt(TODO_ARG(maxDecimals));
+        Egui.drag_value_max_decimals_opt(TODO_ARG(maxDecimals));
     
     }
     
     public DragValue FixedDecimals(nuint numDecimals) {
-        Vx.drag_value_fixed_decimals(TODO_ARG(numDecimals));
+        Egui.drag_value_fixed_decimals(TODO_ARG(numDecimals));
     
     }
     
     public DragValue CustomFormatter(ImplTrait([Outlives("'a"), TraitBound { trait_: Path { path: "Fn", id: Id(455), args: Some(Parenthesized { inputs: [Primitive("f64"), ResolvedPath(Path { path: "RangeInclusive", id: Id(2598), args: Some(AngleBracketed { args: [Type(Primitive("usize"))], constraints: [] }) })], output: Some(ResolvedPath(Path { path: "String", id: Id(1295), args: Some(AngleBracketed { args: [], constraints: [] }) })) }) }, generic_params: [], modifier: None }]) formatter) {
-        Vx.drag_value_custom_formatter(TODO_ARG(formatter));
+        Egui.drag_value_custom_formatter(TODO_ARG(formatter));
     
     }
     
     public DragValue CustomParser(ImplTrait([Outlives("'a"), TraitBound { trait_: Path { path: "Fn", id: Id(455), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: false, type_: Primitive("str") }], output: Some(ResolvedPath(Path { path: "Option", id: Id(118), args: Some(AngleBracketed { args: [Type(Primitive("f64"))], constraints: [] }) })) }) }, generic_params: [], modifier: None }]) parser) {
-        Vx.drag_value_custom_parser(TODO_ARG(parser));
+        Egui.drag_value_custom_parser(TODO_ARG(parser));
     
     }
     
     public DragValue Binary(nuint minWidth, bool twosComplement) {
-        Vx.drag_value_binary(TODO_ARG(minWidth), TODO_ARG(twosComplement));
+        Egui.drag_value_binary(TODO_ARG(minWidth), TODO_ARG(twosComplement));
     
     }
     
     public DragValue Octal(nuint minWidth, bool twosComplement) {
-        Vx.drag_value_octal(TODO_ARG(minWidth), TODO_ARG(twosComplement));
+        Egui.drag_value_octal(TODO_ARG(minWidth), TODO_ARG(twosComplement));
     
     }
     
     public DragValue Hexadecimal(nuint minWidth, bool twosComplement, bool upper) {
-        Vx.drag_value_hexadecimal(TODO_ARG(minWidth), TODO_ARG(twosComplement), TODO_ARG(upper));
+        Egui.drag_value_hexadecimal(TODO_ARG(minWidth), TODO_ARG(twosComplement), TODO_ARG(upper));
     
     }
     
     public DragValue UpdateWhileEditing(bool update) {
-        Vx.drag_value_update_while_editing(TODO_ARG(update));
+        Egui.drag_value_update_while_editing(TODO_ARG(update));
     
     }
 }
@@ -1470,23 +1470,23 @@ public unsafe partial sealed class DragValue : VxHandle {
 /// If it is still used next frame, it is not recomputed.
 /// If it is not used next frame, it is evicted from the cache to save memory.
 /// </summary>
-public unsafe partial sealed class FrameCache : VxHandle {
+public unsafe partial sealed class FrameCache : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_frame_cache_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_frame_cache_drop(pointer);
     }
     public FrameCache(Generic("Computer") computer) {
-        Vx.frame_cache_new(TODO_ARG(computer));
+        Egui.frame_cache_new(TODO_ARG(computer));
     
     }
     
     public void EvictCache() {
-        Vx.frame_cache_evict_cache();
+        Egui.frame_cache_evict_cache();
     
     }
     
     public Generic("Value") Get(Generic("Key") key) {
-        Vx.frame_cache_get(TODO_ARG(key));
+        Egui.frame_cache_get(TODO_ARG(key));
     
     }
 }
@@ -1494,28 +1494,28 @@ public unsafe partial sealed class FrameCache : VxHandle {
 /// <summary>
 /// Stores a key:value pair for the duration of this frame and the next.
 /// </summary>
-public unsafe partial sealed class FramePublisher : VxHandle {
+public unsafe partial sealed class FramePublisher : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_frame_publisher_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_frame_publisher_drop(pointer);
     }
     public FramePublisher() {
-        Vx.frame_publisher_new();
+        Egui.frame_publisher_new();
     
     }
     
     public void Set(Generic("Key") key, Generic("Value") value) {
-        Vx.frame_publisher_set(TODO_ARG(key), TODO_ARG(value));
+        Egui.frame_publisher_set(TODO_ARG(key), TODO_ARG(value));
     
     }
     
     public Generic("Value")? Get(Generic("Key") key) {
-        Vx.frame_publisher_get(TODO_ARG(key));
+        Egui.frame_publisher_get(TODO_ARG(key));
     
     }
     
     public void EvictCache() {
-        Vx.frame_publisher_evict_cache();
+        Egui.frame_publisher_evict_cache();
     
     }
 }
@@ -1529,58 +1529,58 @@ public unsafe partial sealed class FramePublisher : VxHandle {
 /// If you want to add multiple widgets to a cell you need to group them with
 /// <c>Horizontal</c>, <c>Vertical</c> etc.
 /// </summary>
-public unsafe partial sealed class Grid : VxHandle {
+public unsafe partial sealed class Grid : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_grid_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_grid_drop(pointer);
     }
     public Grid(ImplTrait([TraitBound { trait_: Path { path: "std::hash::Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.grid_new(TODO_ARG(idSalt));
+        Egui.grid_new(TODO_ARG(idSalt));
     
     }
     
     public Grid WithRowColor(Generic("F") colorPicker) {
-        Vx.grid_with_row_color(TODO_ARG(colorPicker));
+        Egui.grid_with_row_color(TODO_ARG(colorPicker));
     
     }
     
     public Grid NumColumns(nuint numColumns) {
-        Vx.grid_num_columns(TODO_ARG(numColumns));
+        Egui.grid_num_columns(TODO_ARG(numColumns));
     
     }
     
     public Grid Striped(bool striped) {
-        Vx.grid_striped(TODO_ARG(striped));
+        Egui.grid_striped(TODO_ARG(striped));
     
     }
     
     public Grid MinColWidth(float minColWidth) {
-        Vx.grid_min_col_width(TODO_ARG(minColWidth));
+        Egui.grid_min_col_width(TODO_ARG(minColWidth));
     
     }
     
     public Grid MinRowHeight(float minRowHeight) {
-        Vx.grid_min_row_height(TODO_ARG(minRowHeight));
+        Egui.grid_min_row_height(TODO_ARG(minRowHeight));
     
     }
     
     public Grid MaxColWidth(float maxColWidth) {
-        Vx.grid_max_col_width(TODO_ARG(maxColWidth));
+        Egui.grid_max_col_width(TODO_ARG(maxColWidth));
     
     }
     
     public Grid Spacing(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) spacing) {
-        Vx.grid_spacing(TODO_ARG(spacing));
+        Egui.grid_spacing(TODO_ARG(spacing));
     
     }
     
     public Grid StartRow(nuint startRow) {
-        Vx.grid_start_row(TODO_ARG(startRow));
+        Egui.grid_start_row(TODO_ARG(startRow));
     
     }
     
     public InnerResponse Show(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.grid_show(TODO_ARG(ui), TODO_ARG(addContents));
+        Egui.grid_show(TODO_ARG(ui), TODO_ARG(addContents));
     
     }
 }
@@ -1588,33 +1588,33 @@ public unsafe partial sealed class Grid : VxHandle {
 /// <summary>
 /// From <c>ShowHeader</c>.
 /// </summary>
-public unsafe partial sealed class HeaderResponse : VxHandle {
+public unsafe partial sealed class HeaderResponse : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_header_response_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_header_response_drop(pointer);
     }
     public bool IsOpen() {
-        Vx.header_response_is_open();
+        Egui.header_response_is_open();
     
     }
     
     public void SetOpen(bool open) {
-        Vx.header_response_set_open(TODO_ARG(open));
+        Egui.header_response_set_open(TODO_ARG(open));
     
     }
     
     public void Toggle() {
-        Vx.header_response_toggle();
+        Egui.header_response_toggle();
     
     }
     
     public Tuple([ResolvedPath(Path { path: "Response", id: Id(282), args: Some(AngleBracketed { args: [], constraints: [] }) }), ResolvedPath(Path { path: "InnerResponse", id: Id(239), args: Some(AngleBracketed { args: [Type(Generic("HeaderRet"))], constraints: [] }) }), ResolvedPath(Path { path: "Option", id: Id(118), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "InnerResponse", id: Id(239), args: Some(AngleBracketed { args: [Type(Generic("BodyRet"))], constraints: [] }) }))], constraints: [] }) })]) Body(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("BodyRet")) }) }, generic_params: [], modifier: None }]) addBody) {
-        Vx.header_response_body(TODO_ARG(addBody));
+        Egui.header_response_body(TODO_ARG(addBody));
     
     }
     
     public Tuple([ResolvedPath(Path { path: "Response", id: Id(282), args: Some(AngleBracketed { args: [], constraints: [] }) }), ResolvedPath(Path { path: "InnerResponse", id: Id(239), args: Some(AngleBracketed { args: [Type(Generic("HeaderRet"))], constraints: [] }) }), ResolvedPath(Path { path: "Option", id: Id(118), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "InnerResponse", id: Id(239), args: Some(AngleBracketed { args: [Type(Generic("BodyRet"))], constraints: [] }) }))], constraints: [] }) })]) BodyUnindented(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("BodyRet")) }) }, generic_params: [], modifier: None }]) addBody) {
-        Vx.header_response_body_unindented(TODO_ARG(addBody));
+        Egui.header_response_body_unindented(TODO_ARG(addBody));
     
     }
 }
@@ -1624,23 +1624,23 @@ public unsafe partial sealed class HeaderResponse : VxHandle {
 /// 
 /// See also <c>Hyperlink</c> and <c>HyperlinkTo</c>.
 /// </summary>
-public unsafe partial sealed class Hyperlink : VxHandle {
+public unsafe partial sealed class Hyperlink : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_hyperlink_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_hyperlink_drop(pointer);
     }
     public Hyperlink(ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) url) {
-        Vx.hyperlink_new(TODO_ARG(url));
+        Egui.hyperlink_new(TODO_ARG(url));
     
     }
     
     public static Hyperlink FromLabelAndUrl(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) url) {
-        Vx.hyperlink_from_label_and_url(TODO_ARG(text), TODO_ARG(url));
+        Egui.hyperlink_from_label_and_url(TODO_ARG(text), TODO_ARG(url));
     
     }
     
     public Hyperlink OpenInNewTab(bool newTab) {
-        Vx.hyperlink_open_in_new_tab(TODO_ARG(newTab));
+        Egui.hyperlink_open_in_new_tab(TODO_ARG(newTab));
     
     }
 }
@@ -1658,108 +1658,108 @@ public unsafe partial sealed class Hyperlink : VxHandle {
 /// 
 /// You can store state using the key <c>Null</c>. The state will then only be identified by its type.
 /// </summary>
-public unsafe partial sealed class IdTypeMap : VxHandle {
+public unsafe partial sealed class IdTypeMap : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_id_type_map_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_id_type_map_drop(pointer);
     }
     public void InsertTemp(Id id, Generic("T") value) {
-        Vx.id_type_map_insert_temp(TODO_ARG(id), TODO_ARG(value));
+        Egui.id_type_map_insert_temp(TODO_ARG(id), TODO_ARG(value));
     
     }
     
     public void InsertPersisted(Id id, Generic("T") value) {
-        Vx.id_type_map_insert_persisted(TODO_ARG(id), TODO_ARG(value));
+        Egui.id_type_map_insert_persisted(TODO_ARG(id), TODO_ARG(value));
     
     }
     
     public Generic("T")? GetTemp(Id id) {
-        Vx.id_type_map_get_temp(TODO_ARG(id));
+        Egui.id_type_map_get_temp(TODO_ARG(id));
     
     }
     
     public Generic("T")? GetPersisted(Id id) {
-        Vx.id_type_map_get_persisted(TODO_ARG(id));
+        Egui.id_type_map_get_persisted(TODO_ARG(id));
     
     }
     
     public BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("T") } GetTempMutOr(Id id, Generic("T") orInsert) {
-        Vx.id_type_map_get_temp_mut_or(TODO_ARG(id), TODO_ARG(orInsert));
+        Egui.id_type_map_get_temp_mut_or(TODO_ARG(id), TODO_ARG(orInsert));
     
     }
     
     public BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("T") } GetPersistedMutOr(Id id, Generic("T") orInsert) {
-        Vx.id_type_map_get_persisted_mut_or(TODO_ARG(id), TODO_ARG(orInsert));
+        Egui.id_type_map_get_persisted_mut_or(TODO_ARG(id), TODO_ARG(orInsert));
     
     }
     
     public BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("T") } GetTempMutOrDefault(Id id) {
-        Vx.id_type_map_get_temp_mut_or_default(TODO_ARG(id));
+        Egui.id_type_map_get_temp_mut_or_default(TODO_ARG(id));
     
     }
     
     public BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("T") } GetPersistedMutOrDefault(Id id) {
-        Vx.id_type_map_get_persisted_mut_or_default(TODO_ARG(id));
+        Egui.id_type_map_get_persisted_mut_or_default(TODO_ARG(id));
     
     }
     
     public BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("T") } GetTempMutOrInsertWith(Id id, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [], output: Some(Generic("T")) }) }, generic_params: [], modifier: None }]) insertWith) {
-        Vx.id_type_map_get_temp_mut_or_insert_with(TODO_ARG(id), TODO_ARG(insertWith));
+        Egui.id_type_map_get_temp_mut_or_insert_with(TODO_ARG(id), TODO_ARG(insertWith));
     
     }
     
     public BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("T") } GetPersistedMutOrInsertWith(Id id, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [], output: Some(Generic("T")) }) }, generic_params: [], modifier: None }]) insertWith) {
-        Vx.id_type_map_get_persisted_mut_or_insert_with(TODO_ARG(id), TODO_ARG(insertWith));
+        Egui.id_type_map_get_persisted_mut_or_insert_with(TODO_ARG(id), TODO_ARG(insertWith));
     
     }
     
     public void Remove(Id id) {
-        Vx.id_type_map_remove(TODO_ARG(id));
+        Egui.id_type_map_remove(TODO_ARG(id));
     
     }
     
     public Generic("T")? RemoveTemp(Id id) {
-        Vx.id_type_map_remove_temp(TODO_ARG(id));
+        Egui.id_type_map_remove_temp(TODO_ARG(id));
     
     }
     
     public void RemoveByType() {
-        Vx.id_type_map_remove_by_type();
+        Egui.id_type_map_remove_by_type();
     
     }
     
     public void Clear() {
-        Vx.id_type_map_clear();
+        Egui.id_type_map_clear();
     
     }
     
     public bool IsEmpty() {
-        Vx.id_type_map_is_empty();
+        Egui.id_type_map_is_empty();
     
     }
     
     public nuint Len() {
-        Vx.id_type_map_len();
+        Egui.id_type_map_len();
     
     }
     
     public nuint CountSerialized() {
-        Vx.id_type_map_count_serialized();
+        Egui.id_type_map_count_serialized();
     
     }
     
     public nuint Count() {
-        Vx.id_type_map_count();
+        Egui.id_type_map_count();
     
     }
     
     public nuint MaxBytesPerType() {
-        Vx.id_type_map_max_bytes_per_type();
+        Egui.id_type_map_max_bytes_per_type();
     
     }
     
     public void SetMaxBytesPerType(nuint maxBytesPerType) {
-        Vx.id_type_map_set_max_bytes_per_type(TODO_ARG(maxBytesPerType));
+        Egui.id_type_map_set_max_bytes_per_type(TODO_ARG(maxBytesPerType));
     
     }
 }
@@ -1779,158 +1779,158 @@ public unsafe partial sealed class IdTypeMap : VxHandle {
 /// ### Examples
 /// // Using it in a layout:// Using it just to paint:
 /// </summary>
-public unsafe partial sealed class Image : VxHandle {
+public unsafe partial sealed class Image : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_image_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_image_drop(pointer);
     }
     public Image(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "ImageSource", id: Id(3592), args: Some(AngleBracketed { args: [Lifetime("'a")], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) source) {
-        Vx.image_new(TODO_ARG(source));
+        Egui.image_new(TODO_ARG(source));
     
     }
     
     public static Image FromUri(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Cow", id: Id(1271), args: Some(AngleBracketed { args: [Lifetime("'a"), Type(Primitive("str"))], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) uri) {
-        Vx.image_from_uri(TODO_ARG(uri));
+        Egui.image_from_uri(TODO_ARG(uri));
     
     }
     
     public static Image FromTexture(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "SizedTexture", id: Id(3501), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) texture) {
-        Vx.image_from_texture(TODO_ARG(texture));
+        Egui.image_from_texture(TODO_ARG(texture));
     
     }
     
     public static Image FromBytes(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Cow", id: Id(1271), args: Some(AngleBracketed { args: [Lifetime("'static"), Type(Primitive("str"))], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) uri, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Bytes", id: Id(1489), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) bytes) {
-        Vx.image_from_bytes(TODO_ARG(uri), TODO_ARG(bytes));
+        Egui.image_from_bytes(TODO_ARG(uri), TODO_ARG(bytes));
     
     }
     
     public Image TextureOptions(TextureOptions textureOptions) {
-        Vx.image_texture_options(TODO_ARG(textureOptions));
+        Egui.image_texture_options(TODO_ARG(textureOptions));
     
     }
     
     public Image MaxWidth(float width) {
-        Vx.image_max_width(TODO_ARG(width));
+        Egui.image_max_width(TODO_ARG(width));
     
     }
     
     public Image MaxHeight(float height) {
-        Vx.image_max_height(TODO_ARG(height));
+        Egui.image_max_height(TODO_ARG(height));
     
     }
     
     public Image MaxSize(Vec2 size) {
-        Vx.image_max_size(TODO_ARG(size));
+        Egui.image_max_size(TODO_ARG(size));
     
     }
     
     public Image MaintainAspectRatio(bool value) {
-        Vx.image_maintain_aspect_ratio(TODO_ARG(value));
+        Egui.image_maintain_aspect_ratio(TODO_ARG(value));
     
     }
     
     public Image FitToOriginalSize(float scale) {
-        Vx.image_fit_to_original_size(TODO_ARG(scale));
+        Egui.image_fit_to_original_size(TODO_ARG(scale));
     
     }
     
     public Image FitToExactSize(Vec2 size) {
-        Vx.image_fit_to_exact_size(TODO_ARG(size));
+        Egui.image_fit_to_exact_size(TODO_ARG(size));
     
     }
     
     public Image FitToFraction(Vec2 fraction) {
-        Vx.image_fit_to_fraction(TODO_ARG(fraction));
+        Egui.image_fit_to_fraction(TODO_ARG(fraction));
     
     }
     
     public Image ShrinkToFit() {
-        Vx.image_shrink_to_fit();
+        Egui.image_shrink_to_fit();
     
     }
     
     public Image Sense(Sense sense) {
-        Vx.image_sense(TODO_ARG(sense));
+        Egui.image_sense(TODO_ARG(sense));
     
     }
     
     public Image Uv(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) uv) {
-        Vx.image_uv(TODO_ARG(uv));
+        Egui.image_uv(TODO_ARG(uv));
     
     }
     
     public Image BgFill(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) bgFill) {
-        Vx.image_bg_fill(TODO_ARG(bgFill));
+        Egui.image_bg_fill(TODO_ARG(bgFill));
     
     }
     
     public Image Tint(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) tint) {
-        Vx.image_tint(TODO_ARG(tint));
+        Egui.image_tint(TODO_ARG(tint));
     
     }
     
     public Image Rotate(float angle, Vec2 origin) {
-        Vx.image_rotate(TODO_ARG(angle), TODO_ARG(origin));
+        Egui.image_rotate(TODO_ARG(angle), TODO_ARG(origin));
     
     }
     
     public Image CornerRadius(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius) {
-        Vx.image_corner_radius(TODO_ARG(cornerRadius));
+        Egui.image_corner_radius(TODO_ARG(cornerRadius));
     
     }
     
     public Image Rounding(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius) {
-        Vx.image_rounding(TODO_ARG(cornerRadius));
+        Egui.image_rounding(TODO_ARG(cornerRadius));
     
     }
     
     public Image ShowLoadingSpinner(bool show) {
-        Vx.image_show_loading_spinner(TODO_ARG(show));
+        Egui.image_show_loading_spinner(TODO_ARG(show));
     
     }
     
     public Image AltText(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "String", id: Id(1295), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) label) {
-        Vx.image_alt_text(TODO_ARG(label));
+        Egui.image_alt_text(TODO_ARG(label));
     
     }
     
     public Vec2 CalcSize(Vec2 availableSize, Vec2? originalImageSize) {
-        Vx.image_calc_size(TODO_ARG(availableSize), TODO_ARG(originalImageSize));
+        Egui.image_calc_size(TODO_ARG(availableSize), TODO_ARG(originalImageSize));
     
     }
     
     public Vec2? LoadAndCalcSize(Ui ui, Vec2 availableSize) {
-        Vx.image_load_and_calc_size(TODO_ARG(ui), TODO_ARG(availableSize));
+        Egui.image_load_and_calc_size(TODO_ARG(ui), TODO_ARG(availableSize));
     
     }
     
     public Vec2? Size() {
-        Vx.image_size();
+        Egui.image_size();
     
     }
     
-    public string? Uri() {
-        Vx.image_uri();
+    public str? Uri() {
+        Egui.image_uri();
     
     }
     
     public ImageOptions ImageOptions() {
-        Vx.image_image_options();
+        Egui.image_image_options();
     
     }
     
     public ImageSource Source(Context ctx) {
-        Vx.image_source(TODO_ARG(ctx));
+        Egui.image_source(TODO_ARG(ctx));
     
     }
     
     public TextureLoadResult LoadForSize(Context ctx, Vec2 availableSize) {
-        Vx.image_load_for_size(TODO_ARG(ctx), TODO_ARG(availableSize));
+        Egui.image_load_for_size(TODO_ARG(ctx), TODO_ARG(availableSize));
     
     }
     
-    public void PaintAt(Ui ui, IBox2 rect) {
-        Vx.image_paint_at(TODO_ARG(ui), TODO_ARG(rect));
+    public void PaintAt(Ui ui, Rect rect) {
+        Egui.image_paint_at(TODO_ARG(ui), TODO_ARG(rect));
     
     }
 }
@@ -1938,48 +1938,48 @@ public unsafe partial sealed class Image : VxHandle {
 /// <summary>
 /// A clickable image within a frame.
 /// </summary>
-public unsafe partial sealed class ImageButton : VxHandle {
+public unsafe partial sealed class ImageButton : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_image_button_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_image_button_drop(pointer);
     }
     public ImageButton(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Image", id: Id(1424), args: Some(AngleBracketed { args: [Lifetime("'a")], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) image) {
-        Vx.image_button_new(TODO_ARG(image));
+        Egui.image_button_new(TODO_ARG(image));
     
     }
     
     public ImageButton Uv(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) uv) {
-        Vx.image_button_uv(TODO_ARG(uv));
+        Egui.image_button_uv(TODO_ARG(uv));
     
     }
     
     public ImageButton Tint(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) tint) {
-        Vx.image_button_tint(TODO_ARG(tint));
+        Egui.image_button_tint(TODO_ARG(tint));
     
     }
     
     public ImageButton Selected(bool selected) {
-        Vx.image_button_selected(TODO_ARG(selected));
+        Egui.image_button_selected(TODO_ARG(selected));
     
     }
     
     public ImageButton Frame(bool frame) {
-        Vx.image_button_frame(TODO_ARG(frame));
+        Egui.image_button_frame(TODO_ARG(frame));
     
     }
     
     public ImageButton Sense(Sense sense) {
-        Vx.image_button_sense(TODO_ARG(sense));
+        Egui.image_button_sense(TODO_ARG(sense));
     
     }
     
     public ImageButton CornerRadius(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius) {
-        Vx.image_button_corner_radius(TODO_ARG(cornerRadius));
+        Egui.image_button_corner_radius(TODO_ARG(cornerRadius));
     
     }
     
     public ImageButton Rounding(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius) {
-        Vx.image_button_rounding(TODO_ARG(cornerRadius));
+        Egui.image_button_rounding(TODO_ARG(cornerRadius));
     
     }
 }
@@ -1987,10 +1987,10 @@ public unsafe partial sealed class ImageButton : VxHandle {
 /// <summary>
 /// Viewport for immediate rendering.
 /// </summary>
-public unsafe partial sealed class ImmediateViewport : VxHandle {
+public unsafe partial sealed class ImmediateViewport : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_immediate_viewport_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_immediate_viewport_drop(pointer);
     }
 }
 
@@ -1998,13 +1998,13 @@ public unsafe partial sealed class ImmediateViewport : VxHandle {
 /// Returned when we wrap some ui-code and want to return both
 /// the results of the inner function and the ui as a whole, e.g.:
 /// </summary>
-public unsafe partial sealed class InnerResponse : VxHandle {
+public unsafe partial sealed class InnerResponse : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_inner_response_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_inner_response_drop(pointer);
     }
     public InnerResponse(Generic("R") inner, Response response) {
-        Vx.inner_response_new(TODO_ARG(inner), TODO_ARG(response));
+        Egui.inner_response_new(TODO_ARG(inner), TODO_ARG(response));
     
     }
 }
@@ -2012,10 +2012,10 @@ public unsafe partial sealed class InnerResponse : VxHandle {
 /// <summary>
 /// Options for input state handling.
 /// </summary>
-public unsafe partial sealed class InputOptions : VxHandle {
+public unsafe partial sealed class InputOptions : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_input_options_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_input_options_drop(pointer);
     }
 }
 
@@ -2027,118 +2027,118 @@ public unsafe partial sealed class InputOptions : VxHandle {
 /// You can check if <c>Egui</c> is using the inputs using
 /// <c>WantsPointerInput</c> and <c>WantsKeyboardInput</c>.
 /// </summary>
-public unsafe partial sealed class InputState : VxHandle {
+public unsafe partial sealed class InputState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_input_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_input_state_drop(pointer);
     }
     public InputState BeginPass(RawInput new, bool requestedImmediateRepaintPrevFrame, float pixelsPerPoint, crate::Options options) {
-        Vx.input_state_begin_pass(TODO_ARG(new), TODO_ARG(requestedImmediateRepaintPrevFrame), TODO_ARG(pixelsPerPoint), TODO_ARG(options));
+        Egui.input_state_begin_pass(TODO_ARG(new), TODO_ARG(requestedImmediateRepaintPrevFrame), TODO_ARG(pixelsPerPoint), TODO_ARG(options));
     
     }
     
     public ViewportInfo Viewport() {
-        Vx.input_state_viewport();
+        Egui.input_state_viewport();
     
     }
     
-    public IBox2 ScreenRect() {
-        Vx.input_state_screen_rect();
+    public Rect ScreenRect() {
+        Egui.input_state_screen_rect();
     
     }
     
     public float ZoomDelta() {
-        Vx.input_state_zoom_delta();
+        Egui.input_state_zoom_delta();
     
     }
     
     public Vec2 ZoomDelta2D() {
-        Vx.input_state_zoom_delta_2d();
+        Egui.input_state_zoom_delta_2d();
     
     }
     
     public float TimeSinceLastScroll() {
-        Vx.input_state_time_since_last_scroll();
+        Egui.input_state_time_since_last_scroll();
     
     }
     
     public Duration? WantsRepaintAfter() {
-        Vx.input_state_wants_repaint_after();
+        Egui.input_state_wants_repaint_after();
     
     }
     
     public nuint CountAndConsumeKey(Modifiers modifiers, Key logicalKey) {
-        Vx.input_state_count_and_consume_key(TODO_ARG(modifiers), TODO_ARG(logicalKey));
+        Egui.input_state_count_and_consume_key(TODO_ARG(modifiers), TODO_ARG(logicalKey));
     
     }
     
     public bool ConsumeKey(Modifiers modifiers, Key logicalKey) {
-        Vx.input_state_consume_key(TODO_ARG(modifiers), TODO_ARG(logicalKey));
+        Egui.input_state_consume_key(TODO_ARG(modifiers), TODO_ARG(logicalKey));
     
     }
     
     public bool ConsumeShortcut(KeyboardShortcut shortcut) {
-        Vx.input_state_consume_shortcut(TODO_ARG(shortcut));
+        Egui.input_state_consume_shortcut(TODO_ARG(shortcut));
     
     }
     
     public bool KeyPressed(Key desiredKey) {
-        Vx.input_state_key_pressed(TODO_ARG(desiredKey));
+        Egui.input_state_key_pressed(TODO_ARG(desiredKey));
     
     }
     
     public nuint NumPresses(Key desiredKey) {
-        Vx.input_state_num_presses(TODO_ARG(desiredKey));
+        Egui.input_state_num_presses(TODO_ARG(desiredKey));
     
     }
     
     public bool KeyDown(Key desiredKey) {
-        Vx.input_state_key_down(TODO_ARG(desiredKey));
+        Egui.input_state_key_down(TODO_ARG(desiredKey));
     
     }
     
     public bool KeyReleased(Key desiredKey) {
-        Vx.input_state_key_released(TODO_ARG(desiredKey));
+        Egui.input_state_key_released(TODO_ARG(desiredKey));
     
     }
     
     public float PixelsPerPoint() {
-        Vx.input_state_pixels_per_point();
+        Egui.input_state_pixels_per_point();
     
     }
     
     public float PhysicalPixelSize() {
-        Vx.input_state_physical_pixel_size();
+        Egui.input_state_physical_pixel_size();
     
     }
     
     public float AimRadius() {
-        Vx.input_state_aim_radius();
+        Egui.input_state_aim_radius();
     
     }
     
     public MultiTouchInfo? MultiTouch() {
-        Vx.input_state_multi_touch();
+        Egui.input_state_multi_touch();
     
     }
     
     public bool AnyTouches() {
-        Vx.input_state_any_touches();
+        Egui.input_state_any_touches();
     
     }
     
     public bool HasTouchScreen() {
-        Vx.input_state_has_touch_screen();
+        Egui.input_state_has_touch_screen();
     
     }
     
     public List<Event> FilteredEvents(EventFilter filter) {
-        Vx.input_state_filtered_events(TODO_ARG(filter));
+        Egui.input_state_filtered_events(TODO_ARG(filter));
     
     }
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.input_state_ui(TODO_ARG(ui));
+        Egui.input_state_ui(TODO_ARG(ui));
     
     }
 }
@@ -2150,10 +2150,10 @@ public unsafe partial sealed class InputState : VxHandle {
 /// * Mouse/touch input
 /// * Current <c>InteractionState</c>.
 /// </summary>
-public unsafe partial sealed class InteractionSnapshot : VxHandle {
+public unsafe partial sealed class InteractionSnapshot : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_interaction_snapshot_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_interaction_snapshot_drop(pointer);
     }
 }
 
@@ -2163,58 +2163,58 @@ public unsafe partial sealed class InteractionSnapshot : VxHandle {
 /// Usually it is more convenient to use <c>Label</c>.For full control of the text you can use <c>LayoutJob</c>
 /// as argument to <c>New</c>.
 /// </summary>
-public unsafe partial sealed class Label : VxHandle {
+public unsafe partial sealed class Label : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_label_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_label_drop(pointer);
     }
     public Label(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.label_new(TODO_ARG(text));
+        Egui.label_new(TODO_ARG(text));
     
     }
     
-    public string Text() {
-        Vx.label_text();
+    public str Text() {
+        Egui.label_text();
     
     }
     
     public Label WrapMode(TextWrapMode wrapMode) {
-        Vx.label_wrap_mode(TODO_ARG(wrapMode));
+        Egui.label_wrap_mode(TODO_ARG(wrapMode));
     
     }
     
     public Label Wrap() {
-        Vx.label_wrap();
+        Egui.label_wrap();
     
     }
     
     public Label Truncate() {
-        Vx.label_truncate();
+        Egui.label_truncate();
     
     }
     
     public Label Extend() {
-        Vx.label_extend();
+        Egui.label_extend();
     
     }
     
     public Label Halign(Align align) {
-        Vx.label_halign(TODO_ARG(align));
+        Egui.label_halign(TODO_ARG(align));
     
     }
     
     public Label Selectable(bool selectable) {
-        Vx.label_selectable(TODO_ARG(selectable));
+        Egui.label_selectable(TODO_ARG(selectable));
     
     }
     
     public Label Sense(Sense sense) {
-        Vx.label_sense(TODO_ARG(sense));
+        Egui.label_sense(TODO_ARG(sense));
     
     }
     
     public Tuple([ResolvedPath(Path { path: "Pos2", id: Id(144), args: Some(AngleBracketed { args: [], constraints: [] }) }), ResolvedPath(Path { path: "Arc", id: Id(1246), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Galley", id: Id(4068), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }), ResolvedPath(Path { path: "Response", id: Id(282), args: Some(AngleBracketed { args: [], constraints: [] }) })]) LayoutInUi(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.label_layout_in_ui(TODO_ARG(ui));
+        Egui.label_layout_in_ui(TODO_ARG(ui));
     
     }
 }
@@ -2224,33 +2224,33 @@ public unsafe partial sealed class Label : VxHandle {
 /// 
 /// One state for all labels, because we only support text selection in one label at a time.
 /// </summary>
-public unsafe partial sealed class LabelSelectionState : VxHandle {
+public unsafe partial sealed class LabelSelectionState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_label_selection_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_label_selection_state_drop(pointer);
     }
     public static LabelSelectionState Load(Context ctx) {
-        Vx.label_selection_state_load(TODO_ARG(ctx));
+        Egui.label_selection_state_load(TODO_ARG(ctx));
     
     }
     
     public void Store(Context ctx) {
-        Vx.label_selection_state_store(TODO_ARG(ctx));
+        Egui.label_selection_state_store(TODO_ARG(ctx));
     
     }
     
     public bool HasSelection() {
-        Vx.label_selection_state_has_selection();
+        Egui.label_selection_state_has_selection();
     
     }
     
     public void ClearSelection() {
-        Vx.label_selection_state_clear_selection();
+        Egui.label_selection_state_clear_selection();
     
     }
     
-    public static void LabelTextSelection(Ui ui, Response response, Pos2 galleyPos, Arc galley, Color4 fallbackColor, Stroke underline) {
-        Vx.label_selection_state_label_text_selection(TODO_ARG(ui), TODO_ARG(response), TODO_ARG(galleyPos), TODO_ARG(galley), TODO_ARG(fallbackColor), TODO_ARG(underline));
+    public static void LabelTextSelection(Ui ui, Response response, Pos2 galleyPos, Arc galley, Color32 fallbackColor, Stroke underline) {
+        Egui.label_selection_state_label_text_selection(TODO_ARG(ui), TODO_ARG(response), TODO_ARG(galleyPos), TODO_ARG(galley), TODO_ARG(fallbackColor), TODO_ARG(underline));
     
     }
 }
@@ -2262,13 +2262,13 @@ public unsafe partial sealed class LabelSelectionState : VxHandle {
 /// 
 /// See also <c>Link</c>.
 /// </summary>
-public unsafe partial sealed class Link : VxHandle {
+public unsafe partial sealed class Link : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_link_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_link_drop(pointer);
     }
     public Link(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.link_new(TODO_ARG(text));
+        Egui.link_new(TODO_ARG(text));
     
     }
 }
@@ -2284,168 +2284,168 @@ public unsafe partial sealed class Link : VxHandle {
 /// 
 /// If you want to store data for your widgets, you should look at <c>Data</c>
 /// </summary>
-public unsafe partial sealed class Memory : VxHandle {
+public unsafe partial sealed class Memory : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_memory_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_memory_drop(pointer);
     }
     public Areas Areas() {
-        Vx.memory_areas();
+        Egui.memory_areas();
     
     }
     
     public BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Areas", id: Id(3673), args: Some(AngleBracketed { args: [], constraints: [] }) }) } AreasMut() {
-        Vx.memory_areas_mut();
+        Egui.memory_areas_mut();
     
     }
     
     public LayerId? LayerIdAt(Pos2 pos) {
-        Vx.memory_layer_id_at(TODO_ARG(pos));
+        Egui.memory_layer_id_at(TODO_ARG(pos));
     
     }
     
     public TSTransform? LayerTransforms(LayerId layerId) {
-        Vx.memory_layer_transforms(TODO_ARG(layerId));
+        Egui.memory_layer_transforms(TODO_ARG(layerId));
     
     }
     
     public ImplTrait([TraitBound { trait_: Path { path: "ExactSizeIterator", id: Id(3114), args: Some(AngleBracketed { args: [], constraints: [AssocItemConstraint { name: "Item", args: AngleBracketed { args: [], constraints: [] }, binding: Equality(Type(ResolvedPath(Path { path: "LayerId", id: Id(209), args: Some(AngleBracketed { args: [], constraints: [] }) }))) }] }) }, generic_params: [], modifier: None }, Outlives("'_")]) LayerIds() {
-        Vx.memory_layer_ids();
+        Egui.memory_layer_ids();
     
     }
     
     public bool HadFocusLastFrame(Id id) {
-        Vx.memory_had_focus_last_frame(TODO_ARG(id));
+        Egui.memory_had_focus_last_frame(TODO_ARG(id));
     
     }
     
     public bool HasFocus(Id id) {
-        Vx.memory_has_focus(TODO_ARG(id));
+        Egui.memory_has_focus(TODO_ARG(id));
     
     }
     
     public Id? Focused() {
-        Vx.memory_focused();
+        Egui.memory_focused();
     
     }
     
     public void SetFocusLockFilter(Id id, EventFilter eventFilter) {
-        Vx.memory_set_focus_lock_filter(TODO_ARG(id), TODO_ARG(eventFilter));
+        Egui.memory_set_focus_lock_filter(TODO_ARG(id), TODO_ARG(eventFilter));
     
     }
     
     public void RequestFocus(Id id) {
-        Vx.memory_request_focus(TODO_ARG(id));
+        Egui.memory_request_focus(TODO_ARG(id));
     
     }
     
     public void SurrenderFocus(Id id) {
-        Vx.memory_surrender_focus(TODO_ARG(id));
+        Egui.memory_surrender_focus(TODO_ARG(id));
     
     }
     
     public bool IsAboveModalLayer(LayerId layerId) {
-        Vx.memory_is_above_modal_layer(TODO_ARG(layerId));
+        Egui.memory_is_above_modal_layer(TODO_ARG(layerId));
     
     }
     
     public bool AllowsInteraction(LayerId layerId) {
-        Vx.memory_allows_interaction(TODO_ARG(layerId));
+        Egui.memory_allows_interaction(TODO_ARG(layerId));
     
     }
     
     public void InterestedInFocus(Id id, LayerId layerId) {
-        Vx.memory_interested_in_focus(TODO_ARG(id), TODO_ARG(layerId));
+        Egui.memory_interested_in_focus(TODO_ARG(id), TODO_ARG(layerId));
     
     }
     
     public void SetModalLayer(LayerId layerId) {
-        Vx.memory_set_modal_layer(TODO_ARG(layerId));
+        Egui.memory_set_modal_layer(TODO_ARG(layerId));
     
     }
     
     public LayerId? TopModalLayer() {
-        Vx.memory_top_modal_layer();
+        Egui.memory_top_modal_layer();
     
     }
     
     public void StopTextInput() {
-        Vx.memory_stop_text_input();
+        Egui.memory_stop_text_input();
     
     }
     
     public bool IsAnythingBeingDragged() {
-        Vx.memory_is_anything_being_dragged();
+        Egui.memory_is_anything_being_dragged();
     
     }
     
     public bool IsBeingDragged(Id id) {
-        Vx.memory_is_being_dragged(TODO_ARG(id));
+        Egui.memory_is_being_dragged(TODO_ARG(id));
     
     }
     
     public Id? DraggedId() {
-        Vx.memory_dragged_id();
+        Egui.memory_dragged_id();
     
     }
     
     public void SetDraggedId(Id id) {
-        Vx.memory_set_dragged_id(TODO_ARG(id));
+        Egui.memory_set_dragged_id(TODO_ARG(id));
     
     }
     
     public void StopDragging() {
-        Vx.memory_stop_dragging();
+        Egui.memory_stop_dragging();
     
     }
     
     public bool DraggingSomethingElse(Id notThis) {
-        Vx.memory_dragging_something_else(TODO_ARG(notThis));
+        Egui.memory_dragging_something_else(TODO_ARG(notThis));
     
     }
     
     public void ResetAreas() {
-        Vx.memory_reset_areas();
+        Egui.memory_reset_areas();
     
     }
     
-    public IBox2? AreaRect(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Id", id: Id(158), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) id) {
-        Vx.memory_area_rect(TODO_ARG(id));
+    public Rect? AreaRect(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Id", id: Id(158), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) id) {
+        Egui.memory_area_rect(TODO_ARG(id));
     
     }
     
     public bool IsPopupOpen(Id popupId) {
-        Vx.memory_is_popup_open(TODO_ARG(popupId));
+        Egui.memory_is_popup_open(TODO_ARG(popupId));
     
     }
     
     public bool AnyPopupOpen() {
-        Vx.memory_any_popup_open();
+        Egui.memory_any_popup_open();
     
     }
     
     public void OpenPopup(Id popupId) {
-        Vx.memory_open_popup(TODO_ARG(popupId));
+        Egui.memory_open_popup(TODO_ARG(popupId));
     
     }
     
     public void ClosePopup() {
-        Vx.memory_close_popup();
+        Egui.memory_close_popup();
     
     }
     
     public void TogglePopup(Id popupId) {
-        Vx.memory_toggle_popup(TODO_ARG(popupId));
+        Egui.memory_toggle_popup(TODO_ARG(popupId));
     
     }
     
     public bool EverythingIsVisible() {
-        Vx.memory_everything_is_visible();
+        Egui.memory_everything_is_visible();
     
     }
     
     public void SetEverythingIsVisible(bool value) {
-        Vx.memory_set_everything_is_visible(TODO_ARG(value));
+        Egui.memory_set_everything_is_visible(TODO_ARG(value));
     
     }
 }
@@ -2453,13 +2453,13 @@ public unsafe partial sealed class Memory : VxHandle {
 /// <summary>
 /// Stores the state for the context menu.
 /// </summary>
-public unsafe partial sealed class MenuRootManager : VxHandle {
+public unsafe partial sealed class MenuRootManager : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_menu_root_manager_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_menu_root_manager_drop(pointer);
     }
     public InnerResponse? Show(Response button, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.menu_root_manager_show(TODO_ARG(button), TODO_ARG(addContents));
+        Egui.menu_root_manager_show(TODO_ARG(button), TODO_ARG(addContents));
     
     }
 }
@@ -2469,23 +2469,23 @@ public unsafe partial sealed class MenuRootManager : VxHandle {
 /// 
 /// Usually you don't need to use it directly.
 /// </summary>
-public unsafe partial sealed class MenuState : VxHandle {
+public unsafe partial sealed class MenuState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_menu_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_menu_state_drop(pointer);
     }
     public MenuState(Pos2 position) {
-        Vx.menu_state_new(TODO_ARG(position));
+        Egui.menu_state_new(TODO_ARG(position));
     
     }
     
     public void Close() {
-        Vx.menu_state_close();
+        Egui.menu_state_close();
     
     }
     
     public bool AreaContains(Pos2 pos) {
-        Vx.menu_state_area_contains(TODO_ARG(pos));
+        Egui.menu_state_area_contains(TODO_ARG(pos));
     
     }
 }
@@ -2498,38 +2498,38 @@ public unsafe partial sealed class MenuState : VxHandle {
 /// You can show multiple modals on top of each other. The topmost modal will always be
 /// the most recently shown one.
 /// </summary>
-public unsafe partial sealed class Modal : VxHandle {
+public unsafe partial sealed class Modal : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_modal_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_modal_drop(pointer);
     }
     public Modal(Id id) {
-        Vx.modal_new(TODO_ARG(id));
+        Egui.modal_new(TODO_ARG(id));
     
     }
     
     public static Area DefaultArea(Id id) {
-        Vx.modal_default_area(TODO_ARG(id));
+        Egui.modal_default_area(TODO_ARG(id));
     
     }
     
     public Modal Frame(Frame frame) {
-        Vx.modal_frame(TODO_ARG(frame));
+        Egui.modal_frame(TODO_ARG(frame));
     
     }
     
-    public Modal BackdropColor(Color4 color) {
-        Vx.modal_backdrop_color(TODO_ARG(color));
+    public Modal BackdropColor(Color32 color) {
+        Egui.modal_backdrop_color(TODO_ARG(color));
     
     }
     
     public Modal Area(Area area) {
-        Vx.modal_area(TODO_ARG(area));
+        Egui.modal_area(TODO_ARG(area));
     
     }
     
     public ModalResponse Show(Context ctx, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("T")) }) }, generic_params: [], modifier: None }]) content) {
-        Vx.modal_show(TODO_ARG(ctx), TODO_ARG(content));
+        Egui.modal_show(TODO_ARG(ctx), TODO_ARG(content));
     
     }
 }
@@ -2537,13 +2537,13 @@ public unsafe partial sealed class Modal : VxHandle {
 /// <summary>
 /// The response of a modal dialog.
 /// </summary>
-public unsafe partial sealed class ModalResponse : VxHandle {
+public unsafe partial sealed class ModalResponse : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_modal_response_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_modal_response_drop(pointer);
     }
     public bool ShouldClose() {
-        Vx.modal_response_should_close();
+        Egui.modal_response_should_close();
     
     }
 }
@@ -2553,13 +2553,13 @@ public unsafe partial sealed class ModalResponse : VxHandle {
 /// 
 /// See also <c>DebugOptions</c>.
 /// </summary>
-public unsafe partial sealed class Options : VxHandle {
+public unsafe partial sealed class Options : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_options_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_options_drop(pointer);
     }
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.options_ui(TODO_ARG(ui));
+        Egui.options_ui(TODO_ARG(ui));
     
     }
 }
@@ -2571,253 +2571,253 @@ public unsafe partial sealed class Options : VxHandle {
 /// 
 /// A <c>Painter</c> never outlive a single frame/pass.
 /// </summary>
-public unsafe partial sealed class Painter : VxHandle {
+public unsafe partial sealed class Painter : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_painter_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_painter_drop(pointer);
     }
-    public Painter(Context ctx, LayerId layerId, IBox2 clipRect) {
-        Vx.painter_new(TODO_ARG(ctx), TODO_ARG(layerId), TODO_ARG(clipRect));
+    public Painter(Context ctx, LayerId layerId, Rect clipRect) {
+        Egui.painter_new(TODO_ARG(ctx), TODO_ARG(layerId), TODO_ARG(clipRect));
     
     }
     
     public Painter WithLayerId(LayerId layerId) {
-        Vx.painter_with_layer_id(TODO_ARG(layerId));
+        Egui.painter_with_layer_id(TODO_ARG(layerId));
     
     }
     
-    public Painter WithClipRect(IBox2 rect) {
-        Vx.painter_with_clip_rect(TODO_ARG(rect));
+    public Painter WithClipRect(Rect rect) {
+        Egui.painter_with_clip_rect(TODO_ARG(rect));
     
     }
     
     public void SetLayerId(LayerId layerId) {
-        Vx.painter_set_layer_id(TODO_ARG(layerId));
+        Egui.painter_set_layer_id(TODO_ARG(layerId));
     
     }
     
-    public void SetFadeToColor(Color4? fadeToColor) {
-        Vx.painter_set_fade_to_color(TODO_ARG(fadeToColor));
+    public void SetFadeToColor(Color32? fadeToColor) {
+        Egui.painter_set_fade_to_color(TODO_ARG(fadeToColor));
     
     }
     
     public void SetOpacity(float opacity) {
-        Vx.painter_set_opacity(TODO_ARG(opacity));
+        Egui.painter_set_opacity(TODO_ARG(opacity));
     
     }
     
     public void MultiplyOpacity(float opacity) {
-        Vx.painter_multiply_opacity(TODO_ARG(opacity));
+        Egui.painter_multiply_opacity(TODO_ARG(opacity));
     
     }
     
     public float Opacity() {
-        Vx.painter_opacity();
+        Egui.painter_opacity();
     
     }
     
     public bool IsVisible() {
-        Vx.painter_is_visible();
+        Egui.painter_is_visible();
     
     }
     
     public void SetInvisible() {
-        Vx.painter_set_invisible();
+        Egui.painter_set_invisible();
     
     }
     
     public Context Ctx() {
-        Vx.painter_ctx();
+        Egui.painter_ctx();
     
     }
     
     public float PixelsPerPoint() {
-        Vx.painter_pixels_per_point();
+        Egui.painter_pixels_per_point();
     
     }
     
     public Generic("R") Fonts(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "Fonts", id: Id(1335), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) reader) {
-        Vx.painter_fonts(TODO_ARG(reader));
+        Egui.painter_fonts(TODO_ARG(reader));
     
     }
     
     public LayerId LayerId() {
-        Vx.painter_layer_id();
+        Egui.painter_layer_id();
     
     }
     
-    public IBox2 ClipRect() {
-        Vx.painter_clip_rect();
+    public Rect ClipRect() {
+        Egui.painter_clip_rect();
     
     }
     
-    public void ShrinkClipRect(IBox2 newClipRect) {
-        Vx.painter_shrink_clip_rect(TODO_ARG(newClipRect));
+    public void ShrinkClipRect(Rect newClipRect) {
+        Egui.painter_shrink_clip_rect(TODO_ARG(newClipRect));
     
     }
     
-    public void SetClipRect(IBox2 clipRect) {
-        Vx.painter_set_clip_rect(TODO_ARG(clipRect));
+    public void SetClipRect(Rect clipRect) {
+        Egui.painter_set_clip_rect(TODO_ARG(clipRect));
     
     }
     
     public float RoundToPixelCenter(float point) {
-        Vx.painter_round_to_pixel_center(TODO_ARG(point));
+        Egui.painter_round_to_pixel_center(TODO_ARG(point));
     
     }
     
     public Pos2 RoundPosToPixelCenter(Pos2 pos) {
-        Vx.painter_round_pos_to_pixel_center(TODO_ARG(pos));
+        Egui.painter_round_pos_to_pixel_center(TODO_ARG(pos));
     
     }
     
     public float RoundToPixel(float point) {
-        Vx.painter_round_to_pixel(TODO_ARG(point));
+        Egui.painter_round_to_pixel(TODO_ARG(point));
     
     }
     
     public Vec2 RoundVecToPixels(Vec2 vec) {
-        Vx.painter_round_vec_to_pixels(TODO_ARG(vec));
+        Egui.painter_round_vec_to_pixels(TODO_ARG(vec));
     
     }
     
     public Pos2 RoundPosToPixels(Pos2 pos) {
-        Vx.painter_round_pos_to_pixels(TODO_ARG(pos));
+        Egui.painter_round_pos_to_pixels(TODO_ARG(pos));
     
     }
     
-    public IBox2 RoundRectToPixels(IBox2 rect) {
-        Vx.painter_round_rect_to_pixels(TODO_ARG(rect));
+    public Rect RoundRectToPixels(Rect rect) {
+        Egui.painter_round_rect_to_pixels(TODO_ARG(rect));
     
     }
     
     public ShapeIdx Add(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Shape", id: Id(520), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) shape) {
-        Vx.painter_add(TODO_ARG(shape));
+        Egui.painter_add(TODO_ARG(shape));
     
     }
     
     public void Extend(Generic("I") shapes) {
-        Vx.painter_extend(TODO_ARG(shapes));
+        Egui.painter_extend(TODO_ARG(shapes));
     
     }
     
     public void Set(ShapeIdx idx, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Shape", id: Id(520), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) shape) {
-        Vx.painter_set(TODO_ARG(idx), TODO_ARG(shape));
+        Egui.painter_set(TODO_ARG(idx), TODO_ARG(shape));
     
     }
     
     public void ForEachShape(ImplTrait([TraitBound { trait_: Path { path: "FnMut", id: Id(1319), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "ClippedShape", id: Id(1435), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: None }) }, generic_params: [], modifier: None }]) reader) {
-        Vx.painter_for_each_shape(TODO_ARG(reader));
+        Egui.painter_for_each_shape(TODO_ARG(reader));
     
     }
     
-    public void DebugRect(IBox2 rect, Color4 color, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.painter_debug_rect(TODO_ARG(rect), TODO_ARG(color), TODO_ARG(text));
+    public void DebugRect(Rect rect, Color32 color, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
+        Egui.painter_debug_rect(TODO_ARG(rect), TODO_ARG(color), TODO_ARG(text));
     
     }
     
-    public IBox2 Error(Pos2 pos, ImplTrait([TraitBound { trait_: Path { path: "std::fmt::Display", id: Id(1297), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.painter_error(TODO_ARG(pos), TODO_ARG(text));
+    public Rect Error(Pos2 pos, ImplTrait([TraitBound { trait_: Path { path: "std::fmt::Display", id: Id(1297), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
+        Egui.painter_error(TODO_ARG(pos), TODO_ARG(text));
     
     }
     
-    public IBox2 DebugText(Pos2 pos, Align2 anchor, Color4 color, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.painter_debug_text(TODO_ARG(pos), TODO_ARG(anchor), TODO_ARG(color), TODO_ARG(text));
+    public Rect DebugText(Pos2 pos, Align2 anchor, Color32 color, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
+        Egui.painter_debug_text(TODO_ARG(pos), TODO_ARG(anchor), TODO_ARG(color), TODO_ARG(text));
     
     }
     
     public ShapeIdx LineSegment(Array { type_: ResolvedPath(Path { path: "Pos2", id: Id(144), args: Some(AngleBracketed { args: [], constraints: [] }) }), len: "2" } points, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke) {
-        Vx.painter_line_segment(TODO_ARG(points), TODO_ARG(stroke));
+        Egui.painter_line_segment(TODO_ARG(points), TODO_ARG(stroke));
     
     }
     
     public ShapeIdx Line(List<Pos2> points, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "PathStroke", id: Id(4049), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke) {
-        Vx.painter_line(TODO_ARG(points), TODO_ARG(stroke));
+        Egui.painter_line(TODO_ARG(points), TODO_ARG(stroke));
     
     }
     
     public ShapeIdx Hline(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Rangef", id: Id(696), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) x, float y, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke) {
-        Vx.painter_hline(TODO_ARG(x), TODO_ARG(y), TODO_ARG(stroke));
+        Egui.painter_hline(TODO_ARG(x), TODO_ARG(y), TODO_ARG(stroke));
     
     }
     
     public ShapeIdx Vline(float x, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Rangef", id: Id(696), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) y, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke) {
-        Vx.painter_vline(TODO_ARG(x), TODO_ARG(y), TODO_ARG(stroke));
+        Egui.painter_vline(TODO_ARG(x), TODO_ARG(y), TODO_ARG(stroke));
     
     }
     
     public ShapeIdx Circle(Pos2 center, float radius, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) fillColor, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke) {
-        Vx.painter_circle(TODO_ARG(center), TODO_ARG(radius), TODO_ARG(fillColor), TODO_ARG(stroke));
+        Egui.painter_circle(TODO_ARG(center), TODO_ARG(radius), TODO_ARG(fillColor), TODO_ARG(stroke));
     
     }
     
     public ShapeIdx CircleFilled(Pos2 center, float radius, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) fillColor) {
-        Vx.painter_circle_filled(TODO_ARG(center), TODO_ARG(radius), TODO_ARG(fillColor));
+        Egui.painter_circle_filled(TODO_ARG(center), TODO_ARG(radius), TODO_ARG(fillColor));
     
     }
     
     public ShapeIdx CircleStroke(Pos2 center, float radius, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke) {
-        Vx.painter_circle_stroke(TODO_ARG(center), TODO_ARG(radius), TODO_ARG(stroke));
+        Egui.painter_circle_stroke(TODO_ARG(center), TODO_ARG(radius), TODO_ARG(stroke));
     
     }
     
-    public ShapeIdx Rect(IBox2 rect, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) fillColor, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke, StrokeKind strokeKind) {
-        Vx.painter_rect(TODO_ARG(rect), TODO_ARG(cornerRadius), TODO_ARG(fillColor), TODO_ARG(stroke), TODO_ARG(strokeKind));
+    public ShapeIdx Rect(Rect rect, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) fillColor, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke, StrokeKind strokeKind) {
+        Egui.painter_rect(TODO_ARG(rect), TODO_ARG(cornerRadius), TODO_ARG(fillColor), TODO_ARG(stroke), TODO_ARG(strokeKind));
     
     }
     
-    public ShapeIdx RectFilled(IBox2 rect, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) fillColor) {
-        Vx.painter_rect_filled(TODO_ARG(rect), TODO_ARG(cornerRadius), TODO_ARG(fillColor));
+    public ShapeIdx RectFilled(Rect rect, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) fillColor) {
+        Egui.painter_rect_filled(TODO_ARG(rect), TODO_ARG(cornerRadius), TODO_ARG(fillColor));
     
     }
     
-    public ShapeIdx RectStroke(IBox2 rect, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke, StrokeKind strokeKind) {
-        Vx.painter_rect_stroke(TODO_ARG(rect), TODO_ARG(cornerRadius), TODO_ARG(stroke), TODO_ARG(strokeKind));
+    public ShapeIdx RectStroke(Rect rect, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke, StrokeKind strokeKind) {
+        Egui.painter_rect_stroke(TODO_ARG(rect), TODO_ARG(cornerRadius), TODO_ARG(stroke), TODO_ARG(strokeKind));
     
     }
     
     public void Arrow(Pos2 origin, Vec2 vec, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke) {
-        Vx.painter_arrow(TODO_ARG(origin), TODO_ARG(vec), TODO_ARG(stroke));
+        Egui.painter_arrow(TODO_ARG(origin), TODO_ARG(vec), TODO_ARG(stroke));
     
     }
     
-    public ShapeIdx Image(TextureId textureId, IBox2 rect, IBox2 uv, Color4 tint) {
-        Vx.painter_image(TODO_ARG(textureId), TODO_ARG(rect), TODO_ARG(uv), TODO_ARG(tint));
+    public ShapeIdx Image(TextureId textureId, Rect rect, Rect uv, Color32 tint) {
+        Egui.painter_image(TODO_ARG(textureId), TODO_ARG(rect), TODO_ARG(uv), TODO_ARG(tint));
     
     }
     
-    public IBox2 Text(Pos2 pos, Align2 anchor, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) text, FontId fontId, Color4 textColor) {
-        Vx.painter_text(TODO_ARG(pos), TODO_ARG(anchor), TODO_ARG(text), TODO_ARG(fontId), TODO_ARG(textColor));
+    public Rect Text(Pos2 pos, Align2 anchor, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) text, FontId fontId, Color32 textColor) {
+        Egui.painter_text(TODO_ARG(pos), TODO_ARG(anchor), TODO_ARG(text), TODO_ARG(fontId), TODO_ARG(textColor));
     
     }
     
-    public Arc Layout(string text, FontId fontId, Color4 color, float wrapWidth) {
-        Vx.painter_layout(TODO_ARG(text), TODO_ARG(fontId), TODO_ARG(color), TODO_ARG(wrapWidth));
+    public Arc Layout(string text, FontId fontId, Color32 color, float wrapWidth) {
+        Egui.painter_layout(TODO_ARG(text), TODO_ARG(fontId), TODO_ARG(color), TODO_ARG(wrapWidth));
     
     }
     
-    public Arc LayoutNoWrap(string text, FontId fontId, Color4 color) {
-        Vx.painter_layout_no_wrap(TODO_ARG(text), TODO_ARG(fontId), TODO_ARG(color));
+    public Arc LayoutNoWrap(string text, FontId fontId, Color32 color) {
+        Egui.painter_layout_no_wrap(TODO_ARG(text), TODO_ARG(fontId), TODO_ARG(color));
     
     }
     
     public Arc LayoutJob(LayoutJob layoutJob) {
-        Vx.painter_layout_job(TODO_ARG(layoutJob));
+        Egui.painter_layout_job(TODO_ARG(layoutJob));
     
     }
     
-    public void Galley(Pos2 pos, Arc galley, Color4 fallbackColor) {
-        Vx.painter_galley(TODO_ARG(pos), TODO_ARG(galley), TODO_ARG(fallbackColor));
+    public void Galley(Pos2 pos, Arc galley, Color32 fallbackColor) {
+        Egui.painter_galley(TODO_ARG(pos), TODO_ARG(galley), TODO_ARG(fallbackColor));
     
     }
     
-    public void GalleyWithOverrideTextColor(Pos2 pos, Arc galley, Color4 textColor) {
-        Vx.painter_galley_with_override_text_color(TODO_ARG(pos), TODO_ARG(galley), TODO_ARG(textColor));
+    public void GalleyWithOverrideTextColor(Pos2 pos, Arc galley, Color32 textColor) {
+        Egui.painter_galley_with_override_text_color(TODO_ARG(pos), TODO_ARG(galley), TODO_ARG(textColor));
     
     }
     
-    public void GalleyWithColor(Pos2 pos, Arc galley, Color4 textColor) {
-        Vx.painter_galley_with_color(TODO_ARG(pos), TODO_ARG(galley), TODO_ARG(textColor));
+    public void GalleyWithColor(Pos2 pos, Arc galley, Color32 textColor) {
+        Egui.painter_galley_with_color(TODO_ARG(pos), TODO_ARG(galley), TODO_ARG(textColor));
     
     }
 }
@@ -2830,233 +2830,233 @@ public unsafe partial sealed class Painter : VxHandle {
 /// 
 /// One per viewport.
 /// </summary>
-public unsafe partial sealed class PassState : VxHandle {
+public unsafe partial sealed class PassState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_pass_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_pass_state_drop(pointer);
     }
 }
 
-public unsafe partial sealed class PerLayerState : VxHandle {
+public unsafe partial sealed class PerLayerState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_per_layer_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_per_layer_state_drop(pointer);
     }
 }
 
-public unsafe partial sealed class PerWidgetTooltipState : VxHandle {
+public unsafe partial sealed class PerWidgetTooltipState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_per_widget_tooltip_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_per_widget_tooltip_state_drop(pointer);
     }
 }
 
 /// <summary>
 /// Mouse or touch state.
 /// </summary>
-public unsafe partial sealed class PointerState : VxHandle {
+public unsafe partial sealed class PointerState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_pointer_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_pointer_state_drop(pointer);
     }
     public Vec2 Delta() {
-        Vx.pointer_state_delta();
+        Egui.pointer_state_delta();
     
     }
     
     public Vec2? Motion() {
-        Vx.pointer_state_motion();
+        Egui.pointer_state_motion();
     
     }
     
     public Vec2 Velocity() {
-        Vx.pointer_state_velocity();
+        Egui.pointer_state_velocity();
     
     }
     
     public Vec2 Direction() {
-        Vx.pointer_state_direction();
+        Egui.pointer_state_direction();
     
     }
     
     public Pos2? PressOrigin() {
-        Vx.pointer_state_press_origin();
+        Egui.pointer_state_press_origin();
     
     }
     
     public double? PressStartTime() {
-        Vx.pointer_state_press_start_time();
+        Egui.pointer_state_press_start_time();
     
     }
     
     public Pos2? LatestPos() {
-        Vx.pointer_state_latest_pos();
+        Egui.pointer_state_latest_pos();
     
     }
     
     public Pos2? HoverPos() {
-        Vx.pointer_state_hover_pos();
+        Egui.pointer_state_hover_pos();
     
     }
     
     public Pos2? InteractPos() {
-        Vx.pointer_state_interact_pos();
+        Egui.pointer_state_interact_pos();
     
     }
     
     public bool HasPointer() {
-        Vx.pointer_state_has_pointer();
+        Egui.pointer_state_has_pointer();
     
     }
     
     public bool IsStill() {
-        Vx.pointer_state_is_still();
+        Egui.pointer_state_is_still();
     
     }
     
     public bool IsMoving() {
-        Vx.pointer_state_is_moving();
+        Egui.pointer_state_is_moving();
     
     }
     
     public float TimeSinceLastMovement() {
-        Vx.pointer_state_time_since_last_movement();
+        Egui.pointer_state_time_since_last_movement();
     
     }
     
     public float TimeSinceLastClick() {
-        Vx.pointer_state_time_since_last_click();
+        Egui.pointer_state_time_since_last_click();
     
     }
     
     public bool AnyPressed() {
-        Vx.pointer_state_any_pressed();
+        Egui.pointer_state_any_pressed();
     
     }
     
     public bool AnyReleased() {
-        Vx.pointer_state_any_released();
+        Egui.pointer_state_any_released();
     
     }
     
     public bool ButtonPressed(PointerButton button) {
-        Vx.pointer_state_button_pressed(TODO_ARG(button));
+        Egui.pointer_state_button_pressed(TODO_ARG(button));
     
     }
     
     public bool ButtonReleased(PointerButton button) {
-        Vx.pointer_state_button_released(TODO_ARG(button));
+        Egui.pointer_state_button_released(TODO_ARG(button));
     
     }
     
     public bool PrimaryPressed() {
-        Vx.pointer_state_primary_pressed();
+        Egui.pointer_state_primary_pressed();
     
     }
     
     public bool SecondaryPressed() {
-        Vx.pointer_state_secondary_pressed();
+        Egui.pointer_state_secondary_pressed();
     
     }
     
     public bool PrimaryReleased() {
-        Vx.pointer_state_primary_released();
+        Egui.pointer_state_primary_released();
     
     }
     
     public bool SecondaryReleased() {
-        Vx.pointer_state_secondary_released();
+        Egui.pointer_state_secondary_released();
     
     }
     
     public bool AnyDown() {
-        Vx.pointer_state_any_down();
+        Egui.pointer_state_any_down();
     
     }
     
     public bool AnyClick() {
-        Vx.pointer_state_any_click();
+        Egui.pointer_state_any_click();
     
     }
     
     public bool ButtonClicked(PointerButton button) {
-        Vx.pointer_state_button_clicked(TODO_ARG(button));
+        Egui.pointer_state_button_clicked(TODO_ARG(button));
     
     }
     
     public bool ButtonDoubleClicked(PointerButton button) {
-        Vx.pointer_state_button_double_clicked(TODO_ARG(button));
+        Egui.pointer_state_button_double_clicked(TODO_ARG(button));
     
     }
     
     public bool ButtonTripleClicked(PointerButton button) {
-        Vx.pointer_state_button_triple_clicked(TODO_ARG(button));
+        Egui.pointer_state_button_triple_clicked(TODO_ARG(button));
     
     }
     
     public bool PrimaryClicked() {
-        Vx.pointer_state_primary_clicked();
+        Egui.pointer_state_primary_clicked();
     
     }
     
     public bool SecondaryClicked() {
-        Vx.pointer_state_secondary_clicked();
+        Egui.pointer_state_secondary_clicked();
     
     }
     
     public bool ButtonDown(PointerButton button) {
-        Vx.pointer_state_button_down(TODO_ARG(button));
+        Egui.pointer_state_button_down(TODO_ARG(button));
     
     }
     
     public bool CouldAnyButtonBeClick() {
-        Vx.pointer_state_could_any_button_be_click();
+        Egui.pointer_state_could_any_button_be_click();
     
     }
     
     public bool IsDecidedlyDragging() {
-        Vx.pointer_state_is_decidedly_dragging();
+        Egui.pointer_state_is_decidedly_dragging();
     
     }
     
     public bool PrimaryDown() {
-        Vx.pointer_state_primary_down();
+        Egui.pointer_state_primary_down();
     
     }
     
     public bool SecondaryDown() {
-        Vx.pointer_state_secondary_down();
+        Egui.pointer_state_secondary_down();
     
     }
     
     public bool MiddleDown() {
-        Vx.pointer_state_middle_down();
+        Egui.pointer_state_middle_down();
     
     }
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.pointer_state_ui(TODO_ARG(ui));
+        Egui.pointer_state_ui(TODO_ARG(ui));
     
     }
 }
 
-public unsafe partial sealed class Prepared : VxHandle {
+public unsafe partial sealed class Prepared : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_prepared_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_prepared_drop(pointer);
     }
     public Response AllocateSpace(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.prepared_allocate_space(TODO_ARG(ui));
+        Egui.prepared_allocate_space(TODO_ARG(ui));
     
     }
     
     public void Paint(Ui ui) {
-        Vx.prepared_paint(TODO_ARG(ui));
+        Egui.prepared_paint(TODO_ARG(ui));
     
     }
     
     public Response End(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.prepared_end(TODO_ARG(ui));
+        Egui.prepared_end(TODO_ARG(ui));
     
     }
 }
@@ -3066,53 +3066,53 @@ public unsafe partial sealed class Prepared : VxHandle {
 /// 
 /// See also: <c>Spinner</c>.
 /// </summary>
-public unsafe partial sealed class ProgressBar : VxHandle {
+public unsafe partial sealed class ProgressBar : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_progress_bar_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_progress_bar_drop(pointer);
     }
     public ProgressBar(float progress) {
-        Vx.progress_bar_new(TODO_ARG(progress));
+        Egui.progress_bar_new(TODO_ARG(progress));
     
     }
     
     public ProgressBar DesiredWidth(float desiredWidth) {
-        Vx.progress_bar_desired_width(TODO_ARG(desiredWidth));
+        Egui.progress_bar_desired_width(TODO_ARG(desiredWidth));
     
     }
     
     public ProgressBar DesiredHeight(float desiredHeight) {
-        Vx.progress_bar_desired_height(TODO_ARG(desiredHeight));
+        Egui.progress_bar_desired_height(TODO_ARG(desiredHeight));
     
     }
     
-    public ProgressBar Fill(Color4 color) {
-        Vx.progress_bar_fill(TODO_ARG(color));
+    public ProgressBar Fill(Color32 color) {
+        Egui.progress_bar_fill(TODO_ARG(color));
     
     }
     
     public ProgressBar Text(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.progress_bar_text(TODO_ARG(text));
+        Egui.progress_bar_text(TODO_ARG(text));
     
     }
     
     public ProgressBar ShowPercentage() {
-        Vx.progress_bar_show_percentage();
+        Egui.progress_bar_show_percentage();
     
     }
     
     public ProgressBar Animate(bool animate) {
-        Vx.progress_bar_animate(TODO_ARG(animate));
+        Egui.progress_bar_animate(TODO_ARG(animate));
     
     }
     
     public ProgressBar CornerRadius(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius) {
-        Vx.progress_bar_corner_radius(TODO_ARG(cornerRadius));
+        Egui.progress_bar_corner_radius(TODO_ARG(cornerRadius));
     
     }
     
     public ProgressBar Rounding(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius) {
-        Vx.progress_bar_rounding(TODO_ARG(cornerRadius));
+        Egui.progress_bar_rounding(TODO_ARG(cornerRadius));
     
     }
 }
@@ -3122,13 +3122,13 @@ public unsafe partial sealed class ProgressBar : VxHandle {
 /// 
 /// Usually you'd use <c>RadioValue</c> or <c>Radio</c> instead.
 /// </summary>
-public unsafe partial sealed class RadioButton : VxHandle {
+public unsafe partial sealed class RadioButton : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_radio_button_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_radio_button_drop(pointer);
     }
     public RadioButton(bool checked, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.radio_button_new(TODO_ARG(checked), TODO_ARG(text));
+        Egui.radio_button_new(TODO_ARG(checked), TODO_ARG(text));
     
     }
 }
@@ -3136,98 +3136,98 @@ public unsafe partial sealed class RadioButton : VxHandle {
 /// <summary>
 /// A region that can be resized by dragging the bottom right corner.
 /// </summary>
-public unsafe partial sealed class Resize : VxHandle {
+public unsafe partial sealed class Resize : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_resize_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_resize_drop(pointer);
     }
     public Resize Id(Id id) {
-        Vx.resize_id(TODO_ARG(id));
+        Egui.resize_id(TODO_ARG(id));
     
     }
     
     public Resize IdSource(ImplTrait([TraitBound { trait_: Path { path: "std::hash::Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.resize_id_source(TODO_ARG(idSalt));
+        Egui.resize_id_source(TODO_ARG(idSalt));
     
     }
     
     public Resize IdSalt(ImplTrait([TraitBound { trait_: Path { path: "std::hash::Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.resize_id_salt(TODO_ARG(idSalt));
+        Egui.resize_id_salt(TODO_ARG(idSalt));
     
     }
     
     public Resize DefaultWidth(float width) {
-        Vx.resize_default_width(TODO_ARG(width));
+        Egui.resize_default_width(TODO_ARG(width));
     
     }
     
     public Resize DefaultHeight(float height) {
-        Vx.resize_default_height(TODO_ARG(height));
+        Egui.resize_default_height(TODO_ARG(height));
     
     }
     
     public Resize DefaultSize(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) defaultSize) {
-        Vx.resize_default_size(TODO_ARG(defaultSize));
+        Egui.resize_default_size(TODO_ARG(defaultSize));
     
     }
     
     public Resize MinSize(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) minSize) {
-        Vx.resize_min_size(TODO_ARG(minSize));
+        Egui.resize_min_size(TODO_ARG(minSize));
     
     }
     
     public Resize MinWidth(float minWidth) {
-        Vx.resize_min_width(TODO_ARG(minWidth));
+        Egui.resize_min_width(TODO_ARG(minWidth));
     
     }
     
     public Resize MinHeight(float minHeight) {
-        Vx.resize_min_height(TODO_ARG(minHeight));
+        Egui.resize_min_height(TODO_ARG(minHeight));
     
     }
     
     public Resize MaxSize(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) maxSize) {
-        Vx.resize_max_size(TODO_ARG(maxSize));
+        Egui.resize_max_size(TODO_ARG(maxSize));
     
     }
     
     public Resize MaxWidth(float maxWidth) {
-        Vx.resize_max_width(TODO_ARG(maxWidth));
+        Egui.resize_max_width(TODO_ARG(maxWidth));
     
     }
     
     public Resize MaxHeight(float maxHeight) {
-        Vx.resize_max_height(TODO_ARG(maxHeight));
+        Egui.resize_max_height(TODO_ARG(maxHeight));
     
     }
     
     public Resize Resizable(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2b", id: Id(868), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) resizable) {
-        Vx.resize_resizable(TODO_ARG(resizable));
+        Egui.resize_resizable(TODO_ARG(resizable));
     
     }
     
     public Vec2b IsResizable() {
-        Vx.resize_is_resizable();
+        Egui.resize_is_resizable();
     
     }
     
     public Resize AutoSized() {
-        Vx.resize_auto_sized();
+        Egui.resize_auto_sized();
     
     }
     
     public Resize FixedSize(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) size) {
-        Vx.resize_fixed_size(TODO_ARG(size));
+        Egui.resize_fixed_size(TODO_ARG(size));
     
     }
     
     public Resize WithStroke(bool withStroke) {
-        Vx.resize_with_stroke(TODO_ARG(withStroke));
+        Egui.resize_with_stroke(TODO_ARG(withStroke));
     
     }
     
     public Generic("R") Show(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.resize_show(TODO_ARG(ui), TODO_ARG(addContents));
+        Egui.resize_show(TODO_ARG(ui), TODO_ARG(addContents));
     
     }
 }
@@ -3245,303 +3245,303 @@ public unsafe partial sealed class Resize : VxHandle {
 /// It can therefore be a deadlock to use <c>Context</c> from within a context-locking closures,
 /// such as <c>Input</c>.
 /// </summary>
-public unsafe partial sealed class Response : VxHandle {
+public unsafe partial sealed class Response : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_response_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_response_drop(pointer);
     }
     public bool Clicked() {
-        Vx.response_clicked();
+        Egui.response_clicked();
     
     }
     
     public bool ClickedBy(PointerButton button) {
-        Vx.response_clicked_by(TODO_ARG(button));
+        Egui.response_clicked_by(TODO_ARG(button));
     
     }
     
     public bool SecondaryClicked() {
-        Vx.response_secondary_clicked();
+        Egui.response_secondary_clicked();
     
     }
     
     public bool LongTouched() {
-        Vx.response_long_touched();
+        Egui.response_long_touched();
     
     }
     
     public bool MiddleClicked() {
-        Vx.response_middle_clicked();
+        Egui.response_middle_clicked();
     
     }
     
     public bool DoubleClicked() {
-        Vx.response_double_clicked();
+        Egui.response_double_clicked();
     
     }
     
     public bool TripleClicked() {
-        Vx.response_triple_clicked();
+        Egui.response_triple_clicked();
     
     }
     
     public bool DoubleClickedBy(PointerButton button) {
-        Vx.response_double_clicked_by(TODO_ARG(button));
+        Egui.response_double_clicked_by(TODO_ARG(button));
     
     }
     
     public bool TripleClickedBy(PointerButton button) {
-        Vx.response_triple_clicked_by(TODO_ARG(button));
+        Egui.response_triple_clicked_by(TODO_ARG(button));
     
     }
     
     public bool ClickedElsewhere() {
-        Vx.response_clicked_elsewhere();
+        Egui.response_clicked_elsewhere();
     
     }
     
     public bool Enabled() {
-        Vx.response_enabled();
+        Egui.response_enabled();
     
     }
     
     public bool Hovered() {
-        Vx.response_hovered();
+        Egui.response_hovered();
     
     }
     
     public bool ContainsPointer() {
-        Vx.response_contains_pointer();
+        Egui.response_contains_pointer();
     
     }
     
     public bool HasFocus() {
-        Vx.response_has_focus();
+        Egui.response_has_focus();
     
     }
     
     public bool GainedFocus() {
-        Vx.response_gained_focus();
+        Egui.response_gained_focus();
     
     }
     
     public bool LostFocus() {
-        Vx.response_lost_focus();
+        Egui.response_lost_focus();
     
     }
     
     public void RequestFocus() {
-        Vx.response_request_focus();
+        Egui.response_request_focus();
     
     }
     
     public void SurrenderFocus() {
-        Vx.response_surrender_focus();
+        Egui.response_surrender_focus();
     
     }
     
     public bool DragStarted() {
-        Vx.response_drag_started();
+        Egui.response_drag_started();
     
     }
     
     public bool DragStartedBy(PointerButton button) {
-        Vx.response_drag_started_by(TODO_ARG(button));
+        Egui.response_drag_started_by(TODO_ARG(button));
     
     }
     
     public bool Dragged() {
-        Vx.response_dragged();
+        Egui.response_dragged();
     
     }
     
     public bool DraggedBy(PointerButton button) {
-        Vx.response_dragged_by(TODO_ARG(button));
+        Egui.response_dragged_by(TODO_ARG(button));
     
     }
     
     public bool DragStopped() {
-        Vx.response_drag_stopped();
+        Egui.response_drag_stopped();
     
     }
     
     public bool DragStoppedBy(PointerButton button) {
-        Vx.response_drag_stopped_by(TODO_ARG(button));
+        Egui.response_drag_stopped_by(TODO_ARG(button));
     
     }
     
     public bool DragReleased() {
-        Vx.response_drag_released();
+        Egui.response_drag_released();
     
     }
     
     public bool DragReleasedBy(PointerButton button) {
-        Vx.response_drag_released_by(TODO_ARG(button));
+        Egui.response_drag_released_by(TODO_ARG(button));
     
     }
     
     public Vec2 DragDelta() {
-        Vx.response_drag_delta();
+        Egui.response_drag_delta();
     
     }
     
     public Vec2 DragMotion() {
-        Vx.response_drag_motion();
+        Egui.response_drag_motion();
     
     }
     
     public void DndSetDragPayload(Generic("Payload") payload) {
-        Vx.response_dnd_set_drag_payload(TODO_ARG(payload));
+        Egui.response_dnd_set_drag_payload(TODO_ARG(payload));
     
     }
     
     public Arc? DndHoverPayload() {
-        Vx.response_dnd_hover_payload();
+        Egui.response_dnd_hover_payload();
     
     }
     
     public Arc? DndReleasePayload() {
-        Vx.response_dnd_release_payload();
+        Egui.response_dnd_release_payload();
     
     }
     
     public Pos2? InteractPointerPos() {
-        Vx.response_interact_pointer_pos();
+        Egui.response_interact_pointer_pos();
     
     }
     
     public Pos2? HoverPos() {
-        Vx.response_hover_pos();
+        Egui.response_hover_pos();
     
     }
     
     public bool IsPointerButtonDownOn() {
-        Vx.response_is_pointer_button_down_on();
+        Egui.response_is_pointer_button_down_on();
     
     }
     
     public bool Changed() {
-        Vx.response_changed();
+        Egui.response_changed();
     
     }
     
     public void MarkChanged() {
-        Vx.response_mark_changed();
+        Egui.response_mark_changed();
     
     }
     
     public Response OnHoverUi(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: None }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.response_on_hover_ui(TODO_ARG(addContents));
+        Egui.response_on_hover_ui(TODO_ARG(addContents));
     
     }
     
     public Response OnDisabledHoverUi(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: None }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.response_on_disabled_hover_ui(TODO_ARG(addContents));
+        Egui.response_on_disabled_hover_ui(TODO_ARG(addContents));
     
     }
     
     public Response OnHoverUiAtPointer(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: None }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.response_on_hover_ui_at_pointer(TODO_ARG(addContents));
+        Egui.response_on_hover_ui_at_pointer(TODO_ARG(addContents));
     
     }
     
     public void ShowTooltipUi(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: None }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.response_show_tooltip_ui(TODO_ARG(addContents));
+        Egui.response_show_tooltip_ui(TODO_ARG(addContents));
     
     }
     
     public void ShowTooltipText(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.response_show_tooltip_text(TODO_ARG(text));
+        Egui.response_show_tooltip_text(TODO_ARG(text));
     
     }
     
     public bool IsTooltipOpen() {
-        Vx.response_is_tooltip_open();
+        Egui.response_is_tooltip_open();
     
     }
     
     public Response OnHoverTextAtPointer(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.response_on_hover_text_at_pointer(TODO_ARG(text));
+        Egui.response_on_hover_text_at_pointer(TODO_ARG(text));
     
     }
     
     public Response OnHoverText(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.response_on_hover_text(TODO_ARG(text));
+        Egui.response_on_hover_text(TODO_ARG(text));
     
     }
     
     public Response Highlight() {
-        Vx.response_highlight();
+        Egui.response_highlight();
     
     }
     
     public Response OnDisabledHoverText(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.response_on_disabled_hover_text(TODO_ARG(text));
+        Egui.response_on_disabled_hover_text(TODO_ARG(text));
     
     }
     
     public Response OnHoverCursor(CursorIcon cursor) {
-        Vx.response_on_hover_cursor(TODO_ARG(cursor));
+        Egui.response_on_hover_cursor(TODO_ARG(cursor));
     
     }
     
     public Response OnHoverAndDragCursor(CursorIcon cursor) {
-        Vx.response_on_hover_and_drag_cursor(TODO_ARG(cursor));
+        Egui.response_on_hover_and_drag_cursor(TODO_ARG(cursor));
     
     }
     
     public Response Interact(Sense sense) {
-        Vx.response_interact(TODO_ARG(sense));
+        Egui.response_interact(TODO_ARG(sense));
     
     }
     
     public void ScrollToMe(Align? align) {
-        Vx.response_scroll_to_me(TODO_ARG(align));
+        Egui.response_scroll_to_me(TODO_ARG(align));
     
     }
     
     public void ScrollToMeAnimation(Align? align, ScrollAnimation animation) {
-        Vx.response_scroll_to_me_animation(TODO_ARG(align), TODO_ARG(animation));
+        Egui.response_scroll_to_me_animation(TODO_ARG(align), TODO_ARG(animation));
     
     }
     
     public void WidgetInfo(ImplTrait([TraitBound { trait_: Path { path: "Fn", id: Id(455), args: Some(Parenthesized { inputs: [], output: Some(ResolvedPath(Path { path: "crate::WidgetInfo", id: Id(1351), args: Some(AngleBracketed { args: [], constraints: [] }) })) }) }, generic_params: [], modifier: None }]) makeInfo) {
-        Vx.response_widget_info(TODO_ARG(makeInfo));
+        Egui.response_widget_info(TODO_ARG(makeInfo));
     
     }
     
     public void OutputEvent(crate::output::OutputEvent event) {
-        Vx.response_output_event(TODO_ARG(event));
+        Egui.response_output_event(TODO_ARG(event));
     
     }
     
     public Response LabelledBy(Id id) {
-        Vx.response_labelled_by(TODO_ARG(id));
+        Egui.response_labelled_by(TODO_ARG(id));
     
     }
     
     public InnerResponse? ContextMenu(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: None }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.response_context_menu(TODO_ARG(addContents));
+        Egui.response_context_menu(TODO_ARG(addContents));
     
     }
     
     public bool ContextMenuOpened() {
-        Vx.response_context_menu_opened();
+        Egui.response_context_menu_opened();
     
     }
     
     public void PaintDebugInfo() {
-        Vx.response_paint_debug_info();
+        Egui.response_paint_debug_info();
     
     }
     
     public Response Union(Response other) {
-        Vx.response_union(TODO_ARG(other));
+        Egui.response_union(TODO_ARG(other));
     
     }
     
-    public Response WithNewRect(IBox2 rect) {
-        Vx.response_with_new_rect(TODO_ARG(rect));
+    public Response WithNewRect(Rect rect) {
+        Egui.response_with_new_rect(TODO_ARG(rect));
     
     }
 }
@@ -3556,133 +3556,133 @@ public unsafe partial sealed class Response : VxHandle {
 /// 
 /// ### Example
 /// </summary>
-public unsafe partial sealed class RichText : VxHandle {
+public unsafe partial sealed class RichText : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_rich_text_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_rich_text_drop(pointer);
     }
     public RichText(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "String", id: Id(1295), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.rich_text_new(TODO_ARG(text));
+        Egui.rich_text_new(TODO_ARG(text));
     
     }
     
     public bool IsEmpty() {
-        Vx.rich_text_is_empty();
+        Egui.rich_text_is_empty();
     
     }
     
-    public string Text() {
-        Vx.rich_text_text();
+    public str Text() {
+        Egui.rich_text_text();
     
     }
     
     public RichText Size(float size) {
-        Vx.rich_text_size(TODO_ARG(size));
+        Egui.rich_text_size(TODO_ARG(size));
     
     }
     
     public RichText ExtraLetterSpacing(float extraLetterSpacing) {
-        Vx.rich_text_extra_letter_spacing(TODO_ARG(extraLetterSpacing));
+        Egui.rich_text_extra_letter_spacing(TODO_ARG(extraLetterSpacing));
     
     }
     
     public RichText LineHeight(float? lineHeight) {
-        Vx.rich_text_line_height(TODO_ARG(lineHeight));
+        Egui.rich_text_line_height(TODO_ARG(lineHeight));
     
     }
     
     public RichText Family(FontFamily family) {
-        Vx.rich_text_family(TODO_ARG(family));
+        Egui.rich_text_family(TODO_ARG(family));
     
     }
     
     public RichText Font(crate::FontId fontId) {
-        Vx.rich_text_font(TODO_ARG(fontId));
+        Egui.rich_text_font(TODO_ARG(fontId));
     
     }
     
     public RichText TextStyle(TextStyle textStyle) {
-        Vx.rich_text_text_style(TODO_ARG(textStyle));
+        Egui.rich_text_text_style(TODO_ARG(textStyle));
     
     }
     
     public RichText FallbackTextStyle(TextStyle textStyle) {
-        Vx.rich_text_fallback_text_style(TODO_ARG(textStyle));
+        Egui.rich_text_fallback_text_style(TODO_ARG(textStyle));
     
     }
     
     public RichText Heading() {
-        Vx.rich_text_heading();
+        Egui.rich_text_heading();
     
     }
     
     public RichText Monospace() {
-        Vx.rich_text_monospace();
+        Egui.rich_text_monospace();
     
     }
     
     public RichText Code() {
-        Vx.rich_text_code();
+        Egui.rich_text_code();
     
     }
     
     public RichText Strong() {
-        Vx.rich_text_strong();
+        Egui.rich_text_strong();
     
     }
     
     public RichText Weak() {
-        Vx.rich_text_weak();
+        Egui.rich_text_weak();
     
     }
     
     public RichText Underline() {
-        Vx.rich_text_underline();
+        Egui.rich_text_underline();
     
     }
     
     public RichText Strikethrough() {
-        Vx.rich_text_strikethrough();
+        Egui.rich_text_strikethrough();
     
     }
     
     public RichText Italics() {
-        Vx.rich_text_italics();
+        Egui.rich_text_italics();
     
     }
     
     public RichText Small() {
-        Vx.rich_text_small();
+        Egui.rich_text_small();
     
     }
     
     public RichText SmallRaised() {
-        Vx.rich_text_small_raised();
+        Egui.rich_text_small_raised();
     
     }
     
     public RichText Raised() {
-        Vx.rich_text_raised();
+        Egui.rich_text_raised();
     
     }
     
     public RichText BackgroundColor(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) backgroundColor) {
-        Vx.rich_text_background_color(TODO_ARG(backgroundColor));
+        Egui.rich_text_background_color(TODO_ARG(backgroundColor));
     
     }
     
     public RichText Color(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) color) {
-        Vx.rich_text_color(TODO_ARG(color));
+        Egui.rich_text_color(TODO_ARG(color));
     
     }
     
     public float FontHeight(epaint::Fonts fonts, Style style) {
-        Vx.rich_text_font_height(TODO_ARG(fonts), TODO_ARG(style));
+        Egui.rich_text_font_height(TODO_ARG(fonts), TODO_ARG(style));
     
     }
     
     public void AppendTo(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "LayoutJob", id: Id(4070), args: Some(AngleBracketed { args: [], constraints: [] }) }) } layoutJob, Style style, FontSelection fallbackFont, Align defaultValign) {
-        Vx.rich_text_append_to(TODO_ARG(layoutJob), TODO_ARG(style), TODO_ARG(fallbackFont), TODO_ARG(defaultValign));
+        Egui.rich_text_append_to(TODO_ARG(layoutJob), TODO_ARG(style), TODO_ARG(fallbackFont), TODO_ARG(defaultValign));
     
     }
 }
@@ -3695,33 +3695,33 @@ public unsafe partial sealed class RichText : VxHandle {
 /// * Has no scroll bars
 /// * Has no limits on the scrolling
 /// </summary>
-public unsafe partial sealed class Scene : VxHandle {
+public unsafe partial sealed class Scene : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_scene_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_scene_drop(pointer);
     }
     public Scene() {
-        Vx.scene_new();
+        Egui.scene_new();
     
     }
     
     public Scene ZoomRange(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Rangef", id: Id(696), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) zoomRange) {
-        Vx.scene_zoom_range(TODO_ARG(zoomRange));
+        Egui.scene_zoom_range(TODO_ARG(zoomRange));
     
     }
     
     public Scene MaxInnerSize(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) maxInnerSize) {
-        Vx.scene_max_inner_size(TODO_ARG(maxInnerSize));
+        Egui.scene_max_inner_size(TODO_ARG(maxInnerSize));
     
     }
     
     public InnerResponse Show(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } parentUi, BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) }) } sceneRect, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.scene_show(TODO_ARG(parentUi), TODO_ARG(sceneRect), TODO_ARG(addContents));
+        Egui.scene_show(TODO_ARG(parentUi), TODO_ARG(sceneRect), TODO_ARG(addContents));
     
     }
     
     public void RegisterPanAndZoom(Ui ui, BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Response", id: Id(282), args: Some(AngleBracketed { args: [], constraints: [] }) }) } resp, BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "TSTransform", id: Id(908), args: Some(AngleBracketed { args: [], constraints: [] }) }) } toGlobal) {
-        Vx.scene_register_pan_and_zoom(TODO_ARG(ui), TODO_ARG(resp), TODO_ARG(toGlobal));
+        Egui.scene_register_pan_and_zoom(TODO_ARG(ui), TODO_ARG(resp), TODO_ARG(toGlobal));
     
     }
 }
@@ -3750,168 +3750,168 @@ public unsafe partial sealed class Scene : VxHandle {
 /// ## See also
 /// If you want to allow zooming, use <c>Scene</c>.
 /// </summary>
-public unsafe partial sealed class ScrollArea : VxHandle {
+public unsafe partial sealed class ScrollArea : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_scroll_area_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_scroll_area_drop(pointer);
     }
     public static ScrollArea Horizontal() {
-        Vx.scroll_area_horizontal();
+        Egui.scroll_area_horizontal();
     
     }
     
     public static ScrollArea Vertical() {
-        Vx.scroll_area_vertical();
+        Egui.scroll_area_vertical();
     
     }
     
     public static ScrollArea Both() {
-        Vx.scroll_area_both();
+        Egui.scroll_area_both();
     
     }
     
     public static ScrollArea Neither() {
-        Vx.scroll_area_neither();
+        Egui.scroll_area_neither();
     
     }
     
     public ScrollArea(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2b", id: Id(868), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) scrollEnabled) {
-        Vx.scroll_area_new(TODO_ARG(scrollEnabled));
+        Egui.scroll_area_new(TODO_ARG(scrollEnabled));
     
     }
     
     public ScrollArea MaxWidth(float maxWidth) {
-        Vx.scroll_area_max_width(TODO_ARG(maxWidth));
+        Egui.scroll_area_max_width(TODO_ARG(maxWidth));
     
     }
     
     public ScrollArea MaxHeight(float maxHeight) {
-        Vx.scroll_area_max_height(TODO_ARG(maxHeight));
+        Egui.scroll_area_max_height(TODO_ARG(maxHeight));
     
     }
     
     public ScrollArea MinScrolledWidth(float minScrolledWidth) {
-        Vx.scroll_area_min_scrolled_width(TODO_ARG(minScrolledWidth));
+        Egui.scroll_area_min_scrolled_width(TODO_ARG(minScrolledWidth));
     
     }
     
     public ScrollArea MinScrolledHeight(float minScrolledHeight) {
-        Vx.scroll_area_min_scrolled_height(TODO_ARG(minScrolledHeight));
+        Egui.scroll_area_min_scrolled_height(TODO_ARG(minScrolledHeight));
     
     }
     
     public ScrollArea ScrollBarVisibility(ScrollBarVisibility scrollBarVisibility) {
-        Vx.scroll_area_scroll_bar_visibility(TODO_ARG(scrollBarVisibility));
+        Egui.scroll_area_scroll_bar_visibility(TODO_ARG(scrollBarVisibility));
     
     }
     
-    public ScrollArea ScrollBarRect(IBox2 scrollBarRect) {
-        Vx.scroll_area_scroll_bar_rect(TODO_ARG(scrollBarRect));
+    public ScrollArea ScrollBarRect(Rect scrollBarRect) {
+        Egui.scroll_area_scroll_bar_rect(TODO_ARG(scrollBarRect));
     
     }
     
     public ScrollArea IdSource(ImplTrait([TraitBound { trait_: Path { path: "std::hash::Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.scroll_area_id_source(TODO_ARG(idSalt));
+        Egui.scroll_area_id_source(TODO_ARG(idSalt));
     
     }
     
     public ScrollArea IdSalt(ImplTrait([TraitBound { trait_: Path { path: "std::hash::Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.scroll_area_id_salt(TODO_ARG(idSalt));
+        Egui.scroll_area_id_salt(TODO_ARG(idSalt));
     
     }
     
     public ScrollArea ScrollOffset(Vec2 offset) {
-        Vx.scroll_area_scroll_offset(TODO_ARG(offset));
+        Egui.scroll_area_scroll_offset(TODO_ARG(offset));
     
     }
     
     public ScrollArea VerticalScrollOffset(float offset) {
-        Vx.scroll_area_vertical_scroll_offset(TODO_ARG(offset));
+        Egui.scroll_area_vertical_scroll_offset(TODO_ARG(offset));
     
     }
     
     public ScrollArea HorizontalScrollOffset(float offset) {
-        Vx.scroll_area_horizontal_scroll_offset(TODO_ARG(offset));
+        Egui.scroll_area_horizontal_scroll_offset(TODO_ARG(offset));
     
     }
     
     public ScrollArea Hscroll(bool hscroll) {
-        Vx.scroll_area_hscroll(TODO_ARG(hscroll));
+        Egui.scroll_area_hscroll(TODO_ARG(hscroll));
     
     }
     
     public ScrollArea Vscroll(bool vscroll) {
-        Vx.scroll_area_vscroll(TODO_ARG(vscroll));
+        Egui.scroll_area_vscroll(TODO_ARG(vscroll));
     
     }
     
     public ScrollArea Scroll(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2b", id: Id(868), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) scrollEnabled) {
-        Vx.scroll_area_scroll(TODO_ARG(scrollEnabled));
+        Egui.scroll_area_scroll(TODO_ARG(scrollEnabled));
     
     }
     
     public ScrollArea Scroll2(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2b", id: Id(868), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) scrollEnabled) {
-        Vx.scroll_area_scroll2(TODO_ARG(scrollEnabled));
+        Egui.scroll_area_scroll2(TODO_ARG(scrollEnabled));
     
     }
     
     public ScrollArea EnableScrolling(bool enable) {
-        Vx.scroll_area_enable_scrolling(TODO_ARG(enable));
+        Egui.scroll_area_enable_scrolling(TODO_ARG(enable));
     
     }
     
     public ScrollArea DragToScroll(bool dragToScroll) {
-        Vx.scroll_area_drag_to_scroll(TODO_ARG(dragToScroll));
+        Egui.scroll_area_drag_to_scroll(TODO_ARG(dragToScroll));
     
     }
     
     public ScrollArea AutoShrink(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2b", id: Id(868), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) autoShrink) {
-        Vx.scroll_area_auto_shrink(TODO_ARG(autoShrink));
+        Egui.scroll_area_auto_shrink(TODO_ARG(autoShrink));
     
     }
     
     public ScrollArea Animated(bool animated) {
-        Vx.scroll_area_animated(TODO_ARG(animated));
+        Egui.scroll_area_animated(TODO_ARG(animated));
     
     }
     
     public ScrollArea StickToRight(bool stick) {
-        Vx.scroll_area_stick_to_right(TODO_ARG(stick));
+        Egui.scroll_area_stick_to_right(TODO_ARG(stick));
     
     }
     
     public ScrollArea StickToBottom(bool stick) {
-        Vx.scroll_area_stick_to_bottom(TODO_ARG(stick));
+        Egui.scroll_area_stick_to_bottom(TODO_ARG(stick));
     
     }
     
     public ScrollAreaOutput Show(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.scroll_area_show(TODO_ARG(ui), TODO_ARG(addContents));
+        Egui.scroll_area_show(TODO_ARG(ui), TODO_ARG(addContents));
     
     }
     
     public ScrollAreaOutput ShowRows(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, float rowHeightSansSpacing, nuint totalRows, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, ResolvedPath(Path { path: "std::ops::Range", id: Id(1068), args: Some(AngleBracketed { args: [Type(Primitive("usize"))], constraints: [] }) })], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.scroll_area_show_rows(TODO_ARG(ui), TODO_ARG(rowHeightSansSpacing), TODO_ARG(totalRows), TODO_ARG(addContents));
+        Egui.scroll_area_show_rows(TODO_ARG(ui), TODO_ARG(rowHeightSansSpacing), TODO_ARG(totalRows), TODO_ARG(addContents));
     
     }
     
     public ScrollAreaOutput ShowViewport(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) })], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.scroll_area_show_viewport(TODO_ARG(ui), TODO_ARG(addContents));
+        Egui.scroll_area_show_viewport(TODO_ARG(ui), TODO_ARG(addContents));
     
     }
 }
 
-public unsafe partial sealed class ScrollAreaOutput : VxHandle {
+public unsafe partial sealed class ScrollAreaOutput : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_scroll_area_output_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_scroll_area_output_drop(pointer);
     }
 }
 
-public unsafe partial sealed class ScrollTarget : VxHandle {
+public unsafe partial sealed class ScrollTarget : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_scroll_target_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_scroll_target_drop(pointer);
     }
 }
 
@@ -3922,13 +3922,13 @@ public unsafe partial sealed class ScrollTarget : VxHandle {
 /// 
 /// Usually you'd use <c>SelectableValue</c> or <c>SelectableLabel</c> instead.
 /// </summary>
-public unsafe partial sealed class SelectableLabel : VxHandle {
+public unsafe partial sealed class SelectableLabel : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_selectable_label_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_selectable_label_drop(pointer);
     }
     public SelectableLabel(bool selected, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.selectable_label_new(TODO_ARG(selected), TODO_ARG(text));
+        Egui.selectable_label_new(TODO_ARG(selected), TODO_ARG(text));
     
     }
 }
@@ -3938,33 +3938,33 @@ public unsafe partial sealed class SelectableLabel : VxHandle {
 /// 
 /// Usually you'd use the shorter version <c>Separator</c>.
 /// </summary>
-public unsafe partial sealed class Separator : VxHandle {
+public unsafe partial sealed class Separator : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_separator_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_separator_drop(pointer);
     }
     public Separator Spacing(float spacing) {
-        Vx.separator_spacing(TODO_ARG(spacing));
+        Egui.separator_spacing(TODO_ARG(spacing));
     
     }
     
     public Separator Horizontal() {
-        Vx.separator_horizontal();
+        Egui.separator_horizontal();
     
     }
     
     public Separator Vertical() {
-        Vx.separator_vertical();
+        Egui.separator_vertical();
     
     }
     
     public Separator Grow(float extra) {
-        Vx.separator_grow(TODO_ARG(extra));
+        Egui.separator_grow(TODO_ARG(extra));
     
     }
     
     public Separator Shrink(float shrink) {
-        Vx.separator_shrink(TODO_ARG(shrink));
+        Egui.separator_shrink(TODO_ARG(shrink));
     
     }
 }
@@ -3979,93 +3979,93 @@ public unsafe partial sealed class Separator : VxHandle {
 /// 
 /// See the module level docs for more details.See also <c>TopBottomPanel</c>.
 /// </summary>
-public unsafe partial sealed class SidePanel : VxHandle {
+public unsafe partial sealed class SidePanel : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_side_panel_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_side_panel_drop(pointer);
     }
     public static SidePanel Left(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Id", id: Id(158), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) id) {
-        Vx.side_panel_left(TODO_ARG(id));
+        Egui.side_panel_left(TODO_ARG(id));
     
     }
     
     public static SidePanel Right(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Id", id: Id(158), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) id) {
-        Vx.side_panel_right(TODO_ARG(id));
+        Egui.side_panel_right(TODO_ARG(id));
     
     }
     
     public SidePanel(Side side, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Id", id: Id(158), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) id) {
-        Vx.side_panel_new(TODO_ARG(side), TODO_ARG(id));
+        Egui.side_panel_new(TODO_ARG(side), TODO_ARG(id));
     
     }
     
     public SidePanel Resizable(bool resizable) {
-        Vx.side_panel_resizable(TODO_ARG(resizable));
+        Egui.side_panel_resizable(TODO_ARG(resizable));
     
     }
     
     public SidePanel ShowSeparatorLine(bool showSeparatorLine) {
-        Vx.side_panel_show_separator_line(TODO_ARG(showSeparatorLine));
+        Egui.side_panel_show_separator_line(TODO_ARG(showSeparatorLine));
     
     }
     
     public SidePanel DefaultWidth(float defaultWidth) {
-        Vx.side_panel_default_width(TODO_ARG(defaultWidth));
+        Egui.side_panel_default_width(TODO_ARG(defaultWidth));
     
     }
     
     public SidePanel MinWidth(float minWidth) {
-        Vx.side_panel_min_width(TODO_ARG(minWidth));
+        Egui.side_panel_min_width(TODO_ARG(minWidth));
     
     }
     
     public SidePanel MaxWidth(float maxWidth) {
-        Vx.side_panel_max_width(TODO_ARG(maxWidth));
+        Egui.side_panel_max_width(TODO_ARG(maxWidth));
     
     }
     
     public SidePanel WidthRange(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Rangef", id: Id(696), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) widthRange) {
-        Vx.side_panel_width_range(TODO_ARG(widthRange));
+        Egui.side_panel_width_range(TODO_ARG(widthRange));
     
     }
     
     public SidePanel ExactWidth(float width) {
-        Vx.side_panel_exact_width(TODO_ARG(width));
+        Egui.side_panel_exact_width(TODO_ARG(width));
     
     }
     
     public SidePanel Frame(Frame frame) {
-        Vx.side_panel_frame(TODO_ARG(frame));
+        Egui.side_panel_frame(TODO_ARG(frame));
     
     }
     
     public InnerResponse ShowInside(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.side_panel_show_inside(TODO_ARG(ui), TODO_ARG(addContents));
+        Egui.side_panel_show_inside(TODO_ARG(ui), TODO_ARG(addContents));
     
     }
     
     public InnerResponse Show(Context ctx, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.side_panel_show(TODO_ARG(ctx), TODO_ARG(addContents));
+        Egui.side_panel_show(TODO_ARG(ctx), TODO_ARG(addContents));
     
     }
     
     public InnerResponse? ShowAnimated(Context ctx, bool isExpanded, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.side_panel_show_animated(TODO_ARG(ctx), TODO_ARG(isExpanded), TODO_ARG(addContents));
+        Egui.side_panel_show_animated(TODO_ARG(ctx), TODO_ARG(isExpanded), TODO_ARG(addContents));
     
     }
     
     public InnerResponse? ShowAnimatedInside(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, bool isExpanded, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.side_panel_show_animated_inside(TODO_ARG(ui), TODO_ARG(isExpanded), TODO_ARG(addContents));
+        Egui.side_panel_show_animated_inside(TODO_ARG(ui), TODO_ARG(isExpanded), TODO_ARG(addContents));
     
     }
     
     public static InnerResponse? ShowAnimatedBetween(Context ctx, bool isExpanded, SidePanel collapsedPanel, SidePanel expandedPanel, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, Primitive("f32")], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.side_panel_show_animated_between(TODO_ARG(ctx), TODO_ARG(isExpanded), TODO_ARG(collapsedPanel), TODO_ARG(expandedPanel), TODO_ARG(addContents));
+        Egui.side_panel_show_animated_between(TODO_ARG(ctx), TODO_ARG(isExpanded), TODO_ARG(collapsedPanel), TODO_ARG(expandedPanel), TODO_ARG(addContents));
     
     }
     
     public static InnerResponse ShowAnimatedBetweenInside(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, bool isExpanded, SidePanel collapsedPanel, SidePanel expandedPanel, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, Primitive("f32")], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.side_panel_show_animated_between_inside(TODO_ARG(ui), TODO_ARG(isExpanded), TODO_ARG(collapsedPanel), TODO_ARG(expandedPanel), TODO_ARG(addContents));
+        Egui.side_panel_show_animated_between_inside(TODO_ARG(ui), TODO_ARG(isExpanded), TODO_ARG(collapsedPanel), TODO_ARG(expandedPanel), TODO_ARG(addContents));
     
     }
 }
@@ -4081,28 +4081,28 @@ public unsafe partial sealed class SidePanel : VxHandle {
 /// The left widgets are first added to the ui, left-to-right.
 /// Then the right widgets are added, right-to-left.
 /// </summary>
-public unsafe partial sealed class Sides : VxHandle {
+public unsafe partial sealed class Sides : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_sides_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_sides_drop(pointer);
     }
     public Sides() {
-        Vx.sides_new();
+        Egui.sides_new();
     
     }
     
     public Sides Height(float height) {
-        Vx.sides_height(TODO_ARG(height));
+        Egui.sides_height(TODO_ARG(height));
     
     }
     
     public Sides Spacing(float spacing) {
-        Vx.sides_spacing(TODO_ARG(spacing));
+        Egui.sides_spacing(TODO_ARG(spacing));
     
     }
     
     public Tuple([Generic("RetL"), Generic("RetR")]) Show(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("RetL")) }) }, generic_params: [], modifier: None }]) addLeft, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("RetR")) }) }, generic_params: [], modifier: None }]) addRight) {
-        Vx.sides_show(TODO_ARG(ui), TODO_ARG(addLeft), TODO_ARG(addRight));
+        Egui.sides_show(TODO_ARG(ui), TODO_ARG(addLeft), TODO_ARG(addRight));
     
     }
 }
@@ -4119,153 +4119,153 @@ public unsafe partial sealed class Sides : VxHandle {
 /// The slider consists of three parts: a slider, a value display, and an optional text.
 /// The user can click the value display to edit its value. It can be turned off with <c>.showValue(false)</c>.The default <c>Slider</c> size is set by <c>SliderWidth</c>.
 /// </summary>
-public unsafe partial sealed class Slider : VxHandle {
+public unsafe partial sealed class Slider : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_slider_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_slider_drop(pointer);
     }
     public Slider(BorrowedRef { lifetime: Some("'a"), is_mutable: true, type_: Generic("Num") } value, RangeInclusive range) {
-        Vx.slider_new(TODO_ARG(value), TODO_ARG(range));
+        Egui.slider_new(TODO_ARG(value), TODO_ARG(range));
     
     }
     
     public static Slider FromGetSet(RangeInclusive range, ImplTrait([Outlives("'a"), TraitBound { trait_: Path { path: "FnMut", id: Id(1319), args: Some(Parenthesized { inputs: [ResolvedPath(Path { path: "Option", id: Id(118), args: Some(AngleBracketed { args: [Type(Primitive("f64"))], constraints: [] }) })], output: Some(Primitive("f64")) }) }, generic_params: [], modifier: None }]) getSetValue) {
-        Vx.slider_from_get_set(TODO_ARG(range), TODO_ARG(getSetValue));
+        Egui.slider_from_get_set(TODO_ARG(range), TODO_ARG(getSetValue));
     
     }
     
     public Slider ShowValue(bool showValue) {
-        Vx.slider_show_value(TODO_ARG(showValue));
+        Egui.slider_show_value(TODO_ARG(showValue));
     
     }
     
     public Slider Prefix(ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) prefix) {
-        Vx.slider_prefix(TODO_ARG(prefix));
+        Egui.slider_prefix(TODO_ARG(prefix));
     
     }
     
     public Slider Suffix(ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) suffix) {
-        Vx.slider_suffix(TODO_ARG(suffix));
+        Egui.slider_suffix(TODO_ARG(suffix));
     
     }
     
     public Slider Text(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.slider_text(TODO_ARG(text));
+        Egui.slider_text(TODO_ARG(text));
     
     }
     
-    public Slider TextColor(Color4 textColor) {
-        Vx.slider_text_color(TODO_ARG(textColor));
+    public Slider TextColor(Color32 textColor) {
+        Egui.slider_text_color(TODO_ARG(textColor));
     
     }
     
     public Slider Orientation(SliderOrientation orientation) {
-        Vx.slider_orientation(TODO_ARG(orientation));
+        Egui.slider_orientation(TODO_ARG(orientation));
     
     }
     
     public Slider Vertical() {
-        Vx.slider_vertical();
+        Egui.slider_vertical();
     
     }
     
     public Slider Logarithmic(bool logarithmic) {
-        Vx.slider_logarithmic(TODO_ARG(logarithmic));
+        Egui.slider_logarithmic(TODO_ARG(logarithmic));
     
     }
     
     public Slider SmallestPositive(double smallestPositive) {
-        Vx.slider_smallest_positive(TODO_ARG(smallestPositive));
+        Egui.slider_smallest_positive(TODO_ARG(smallestPositive));
     
     }
     
     public Slider LargestFinite(double largestFinite) {
-        Vx.slider_largest_finite(TODO_ARG(largestFinite));
+        Egui.slider_largest_finite(TODO_ARG(largestFinite));
     
     }
     
     public Slider Clamping(SliderClamping clamping) {
-        Vx.slider_clamping(TODO_ARG(clamping));
+        Egui.slider_clamping(TODO_ARG(clamping));
     
     }
     
     public Slider ClampToRange(bool clampToRange) {
-        Vx.slider_clamp_to_range(TODO_ARG(clampToRange));
+        Egui.slider_clamp_to_range(TODO_ARG(clampToRange));
     
     }
     
     public Slider SmartAim(bool smartAim) {
-        Vx.slider_smart_aim(TODO_ARG(smartAim));
+        Egui.slider_smart_aim(TODO_ARG(smartAim));
     
     }
     
     public Slider StepBy(double step) {
-        Vx.slider_step_by(TODO_ARG(step));
+        Egui.slider_step_by(TODO_ARG(step));
     
     }
     
     public Slider DragValueSpeed(double dragValueSpeed) {
-        Vx.slider_drag_value_speed(TODO_ARG(dragValueSpeed));
+        Egui.slider_drag_value_speed(TODO_ARG(dragValueSpeed));
     
     }
     
     public Slider MinDecimals(nuint minDecimals) {
-        Vx.slider_min_decimals(TODO_ARG(minDecimals));
+        Egui.slider_min_decimals(TODO_ARG(minDecimals));
     
     }
     
     public Slider MaxDecimals(nuint maxDecimals) {
-        Vx.slider_max_decimals(TODO_ARG(maxDecimals));
+        Egui.slider_max_decimals(TODO_ARG(maxDecimals));
     
     }
     
     public Slider MaxDecimalsOpt(nuint? maxDecimals) {
-        Vx.slider_max_decimals_opt(TODO_ARG(maxDecimals));
+        Egui.slider_max_decimals_opt(TODO_ARG(maxDecimals));
     
     }
     
     public Slider FixedDecimals(nuint numDecimals) {
-        Vx.slider_fixed_decimals(TODO_ARG(numDecimals));
+        Egui.slider_fixed_decimals(TODO_ARG(numDecimals));
     
     }
     
     public Slider TrailingFill(bool trailingFill) {
-        Vx.slider_trailing_fill(TODO_ARG(trailingFill));
+        Egui.slider_trailing_fill(TODO_ARG(trailingFill));
     
     }
     
     public Slider HandleShape(HandleShape handleShape) {
-        Vx.slider_handle_shape(TODO_ARG(handleShape));
+        Egui.slider_handle_shape(TODO_ARG(handleShape));
     
     }
     
     public Slider CustomFormatter(ImplTrait([Outlives("'a"), TraitBound { trait_: Path { path: "Fn", id: Id(455), args: Some(Parenthesized { inputs: [Primitive("f64"), ResolvedPath(Path { path: "RangeInclusive", id: Id(2598), args: Some(AngleBracketed { args: [Type(Primitive("usize"))], constraints: [] }) })], output: Some(ResolvedPath(Path { path: "String", id: Id(1295), args: Some(AngleBracketed { args: [], constraints: [] }) })) }) }, generic_params: [], modifier: None }]) formatter) {
-        Vx.slider_custom_formatter(TODO_ARG(formatter));
+        Egui.slider_custom_formatter(TODO_ARG(formatter));
     
     }
     
     public Slider CustomParser(ImplTrait([Outlives("'a"), TraitBound { trait_: Path { path: "Fn", id: Id(455), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: false, type_: Primitive("str") }], output: Some(ResolvedPath(Path { path: "Option", id: Id(118), args: Some(AngleBracketed { args: [Type(Primitive("f64"))], constraints: [] }) })) }) }, generic_params: [], modifier: None }]) parser) {
-        Vx.slider_custom_parser(TODO_ARG(parser));
+        Egui.slider_custom_parser(TODO_ARG(parser));
     
     }
     
     public Slider Binary(nuint minWidth, bool twosComplement) {
-        Vx.slider_binary(TODO_ARG(minWidth), TODO_ARG(twosComplement));
+        Egui.slider_binary(TODO_ARG(minWidth), TODO_ARG(twosComplement));
     
     }
     
     public Slider Octal(nuint minWidth, bool twosComplement) {
-        Vx.slider_octal(TODO_ARG(minWidth), TODO_ARG(twosComplement));
+        Egui.slider_octal(TODO_ARG(minWidth), TODO_ARG(twosComplement));
     
     }
     
     public Slider Hexadecimal(nuint minWidth, bool twosComplement, bool upper) {
-        Vx.slider_hexadecimal(TODO_ARG(minWidth), TODO_ARG(twosComplement), TODO_ARG(upper));
+        Egui.slider_hexadecimal(TODO_ARG(minWidth), TODO_ARG(twosComplement), TODO_ARG(upper));
     
     }
     
     public Slider Integer() {
-        Vx.slider_integer();
+        Egui.slider_integer();
     
     }
 }
@@ -4275,71 +4275,71 @@ public unsafe partial sealed class Slider : VxHandle {
 /// 
 /// See also: <c>ProgressBar</c>.
 /// </summary>
-public unsafe partial sealed class Spinner : VxHandle {
+public unsafe partial sealed class Spinner : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_spinner_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_spinner_drop(pointer);
     }
     public Spinner() {
-        Vx.spinner_new();
+        Egui.spinner_new();
     
     }
     
     public Spinner Size(float size) {
-        Vx.spinner_size(TODO_ARG(size));
+        Egui.spinner_size(TODO_ARG(size));
     
     }
     
     public Spinner Color(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) color) {
-        Vx.spinner_color(TODO_ARG(color));
+        Egui.spinner_color(TODO_ARG(color));
     
     }
     
-    public void PaintAt(Ui ui, IBox2 rect) {
-        Vx.spinner_paint_at(TODO_ARG(ui), TODO_ARG(rect));
+    public void PaintAt(Ui ui, Rect rect) {
+        Egui.spinner_paint_at(TODO_ARG(ui), TODO_ARG(rect));
     
     }
 }
 
-public unsafe partial sealed class State : VxHandle {
+public unsafe partial sealed class State : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_state_drop(pointer);
     }
     public static State? Load(Context ctx, Id id) {
-        Vx.state_load(TODO_ARG(ctx), TODO_ARG(id));
+        Egui.state_load(TODO_ARG(ctx), TODO_ARG(id));
     
     }
     
     public void Store(Context ctx, Id id) {
-        Vx.state_store(TODO_ARG(ctx), TODO_ARG(id));
+        Egui.state_store(TODO_ARG(ctx), TODO_ARG(id));
     
     }
     
     public Vec2 Velocity() {
-        Vx.state_velocity();
+        Egui.state_velocity();
     
     }
 }
 
-public unsafe partial sealed class SubMenu : VxHandle {
+public unsafe partial sealed class SubMenu : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_sub_menu_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_sub_menu_drop(pointer);
     }
     public InnerResponse Show(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.sub_menu_show(TODO_ARG(ui), TODO_ARG(addContents));
+        Egui.sub_menu_show(TODO_ARG(ui), TODO_ARG(addContents));
     
     }
 }
 
-public unsafe partial sealed class SubMenuButton : VxHandle {
+public unsafe partial sealed class SubMenuButton : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_sub_menu_button_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_sub_menu_button_drop(pointer);
     }
     public SubMenuButton Icon(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) icon) {
-        Vx.sub_menu_button_icon(TODO_ARG(icon));
+        Egui.sub_menu_button_icon(TODO_ARG(icon));
     
     }
 }
@@ -4349,38 +4349,38 @@ public unsafe partial sealed class SubMenuButton : VxHandle {
 /// 
 /// Used for <c>TextEdit</c> and <c>Label</c>.
 /// </summary>
-public unsafe partial sealed class TextCursorState : VxHandle {
+public unsafe partial sealed class TextCursorState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_text_cursor_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_text_cursor_state_drop(pointer);
     }
     public bool IsEmpty() {
-        Vx.text_cursor_state_is_empty();
+        Egui.text_cursor_state_is_empty();
     
     }
     
     public CCursorRange? CharRange() {
-        Vx.text_cursor_state_char_range();
+        Egui.text_cursor_state_char_range();
     
     }
     
     public CursorRange? Range(Galley galley) {
-        Vx.text_cursor_state_range(TODO_ARG(galley));
+        Egui.text_cursor_state_range(TODO_ARG(galley));
     
     }
     
     public void SetCharRange(CCursorRange? ccursorRange) {
-        Vx.text_cursor_state_set_char_range(TODO_ARG(ccursorRange));
+        Egui.text_cursor_state_set_char_range(TODO_ARG(ccursorRange));
     
     }
     
     public void SetRange(CursorRange? cursorRange) {
-        Vx.text_cursor_state_set_range(TODO_ARG(cursorRange));
+        Egui.text_cursor_state_set_range(TODO_ARG(cursorRange));
     
     }
     
     public bool PointerInteraction(Ui ui, Response response, Cursor cursorAtPointer, Galley galley, bool isBeingDragged) {
-        Vx.text_cursor_state_pointer_interaction(TODO_ARG(ui), TODO_ARG(response), TODO_ARG(cursorAtPointer), TODO_ARG(galley), TODO_ARG(isBeingDragged));
+        Egui.text_cursor_state_pointer_interaction(TODO_ARG(ui), TODO_ARG(response), TODO_ARG(cursorAtPointer), TODO_ARG(galley), TODO_ARG(isBeingDragged));
     
     }
 }
@@ -4397,158 +4397,158 @@ public unsafe partial sealed class TextCursorState : VxHandle {
 /// ## Other
 /// The background color of a <c>TextEdit</c> is <c>ExtremeBgColor</c> or can be set with <c>BackgroundColor</c>.
 /// </summary>
-public unsafe partial sealed class TextEdit : VxHandle {
+public unsafe partial sealed class TextEdit : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_text_edit_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_text_edit_drop(pointer);
     }
     public static TextEditState? LoadState(Context ctx, Id id) {
-        Vx.text_edit_load_state(TODO_ARG(ctx), TODO_ARG(id));
+        Egui.text_edit_load_state(TODO_ARG(ctx), TODO_ARG(id));
     
     }
     
     public static void StoreState(Context ctx, Id id, TextEditState state) {
-        Vx.text_edit_store_state(TODO_ARG(ctx), TODO_ARG(id), TODO_ARG(state));
+        Egui.text_edit_store_state(TODO_ARG(ctx), TODO_ARG(id), TODO_ARG(state));
     
     }
     
     public static TextEdit Singleline(BorrowedRef { lifetime: Some("'t"), is_mutable: true, type_: DynTrait(DynTrait { traits: [PolyTrait { trait_: Path { path: "TextBuffer", id: Id(5351), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [] }], lifetime: None }) } text) {
-        Vx.text_edit_singleline(TODO_ARG(text));
+        Egui.text_edit_singleline(TODO_ARG(text));
     
     }
     
     public static TextEdit Multiline(BorrowedRef { lifetime: Some("'t"), is_mutable: true, type_: DynTrait(DynTrait { traits: [PolyTrait { trait_: Path { path: "TextBuffer", id: Id(5351), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [] }], lifetime: None }) } text) {
-        Vx.text_edit_multiline(TODO_ARG(text));
+        Egui.text_edit_multiline(TODO_ARG(text));
     
     }
     
     public TextEdit CodeEditor() {
-        Vx.text_edit_code_editor();
+        Egui.text_edit_code_editor();
     
     }
     
     public TextEdit Id(Id id) {
-        Vx.text_edit_id(TODO_ARG(id));
+        Egui.text_edit_id(TODO_ARG(id));
     
     }
     
     public TextEdit IdSource(ImplTrait([TraitBound { trait_: Path { path: "std::hash::Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.text_edit_id_source(TODO_ARG(idSalt));
+        Egui.text_edit_id_source(TODO_ARG(idSalt));
     
     }
     
     public TextEdit IdSalt(ImplTrait([TraitBound { trait_: Path { path: "std::hash::Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.text_edit_id_salt(TODO_ARG(idSalt));
+        Egui.text_edit_id_salt(TODO_ARG(idSalt));
     
     }
     
     public TextEdit HintText(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) hintText) {
-        Vx.text_edit_hint_text(TODO_ARG(hintText));
+        Egui.text_edit_hint_text(TODO_ARG(hintText));
     
     }
     
-    public TextEdit BackgroundColor(Color4 color) {
-        Vx.text_edit_background_color(TODO_ARG(color));
+    public TextEdit BackgroundColor(Color32 color) {
+        Egui.text_edit_background_color(TODO_ARG(color));
     
     }
     
     public TextEdit HintTextFont(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "FontSelection", id: Id(4433), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) hintTextFont) {
-        Vx.text_edit_hint_text_font(TODO_ARG(hintTextFont));
+        Egui.text_edit_hint_text_font(TODO_ARG(hintTextFont));
     
     }
     
     public TextEdit Password(bool password) {
-        Vx.text_edit_password(TODO_ARG(password));
+        Egui.text_edit_password(TODO_ARG(password));
     
     }
     
     public TextEdit Font(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "FontSelection", id: Id(4433), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) fontSelection) {
-        Vx.text_edit_font(TODO_ARG(fontSelection));
+        Egui.text_edit_font(TODO_ARG(fontSelection));
     
     }
     
-    public TextEdit TextColor(Color4 textColor) {
-        Vx.text_edit_text_color(TODO_ARG(textColor));
+    public TextEdit TextColor(Color32 textColor) {
+        Egui.text_edit_text_color(TODO_ARG(textColor));
     
     }
     
-    public TextEdit TextColorOpt(Color4? textColor) {
-        Vx.text_edit_text_color_opt(TODO_ARG(textColor));
+    public TextEdit TextColorOpt(Color32? textColor) {
+        Egui.text_edit_text_color_opt(TODO_ARG(textColor));
     
     }
     
     public TextEdit Layouter(BorrowedRef { lifetime: Some("'t"), is_mutable: true, type_: DynTrait(DynTrait { traits: [PolyTrait { trait_: Path { path: "FnMut", id: Id(1319), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, BorrowedRef { lifetime: None, is_mutable: false, type_: Primitive("str") }, Primitive("f32")], output: Some(ResolvedPath(Path { path: "Arc", id: Id(1246), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Galley", id: Id(4068), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) })) }) }, generic_params: [] }], lifetime: None }) } layouter) {
-        Vx.text_edit_layouter(TODO_ARG(layouter));
+        Egui.text_edit_layouter(TODO_ARG(layouter));
     
     }
     
     public TextEdit Interactive(bool interactive) {
-        Vx.text_edit_interactive(TODO_ARG(interactive));
+        Egui.text_edit_interactive(TODO_ARG(interactive));
     
     }
     
     public TextEdit Frame(bool frame) {
-        Vx.text_edit_frame(TODO_ARG(frame));
+        Egui.text_edit_frame(TODO_ARG(frame));
     
     }
     
     public TextEdit Margin(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Margin", id: Id(474), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) margin) {
-        Vx.text_edit_margin(TODO_ARG(margin));
+        Egui.text_edit_margin(TODO_ARG(margin));
     
     }
     
     public TextEdit DesiredWidth(float desiredWidth) {
-        Vx.text_edit_desired_width(TODO_ARG(desiredWidth));
+        Egui.text_edit_desired_width(TODO_ARG(desiredWidth));
     
     }
     
     public TextEdit DesiredRows(nuint desiredHeightRows) {
-        Vx.text_edit_desired_rows(TODO_ARG(desiredHeightRows));
+        Egui.text_edit_desired_rows(TODO_ARG(desiredHeightRows));
     
     }
     
     public TextEdit LockFocus(bool tabWillIndent) {
-        Vx.text_edit_lock_focus(TODO_ARG(tabWillIndent));
+        Egui.text_edit_lock_focus(TODO_ARG(tabWillIndent));
     
     }
     
     public TextEdit CursorAtEnd(bool b) {
-        Vx.text_edit_cursor_at_end(TODO_ARG(b));
+        Egui.text_edit_cursor_at_end(TODO_ARG(b));
     
     }
     
     public TextEdit ClipText(bool b) {
-        Vx.text_edit_clip_text(TODO_ARG(b));
+        Egui.text_edit_clip_text(TODO_ARG(b));
     
     }
     
     public TextEdit CharLimit(nuint limit) {
-        Vx.text_edit_char_limit(TODO_ARG(limit));
+        Egui.text_edit_char_limit(TODO_ARG(limit));
     
     }
     
     public TextEdit HorizontalAlign(Align align) {
-        Vx.text_edit_horizontal_align(TODO_ARG(align));
+        Egui.text_edit_horizontal_align(TODO_ARG(align));
     
     }
     
     public TextEdit VerticalAlign(Align align) {
-        Vx.text_edit_vertical_align(TODO_ARG(align));
+        Egui.text_edit_vertical_align(TODO_ARG(align));
     
     }
     
     public TextEdit MinSize(Vec2 minSize) {
-        Vx.text_edit_min_size(TODO_ARG(minSize));
+        Egui.text_edit_min_size(TODO_ARG(minSize));
     
     }
     
     public TextEdit ReturnKey(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Option", id: Id(118), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "KeyboardShortcut", id: Id(1372), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) returnKey) {
-        Vx.text_edit_return_key(TODO_ARG(returnKey));
+        Egui.text_edit_return_key(TODO_ARG(returnKey));
     
     }
     
     public TextEditOutput Show(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.text_edit_show(TODO_ARG(ui));
+        Egui.text_edit_show(TODO_ARG(ui));
     
     }
 }
@@ -4556,13 +4556,13 @@ public unsafe partial sealed class TextEdit : VxHandle {
 /// <summary>
 /// The output from a <c>TextEdit</c>.
 /// </summary>
-public unsafe partial sealed class TextEditOutput : VxHandle {
+public unsafe partial sealed class TextEditOutput : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_text_edit_output_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_text_edit_output_drop(pointer);
     }
     public Pos2 TextDrawPos() {
-        Vx.text_edit_output_text_draw_pos();
+        Egui.text_edit_output_text_draw_pos();
     
     }
 }
@@ -4572,53 +4572,53 @@ public unsafe partial sealed class TextEditOutput : VxHandle {
 /// 
 /// Attention: You also need to <c>Store</c> the updated state.
 /// </summary>
-public unsafe partial sealed class TextEditState : VxHandle {
+public unsafe partial sealed class TextEditState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_text_edit_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_text_edit_state_drop(pointer);
     }
     public static TextEditState? Load(Context ctx, Id id) {
-        Vx.text_edit_state_load(TODO_ARG(ctx), TODO_ARG(id));
+        Egui.text_edit_state_load(TODO_ARG(ctx), TODO_ARG(id));
     
     }
     
     public void Store(Context ctx, Id id) {
-        Vx.text_edit_state_store(TODO_ARG(ctx), TODO_ARG(id));
+        Egui.text_edit_state_store(TODO_ARG(ctx), TODO_ARG(id));
     
     }
     
     public CCursorRange? CcursorRange() {
-        Vx.text_edit_state_ccursor_range();
+        Egui.text_edit_state_ccursor_range();
     
     }
     
     public void SetCcursorRange(CCursorRange? ccursorRange) {
-        Vx.text_edit_state_set_ccursor_range(TODO_ARG(ccursorRange));
+        Egui.text_edit_state_set_ccursor_range(TODO_ARG(ccursorRange));
     
     }
     
     public void SetCursorRange(CursorRange? cursorRange) {
-        Vx.text_edit_state_set_cursor_range(TODO_ARG(cursorRange));
+        Egui.text_edit_state_set_cursor_range(TODO_ARG(cursorRange));
     
     }
     
     public crate::util::undoer::Undoer Undoer() {
-        Vx.text_edit_state_undoer();
+        Egui.text_edit_state_undoer();
     
     }
     
     public void SetUndoer(crate::util::undoer::Undoer undoer) {
-        Vx.text_edit_state_set_undoer(TODO_ARG(undoer));
+        Egui.text_edit_state_set_undoer(TODO_ARG(undoer));
     
     }
     
     public void ClearUndoer() {
-        Vx.text_edit_state_clear_undoer();
+        Egui.text_edit_state_clear_undoer();
     
     }
     
     public CursorRange? CursorRange(Galley galley) {
-        Vx.text_edit_state_cursor_range(TODO_ARG(galley));
+        Egui.text_edit_state_cursor_range(TODO_ARG(galley));
     
     }
 }
@@ -4626,10 +4626,10 @@ public unsafe partial sealed class TextEditState : VxHandle {
 /// <summary>
 /// Reset at the start of each frame.
 /// </summary>
-public unsafe partial sealed class TooltipPassState : VxHandle {
+public unsafe partial sealed class TooltipPassState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_tooltip_pass_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_tooltip_pass_state_drop(pointer);
     }
 }
 
@@ -4643,93 +4643,93 @@ public unsafe partial sealed class TooltipPassState : VxHandle {
 /// 
 /// See the module level docs for more details.See also <c>SidePanel</c>.
 /// </summary>
-public unsafe partial sealed class TopBottomPanel : VxHandle {
+public unsafe partial sealed class TopBottomPanel : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_top_bottom_panel_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_top_bottom_panel_drop(pointer);
     }
     public static TopBottomPanel Top(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Id", id: Id(158), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) id) {
-        Vx.top_bottom_panel_top(TODO_ARG(id));
+        Egui.top_bottom_panel_top(TODO_ARG(id));
     
     }
     
     public static TopBottomPanel Bottom(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Id", id: Id(158), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) id) {
-        Vx.top_bottom_panel_bottom(TODO_ARG(id));
+        Egui.top_bottom_panel_bottom(TODO_ARG(id));
     
     }
     
     public TopBottomPanel(TopBottomSide side, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Id", id: Id(158), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) id) {
-        Vx.top_bottom_panel_new(TODO_ARG(side), TODO_ARG(id));
+        Egui.top_bottom_panel_new(TODO_ARG(side), TODO_ARG(id));
     
     }
     
     public TopBottomPanel Resizable(bool resizable) {
-        Vx.top_bottom_panel_resizable(TODO_ARG(resizable));
+        Egui.top_bottom_panel_resizable(TODO_ARG(resizable));
     
     }
     
     public TopBottomPanel ShowSeparatorLine(bool showSeparatorLine) {
-        Vx.top_bottom_panel_show_separator_line(TODO_ARG(showSeparatorLine));
+        Egui.top_bottom_panel_show_separator_line(TODO_ARG(showSeparatorLine));
     
     }
     
     public TopBottomPanel DefaultHeight(float defaultHeight) {
-        Vx.top_bottom_panel_default_height(TODO_ARG(defaultHeight));
+        Egui.top_bottom_panel_default_height(TODO_ARG(defaultHeight));
     
     }
     
     public TopBottomPanel MinHeight(float minHeight) {
-        Vx.top_bottom_panel_min_height(TODO_ARG(minHeight));
+        Egui.top_bottom_panel_min_height(TODO_ARG(minHeight));
     
     }
     
     public TopBottomPanel MaxHeight(float maxHeight) {
-        Vx.top_bottom_panel_max_height(TODO_ARG(maxHeight));
+        Egui.top_bottom_panel_max_height(TODO_ARG(maxHeight));
     
     }
     
     public TopBottomPanel HeightRange(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Rangef", id: Id(696), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) heightRange) {
-        Vx.top_bottom_panel_height_range(TODO_ARG(heightRange));
+        Egui.top_bottom_panel_height_range(TODO_ARG(heightRange));
     
     }
     
     public TopBottomPanel ExactHeight(float height) {
-        Vx.top_bottom_panel_exact_height(TODO_ARG(height));
+        Egui.top_bottom_panel_exact_height(TODO_ARG(height));
     
     }
     
     public TopBottomPanel Frame(Frame frame) {
-        Vx.top_bottom_panel_frame(TODO_ARG(frame));
+        Egui.top_bottom_panel_frame(TODO_ARG(frame));
     
     }
     
     public InnerResponse ShowInside(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.top_bottom_panel_show_inside(TODO_ARG(ui), TODO_ARG(addContents));
+        Egui.top_bottom_panel_show_inside(TODO_ARG(ui), TODO_ARG(addContents));
     
     }
     
     public InnerResponse Show(Context ctx, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.top_bottom_panel_show(TODO_ARG(ctx), TODO_ARG(addContents));
+        Egui.top_bottom_panel_show(TODO_ARG(ctx), TODO_ARG(addContents));
     
     }
     
     public InnerResponse? ShowAnimated(Context ctx, bool isExpanded, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.top_bottom_panel_show_animated(TODO_ARG(ctx), TODO_ARG(isExpanded), TODO_ARG(addContents));
+        Egui.top_bottom_panel_show_animated(TODO_ARG(ctx), TODO_ARG(isExpanded), TODO_ARG(addContents));
     
     }
     
     public InnerResponse? ShowAnimatedInside(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, bool isExpanded, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.top_bottom_panel_show_animated_inside(TODO_ARG(ui), TODO_ARG(isExpanded), TODO_ARG(addContents));
+        Egui.top_bottom_panel_show_animated_inside(TODO_ARG(ui), TODO_ARG(isExpanded), TODO_ARG(addContents));
     
     }
     
     public static InnerResponse? ShowAnimatedBetween(Context ctx, bool isExpanded, TopBottomPanel collapsedPanel, TopBottomPanel expandedPanel, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, Primitive("f32")], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.top_bottom_panel_show_animated_between(TODO_ARG(ctx), TODO_ARG(isExpanded), TODO_ARG(collapsedPanel), TODO_ARG(expandedPanel), TODO_ARG(addContents));
+        Egui.top_bottom_panel_show_animated_between(TODO_ARG(ctx), TODO_ARG(isExpanded), TODO_ARG(collapsedPanel), TODO_ARG(expandedPanel), TODO_ARG(addContents));
     
     }
     
     public static InnerResponse ShowAnimatedBetweenInside(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, bool isExpanded, TopBottomPanel collapsedPanel, TopBottomPanel expandedPanel, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, Primitive("f32")], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.top_bottom_panel_show_animated_between_inside(TODO_ARG(ui), TODO_ARG(isExpanded), TODO_ARG(collapsedPanel), TODO_ARG(expandedPanel), TODO_ARG(addContents));
+        Egui.top_bottom_panel_show_animated_between_inside(TODO_ARG(ui), TODO_ARG(isExpanded), TODO_ARG(collapsedPanel), TODO_ARG(expandedPanel), TODO_ARG(addContents));
     
     }
 }
@@ -4739,878 +4739,878 @@ public unsafe partial sealed class TopBottomPanel : VxHandle {
 /// 
 /// Represents a region of the screen with a type of layout (horizontal or vertical).
 /// </summary>
-public unsafe partial sealed class Ui : VxHandle {
+public unsafe partial sealed class Ui : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_ui_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_ui_drop(pointer);
     }
     public Ui(Context ctx, Id id, UiBuilder uiBuilder) {
-        Vx.ui_new(TODO_ARG(ctx), TODO_ARG(id), TODO_ARG(uiBuilder));
+        Egui.ui_new(TODO_ARG(ctx), TODO_ARG(id), TODO_ARG(uiBuilder));
     
     }
     
-    public Ui ChildUi(IBox2 maxRect, Layout layout, UiStackInfo? uiStackInfo) {
-        Vx.ui_child_ui(TODO_ARG(maxRect), TODO_ARG(layout), TODO_ARG(uiStackInfo));
+    public Ui ChildUi(Rect maxRect, Layout layout, UiStackInfo? uiStackInfo) {
+        Egui.ui_child_ui(TODO_ARG(maxRect), TODO_ARG(layout), TODO_ARG(uiStackInfo));
     
     }
     
-    public Ui ChildUiWithIdSource(IBox2 maxRect, Layout layout, ImplTrait([TraitBound { trait_: Path { path: "Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt, UiStackInfo? uiStackInfo) {
-        Vx.ui_child_ui_with_id_source(TODO_ARG(maxRect), TODO_ARG(layout), TODO_ARG(idSalt), TODO_ARG(uiStackInfo));
+    public Ui ChildUiWithIdSource(Rect maxRect, Layout layout, ImplTrait([TraitBound { trait_: Path { path: "Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt, UiStackInfo? uiStackInfo) {
+        Egui.ui_child_ui_with_id_source(TODO_ARG(maxRect), TODO_ARG(layout), TODO_ARG(idSalt), TODO_ARG(uiStackInfo));
     
     }
     
     public Ui NewChild(UiBuilder uiBuilder) {
-        Vx.ui_new_child(TODO_ARG(uiBuilder));
+        Egui.ui_new_child(TODO_ARG(uiBuilder));
     
     }
     
     public void SetSizingPass() {
-        Vx.ui_set_sizing_pass();
+        Egui.ui_set_sizing_pass();
     
     }
     
     public bool IsSizingPass() {
-        Vx.ui_is_sizing_pass();
+        Egui.ui_is_sizing_pass();
     
     }
     
     public Id Id() {
-        Vx.ui_id();
+        Egui.ui_id();
     
     }
     
     public Id UniqueId() {
-        Vx.ui_unique_id();
+        Egui.ui_unique_id();
     
     }
     
     public Arc Style() {
-        Vx.ui_style();
+        Egui.ui_style();
     
     }
     
     public BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Style", id: Id(493), args: Some(AngleBracketed { args: [], constraints: [] }) }) } StyleMut() {
-        Vx.ui_style_mut();
+        Egui.ui_style_mut();
     
     }
     
     public void SetStyle(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Arc", id: Id(1246), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Style", id: Id(493), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) style) {
-        Vx.ui_set_style(TODO_ARG(style));
+        Egui.ui_set_style(TODO_ARG(style));
     
     }
     
     public void ResetStyle() {
-        Vx.ui_reset_style();
+        Egui.ui_reset_style();
     
     }
     
     public Spacing Spacing() {
-        Vx.ui_spacing();
+        Egui.ui_spacing();
     
     }
     
     public BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::style::Spacing", id: Id(4468), args: Some(AngleBracketed { args: [], constraints: [] }) }) } SpacingMut() {
-        Vx.ui_spacing_mut();
+        Egui.ui_spacing_mut();
     
     }
     
     public Visuals Visuals() {
-        Vx.ui_visuals();
+        Egui.ui_visuals();
     
     }
     
     public BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Visuals", id: Id(1408), args: Some(AngleBracketed { args: [], constraints: [] }) }) } VisualsMut() {
-        Vx.ui_visuals_mut();
+        Egui.ui_visuals_mut();
     
     }
     
     public Arc Stack() {
-        Vx.ui_stack();
+        Egui.ui_stack();
     
     }
     
     public Context Ctx() {
-        Vx.ui_ctx();
+        Egui.ui_ctx();
     
     }
     
     public Painter Painter() {
-        Vx.ui_painter();
+        Egui.ui_painter();
     
     }
     
     public float PixelsPerPoint() {
-        Vx.ui_pixels_per_point();
+        Egui.ui_pixels_per_point();
     
     }
     
     public bool IsEnabled() {
-        Vx.ui_is_enabled();
+        Egui.ui_is_enabled();
     
     }
     
     public void Disable() {
-        Vx.ui_disable();
+        Egui.ui_disable();
     
     }
     
     public void SetEnabled(bool enabled) {
-        Vx.ui_set_enabled(TODO_ARG(enabled));
+        Egui.ui_set_enabled(TODO_ARG(enabled));
     
     }
     
     public bool IsVisible() {
-        Vx.ui_is_visible();
+        Egui.ui_is_visible();
     
     }
     
     public void SetInvisible() {
-        Vx.ui_set_invisible();
+        Egui.ui_set_invisible();
     
     }
     
     public void SetVisible(bool visible) {
-        Vx.ui_set_visible(TODO_ARG(visible));
+        Egui.ui_set_visible(TODO_ARG(visible));
     
     }
     
     public void SetOpacity(float opacity) {
-        Vx.ui_set_opacity(TODO_ARG(opacity));
+        Egui.ui_set_opacity(TODO_ARG(opacity));
     
     }
     
     public void MultiplyOpacity(float opacity) {
-        Vx.ui_multiply_opacity(TODO_ARG(opacity));
+        Egui.ui_multiply_opacity(TODO_ARG(opacity));
     
     }
     
     public float Opacity() {
-        Vx.ui_opacity();
+        Egui.ui_opacity();
     
     }
     
     public Layout Layout() {
-        Vx.ui_layout();
+        Egui.ui_layout();
     
     }
     
     public TextWrapMode WrapMode() {
-        Vx.ui_wrap_mode();
+        Egui.ui_wrap_mode();
     
     }
     
     public bool WrapText() {
-        Vx.ui_wrap_text();
+        Egui.ui_wrap_text();
     
     }
     
     public Align TextValign() {
-        Vx.ui_text_valign();
+        Egui.ui_text_valign();
     
     }
     
-    public Painter PainterAt(IBox2 rect) {
-        Vx.ui_painter_at(TODO_ARG(rect));
+    public Painter PainterAt(Rect rect) {
+        Egui.ui_painter_at(TODO_ARG(rect));
     
     }
     
     public LayerId LayerId() {
-        Vx.ui_layer_id();
+        Egui.ui_layer_id();
     
     }
     
     public float TextStyleHeight(TextStyle style) {
-        Vx.ui_text_style_height(TODO_ARG(style));
+        Egui.ui_text_style_height(TODO_ARG(style));
     
     }
     
-    public IBox2 ClipRect() {
-        Vx.ui_clip_rect();
+    public Rect ClipRect() {
+        Egui.ui_clip_rect();
     
     }
     
-    public void ShrinkClipRect(IBox2 newClipRect) {
-        Vx.ui_shrink_clip_rect(TODO_ARG(newClipRect));
+    public void ShrinkClipRect(Rect newClipRect) {
+        Egui.ui_shrink_clip_rect(TODO_ARG(newClipRect));
     
     }
     
-    public void SetClipRect(IBox2 clipRect) {
-        Vx.ui_set_clip_rect(TODO_ARG(clipRect));
+    public void SetClipRect(Rect clipRect) {
+        Egui.ui_set_clip_rect(TODO_ARG(clipRect));
     
     }
     
-    public bool IsRectVisible(IBox2 rect) {
-        Vx.ui_is_rect_visible(TODO_ARG(rect));
+    public bool IsRectVisible(Rect rect) {
+        Egui.ui_is_rect_visible(TODO_ARG(rect));
     
     }
     
     public Generic("R") Input(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "InputState", id: Id(1249), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) reader) {
-        Vx.ui_input(TODO_ARG(reader));
+        Egui.ui_input(TODO_ARG(reader));
     
     }
     
     public Generic("R") InputMut(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "InputState", id: Id(1249), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) writer) {
-        Vx.ui_input_mut(TODO_ARG(writer));
+        Egui.ui_input_mut(TODO_ARG(writer));
     
     }
     
     public Generic("R") Memory(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "Memory", id: Id(1312), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) reader) {
-        Vx.ui_memory(TODO_ARG(reader));
+        Egui.ui_memory(TODO_ARG(reader));
     
     }
     
     public Generic("R") MemoryMut(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Memory", id: Id(1312), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) writer) {
-        Vx.ui_memory_mut(TODO_ARG(writer));
+        Egui.ui_memory_mut(TODO_ARG(writer));
     
     }
     
     public Generic("R") Data(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "IdTypeMap", id: Id(1328), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) reader) {
-        Vx.ui_data(TODO_ARG(reader));
+        Egui.ui_data(TODO_ARG(reader));
     
     }
     
     public Generic("R") DataMut(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "IdTypeMap", id: Id(1328), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) writer) {
-        Vx.ui_data_mut(TODO_ARG(writer));
+        Egui.ui_data_mut(TODO_ARG(writer));
     
     }
     
     public Generic("R") Output(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "PlatformOutput", id: Id(1262), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) reader) {
-        Vx.ui_output(TODO_ARG(reader));
+        Egui.ui_output(TODO_ARG(reader));
     
     }
     
     public Generic("R") OutputMut(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "PlatformOutput", id: Id(1262), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) writer) {
-        Vx.ui_output_mut(TODO_ARG(writer));
+        Egui.ui_output_mut(TODO_ARG(writer));
     
     }
     
     public Generic("R") Fonts(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "Fonts", id: Id(1335), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) reader) {
-        Vx.ui_fonts(TODO_ARG(reader));
+        Egui.ui_fonts(TODO_ARG(reader));
     
     }
     
-    public IBox2 MinRect() {
-        Vx.ui_min_rect();
+    public Rect MinRect() {
+        Egui.ui_min_rect();
     
     }
     
     public Vec2 MinSize() {
-        Vx.ui_min_size();
+        Egui.ui_min_size();
     
     }
     
-    public IBox2 MaxRect() {
-        Vx.ui_max_rect();
+    public Rect MaxRect() {
+        Egui.ui_max_rect();
     
     }
     
     public void SetMaxSize(Vec2 size) {
-        Vx.ui_set_max_size(TODO_ARG(size));
+        Egui.ui_set_max_size(TODO_ARG(size));
     
     }
     
     public void SetMaxWidth(float width) {
-        Vx.ui_set_max_width(TODO_ARG(width));
+        Egui.ui_set_max_width(TODO_ARG(width));
     
     }
     
     public void SetMaxHeight(float height) {
-        Vx.ui_set_max_height(TODO_ARG(height));
+        Egui.ui_set_max_height(TODO_ARG(height));
     
     }
     
     public void SetMinSize(Vec2 size) {
-        Vx.ui_set_min_size(TODO_ARG(size));
+        Egui.ui_set_min_size(TODO_ARG(size));
     
     }
     
     public void SetMinWidth(float width) {
-        Vx.ui_set_min_width(TODO_ARG(width));
+        Egui.ui_set_min_width(TODO_ARG(width));
     
     }
     
     public void SetMinHeight(float height) {
-        Vx.ui_set_min_height(TODO_ARG(height));
+        Egui.ui_set_min_height(TODO_ARG(height));
     
     }
     
     public void ShrinkWidthToCurrent() {
-        Vx.ui_shrink_width_to_current();
+        Egui.ui_shrink_width_to_current();
     
     }
     
     public void ShrinkHeightToCurrent() {
-        Vx.ui_shrink_height_to_current();
+        Egui.ui_shrink_height_to_current();
     
     }
     
-    public void ExpandToIncludeRect(IBox2 rect) {
-        Vx.ui_expand_to_include_rect(TODO_ARG(rect));
+    public void ExpandToIncludeRect(Rect rect) {
+        Egui.ui_expand_to_include_rect(TODO_ARG(rect));
     
     }
     
     public void SetWidthRange(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Rangef", id: Id(696), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) width) {
-        Vx.ui_set_width_range(TODO_ARG(width));
+        Egui.ui_set_width_range(TODO_ARG(width));
     
     }
     
     public void SetHeightRange(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Rangef", id: Id(696), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) height) {
-        Vx.ui_set_height_range(TODO_ARG(height));
+        Egui.ui_set_height_range(TODO_ARG(height));
     
     }
     
     public void SetWidth(float width) {
-        Vx.ui_set_width(TODO_ARG(width));
+        Egui.ui_set_width(TODO_ARG(width));
     
     }
     
     public void SetHeight(float height) {
-        Vx.ui_set_height(TODO_ARG(height));
+        Egui.ui_set_height(TODO_ARG(height));
     
     }
     
     public void ExpandToIncludeX(float x) {
-        Vx.ui_expand_to_include_x(TODO_ARG(x));
+        Egui.ui_expand_to_include_x(TODO_ARG(x));
     
     }
     
     public void ExpandToIncludeY(float y) {
-        Vx.ui_expand_to_include_y(TODO_ARG(y));
+        Egui.ui_expand_to_include_y(TODO_ARG(y));
     
     }
     
     public Vec2 AvailableSize() {
-        Vx.ui_available_size();
+        Egui.ui_available_size();
     
     }
     
     public float AvailableWidth() {
-        Vx.ui_available_width();
+        Egui.ui_available_width();
     
     }
     
     public float AvailableHeight() {
-        Vx.ui_available_height();
+        Egui.ui_available_height();
     
     }
     
     public Vec2 AvailableSizeBeforeWrap() {
-        Vx.ui_available_size_before_wrap();
+        Egui.ui_available_size_before_wrap();
     
     }
     
-    public IBox2 AvailableRectBeforeWrap() {
-        Vx.ui_available_rect_before_wrap();
+    public Rect AvailableRectBeforeWrap() {
+        Egui.ui_available_rect_before_wrap();
     
     }
     
     public Id MakePersistentId(Generic("IdSource") idSalt) {
-        Vx.ui_make_persistent_id(TODO_ARG(idSalt));
+        Egui.ui_make_persistent_id(TODO_ARG(idSalt));
     
     }
     
     public Id NextAutoId() {
-        Vx.ui_next_auto_id();
+        Egui.ui_next_auto_id();
     
     }
     
     public Id AutoIdWith(Generic("IdSource") idSalt) {
-        Vx.ui_auto_id_with(TODO_ARG(idSalt));
+        Egui.ui_auto_id_with(TODO_ARG(idSalt));
     
     }
     
     public void SkipAheadAutoIds(nuint count) {
-        Vx.ui_skip_ahead_auto_ids(TODO_ARG(count));
+        Egui.ui_skip_ahead_auto_ids(TODO_ARG(count));
     
     }
     
-    public Response Interact(IBox2 rect, Id id, Sense sense) {
-        Vx.ui_interact(TODO_ARG(rect), TODO_ARG(id), TODO_ARG(sense));
+    public Response Interact(Rect rect, Id id, Sense sense) {
+        Egui.ui_interact(TODO_ARG(rect), TODO_ARG(id), TODO_ARG(sense));
     
     }
     
-    public Response InteractWithHovered(IBox2 rect, bool containsPointer, Id id, Sense sense) {
-        Vx.ui_interact_with_hovered(TODO_ARG(rect), TODO_ARG(containsPointer), TODO_ARG(id), TODO_ARG(sense));
+    public Response InteractWithHovered(Rect rect, bool containsPointer, Id id, Sense sense) {
+        Egui.ui_interact_with_hovered(TODO_ARG(rect), TODO_ARG(containsPointer), TODO_ARG(id), TODO_ARG(sense));
     
     }
     
     public Response Response() {
-        Vx.ui_response();
+        Egui.ui_response();
     
     }
     
     public Response InteractBg(Sense sense) {
-        Vx.ui_interact_bg(TODO_ARG(sense));
+        Egui.ui_interact_bg(TODO_ARG(sense));
     
     }
     
-    public bool RectContainsPointer(IBox2 rect) {
-        Vx.ui_rect_contains_pointer(TODO_ARG(rect));
+    public bool RectContainsPointer(Rect rect) {
+        Egui.ui_rect_contains_pointer(TODO_ARG(rect));
     
     }
     
     public bool UiContainsPointer() {
-        Vx.ui_ui_contains_pointer();
+        Egui.ui_ui_contains_pointer();
     
     }
     
     public Response AllocateResponse(Vec2 desiredSize, Sense sense) {
-        Vx.ui_allocate_response(TODO_ARG(desiredSize), TODO_ARG(sense));
+        Egui.ui_allocate_response(TODO_ARG(desiredSize), TODO_ARG(sense));
     
     }
     
     public Tuple([ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) }), ResolvedPath(Path { path: "Response", id: Id(282), args: Some(AngleBracketed { args: [], constraints: [] }) })]) AllocateExactSize(Vec2 desiredSize, Sense sense) {
-        Vx.ui_allocate_exact_size(TODO_ARG(desiredSize), TODO_ARG(sense));
+        Egui.ui_allocate_exact_size(TODO_ARG(desiredSize), TODO_ARG(sense));
     
     }
     
     public Tuple([ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) }), ResolvedPath(Path { path: "Response", id: Id(282), args: Some(AngleBracketed { args: [], constraints: [] }) })]) AllocateAtLeast(Vec2 desiredSize, Sense sense) {
-        Vx.ui_allocate_at_least(TODO_ARG(desiredSize), TODO_ARG(sense));
+        Egui.ui_allocate_at_least(TODO_ARG(desiredSize), TODO_ARG(sense));
     
     }
     
     public Tuple([ResolvedPath(Path { path: "Id", id: Id(158), args: Some(AngleBracketed { args: [], constraints: [] }) }), ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) })]) AllocateSpace(Vec2 desiredSize) {
-        Vx.ui_allocate_space(TODO_ARG(desiredSize));
+        Egui.ui_allocate_space(TODO_ARG(desiredSize));
     
     }
     
-    public Response AllocateRect(IBox2 rect, Sense sense) {
-        Vx.ui_allocate_rect(TODO_ARG(rect), TODO_ARG(sense));
+    public Response AllocateRect(Rect rect, Sense sense) {
+        Egui.ui_allocate_rect(TODO_ARG(rect), TODO_ARG(sense));
     
     }
     
-    public Id AdvanceCursorAfterRect(IBox2 rect) {
-        Vx.ui_advance_cursor_after_rect(TODO_ARG(rect));
+    public Id AdvanceCursorAfterRect(Rect rect) {
+        Egui.ui_advance_cursor_after_rect(TODO_ARG(rect));
     
     }
     
-    public IBox2 Cursor() {
-        Vx.ui_cursor();
+    public Rect Cursor() {
+        Egui.ui_cursor();
     
     }
     
     public Pos2 NextWidgetPosition() {
-        Vx.ui_next_widget_position();
+        Egui.ui_next_widget_position();
     
     }
     
     public InnerResponse AllocateUi(Vec2 desiredSize, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Self") }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_allocate_ui(TODO_ARG(desiredSize), TODO_ARG(addContents));
+        Egui.ui_allocate_ui(TODO_ARG(desiredSize), TODO_ARG(addContents));
     
     }
     
     public InnerResponse AllocateUiWithLayout(Vec2 desiredSize, Layout layout, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Self") }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_allocate_ui_with_layout(TODO_ARG(desiredSize), TODO_ARG(layout), TODO_ARG(addContents));
+        Egui.ui_allocate_ui_with_layout(TODO_ARG(desiredSize), TODO_ARG(layout), TODO_ARG(addContents));
     
     }
     
-    public InnerResponse AllocateUiAtRect(IBox2 maxRect, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Self") }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_allocate_ui_at_rect(TODO_ARG(maxRect), TODO_ARG(addContents));
+    public InnerResponse AllocateUiAtRect(Rect maxRect, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Self") }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
+        Egui.ui_allocate_ui_at_rect(TODO_ARG(maxRect), TODO_ARG(addContents));
     
     }
     
     public InnerResponse AllocateNewUi(UiBuilder uiBuilder, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Self") }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_allocate_new_ui(TODO_ARG(uiBuilder), TODO_ARG(addContents));
+        Egui.ui_allocate_new_ui(TODO_ARG(uiBuilder), TODO_ARG(addContents));
     
     }
     
     public Tuple([ResolvedPath(Path { path: "Response", id: Id(282), args: Some(AngleBracketed { args: [], constraints: [] }) }), ResolvedPath(Path { path: "Painter", id: Id(1353), args: Some(AngleBracketed { args: [], constraints: [] }) })]) AllocatePainter(Vec2 desiredSize, Sense sense) {
-        Vx.ui_allocate_painter(TODO_ARG(desiredSize), TODO_ARG(sense));
+        Egui.ui_allocate_painter(TODO_ARG(desiredSize), TODO_ARG(sense));
     
     }
     
-    public void ScrollToRect(IBox2 rect, Align? align) {
-        Vx.ui_scroll_to_rect(TODO_ARG(rect), TODO_ARG(align));
+    public void ScrollToRect(Rect rect, Align? align) {
+        Egui.ui_scroll_to_rect(TODO_ARG(rect), TODO_ARG(align));
     
     }
     
-    public void ScrollToRectAnimation(IBox2 rect, Align? align, ScrollAnimation animation) {
-        Vx.ui_scroll_to_rect_animation(TODO_ARG(rect), TODO_ARG(align), TODO_ARG(animation));
+    public void ScrollToRectAnimation(Rect rect, Align? align, ScrollAnimation animation) {
+        Egui.ui_scroll_to_rect_animation(TODO_ARG(rect), TODO_ARG(align), TODO_ARG(animation));
     
     }
     
     public void ScrollToCursor(Align? align) {
-        Vx.ui_scroll_to_cursor(TODO_ARG(align));
+        Egui.ui_scroll_to_cursor(TODO_ARG(align));
     
     }
     
     public void ScrollToCursorAnimation(Align? align, ScrollAnimation animation) {
-        Vx.ui_scroll_to_cursor_animation(TODO_ARG(align), TODO_ARG(animation));
+        Egui.ui_scroll_to_cursor_animation(TODO_ARG(align), TODO_ARG(animation));
     
     }
     
     public void ScrollWithDelta(Vec2 delta) {
-        Vx.ui_scroll_with_delta(TODO_ARG(delta));
+        Egui.ui_scroll_with_delta(TODO_ARG(delta));
     
     }
     
     public void ScrollWithDeltaAnimation(Vec2 delta, ScrollAnimation animation) {
-        Vx.ui_scroll_with_delta_animation(TODO_ARG(delta), TODO_ARG(animation));
+        Egui.ui_scroll_with_delta_animation(TODO_ARG(delta), TODO_ARG(animation));
     
     }
     
     public Response Add(ImplTrait([TraitBound { trait_: Path { path: "Widget", id: Id(550), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) widget) {
-        Vx.ui_add(TODO_ARG(widget));
+        Egui.ui_add(TODO_ARG(widget));
     
     }
     
     public Response AddSized(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) maxSize, ImplTrait([TraitBound { trait_: Path { path: "Widget", id: Id(550), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) widget) {
-        Vx.ui_add_sized(TODO_ARG(maxSize), TODO_ARG(widget));
+        Egui.ui_add_sized(TODO_ARG(maxSize), TODO_ARG(widget));
     
     }
     
-    public Response Put(IBox2 maxRect, ImplTrait([TraitBound { trait_: Path { path: "Widget", id: Id(550), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) widget) {
-        Vx.ui_put(TODO_ARG(maxRect), TODO_ARG(widget));
+    public Response Put(Rect maxRect, ImplTrait([TraitBound { trait_: Path { path: "Widget", id: Id(550), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) widget) {
+        Egui.ui_put(TODO_ARG(maxRect), TODO_ARG(widget));
     
     }
     
     public Response AddEnabled(bool enabled, ImplTrait([TraitBound { trait_: Path { path: "Widget", id: Id(550), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) widget) {
-        Vx.ui_add_enabled(TODO_ARG(enabled), TODO_ARG(widget));
+        Egui.ui_add_enabled(TODO_ARG(enabled), TODO_ARG(widget));
     
     }
     
     public InnerResponse AddEnabledUi(bool enabled, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_add_enabled_ui(TODO_ARG(enabled), TODO_ARG(addContents));
+        Egui.ui_add_enabled_ui(TODO_ARG(enabled), TODO_ARG(addContents));
     
     }
     
     public Response AddVisible(bool visible, ImplTrait([TraitBound { trait_: Path { path: "Widget", id: Id(550), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) widget) {
-        Vx.ui_add_visible(TODO_ARG(visible), TODO_ARG(widget));
+        Egui.ui_add_visible(TODO_ARG(visible), TODO_ARG(widget));
     
     }
     
     public InnerResponse AddVisibleUi(bool visible, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_add_visible_ui(TODO_ARG(visible), TODO_ARG(addContents));
+        Egui.ui_add_visible_ui(TODO_ARG(visible), TODO_ARG(addContents));
     
     }
     
     public void AddSpace(float amount) {
-        Vx.ui_add_space(TODO_ARG(amount));
+        Egui.ui_add_space(TODO_ARG(amount));
     
     }
     
     public Response Label(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_label(TODO_ARG(text));
+        Egui.ui_label(TODO_ARG(text));
     
     }
     
     public Response ColoredLabel(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) color, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "RichText", id: Id(5339), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_colored_label(TODO_ARG(color), TODO_ARG(text));
+        Egui.ui_colored_label(TODO_ARG(color), TODO_ARG(text));
     
     }
     
     public Response Heading(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "RichText", id: Id(5339), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_heading(TODO_ARG(text));
+        Egui.ui_heading(TODO_ARG(text));
     
     }
     
     public Response Monospace(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "RichText", id: Id(5339), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_monospace(TODO_ARG(text));
+        Egui.ui_monospace(TODO_ARG(text));
     
     }
     
     public Response Code(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "RichText", id: Id(5339), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_code(TODO_ARG(text));
+        Egui.ui_code(TODO_ARG(text));
     
     }
     
     public Response Small(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "RichText", id: Id(5339), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_small(TODO_ARG(text));
+        Egui.ui_small(TODO_ARG(text));
     
     }
     
     public Response Strong(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "RichText", id: Id(5339), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_strong(TODO_ARG(text));
+        Egui.ui_strong(TODO_ARG(text));
     
     }
     
     public Response Weak(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "RichText", id: Id(5339), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_weak(TODO_ARG(text));
+        Egui.ui_weak(TODO_ARG(text));
     
     }
     
     public Response Link(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_link(TODO_ARG(text));
+        Egui.ui_link(TODO_ARG(text));
     
     }
     
     public Response Hyperlink(ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) url) {
-        Vx.ui_hyperlink(TODO_ARG(url));
+        Egui.ui_hyperlink(TODO_ARG(url));
     
     }
     
     public Response HyperlinkTo(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) label, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) url) {
-        Vx.ui_hyperlink_to(TODO_ARG(label), TODO_ARG(url));
+        Egui.ui_hyperlink_to(TODO_ARG(label), TODO_ARG(url));
     
     }
     
     public Response TextEditSingleline(BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("S") } text) {
-        Vx.ui_text_edit_singleline(TODO_ARG(text));
+        Egui.ui_text_edit_singleline(TODO_ARG(text));
     
     }
     
     public Response TextEditMultiline(BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("S") } text) {
-        Vx.ui_text_edit_multiline(TODO_ARG(text));
+        Egui.ui_text_edit_multiline(TODO_ARG(text));
     
     }
     
     public Response CodeEditor(BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("S") } text) {
-        Vx.ui_code_editor(TODO_ARG(text));
+        Egui.ui_code_editor(TODO_ARG(text));
     
     }
     
     public Response Button(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_button(TODO_ARG(text));
+        Egui.ui_button(TODO_ARG(text));
     
     }
     
     public Response SmallButton(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_small_button(TODO_ARG(text));
+        Egui.ui_small_button(TODO_ARG(text));
     
     }
     
     public Response Checkbox(BorrowedRef { lifetime: None, is_mutable: true, type_: Primitive("bool") } checked, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_checkbox(TODO_ARG(checked), TODO_ARG(text));
+        Egui.ui_checkbox(TODO_ARG(checked), TODO_ARG(text));
     
     }
     
     public Response ToggleValue(BorrowedRef { lifetime: None, is_mutable: true, type_: Primitive("bool") } selected, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_toggle_value(TODO_ARG(selected), TODO_ARG(text));
+        Egui.ui_toggle_value(TODO_ARG(selected), TODO_ARG(text));
     
     }
     
     public Response Radio(bool selected, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_radio(TODO_ARG(selected), TODO_ARG(text));
+        Egui.ui_radio(TODO_ARG(selected), TODO_ARG(text));
     
     }
     
     public Response RadioValue(BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Value") } currentValue, Generic("Value") alternative, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_radio_value(TODO_ARG(currentValue), TODO_ARG(alternative), TODO_ARG(text));
+        Egui.ui_radio_value(TODO_ARG(currentValue), TODO_ARG(alternative), TODO_ARG(text));
     
     }
     
     public Response SelectableLabel(bool checked, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_selectable_label(TODO_ARG(checked), TODO_ARG(text));
+        Egui.ui_selectable_label(TODO_ARG(checked), TODO_ARG(text));
     
     }
     
     public Response SelectableValue(BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Value") } currentValue, Generic("Value") selectedValue, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) text) {
-        Vx.ui_selectable_value(TODO_ARG(currentValue), TODO_ARG(selectedValue), TODO_ARG(text));
+        Egui.ui_selectable_value(TODO_ARG(currentValue), TODO_ARG(selectedValue), TODO_ARG(text));
     
     }
     
     public Response Separator() {
-        Vx.ui_separator();
+        Egui.ui_separator();
     
     }
     
     public Response Spinner() {
-        Vx.ui_spinner();
+        Egui.ui_spinner();
     
     }
     
     public Response DragAngle(BorrowedRef { lifetime: None, is_mutable: true, type_: Primitive("f32") } radians) {
-        Vx.ui_drag_angle(TODO_ARG(radians));
+        Egui.ui_drag_angle(TODO_ARG(radians));
     
     }
     
     public Response DragAngleTau(BorrowedRef { lifetime: None, is_mutable: true, type_: Primitive("f32") } radians) {
-        Vx.ui_drag_angle_tau(TODO_ARG(radians));
+        Egui.ui_drag_angle_tau(TODO_ARG(radians));
     
     }
     
     public Response Image(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "ImageSource", id: Id(3592), args: Some(AngleBracketed { args: [Lifetime("'a")], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) source) {
-        Vx.ui_image(TODO_ARG(source));
+        Egui.ui_image(TODO_ARG(source));
     
     }
     
     public Response ColorEditButtonSrgba(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Color32", id: Id(477), args: Some(AngleBracketed { args: [], constraints: [] }) }) } srgba) {
-        Vx.ui_color_edit_button_srgba(TODO_ARG(srgba));
+        Egui.ui_color_edit_button_srgba(TODO_ARG(srgba));
     
     }
     
     public Response ColorEditButtonHsva(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Hsva", id: Id(5374), args: Some(AngleBracketed { args: [], constraints: [] }) }) } hsva) {
-        Vx.ui_color_edit_button_hsva(TODO_ARG(hsva));
+        Egui.ui_color_edit_button_hsva(TODO_ARG(hsva));
     
     }
     
     public Response ColorEditButtonSrgb(BorrowedRef { lifetime: None, is_mutable: true, type_: Array { type_: Primitive("u8"), len: "3" } } srgb) {
-        Vx.ui_color_edit_button_srgb(TODO_ARG(srgb));
+        Egui.ui_color_edit_button_srgb(TODO_ARG(srgb));
     
     }
     
     public Response ColorEditButtonRgb(BorrowedRef { lifetime: None, is_mutable: true, type_: Array { type_: Primitive("f32"), len: "3" } } rgb) {
-        Vx.ui_color_edit_button_rgb(TODO_ARG(rgb));
+        Egui.ui_color_edit_button_rgb(TODO_ARG(rgb));
     
     }
     
     public Response ColorEditButtonSrgbaPremultiplied(BorrowedRef { lifetime: None, is_mutable: true, type_: Array { type_: Primitive("u8"), len: "4" } } srgba) {
-        Vx.ui_color_edit_button_srgba_premultiplied(TODO_ARG(srgba));
+        Egui.ui_color_edit_button_srgba_premultiplied(TODO_ARG(srgba));
     
     }
     
     public Response ColorEditButtonSrgbaUnmultiplied(BorrowedRef { lifetime: None, is_mutable: true, type_: Array { type_: Primitive("u8"), len: "4" } } srgba) {
-        Vx.ui_color_edit_button_srgba_unmultiplied(TODO_ARG(srgba));
+        Egui.ui_color_edit_button_srgba_unmultiplied(TODO_ARG(srgba));
     
     }
     
     public Response ColorEditButtonRgbaPremultiplied(BorrowedRef { lifetime: None, is_mutable: true, type_: Array { type_: Primitive("f32"), len: "4" } } rgbaPremul) {
-        Vx.ui_color_edit_button_rgba_premultiplied(TODO_ARG(rgbaPremul));
+        Egui.ui_color_edit_button_rgba_premultiplied(TODO_ARG(rgbaPremul));
     
     }
     
     public Response ColorEditButtonRgbaUnmultiplied(BorrowedRef { lifetime: None, is_mutable: true, type_: Array { type_: Primitive("f32"), len: "4" } } rgbaUnmul) {
-        Vx.ui_color_edit_button_rgba_unmultiplied(TODO_ARG(rgbaUnmul));
+        Egui.ui_color_edit_button_rgba_unmultiplied(TODO_ARG(rgbaUnmul));
     
     }
     
     public InnerResponse Group(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_group(TODO_ARG(addContents));
+        Egui.ui_group(TODO_ARG(addContents));
     
     }
     
     public InnerResponse PushId(ImplTrait([TraitBound { trait_: Path { path: "Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_push_id(TODO_ARG(idSalt), TODO_ARG(addContents));
+        Egui.ui_push_id(TODO_ARG(idSalt), TODO_ARG(addContents));
     
     }
     
     public InnerResponse PushStackInfo(UiStackInfo uiStackInfo, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_push_stack_info(TODO_ARG(uiStackInfo), TODO_ARG(addContents));
+        Egui.ui_push_stack_info(TODO_ARG(uiStackInfo), TODO_ARG(addContents));
     
     }
     
     public InnerResponse Scope(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_scope(TODO_ARG(addContents));
+        Egui.ui_scope(TODO_ARG(addContents));
     
     }
     
     public InnerResponse ScopeBuilder(UiBuilder uiBuilder, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_scope_builder(TODO_ARG(uiBuilder), TODO_ARG(addContents));
+        Egui.ui_scope_builder(TODO_ARG(uiBuilder), TODO_ARG(addContents));
     
     }
     
     public InnerResponse ScopeDyn(UiBuilder uiBuilder, Box addContents) {
-        Vx.ui_scope_dyn(TODO_ARG(uiBuilder), TODO_ARG(addContents));
+        Egui.ui_scope_dyn(TODO_ARG(uiBuilder), TODO_ARG(addContents));
     
     }
     
     public InnerResponse WithLayerId(LayerId layerId, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Self") }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_with_layer_id(TODO_ARG(layerId), TODO_ARG(addContents));
+        Egui.ui_with_layer_id(TODO_ARG(layerId), TODO_ARG(addContents));
     
     }
     
     public CollapsingResponse Collapsing(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) heading, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_collapsing(TODO_ARG(heading), TODO_ARG(addContents));
+        Egui.ui_collapsing(TODO_ARG(heading), TODO_ARG(addContents));
     
     }
     
     public InnerResponse Indent(ImplTrait([TraitBound { trait_: Path { path: "Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_indent(TODO_ARG(idSalt), TODO_ARG(addContents));
+        Egui.ui_indent(TODO_ARG(idSalt), TODO_ARG(addContents));
     
     }
     
     public InnerResponse Horizontal(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_horizontal(TODO_ARG(addContents));
+        Egui.ui_horizontal(TODO_ARG(addContents));
     
     }
     
     public InnerResponse HorizontalCentered(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_horizontal_centered(TODO_ARG(addContents));
+        Egui.ui_horizontal_centered(TODO_ARG(addContents));
     
     }
     
     public InnerResponse HorizontalTop(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_horizontal_top(TODO_ARG(addContents));
+        Egui.ui_horizontal_top(TODO_ARG(addContents));
     
     }
     
     public InnerResponse HorizontalWrapped(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_horizontal_wrapped(TODO_ARG(addContents));
+        Egui.ui_horizontal_wrapped(TODO_ARG(addContents));
     
     }
     
     public InnerResponse Vertical(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_vertical(TODO_ARG(addContents));
+        Egui.ui_vertical(TODO_ARG(addContents));
     
     }
     
     public InnerResponse VerticalCentered(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_vertical_centered(TODO_ARG(addContents));
+        Egui.ui_vertical_centered(TODO_ARG(addContents));
     
     }
     
     public InnerResponse VerticalCenteredJustified(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_vertical_centered_justified(TODO_ARG(addContents));
+        Egui.ui_vertical_centered_justified(TODO_ARG(addContents));
     
     }
     
     public InnerResponse WithLayout(Layout layout, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Self") }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_with_layout(TODO_ARG(layout), TODO_ARG(addContents));
+        Egui.ui_with_layout(TODO_ARG(layout), TODO_ARG(addContents));
     
     }
     
     public InnerResponse CenteredAndJustified(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Self") }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_centered_and_justified(TODO_ARG(addContents));
+        Egui.ui_centered_and_justified(TODO_ARG(addContents));
     
     }
     
     public void EndRow() {
-        Vx.ui_end_row();
+        Egui.ui_end_row();
     
     }
     
     public void SetRowHeight(float height) {
-        Vx.ui_set_row_height(TODO_ARG(height));
+        Egui.ui_set_row_height(TODO_ARG(height));
     
     }
     
     public Generic("R") Columns(nuint numColumns, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Slice(Generic("Self")) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_columns(TODO_ARG(numColumns), TODO_ARG(addContents));
+        Egui.ui_columns(TODO_ARG(numColumns), TODO_ARG(addContents));
     
     }
     
     public Generic("R") ColumnsConst(ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Array { type_: Generic("Self"), len: "NUM_COL" } }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_columns_const(TODO_ARG(addContents));
+        Egui.ui_columns_const(TODO_ARG(addContents));
     
     }
     
     public InnerResponse DndDragSource(Id id, Generic("Payload") payload, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Self") }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_dnd_drag_source(TODO_ARG(id), TODO_ARG(payload), TODO_ARG(addContents));
+        Egui.ui_dnd_drag_source(TODO_ARG(id), TODO_ARG(payload), TODO_ARG(addContents));
     
     }
     
     public Tuple([ResolvedPath(Path { path: "InnerResponse", id: Id(239), args: Some(AngleBracketed { args: [Type(Generic("R"))], constraints: [] }) }), ResolvedPath(Path { path: "Option", id: Id(118), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Arc", id: Id(1246), args: Some(AngleBracketed { args: [Type(Generic("Payload"))], constraints: [] }) }))], constraints: [] }) })]) DndDropZone(Frame frame, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_dnd_drop_zone(TODO_ARG(frame), TODO_ARG(addContents));
+        Egui.ui_dnd_drop_zone(TODO_ARG(frame), TODO_ARG(addContents));
     
     }
     
     public InnerResponse WithVisualTransform(emath::TSTransform transform, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Self") }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_with_visual_transform(TODO_ARG(transform), TODO_ARG(addContents));
+        Egui.ui_with_visual_transform(TODO_ARG(transform), TODO_ARG(addContents));
     
     }
     
     public void CloseMenu() {
-        Vx.ui_close_menu();
+        Egui.ui_close_menu();
     
     }
     
     public InnerResponse MenuButton(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) title, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_menu_button(TODO_ARG(title), TODO_ARG(addContents));
+        Egui.ui_menu_button(TODO_ARG(title), TODO_ARG(addContents));
     
     }
     
     public InnerResponse MenuImageButton(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Image", id: Id(1424), args: Some(AngleBracketed { args: [Lifetime("'a")], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) image, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_menu_image_button(TODO_ARG(image), TODO_ARG(addContents));
+        Egui.ui_menu_image_button(TODO_ARG(image), TODO_ARG(addContents));
     
     }
     
     public InnerResponse MenuImageTextButton(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Image", id: Id(1424), args: Some(AngleBracketed { args: [Lifetime("'a")], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) image, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) title, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.ui_menu_image_text_button(TODO_ARG(image), TODO_ARG(title), TODO_ARG(addContents));
+        Egui.ui_menu_image_text_button(TODO_ARG(image), TODO_ARG(title), TODO_ARG(addContents));
     
     }
     
     public void DebugPaintCursor() {
-        Vx.ui_debug_paint_cursor();
+        Egui.ui_debug_paint_cursor();
     
     }
 }
@@ -5626,53 +5626,53 @@ public unsafe partial sealed class Ui : VxHandle {
 /// that stack. Most of its methods are about the specific node, but some methods walk up the
 /// hierarchy to provide information about the entire stack.
 /// </summary>
-public unsafe partial sealed class UiStack : VxHandle {
+public unsafe partial sealed class UiStack : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_ui_stack_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_ui_stack_drop(pointer);
     }
     public UiKind? Kind() {
-        Vx.ui_stack_kind();
+        Egui.ui_stack_kind();
     
     }
     
     public Frame Frame() {
-        Vx.ui_stack_frame();
+        Egui.ui_stack_frame();
     
     }
     
     public UiTags Tags() {
-        Vx.ui_stack_tags();
+        Egui.ui_stack_tags();
     
     }
     
     public bool IsPanelUi() {
-        Vx.ui_stack_is_panel_ui();
+        Egui.ui_stack_is_panel_ui();
     
     }
     
     public bool IsAreaUi() {
-        Vx.ui_stack_is_area_ui();
+        Egui.ui_stack_is_area_ui();
     
     }
     
     public bool IsRootUi() {
-        Vx.ui_stack_is_root_ui();
+        Egui.ui_stack_is_root_ui();
     
     }
     
     public bool HasVisibleFrame() {
-        Vx.ui_stack_has_visible_frame();
+        Egui.ui_stack_has_visible_frame();
     
     }
     
     public UiStackIterator Iter() {
-        Vx.ui_stack_iter();
+        Egui.ui_stack_iter();
     
     }
     
     public bool ContainedIn(UiKind kind) {
-        Vx.ui_stack_contained_in(TODO_ARG(kind));
+        Egui.ui_stack_contained_in(TODO_ARG(kind));
     
     }
 }
@@ -5682,10 +5682,10 @@ public unsafe partial sealed class UiStack : VxHandle {
 /// 
 /// See <c>Iter</c>.
 /// </summary>
-public unsafe partial sealed class UiStackIterator : VxHandle {
+public unsafe partial sealed class UiStackIterator : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_ui_stack_iterator_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_ui_stack_iterator_drop(pointer);
     }
 }
 
@@ -5705,48 +5705,48 @@ public unsafe partial sealed class UiStackIterator : VxHandle {
 /// Rule 1) will make sure an undo point is not created until you _stop_ dragging that slider.
 /// Rule 2) will make sure that you will get some undo points even if you are constantly changing the state.
 /// </summary>
-public unsafe partial sealed class Undoer : VxHandle {
+public unsafe partial sealed class Undoer : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_undoer_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_undoer_drop(pointer);
     }
     public static Undoer WithSettings(Settings settings) {
-        Vx.undoer_with_settings(TODO_ARG(settings));
+        Egui.undoer_with_settings(TODO_ARG(settings));
     
     }
     
     public bool HasUndo(Generic("State") currentState) {
-        Vx.undoer_has_undo(TODO_ARG(currentState));
+        Egui.undoer_has_undo(TODO_ARG(currentState));
     
     }
     
     public bool HasRedo(Generic("State") currentState) {
-        Vx.undoer_has_redo(TODO_ARG(currentState));
+        Egui.undoer_has_redo(TODO_ARG(currentState));
     
     }
     
     public bool IsInFlux() {
-        Vx.undoer_is_in_flux();
+        Egui.undoer_is_in_flux();
     
     }
     
     public Generic("State")? Undo(Generic("State") currentState) {
-        Vx.undoer_undo(TODO_ARG(currentState));
+        Egui.undoer_undo(TODO_ARG(currentState));
     
     }
     
     public Generic("State")? Redo(Generic("State") currentState) {
-        Vx.undoer_redo(TODO_ARG(currentState));
+        Egui.undoer_redo(TODO_ARG(currentState));
     
     }
     
     public void AddUndo(Generic("State") currentState) {
-        Vx.undoer_add_undo(TODO_ARG(currentState));
+        Egui.undoer_add_undo(TODO_ARG(currentState));
     
     }
     
     public void FeedState(double currentTime, Generic("State") currentState) {
-        Vx.undoer_feed_state(TODO_ARG(currentTime), TODO_ARG(currentState));
+        Egui.undoer_feed_state(TODO_ARG(currentTime), TODO_ARG(currentState));
     
     }
 }
@@ -5757,10 +5757,10 @@ public unsafe partial sealed class Undoer : VxHandle {
 /// Mostly for internal use.
 /// Things here may move and change without warning.
 /// </summary>
-public unsafe partial sealed class ViewportState : VxHandle {
+public unsafe partial sealed class ViewportState : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_viewport_state_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_viewport_state_drop(pointer);
     }
 }
 
@@ -5772,10 +5772,10 @@ public unsafe partial sealed class ViewportState : VxHandle {
 /// Note that this doesn't care if the mouse button is pressed or not,
 /// or if we're currently already dragging something.
 /// </summary>
-public unsafe partial sealed class WidgetHits : VxHandle {
+public unsafe partial sealed class WidgetHits : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_widget_hits_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_widget_hits_drop(pointer);
     }
 }
 
@@ -5785,58 +5785,58 @@ public unsafe partial sealed class WidgetHits : VxHandle {
 /// All <c>Ui</c>s have a <c>WidgetRect</c>. It is created in <c>New</c> with <c>Nothing</c>
 /// and updated with the correct <c>Rect</c> when the <c>Ui</c> is dropped.
 /// </summary>
-public unsafe partial sealed class WidgetRects : VxHandle {
+public unsafe partial sealed class WidgetRects : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_widget_rects_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_widget_rects_drop(pointer);
     }
     public ImplTrait([TraitBound { trait_: Path { path: "ExactSizeIterator", id: Id(3114), args: Some(AngleBracketed { args: [], constraints: [AssocItemConstraint { name: "Item", args: AngleBracketed { args: [], constraints: [] }, binding: Equality(Type(ResolvedPath(Path { path: "LayerId", id: Id(209), args: Some(AngleBracketed { args: [], constraints: [] }) }))) }] }) }, generic_params: [], modifier: None }, Outlives("'_")]) LayerIds() {
-        Vx.widget_rects_layer_ids();
+        Egui.widget_rects_layer_ids();
     
     }
     
     public ImplTrait([TraitBound { trait_: Path { path: "Iterator", id: Id(5613), args: Some(AngleBracketed { args: [], constraints: [AssocItemConstraint { name: "Item", args: AngleBracketed { args: [], constraints: [] }, binding: Equality(Type(Tuple([BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "LayerId", id: Id(209), args: Some(AngleBracketed { args: [], constraints: [] }) }) }, BorrowedRef { lifetime: None, is_mutable: false, type_: Slice(ResolvedPath(Path { path: "WidgetRect", id: Id(2750), args: Some(AngleBracketed { args: [], constraints: [] }) })) }]))) }] }) }, generic_params: [], modifier: None }, Outlives("'_")]) Layers() {
-        Vx.widget_rects_layers();
+        Egui.widget_rects_layers();
     
     }
     
     public WidgetRect? Get(Id id) {
-        Vx.widget_rects_get(TODO_ARG(id));
+        Egui.widget_rects_get(TODO_ARG(id));
     
     }
     
     public Tuple([ResolvedPath(Path { path: "LayerId", id: Id(209), args: Some(AngleBracketed { args: [], constraints: [] }) }), Primitive("usize")])? Order(Id id) {
-        Vx.widget_rects_order(TODO_ARG(id));
+        Egui.widget_rects_order(TODO_ARG(id));
     
     }
     
     public bool Contains(Id id) {
-        Vx.widget_rects_contains(TODO_ARG(id));
+        Egui.widget_rects_contains(TODO_ARG(id));
     
     }
     
     public ImplTrait([TraitBound { trait_: Path { path: "Iterator", id: Id(5613), args: Some(AngleBracketed { args: [], constraints: [AssocItemConstraint { name: "Item", args: AngleBracketed { args: [], constraints: [] }, binding: Equality(Type(BorrowedRef { lifetime: None, is_mutable: false, type_: ResolvedPath(Path { path: "WidgetRect", id: Id(2750), args: Some(AngleBracketed { args: [], constraints: [] }) }) })) }] }) }, generic_params: [], modifier: None }, Outlives("'_")]) GetLayer(LayerId layerId) {
-        Vx.widget_rects_get_layer(TODO_ARG(layerId));
+        Egui.widget_rects_get_layer(TODO_ARG(layerId));
     
     }
     
     public void Clear() {
-        Vx.widget_rects_clear();
+        Egui.widget_rects_clear();
     
     }
     
     public void Insert(LayerId layerId, WidgetRect widgetRect) {
-        Vx.widget_rects_insert(TODO_ARG(layerId), TODO_ARG(widgetRect));
+        Egui.widget_rects_insert(TODO_ARG(layerId), TODO_ARG(widgetRect));
     
     }
     
     public void SetInfo(Id id, WidgetInfo info) {
-        Vx.widget_rects_set_info(TODO_ARG(id), TODO_ARG(info));
+        Egui.widget_rects_set_info(TODO_ARG(id), TODO_ARG(info));
     
     }
     
     public WidgetInfo? Info(Id id) {
-        Vx.widget_rects_info(TODO_ARG(id));
+        Egui.widget_rects_info(TODO_ARG(id));
     
     }
 }
@@ -5854,223 +5854,223 @@ public unsafe partial sealed class WidgetRects : VxHandle {
 /// Note that this is NOT a native OS window.
 /// To create a new native OS window, use <c>ShowViewportDeferred</c>.
 /// </summary>
-public unsafe partial sealed class Window : VxHandle {
+public unsafe partial sealed class Window : EguiHandle {
     /// <inheritdoc/>
-    protected override void Free(VxObject* pointer) {
-        Vx.gui_window_drop(pointer);
+    protected override void Free(EguiObject* pointer) {
+        Egui.gui_window_drop(pointer);
     }
     public Window(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "WidgetText", id: Id(343), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) title) {
-        Vx.window_new(TODO_ARG(title));
+        Egui.window_new(TODO_ARG(title));
     
     }
     
     public Window Id(Id id) {
-        Vx.window_id(TODO_ARG(id));
+        Egui.window_id(TODO_ARG(id));
     
     }
     
     public Window Open(BorrowedRef { lifetime: Some("'open"), is_mutable: true, type_: Primitive("bool") } open) {
-        Vx.window_open(TODO_ARG(open));
+        Egui.window_open(TODO_ARG(open));
     
     }
     
     public Window Enabled(bool enabled) {
-        Vx.window_enabled(TODO_ARG(enabled));
+        Egui.window_enabled(TODO_ARG(enabled));
     
     }
     
     public Window Interactable(bool interactable) {
-        Vx.window_interactable(TODO_ARG(interactable));
+        Egui.window_interactable(TODO_ARG(interactable));
     
     }
     
     public Window Movable(bool movable) {
-        Vx.window_movable(TODO_ARG(movable));
+        Egui.window_movable(TODO_ARG(movable));
     
     }
     
     public Window Order(Order order) {
-        Vx.window_order(TODO_ARG(order));
+        Egui.window_order(TODO_ARG(order));
     
     }
     
     public Window FadeIn(bool fadeIn) {
-        Vx.window_fade_in(TODO_ARG(fadeIn));
+        Egui.window_fade_in(TODO_ARG(fadeIn));
     
     }
     
     public Window FadeOut(bool fadeOut) {
-        Vx.window_fade_out(TODO_ARG(fadeOut));
+        Egui.window_fade_out(TODO_ARG(fadeOut));
     
     }
     
     public Window Mutate(ImplTrait([TraitBound { trait_: Path { path: "Fn", id: Id(455), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: Generic("Self") }], output: None }) }, generic_params: [], modifier: None }]) mutate) {
-        Vx.window_mutate(TODO_ARG(mutate));
+        Egui.window_mutate(TODO_ARG(mutate));
     
     }
     
     public Window Resize(ImplTrait([TraitBound { trait_: Path { path: "Fn", id: Id(455), args: Some(Parenthesized { inputs: [ResolvedPath(Path { path: "Resize", id: Id(148), args: Some(AngleBracketed { args: [], constraints: [] }) })], output: Some(ResolvedPath(Path { path: "Resize", id: Id(148), args: Some(AngleBracketed { args: [], constraints: [] }) })) }) }, generic_params: [], modifier: None }]) mutate) {
-        Vx.window_resize(TODO_ARG(mutate));
+        Egui.window_resize(TODO_ARG(mutate));
     
     }
     
     public Window Frame(Frame frame) {
-        Vx.window_frame(TODO_ARG(frame));
+        Egui.window_frame(TODO_ARG(frame));
     
     }
     
     public Window MinWidth(float minWidth) {
-        Vx.window_min_width(TODO_ARG(minWidth));
+        Egui.window_min_width(TODO_ARG(minWidth));
     
     }
     
     public Window MinHeight(float minHeight) {
-        Vx.window_min_height(TODO_ARG(minHeight));
+        Egui.window_min_height(TODO_ARG(minHeight));
     
     }
     
     public Window MinSize(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) minSize) {
-        Vx.window_min_size(TODO_ARG(minSize));
+        Egui.window_min_size(TODO_ARG(minSize));
     
     }
     
     public Window MaxWidth(float maxWidth) {
-        Vx.window_max_width(TODO_ARG(maxWidth));
+        Egui.window_max_width(TODO_ARG(maxWidth));
     
     }
     
     public Window MaxHeight(float maxHeight) {
-        Vx.window_max_height(TODO_ARG(maxHeight));
+        Egui.window_max_height(TODO_ARG(maxHeight));
     
     }
     
     public Window MaxSize(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) maxSize) {
-        Vx.window_max_size(TODO_ARG(maxSize));
+        Egui.window_max_size(TODO_ARG(maxSize));
     
     }
     
     public Window CurrentPos(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Pos2", id: Id(144), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) currentPos) {
-        Vx.window_current_pos(TODO_ARG(currentPos));
+        Egui.window_current_pos(TODO_ARG(currentPos));
     
     }
     
     public Window DefaultPos(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Pos2", id: Id(144), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) defaultPos) {
-        Vx.window_default_pos(TODO_ARG(defaultPos));
+        Egui.window_default_pos(TODO_ARG(defaultPos));
     
     }
     
     public Window FixedPos(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Pos2", id: Id(144), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) pos) {
-        Vx.window_fixed_pos(TODO_ARG(pos));
+        Egui.window_fixed_pos(TODO_ARG(pos));
     
     }
     
     public Window Constrain(bool constrain) {
-        Vx.window_constrain(TODO_ARG(constrain));
+        Egui.window_constrain(TODO_ARG(constrain));
     
     }
     
-    public Window ConstrainTo(IBox2 constrainRect) {
-        Vx.window_constrain_to(TODO_ARG(constrainRect));
+    public Window ConstrainTo(Rect constrainRect) {
+        Egui.window_constrain_to(TODO_ARG(constrainRect));
     
     }
     
     public Window Pivot(Align2 pivot) {
-        Vx.window_pivot(TODO_ARG(pivot));
+        Egui.window_pivot(TODO_ARG(pivot));
     
     }
     
     public Window Anchor(Align2 align, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) offset) {
-        Vx.window_anchor(TODO_ARG(align), TODO_ARG(offset));
+        Egui.window_anchor(TODO_ARG(align), TODO_ARG(offset));
     
     }
     
     public Window DefaultOpen(bool defaultOpen) {
-        Vx.window_default_open(TODO_ARG(defaultOpen));
+        Egui.window_default_open(TODO_ARG(defaultOpen));
     
     }
     
     public Window DefaultSize(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) defaultSize) {
-        Vx.window_default_size(TODO_ARG(defaultSize));
+        Egui.window_default_size(TODO_ARG(defaultSize));
     
     }
     
     public Window DefaultWidth(float defaultWidth) {
-        Vx.window_default_width(TODO_ARG(defaultWidth));
+        Egui.window_default_width(TODO_ARG(defaultWidth));
     
     }
     
     public Window DefaultHeight(float defaultHeight) {
-        Vx.window_default_height(TODO_ARG(defaultHeight));
+        Egui.window_default_height(TODO_ARG(defaultHeight));
     
     }
     
     public Window FixedSize(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) size) {
-        Vx.window_fixed_size(TODO_ARG(size));
+        Egui.window_fixed_size(TODO_ARG(size));
     
     }
     
-    public Window DefaultRect(IBox2 rect) {
-        Vx.window_default_rect(TODO_ARG(rect));
+    public Window DefaultRect(Rect rect) {
+        Egui.window_default_rect(TODO_ARG(rect));
     
     }
     
-    public Window FixedRect(IBox2 rect) {
-        Vx.window_fixed_rect(TODO_ARG(rect));
+    public Window FixedRect(Rect rect) {
+        Egui.window_fixed_rect(TODO_ARG(rect));
     
     }
     
     public Window Resizable(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2b", id: Id(868), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) resizable) {
-        Vx.window_resizable(TODO_ARG(resizable));
+        Egui.window_resizable(TODO_ARG(resizable));
     
     }
     
     public Window Collapsible(bool collapsible) {
-        Vx.window_collapsible(TODO_ARG(collapsible));
+        Egui.window_collapsible(TODO_ARG(collapsible));
     
     }
     
     public Window TitleBar(bool titleBar) {
-        Vx.window_title_bar(TODO_ARG(titleBar));
+        Egui.window_title_bar(TODO_ARG(titleBar));
     
     }
     
     public Window AutoSized() {
-        Vx.window_auto_sized();
+        Egui.window_auto_sized();
     
     }
     
     public Window Scroll(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2b", id: Id(868), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) scroll) {
-        Vx.window_scroll(TODO_ARG(scroll));
+        Egui.window_scroll(TODO_ARG(scroll));
     
     }
     
     public Window Scroll2(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2b", id: Id(868), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) scroll) {
-        Vx.window_scroll2(TODO_ARG(scroll));
+        Egui.window_scroll2(TODO_ARG(scroll));
     
     }
     
     public Window Hscroll(bool hscroll) {
-        Vx.window_hscroll(TODO_ARG(hscroll));
+        Egui.window_hscroll(TODO_ARG(hscroll));
     
     }
     
     public Window Vscroll(bool vscroll) {
-        Vx.window_vscroll(TODO_ARG(vscroll));
+        Egui.window_vscroll(TODO_ARG(vscroll));
     
     }
     
     public Window DragToScroll(bool dragToScroll) {
-        Vx.window_drag_to_scroll(TODO_ARG(dragToScroll));
+        Egui.window_drag_to_scroll(TODO_ARG(dragToScroll));
     
     }
     
     public Window ScrollBarVisibility(ScrollBarVisibility visibility) {
-        Vx.window_scroll_bar_visibility(TODO_ARG(visibility));
+        Egui.window_scroll_bar_visibility(TODO_ARG(visibility));
     
     }
     
     public InnerResponse? Show(Context ctx, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.window_show(TODO_ARG(ctx), TODO_ARG(addContents));
+        Egui.window_show(TODO_ARG(ctx), TODO_ARG(addContents));
     
     }
 }
@@ -6085,7 +6085,7 @@ public unsafe partial struct AreaState {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly AreaState Default = (AreaState)Vx.area_state_default();
+    public static readonly AreaState Default = (AreaState)Egui.area_state_default();
 
     /// <summary>
     /// Last known position of the pivot.
@@ -6122,22 +6122,22 @@ public unsafe partial struct AreaState {
     public double? LastBecameVisibleAt;
     
     public static AreaState? Load(Context ctx, Id id) {
-        Vx.area_state_load(TODO_ARG(ctx), TODO_ARG(id));
+        Egui.area_state_load(TODO_ARG(ctx), TODO_ARG(id));
     
     }
     
     public Pos2 LeftTopPos() {
-        Vx.area_state_left_top_pos();
+        Egui.area_state_left_top_pos();
     
     }
     
     public void SetLeftTopPos(Pos2 pos) {
-        Vx.area_state_set_left_top_pos(TODO_ARG(pos));
+        Egui.area_state_set_left_top_pos(TODO_ARG(pos));
     
     }
     
-    public IBox2 Rect() {
-        Vx.area_state_rect();
+    public Rect Rect() {
+        Egui.area_state_rect();
     
     }
     
@@ -6145,10 +6145,10 @@ public unsafe partial struct AreaState {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static AreaState operator(VxAreaState value) => new AreaState {
-        PivotPos = value.pivot_pos.has_value ? (VxPos2)value.pivot_pos.value : null,
+    public static AreaState operator(EguiAreaState value) => new AreaState {
+        PivotPos = value.pivot_pos.has_value ? (EguiPos2)value.pivot_pos.value : null,
         Pivot = value.pivot,
-        Size = value.size.has_value ? (VxVec2)value.size.value : null,
+        Size = value.size.has_value ? (EguiVec2)value.size.value : null,
         Interactable = value.interactable,
         LastBecameVisibleAt = value.last_became_visible_at.has_value ? value.last_became_visible_at.value : null,
     }
@@ -6158,18 +6158,18 @@ public unsafe partial struct AreaState {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxAreaState operator(AreaState value) => new VxAreaState {
-        pivot_pos = new VxOptionPos2 {
+    public static EguiAreaState operator(AreaState value) => new EguiAreaState {
+        pivot_pos = new EguiOptionPos2 {
             has_value = value.PivotPos.HasValue,
             value = value.PivotPos.GetValueOrDefault(),
         },
         pivot = value.Pivot,
-        size = new VxOptionVec2 {
+        size = new EguiOptionVec2 {
             has_value = value.Size.HasValue,
             value = value.Size.GetValueOrDefault(),
         },
         interactable = value.Interactable,
-        last_became_visible_at = new VxOptionF64 {
+        last_became_visible_at = new EguiOptionF64 {
             has_value = value.LastBecameVisibleAt.HasValue,
             value = value.LastBecameVisibleAt.GetValueOrDefault(),
         },
@@ -6186,7 +6186,7 @@ public unsafe partial struct CCursorRange {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly CCursorRange Default = (CCursorRange)Vx.c_cursor_range_default();
+    public static readonly CCursorRange Default = (CCursorRange)Egui.c_cursor_range_default();
 
     /// <summary>
     /// When selecting with a mouse, this is where the mouse was released.
@@ -6202,29 +6202,29 @@ public unsafe partial struct CCursorRange {
     public CCursor Secondary;
     
     public static CCursorRange One(CCursor ccursor) {
-        Vx.c_cursor_range_one(TODO_ARG(ccursor));
+        Egui.c_cursor_range_one(TODO_ARG(ccursor));
     
     }
     
     public static CCursorRange Two(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CCursor", id: Id(5032), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) min, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CCursor", id: Id(5032), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) max) {
-        Vx.c_cursor_range_two(TODO_ARG(min), TODO_ARG(max));
+        Egui.c_cursor_range_two(TODO_ARG(min), TODO_ARG(max));
     
     }
     
     public bool IsSorted() {
-        Vx.c_cursor_range_is_sorted();
+        Egui.c_cursor_range_is_sorted();
     
     }
     
     public Array { type_: ResolvedPath(Path { path: "CCursor", id: Id(5032), args: Some(AngleBracketed { args: [], constraints: [] }) }), len: "2" } Sorted() {
-        Vx.c_cursor_range_sorted();
+        Egui.c_cursor_range_sorted();
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static CCursorRange operator(VxCCursorRange value) => new CCursorRange {
+    public static CCursorRange operator(EguiCCursorRange value) => new CCursorRange {
         Primary = (CCursor)value.primary,
         Secondary = (CCursor)value.secondary,
     }
@@ -6232,9 +6232,9 @@ public unsafe partial struct CCursorRange {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxCCursorRange operator(CCursorRange value) => new VxCCursorRange {
-        primary = (VxCCursor)value.Primary,
-        secondary = (VxCCursor)value.Secondary,
+    public static EguiCCursorRange operator(CCursorRange value) => new EguiCCursorRange {
+        primary = (EguiCCursor)value.Primary,
+        secondary = (EguiCCursor)value.Secondary,
     }
 }
 
@@ -6245,7 +6245,7 @@ public unsafe partial struct CursorRange {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly CursorRange Default = (CursorRange)Vx.cursor_range_default();
+    public static readonly CursorRange Default = (CursorRange)Egui.cursor_range_default();
 
     /// <summary>
     /// When selecting with a mouse, this is where the mouse was released.
@@ -6261,79 +6261,79 @@ public unsafe partial struct CursorRange {
     public Cursor Secondary;
     
     public static CursorRange One(Cursor cursor) {
-        Vx.cursor_range_one(TODO_ARG(cursor));
+        Egui.cursor_range_one(TODO_ARG(cursor));
     
     }
     
     public static CursorRange Two(Cursor min, Cursor max) {
-        Vx.cursor_range_two(TODO_ARG(min), TODO_ARG(max));
+        Egui.cursor_range_two(TODO_ARG(min), TODO_ARG(max));
     
     }
     
     public static CursorRange SelectAll(Galley galley) {
-        Vx.cursor_range_select_all(TODO_ARG(galley));
+        Egui.cursor_range_select_all(TODO_ARG(galley));
     
     }
     
     public CCursorRange AsCcursorRange() {
-        Vx.cursor_range_as_ccursor_range();
+        Egui.cursor_range_as_ccursor_range();
     
     }
     
     public std::ops::Range AsSortedCharRange() {
-        Vx.cursor_range_as_sorted_char_range();
+        Egui.cursor_range_as_sorted_char_range();
     
     }
     
     public bool IsEmpty() {
-        Vx.cursor_range_is_empty();
+        Egui.cursor_range_is_empty();
     
     }
     
     public bool Contains(CursorRange other) {
-        Vx.cursor_range_contains(TODO_ARG(other));
+        Egui.cursor_range_contains(TODO_ARG(other));
     
     }
     
     public Cursor? Single() {
-        Vx.cursor_range_single();
+        Egui.cursor_range_single();
     
     }
     
     public bool IsSorted() {
-        Vx.cursor_range_is_sorted();
+        Egui.cursor_range_is_sorted();
     
     }
     
     public CursorRange Sorted() {
-        Vx.cursor_range_sorted();
+        Egui.cursor_range_sorted();
     
     }
     
     public Array { type_: ResolvedPath(Path { path: "Cursor", id: Id(4983), args: Some(AngleBracketed { args: [], constraints: [] }) }), len: "2" } SortedCursors() {
-        Vx.cursor_range_sorted_cursors();
+        Egui.cursor_range_sorted_cursors();
     
     }
     
-    public string SliceStr(string text) {
-        Vx.cursor_range_slice_str(TODO_ARG(text));
+    public str SliceStr(str text) {
+        Egui.cursor_range_slice_str(TODO_ARG(text));
     
     }
     
     public bool OnKeyPress(OperatingSystem os, Galley galley, Modifiers modifiers, Key key) {
-        Vx.cursor_range_on_key_press(TODO_ARG(os), TODO_ARG(galley), TODO_ARG(modifiers), TODO_ARG(key));
+        Egui.cursor_range_on_key_press(TODO_ARG(os), TODO_ARG(galley), TODO_ARG(modifiers), TODO_ARG(key));
     
     }
     
     public bool OnEvent(OperatingSystem os, Event event, Galley galley, Id widgetId) {
-        Vx.cursor_range_on_event(TODO_ARG(os), TODO_ARG(event), TODO_ARG(galley), TODO_ARG(widgetId));
+        Egui.cursor_range_on_event(TODO_ARG(os), TODO_ARG(event), TODO_ARG(galley), TODO_ARG(widgetId));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static CursorRange operator(VxCursorRange value) => new CursorRange {
+    public static CursorRange operator(EguiCursorRange value) => new CursorRange {
         Primary = (Cursor)value.primary,
         Secondary = (Cursor)value.secondary,
     }
@@ -6341,9 +6341,9 @@ public unsafe partial struct CursorRange {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxCursorRange operator(CursorRange value) => new VxCursorRange {
-        primary = (VxCursor)value.Primary,
-        secondary = (VxCursor)value.Secondary,
+    public static EguiCursorRange operator(CursorRange value) => new EguiCursorRange {
+        primary = (EguiCursor)value.Primary,
+        secondary = (EguiCursor)value.Secondary,
     }
 }
 
@@ -6354,7 +6354,7 @@ public unsafe partial struct DebugOptions {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly DebugOptions Default = (DebugOptions)Vx.debug_options_default();
+    public static readonly DebugOptions Default = (DebugOptions)Egui.debug_options_default();
 
     /// <summary>
     /// Always show callstack to ui on hover.
@@ -6415,14 +6415,14 @@ public unsafe partial struct DebugOptions {
     public bool ShowUnaligned;
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.debug_options_ui(TODO_ARG(ui));
+        Egui.debug_options_ui(TODO_ARG(ui));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static DebugOptions operator(VxDebugOptions value) => new DebugOptions {
+    public static DebugOptions operator(EguiDebugOptions value) => new DebugOptions {
         DebugOnHover = value.debug_on_hover,
         DebugOnHoverWithAllModifiers = value.debug_on_hover_with_all_modifiers,
         HoverShowsNext = value.hover_shows_next,
@@ -6437,7 +6437,7 @@ public unsafe partial struct DebugOptions {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxDebugOptions operator(DebugOptions value) => new VxDebugOptions {
+    public static EguiDebugOptions operator(DebugOptions value) => new EguiDebugOptions {
         debug_on_hover = value.DebugOnHover,
         debug_on_hover_with_all_modifiers = value.DebugOnHoverWithAllModifiers,
         hover_shows_next = value.HoverShowsNext,
@@ -6457,7 +6457,7 @@ public unsafe partial struct DroppedFile {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly DroppedFile Default = (DroppedFile)Vx.dropped_file_default();
+    public static readonly DroppedFile Default = (DroppedFile)Egui.dropped_file_default();
 
     /* UNIMPLEMENTED (field) 
     /// <summary>
@@ -6492,7 +6492,7 @@ public unsafe partial struct DroppedFile {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static DroppedFile operator(VxDroppedFile value) => new DroppedFile {
+    public static DroppedFile operator(EguiDroppedFile value) => new DroppedFile {
         Path = value.path.has_value ? value.path.value : null,
         Name = STRING_CONV_TODO,
         Mime = STRING_CONV_TODO,
@@ -6505,18 +6505,18 @@ public unsafe partial struct DroppedFile {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxDroppedFile operator(DroppedFile value) => new VxDroppedFile {
-        path = new VxOptionStd::path::pathBuf {
+    public static EguiDroppedFile operator(DroppedFile value) => new EguiDroppedFile {
+        path = new EguiOptionStd::path::pathBuf {
             has_value = value.Path.HasValue,
             value = value.Path.GetValueOrDefault(),
         },
         name = STRING_CONV_TODO,
         mime = STRING_CONV_TODO,
-        last_modified = new VxOptionPosixTime {
+        last_modified = new EguiOptionPosixTime {
             has_value = value.LastModified.HasValue,
             value = value.LastModified.GetValueOrDefault(),
         },
-        bytes = new VxOptionStd::sync::arc {
+        bytes = new EguiOptionStd::sync::arc {
             has_value = value.Bytes.HasValue,
             value = value.Bytes.GetValueOrDefault(),
         },
@@ -6536,7 +6536,7 @@ public unsafe partial struct EventFilter {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly EventFilter Default = (EventFilter)Vx.event_filter_default();
+    public static readonly EventFilter Default = (EventFilter)Egui.event_filter_default();
 
     /// <summary>
     /// If <c>True</c>, pressing tab will act on the widget,
@@ -6571,14 +6571,14 @@ public unsafe partial struct EventFilter {
     public bool Escape;
     
     public bool Matches(Event event) {
-        Vx.event_filter_matches(TODO_ARG(event));
+        Egui.event_filter_matches(TODO_ARG(event));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static EventFilter operator(VxEventFilter value) => new EventFilter {
+    public static EventFilter operator(EguiEventFilter value) => new EventFilter {
         Tab = value.tab,
         HorizontalArrows = value.horizontal_arrows,
         VerticalArrows = value.vertical_arrows,
@@ -6588,7 +6588,7 @@ public unsafe partial struct EventFilter {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxEventFilter operator(EventFilter value) => new VxEventFilter {
+    public static EguiEventFilter operator(EventFilter value) => new EguiEventFilter {
         tab = value.Tab,
         horizontal_arrows = value.HorizontalArrows,
         vertical_arrows = value.VerticalArrows,
@@ -6617,7 +6617,7 @@ public unsafe partial struct Frame {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly Frame Default = (Frame)Vx.frame_default();
+    public static readonly Frame Default = (Frame)Egui.frame_default();
 
     /// <summary>
     /// Margin within the painted frame.
@@ -6631,7 +6631,7 @@ public unsafe partial struct Frame {
     /// 
     /// Known as <c>Background</c> in CSS.
     /// </summary>
-    public Color4 Fill;
+    public Color32 Fill;
     
     /// <summary>
     /// The width and color of the outline around the frame.
@@ -6671,141 +6671,141 @@ public unsafe partial struct Frame {
     public Shadow Shadow;
     
     public Frame() {
-        Vx.frame_new();
+        Egui.frame_new();
     
     }
     
     public static Frame None() {
-        Vx.frame_none();
+        Egui.frame_none();
     
     }
     
     public static Frame Group(Style style) {
-        Vx.frame_group(TODO_ARG(style));
+        Egui.frame_group(TODO_ARG(style));
     
     }
     
     public static Frame SideTopPanel(Style style) {
-        Vx.frame_side_top_panel(TODO_ARG(style));
+        Egui.frame_side_top_panel(TODO_ARG(style));
     
     }
     
     public static Frame CentralPanel(Style style) {
-        Vx.frame_central_panel(TODO_ARG(style));
+        Egui.frame_central_panel(TODO_ARG(style));
     
     }
     
     public static Frame Window(Style style) {
-        Vx.frame_window(TODO_ARG(style));
+        Egui.frame_window(TODO_ARG(style));
     
     }
     
     public static Frame Menu(Style style) {
-        Vx.frame_menu(TODO_ARG(style));
+        Egui.frame_menu(TODO_ARG(style));
     
     }
     
     public static Frame Popup(Style style) {
-        Vx.frame_popup(TODO_ARG(style));
+        Egui.frame_popup(TODO_ARG(style));
     
     }
     
     public static Frame Canvas(Style style) {
-        Vx.frame_canvas(TODO_ARG(style));
+        Egui.frame_canvas(TODO_ARG(style));
     
     }
     
     public static Frame DarkCanvas(Style style) {
-        Vx.frame_dark_canvas(TODO_ARG(style));
+        Egui.frame_dark_canvas(TODO_ARG(style));
     
     }
     
     public Frame InnerMargin(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Margin", id: Id(474), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) innerMargin) {
-        Vx.frame_inner_margin(TODO_ARG(innerMargin));
+        Egui.frame_inner_margin(TODO_ARG(innerMargin));
     
     }
     
-    public Frame Fill(Color4 fill) {
-        Vx.frame_fill(TODO_ARG(fill));
+    public Frame Fill(Color32 fill) {
+        Egui.frame_fill(TODO_ARG(fill));
     
     }
     
     public Frame Stroke(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Stroke", id: Id(479), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) stroke) {
-        Vx.frame_stroke(TODO_ARG(stroke));
+        Egui.frame_stroke(TODO_ARG(stroke));
     
     }
     
     public Frame CornerRadius(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius) {
-        Vx.frame_corner_radius(TODO_ARG(cornerRadius));
+        Egui.frame_corner_radius(TODO_ARG(cornerRadius));
     
     }
     
     public Frame Rounding(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "CornerRadius", id: Id(482), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) cornerRadius) {
-        Vx.frame_rounding(TODO_ARG(cornerRadius));
+        Egui.frame_rounding(TODO_ARG(cornerRadius));
     
     }
     
     public Frame OuterMargin(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Margin", id: Id(474), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) outerMargin) {
-        Vx.frame_outer_margin(TODO_ARG(outerMargin));
+        Egui.frame_outer_margin(TODO_ARG(outerMargin));
     
     }
     
     public Frame Shadow(Shadow shadow) {
-        Vx.frame_shadow(TODO_ARG(shadow));
+        Egui.frame_shadow(TODO_ARG(shadow));
     
     }
     
     public Frame MultiplyWithOpacity(float opacity) {
-        Vx.frame_multiply_with_opacity(TODO_ARG(opacity));
+        Egui.frame_multiply_with_opacity(TODO_ARG(opacity));
     
     }
     
     public Marginf TotalMargin() {
-        Vx.frame_total_margin();
+        Egui.frame_total_margin();
     
     }
     
-    public IBox2 FillRect(IBox2 contentRect) {
-        Vx.frame_fill_rect(TODO_ARG(contentRect));
+    public Rect FillRect(Rect contentRect) {
+        Egui.frame_fill_rect(TODO_ARG(contentRect));
     
     }
     
-    public IBox2 WidgetRect(IBox2 contentRect) {
-        Vx.frame_widget_rect(TODO_ARG(contentRect));
+    public Rect WidgetRect(Rect contentRect) {
+        Egui.frame_widget_rect(TODO_ARG(contentRect));
     
     }
     
-    public IBox2 OuterRect(IBox2 contentRect) {
-        Vx.frame_outer_rect(TODO_ARG(contentRect));
+    public Rect OuterRect(Rect contentRect) {
+        Egui.frame_outer_rect(TODO_ARG(contentRect));
     
     }
     
     public Prepared Begin(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.frame_begin(TODO_ARG(ui));
+        Egui.frame_begin(TODO_ARG(ui));
     
     }
     
     public InnerResponse Show(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.frame_show(TODO_ARG(ui), TODO_ARG(addContents));
+        Egui.frame_show(TODO_ARG(ui), TODO_ARG(addContents));
     
     }
     
     public InnerResponse ShowDyn(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui, Box addContents) {
-        Vx.frame_show_dyn(TODO_ARG(ui), TODO_ARG(addContents));
+        Egui.frame_show_dyn(TODO_ARG(ui), TODO_ARG(addContents));
     
     }
     
-    public Shape Paint(IBox2 contentRect) {
-        Vx.frame_paint(TODO_ARG(contentRect));
+    public Shape Paint(Rect contentRect) {
+        Egui.frame_paint(TODO_ARG(contentRect));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static Frame operator(VxFrame value) => new Frame {
+    public static Frame operator(EguiFrame value) => new Frame {
         InnerMargin = (Margin)value.inner_margin,
-        Fill = (Color4)value.fill,
+        Fill = (Color32)value.fill,
         Stroke = (Stroke)value.stroke,
         CornerRadius = (CornerRadius)value.corner_radius,
         OuterMargin = (Margin)value.outer_margin,
@@ -6815,13 +6815,13 @@ public unsafe partial struct Frame {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxFrame operator(Frame value) => new VxFrame {
-        inner_margin = (VxMargin)value.InnerMargin,
-        fill = (VxColor4)value.Fill,
-        stroke = (VxStroke)value.Stroke,
-        corner_radius = (VxCornerRadius)value.CornerRadius,
-        outer_margin = (VxMargin)value.OuterMargin,
-        shadow = (VxShadow)value.Shadow,
+    public static EguiFrame operator(Frame value) => new EguiFrame {
+        inner_margin = (EguiMargin)value.InnerMargin,
+        fill = (EguiColor32)value.Fill,
+        stroke = (EguiStroke)value.Stroke,
+        corner_radius = (EguiCornerRadius)value.CornerRadius,
+        outer_margin = (EguiMargin)value.OuterMargin,
+        shadow = (EguiShadow)value.Shadow,
     }
 }
 
@@ -6832,7 +6832,7 @@ public unsafe partial struct HoveredFile {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly HoveredFile Default = (HoveredFile)Vx.hovered_file_default();
+    public static readonly HoveredFile Default = (HoveredFile)Egui.hovered_file_default();
 
     /* UNIMPLEMENTED (field) 
     /// <summary>
@@ -6850,7 +6850,7 @@ public unsafe partial struct HoveredFile {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static HoveredFile operator(VxHoveredFile value) => new HoveredFile {
+    public static HoveredFile operator(EguiHoveredFile value) => new HoveredFile {
         Path = value.path.has_value ? value.path.value : null,
         Mime = STRING_CONV_TODO,
     }
@@ -6860,8 +6860,8 @@ public unsafe partial struct HoveredFile {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxHoveredFile operator(HoveredFile value) => new VxHoveredFile {
-        path = new VxOptionStd::path::pathBuf {
+    public static EguiHoveredFile operator(HoveredFile value) => new EguiHoveredFile {
+        path = new EguiOptionStd::path::pathBuf {
             has_value = value.Path.HasValue,
             value = value.Path.GetValueOrDefault(),
         },
@@ -6879,29 +6879,29 @@ public unsafe partial struct IMEOutput {
     /// <summary>
     /// Where the <c>TextEdit</c> is located on screen.
     /// </summary>
-    public IBox2 Rect;
+    public Rect Rect;
     
     /// <summary>
     /// Where the primary cursor is.
     /// 
     /// This is a very thin rectangle.
     /// </summary>
-    public IBox2 CursorRect;
+    public Rect CursorRect;
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static IMEOutput operator(VxIMEOutput value) => new IMEOutput {
-        Rect = (IBox2)value.rect,
-        CursorRect = (IBox2)value.cursor_rect,
+    public static IMEOutput operator(EguiIMEOutput value) => new IMEOutput {
+        Rect = (Rect)value.rect,
+        CursorRect = (Rect)value.cursor_rect,
     }
     
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxIMEOutput operator(IMEOutput value) => new VxIMEOutput {
-        rect = (VxIBox2)value.Rect,
-        cursor_rect = (VxIBox2)value.CursorRect,
+    public static EguiIMEOutput operator(IMEOutput value) => new EguiIMEOutput {
+        rect = (EguiRect)value.Rect,
+        cursor_rect = (EguiRect)value.CursorRect,
     }
 }
 
@@ -6909,22 +6909,22 @@ public unsafe partial struct ImageOptions {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly ImageOptions Default = (ImageOptions)Vx.image_options_default();
+    public static readonly ImageOptions Default = (ImageOptions)Egui.image_options_default();
 
     /// <summary>
     /// Select UV range. Default is (0,0) in top-left, (1,1) bottom right.
     /// </summary>
-    public IBox2 Uv;
+    public Rect Uv;
     
     /// <summary>
     /// A solid color to put behind the image. Useful for transparent images.
     /// </summary>
-    public Color4 BgFill;
+    public Color32 BgFill;
     
     /// <summary>
     /// Multiply image color with this. Default is WHITE (no tint).
     /// </summary>
-    public Color4 Tint;
+    public Color32 Tint;
     
     /* UNIMPLEMENTED (field) 
     /// <summary>
@@ -6955,10 +6955,10 @@ public unsafe partial struct ImageOptions {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static ImageOptions operator(VxImageOptions value) => new ImageOptions {
-        Uv = (IBox2)value.uv,
-        BgFill = (Color4)value.bg_fill,
-        Tint = (Color4)value.tint,
+    public static ImageOptions operator(EguiImageOptions value) => new ImageOptions {
+        Uv = (Rect)value.uv,
+        BgFill = (Color32)value.bg_fill,
+        Tint = (Color32)value.tint,
         Rotation = value.rotation.has_value ? value.rotation.value : null,
         CornerRadius = (CornerRadius)value.corner_radius,
     }
@@ -6968,15 +6968,15 @@ public unsafe partial struct ImageOptions {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxImageOptions operator(ImageOptions value) => new VxImageOptions {
-        uv = (VxIBox2)value.Uv,
-        bg_fill = (VxColor4)value.BgFill,
-        tint = (VxColor4)value.Tint,
-        rotation = new VxOptionTuple([resolvedPath(path{Path:"emath::rot2",Id:Id(6930),Args:Some(angleBracketed{Args:[],Constraints:[]})}),ResolvedPath(path{Path:"crate::vec2",Id:Id(150),Args:Some(angleBracketed{Args:[],Constraints:[]})})]) {
+    public static EguiImageOptions operator(ImageOptions value) => new EguiImageOptions {
+        uv = (EguiRect)value.Uv,
+        bg_fill = (EguiColor32)value.BgFill,
+        tint = (EguiColor32)value.Tint,
+        rotation = new EguiOptionTuple([resolvedPath(path{Path:"emath::rot2",Id:Id(6930),Args:Some(angleBracketed{Args:[],Constraints:[]})}),ResolvedPath(path{Path:"crate::vec2",Id:Id(150),Args:Some(angleBracketed{Args:[],Constraints:[]})})]) {
             has_value = value.Rotation.HasValue,
             value = value.Rotation.GetValueOrDefault(),
         },
-        corner_radius = (VxCornerRadius)value.CornerRadius,
+        corner_radius = (EguiCornerRadius)value.CornerRadius,
     }
     */
 }
@@ -6989,7 +6989,7 @@ public unsafe partial struct ImageSize {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly ImageSize Default = (ImageSize)Vx.image_size_default();
+    public static readonly ImageSize Default = (ImageSize)Egui.image_size_default();
 
     /// <summary>
     /// Whether or not the final size should maintain the original aspect ratio.
@@ -7019,12 +7019,12 @@ public unsafe partial struct ImageSize {
     */
     
     public SizeHint Hint(Vec2 availableSize, float pixelsPerPoint) {
-        Vx.image_size_hint(TODO_ARG(availableSize), TODO_ARG(pixelsPerPoint));
+        Egui.image_size_hint(TODO_ARG(availableSize), TODO_ARG(pixelsPerPoint));
     
     }
     
     public Vec2 CalcSize(Vec2 availableSize, Vec2 originalImageSize) {
-        Vx.image_size_calc_size(TODO_ARG(availableSize), TODO_ARG(originalImageSize));
+        Egui.image_size_calc_size(TODO_ARG(availableSize), TODO_ARG(originalImageSize));
     
     }
     
@@ -7032,7 +7032,7 @@ public unsafe partial struct ImageSize {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static ImageSize operator(VxImageSize value) => new ImageSize {
+    public static ImageSize operator(EguiImageSize value) => new ImageSize {
         MaintainAspectRatio = value.maintain_aspect_ratio,
         MaxSize = (Vec2)value.max_size,
         Fit = value.fit,
@@ -7043,9 +7043,9 @@ public unsafe partial struct ImageSize {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxImageSize operator(ImageSize value) => new VxImageSize {
+    public static EguiImageSize operator(ImageSize value) => new EguiImageSize {
         maintain_aspect_ratio = value.MaintainAspectRatio,
-        max_size = (VxVec2)value.MaxSize,
+        max_size = (EguiVec2)value.MaxSize,
         fit = value.Fit,
     }
     */
@@ -7058,7 +7058,7 @@ public unsafe partial struct Interaction {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly Interaction Default = (Interaction)Vx.interaction_default();
+    public static readonly Interaction Default = (Interaction)Egui.interaction_default();
 
     /// <summary>
     /// How close a widget must be to the mouse to have a chance to register as a click or drag.
@@ -7111,14 +7111,14 @@ public unsafe partial struct Interaction {
     public bool MultiWidgetTextSelect;
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.interaction_ui(TODO_ARG(ui));
+        Egui.interaction_ui(TODO_ARG(ui));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static Interaction operator(VxInteraction value) => new Interaction {
+    public static Interaction operator(EguiInteraction value) => new Interaction {
         InteractRadius = value.interact_radius,
         ResizeGrabRadiusSide = value.resize_grab_radius_side,
         ResizeGrabRadiusCorner = value.resize_grab_radius_corner,
@@ -7132,7 +7132,7 @@ public unsafe partial struct Interaction {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxInteraction operator(Interaction value) => new VxInteraction {
+    public static EguiInteraction operator(Interaction value) => new EguiInteraction {
         interact_radius = value.InteractRadius,
         resize_grab_radius_side = value.ResizeGrabRadiusSide,
         resize_grab_radius_corner = value.ResizeGrabRadiusCorner,
@@ -7156,19 +7156,19 @@ public unsafe partial struct KeyboardShortcut {
     public Key LogicalKey;
     
     public KeyboardShortcut(Modifiers modifiers, Key logicalKey) {
-        Vx.keyboard_shortcut_new(TODO_ARG(modifiers), TODO_ARG(logicalKey));
+        Egui.keyboard_shortcut_new(TODO_ARG(modifiers), TODO_ARG(logicalKey));
     
     }
     
     public string Format(ModifierNames names, bool isMac) {
-        Vx.keyboard_shortcut_format(TODO_ARG(names), TODO_ARG(isMac));
+        Egui.keyboard_shortcut_format(TODO_ARG(names), TODO_ARG(isMac));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static KeyboardShortcut operator(VxKeyboardShortcut value) => new KeyboardShortcut {
+    public static KeyboardShortcut operator(EguiKeyboardShortcut value) => new KeyboardShortcut {
         Modifiers = (Modifiers)value.modifiers,
         LogicalKey = (Key)value.logical_key,
     }
@@ -7176,9 +7176,9 @@ public unsafe partial struct KeyboardShortcut {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxKeyboardShortcut operator(KeyboardShortcut value) => new VxKeyboardShortcut {
-        modifiers = (VxModifiers)value.Modifiers,
-        logical_key = (VxKey)value.LogicalKey,
+    public static EguiKeyboardShortcut operator(KeyboardShortcut value) => new EguiKeyboardShortcut {
+        modifiers = (EguiModifiers)value.Modifiers,
+        logical_key = (EguiKey)value.LogicalKey,
     }
 }
 
@@ -7192,44 +7192,44 @@ public unsafe partial struct LayerId {
     public Id Id;
     
     public LayerId(Order order, Id id) {
-        Vx.layer_id_new(TODO_ARG(order), TODO_ARG(id));
+        Egui.layer_id_new(TODO_ARG(order), TODO_ARG(id));
     
     }
     
     public static LayerId Debug() {
-        Vx.layer_id_debug();
+        Egui.layer_id_debug();
     
     }
     
     public static LayerId Background() {
-        Vx.layer_id_background();
+        Egui.layer_id_background();
     
     }
     
     public bool AllowInteraction() {
-        Vx.layer_id_allow_interaction();
+        Egui.layer_id_allow_interaction();
     
     }
     
     public string ShortDebugFormat() {
-        Vx.layer_id_short_debug_format();
+        Egui.layer_id_short_debug_format();
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static LayerId operator(VxLayerId value) => new LayerId {
-        Order = value.order.Cast<VxOrder, Order>(),
+    public static LayerId operator(EguiLayerId value) => new LayerId {
+        Order = value.order.Cast<EguiOrder, Order>(),
         Id = (Id)value.id,
     }
     
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxLayerId operator(LayerId value) => new VxLayerId {
-        order = value.Order.Cast<Order, VxOrder>(),
-        id = (VxId)value.Id,
+    public static EguiLayerId operator(LayerId value) => new EguiLayerId {
+        order = value.Order.Cast<Order, EguiOrder>(),
+        id = (EguiId)value.Id,
     }
 }
 
@@ -7240,7 +7240,7 @@ public unsafe partial struct Layout {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly Layout Default = (Layout)Vx.layout_default();
+    public static readonly Layout Default = (Layout)Egui.layout_default();
 
     /// <summary>
     /// Main axis direction
@@ -7279,135 +7279,135 @@ public unsafe partial struct Layout {
     public bool CrossJustify;
     
     public static Layout LeftToRight(Align valign) {
-        Vx.layout_left_to_right(TODO_ARG(valign));
+        Egui.layout_left_to_right(TODO_ARG(valign));
     
     }
     
     public static Layout RightToLeft(Align valign) {
-        Vx.layout_right_to_left(TODO_ARG(valign));
+        Egui.layout_right_to_left(TODO_ARG(valign));
     
     }
     
     public static Layout TopDown(Align halign) {
-        Vx.layout_top_down(TODO_ARG(halign));
+        Egui.layout_top_down(TODO_ARG(halign));
     
     }
     
     public static Layout TopDownJustified(Align halign) {
-        Vx.layout_top_down_justified(TODO_ARG(halign));
+        Egui.layout_top_down_justified(TODO_ARG(halign));
     
     }
     
     public static Layout BottomUp(Align halign) {
-        Vx.layout_bottom_up(TODO_ARG(halign));
+        Egui.layout_bottom_up(TODO_ARG(halign));
     
     }
     
     public static Layout FromMainDirAndCrossAlign(Direction mainDir, Align crossAlign) {
-        Vx.layout_from_main_dir_and_cross_align(TODO_ARG(mainDir), TODO_ARG(crossAlign));
+        Egui.layout_from_main_dir_and_cross_align(TODO_ARG(mainDir), TODO_ARG(crossAlign));
     
     }
     
     public static Layout CenteredAndJustified(Direction mainDir) {
-        Vx.layout_centered_and_justified(TODO_ARG(mainDir));
+        Egui.layout_centered_and_justified(TODO_ARG(mainDir));
     
     }
     
     public Layout WithMainWrap(bool mainWrap) {
-        Vx.layout_with_main_wrap(TODO_ARG(mainWrap));
+        Egui.layout_with_main_wrap(TODO_ARG(mainWrap));
     
     }
     
     public Layout WithMainAlign(Align mainAlign) {
-        Vx.layout_with_main_align(TODO_ARG(mainAlign));
+        Egui.layout_with_main_align(TODO_ARG(mainAlign));
     
     }
     
     public Layout WithCrossAlign(Align crossAlign) {
-        Vx.layout_with_cross_align(TODO_ARG(crossAlign));
+        Egui.layout_with_cross_align(TODO_ARG(crossAlign));
     
     }
     
     public Layout WithMainJustify(bool mainJustify) {
-        Vx.layout_with_main_justify(TODO_ARG(mainJustify));
+        Egui.layout_with_main_justify(TODO_ARG(mainJustify));
     
     }
     
     public Layout WithCrossJustify(bool crossJustify) {
-        Vx.layout_with_cross_justify(TODO_ARG(crossJustify));
+        Egui.layout_with_cross_justify(TODO_ARG(crossJustify));
     
     }
     
     public Direction MainDir() {
-        Vx.layout_main_dir();
+        Egui.layout_main_dir();
     
     }
     
     public bool MainWrap() {
-        Vx.layout_main_wrap();
+        Egui.layout_main_wrap();
     
     }
     
     public Align CrossAlign() {
-        Vx.layout_cross_align();
+        Egui.layout_cross_align();
     
     }
     
     public bool CrossJustify() {
-        Vx.layout_cross_justify();
+        Egui.layout_cross_justify();
     
     }
     
     public bool IsHorizontal() {
-        Vx.layout_is_horizontal();
+        Egui.layout_is_horizontal();
     
     }
     
     public bool IsVertical() {
-        Vx.layout_is_vertical();
+        Egui.layout_is_vertical();
     
     }
     
     public bool PreferRightToLeft() {
-        Vx.layout_prefer_right_to_left();
+        Egui.layout_prefer_right_to_left();
     
     }
     
     public Align HorizontalPlacement() {
-        Vx.layout_horizontal_placement();
+        Egui.layout_horizontal_placement();
     
     }
     
     public Align HorizontalAlign() {
-        Vx.layout_horizontal_align();
+        Egui.layout_horizontal_align();
     
     }
     
     public Align VerticalAlign() {
-        Vx.layout_vertical_align();
+        Egui.layout_vertical_align();
     
     }
     
     public bool HorizontalJustify() {
-        Vx.layout_horizontal_justify();
+        Egui.layout_horizontal_justify();
     
     }
     
     public bool VerticalJustify() {
-        Vx.layout_vertical_justify();
+        Egui.layout_vertical_justify();
     
     }
     
-    public IBox2 AlignSizeWithinRect(Vec2 size, IBox2 outer) {
-        Vx.layout_align_size_within_rect(TODO_ARG(size), TODO_ARG(outer));
+    public Rect AlignSizeWithinRect(Vec2 size, Rect outer) {
+        Egui.layout_align_size_within_rect(TODO_ARG(size), TODO_ARG(outer));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static Layout operator(VxLayout value) => new Layout {
-        MainDir = value.main_dir.Cast<VxDirection, Direction>(),
+    public static Layout operator(EguiLayout value) => new Layout {
+        MainDir = value.main_dir.Cast<EguiDirection, Direction>(),
         MainWrap = value.main_wrap,
         MainAlign = (Align)value.main_align,
         MainJustify = value.main_justify,
@@ -7418,12 +7418,12 @@ public unsafe partial struct Layout {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxLayout operator(Layout value) => new VxLayout {
-        main_dir = value.MainDir.Cast<Direction, VxDirection>(),
+    public static EguiLayout operator(Layout value) => new EguiLayout {
+        main_dir = value.MainDir.Cast<Direction, EguiDirection>(),
         main_wrap = value.MainWrap,
-        main_align = (VxAlign)value.MainAlign,
+        main_align = (EguiAlign)value.MainAlign,
         main_justify = value.MainJustify,
-        cross_align = (VxAlign)value.CrossAlign,
+        cross_align = (EguiAlign)value.CrossAlign,
         cross_justify = value.CrossJustify,
     }
 }
@@ -7439,32 +7439,32 @@ public unsafe partial struct MenuRoot {
     public Id Id;
     
     public MenuRoot(Pos2 position, Id id) {
-        Vx.menu_root_new(TODO_ARG(position), TODO_ARG(id));
+        Egui.menu_root_new(TODO_ARG(position), TODO_ARG(id));
     
     }
     
     public Tuple([ResolvedPath(Path { path: "MenuResponse", id: Id(3855), args: Some(AngleBracketed { args: [], constraints: [] }) }), ResolvedPath(Path { path: "Option", id: Id(118), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "InnerResponse", id: Id(239), args: Some(AngleBracketed { args: [Type(Generic("R"))], constraints: [] }) }))], constraints: [] }) })]) Show(Response button, ImplTrait([TraitBound { trait_: Path { path: "FnOnce", id: Id(237), args: Some(Parenthesized { inputs: [BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) }], output: Some(Generic("R")) }) }, generic_params: [], modifier: None }]) addContents) {
-        Vx.menu_root_show(TODO_ARG(button), TODO_ARG(addContents));
+        Egui.menu_root_show(TODO_ARG(button), TODO_ARG(addContents));
     
     }
     
     public static MenuResponse ContextInteraction(Response response, BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Option", id: Id(118), args: Some(AngleBracketed { args: [Type(Generic("Self"))], constraints: [] }) }) } root) {
-        Vx.menu_root_context_interaction(TODO_ARG(response), TODO_ARG(root));
+        Egui.menu_root_context_interaction(TODO_ARG(response), TODO_ARG(root));
     
     }
     
     public static void HandleMenuResponse(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "MenuRootManager", id: Id(3809), args: Some(AngleBracketed { args: [], constraints: [] }) }) } root, MenuResponse menuResponse) {
-        Vx.menu_root_handle_menu_response(TODO_ARG(root), TODO_ARG(menuResponse));
+        Egui.menu_root_handle_menu_response(TODO_ARG(root), TODO_ARG(menuResponse));
     
     }
     
     public static void ContextClickInteraction(Response response, BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "MenuRootManager", id: Id(3809), args: Some(AngleBracketed { args: [], constraints: [] }) }) } root) {
-        Vx.menu_root_context_click_interaction(TODO_ARG(response), TODO_ARG(root));
+        Egui.menu_root_context_click_interaction(TODO_ARG(response), TODO_ARG(root));
     
     }
     
     public static void StationaryClickInteraction(Response button, BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "MenuRootManager", id: Id(3809), args: Some(AngleBracketed { args: [], constraints: [] }) }) } root) {
-        Vx.menu_root_stationary_click_interaction(TODO_ARG(button), TODO_ARG(root));
+        Egui.menu_root_stationary_click_interaction(TODO_ARG(button), TODO_ARG(root));
     
     }
     
@@ -7472,7 +7472,7 @@ public unsafe partial struct MenuRoot {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static MenuRoot operator(VxMenuRoot value) => new MenuRoot {
+    public static MenuRoot operator(EguiMenuRoot value) => new MenuRoot {
         MenuState = value.menu_state,
         Id = (Id)value.id,
     }
@@ -7482,9 +7482,9 @@ public unsafe partial struct MenuRoot {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxMenuRoot operator(MenuRoot value) => new VxMenuRoot {
+    public static EguiMenuRoot operator(MenuRoot value) => new EguiMenuRoot {
         menu_state = value.MenuState,
-        id = (VxId)value.Id,
+        id = (EguiId)value.Id,
     }
     */
 }
@@ -7497,30 +7497,43 @@ public unsafe partial struct MenuRoot {
 public unsafe partial struct ModifierNames {
     public bool IsShort;
     
-    public string Alt;
+    /* UNIMPLEMENTED (field) 
+    public str Alt;
+    */
     
-    public string Ctrl;
+    /* UNIMPLEMENTED (field) 
+    public str Ctrl;
+    */
     
-    public string Shift;
+    /* UNIMPLEMENTED (field) 
+    public str Shift;
+    */
     
-    public string MacCmd;
+    /* UNIMPLEMENTED (field) 
+    public str MacCmd;
+    */
     
-    public string MacAlt;
+    /* UNIMPLEMENTED (field) 
+    public str MacAlt;
+    */
     
+    /* UNIMPLEMENTED (field) 
     /// <summary>
     /// What goes between the names
     /// </summary>
-    public string Concat;
+    public str Concat;
+    */
     
     public string Format(Modifiers modifiers, bool isMac) {
-        Vx.modifier_names_format(TODO_ARG(modifiers), TODO_ARG(isMac));
+        Egui.modifier_names_format(TODO_ARG(modifiers), TODO_ARG(isMac));
     
     }
     
+    /* UNIMPLEMENTED (conversion)
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static ModifierNames operator(VxModifierNames value) => new ModifierNames {
+    public static ModifierNames operator(EguiModifierNames value) => new ModifierNames {
         IsShort = value.is_short,
         Alt = value.alt,
         Ctrl = value.ctrl,
@@ -7529,11 +7542,13 @@ public unsafe partial struct ModifierNames {
         MacAlt = value.mac_alt,
         Concat = value.concat,
     }
+    */
     
+    /* UNIMPLEMENTED (conversion)
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxModifierNames operator(ModifierNames value) => new VxModifierNames {
+    public static EguiModifierNames operator(ModifierNames value) => new EguiModifierNames {
         is_short = value.IsShort,
         alt = value.Alt,
         ctrl = value.Ctrl,
@@ -7542,6 +7557,7 @@ public unsafe partial struct ModifierNames {
         mac_alt = value.MacAlt,
         concat = value.Concat,
     }
+    */
 }
 
 /// <summary>
@@ -7557,7 +7573,7 @@ public unsafe partial struct Modifiers {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly Modifiers Default = (Modifiers)Vx.modifiers_default();
+    public static readonly Modifiers Default = (Modifiers)Egui.modifiers_default();
 
     /// <summary>
     /// Either of the alt keys are down (option ⌥ on Mac).
@@ -7589,64 +7605,64 @@ public unsafe partial struct Modifiers {
     public bool Command;
     
     public Modifiers Plus(Modifiers rhs) {
-        Vx.modifiers_plus(TODO_ARG(rhs));
+        Egui.modifiers_plus(TODO_ARG(rhs));
     
     }
     
     public bool IsNone() {
-        Vx.modifiers_is_none();
+        Egui.modifiers_is_none();
     
     }
     
     public bool Any() {
-        Vx.modifiers_any();
+        Egui.modifiers_any();
     
     }
     
     public bool All() {
-        Vx.modifiers_all();
+        Egui.modifiers_all();
     
     }
     
     public bool ShiftOnly() {
-        Vx.modifiers_shift_only();
+        Egui.modifiers_shift_only();
     
     }
     
     public bool CommandOnly() {
-        Vx.modifiers_command_only();
+        Egui.modifiers_command_only();
     
     }
     
     public bool MatchesLogically(Modifiers pattern) {
-        Vx.modifiers_matches_logically(TODO_ARG(pattern));
+        Egui.modifiers_matches_logically(TODO_ARG(pattern));
     
     }
     
     public bool MatchesExact(Modifiers pattern) {
-        Vx.modifiers_matches_exact(TODO_ARG(pattern));
+        Egui.modifiers_matches_exact(TODO_ARG(pattern));
     
     }
     
     public bool Matches(Modifiers pattern) {
-        Vx.modifiers_matches(TODO_ARG(pattern));
+        Egui.modifiers_matches(TODO_ARG(pattern));
     
     }
     
     public bool CmdCtrlMatches(Modifiers pattern) {
-        Vx.modifiers_cmd_ctrl_matches(TODO_ARG(pattern));
+        Egui.modifiers_cmd_ctrl_matches(TODO_ARG(pattern));
     
     }
     
     public bool Contains(Modifiers query) {
-        Vx.modifiers_contains(TODO_ARG(query));
+        Egui.modifiers_contains(TODO_ARG(query));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static Modifiers operator(VxModifiers value) => new Modifiers {
+    public static Modifiers operator(EguiModifiers value) => new Modifiers {
         Alt = value.alt,
         Ctrl = value.ctrl,
         Shift = value.shift,
@@ -7657,7 +7673,7 @@ public unsafe partial struct Modifiers {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxModifiers operator(Modifiers value) => new VxModifiers {
+    public static EguiModifiers operator(Modifiers value) => new EguiModifiers {
         alt = value.Alt,
         ctrl = value.Ctrl,
         shift = value.Shift,
@@ -7746,7 +7762,7 @@ public unsafe partial struct MultiTouchInfo {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static MultiTouchInfo operator(VxMultiTouchInfo value) => new MultiTouchInfo {
+    public static MultiTouchInfo operator(EguiMultiTouchInfo value) => new MultiTouchInfo {
         StartTime = value.start_time,
         StartPos = (Pos2)value.start_pos,
         CenterPos = (Pos2)value.center_pos,
@@ -7761,15 +7777,15 @@ public unsafe partial struct MultiTouchInfo {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxMultiTouchInfo operator(MultiTouchInfo value) => new VxMultiTouchInfo {
+    public static EguiMultiTouchInfo operator(MultiTouchInfo value) => new EguiMultiTouchInfo {
         start_time = value.StartTime,
-        start_pos = (VxPos2)value.StartPos,
-        center_pos = (VxPos2)value.CenterPos,
+        start_pos = (EguiPos2)value.StartPos,
+        center_pos = (EguiPos2)value.CenterPos,
         num_touches = value.NumTouches,
         zoom_delta = value.ZoomDelta,
-        zoom_delta_2d = (VxVec2)value.ZoomDelta2D,
+        zoom_delta_2d = (EguiVec2)value.ZoomDelta2D,
         rotation_delta = value.RotationDelta,
-        translation_delta = (VxVec2)value.TranslationDelta,
+        translation_delta = (EguiVec2)value.TranslationDelta,
         force = value.Force,
     }
 }
@@ -7790,19 +7806,19 @@ public unsafe partial struct OpenUrl {
     public bool NewTab;
     
     public static OpenUrl SameTab(ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) url) {
-        Vx.open_url_same_tab(TODO_ARG(url));
+        Egui.open_url_same_tab(TODO_ARG(url));
     
     }
     
     public static OpenUrl NewTab(ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) url) {
-        Vx.open_url_new_tab(TODO_ARG(url));
+        Egui.open_url_new_tab(TODO_ARG(url));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static OpenUrl operator(VxOpenUrl value) => new OpenUrl {
+    public static OpenUrl operator(EguiOpenUrl value) => new OpenUrl {
         Url = STRING_CONV_TODO,
         NewTab = value.new_tab,
     }
@@ -7810,7 +7826,7 @@ public unsafe partial struct OpenUrl {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxOpenUrl operator(OpenUrl value) => new VxOpenUrl {
+    public static EguiOpenUrl operator(OpenUrl value) => new EguiOpenUrl {
         url = STRING_CONV_TODO,
         new_tab = value.NewTab,
     }
@@ -7820,7 +7836,7 @@ public unsafe partial struct PCursorRange {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly PCursorRange Default = (PCursorRange)Vx.p_cursor_range_default();
+    public static readonly PCursorRange Default = (PCursorRange)Egui.p_cursor_range_default();
 
     /// <summary>
     /// When selecting with a mouse, this is where the mouse was released.
@@ -7838,7 +7854,7 @@ public unsafe partial struct PCursorRange {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static PCursorRange operator(VxPCursorRange value) => new PCursorRange {
+    public static PCursorRange operator(EguiPCursorRange value) => new PCursorRange {
         Primary = (PCursor)value.primary,
         Secondary = (PCursor)value.secondary,
     }
@@ -7846,9 +7862,9 @@ public unsafe partial struct PCursorRange {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxPCursorRange operator(PCursorRange value) => new VxPCursorRange {
-        primary = (VxPCursor)value.Primary,
-        secondary = (VxPCursor)value.Secondary,
+    public static EguiPCursorRange operator(PCursorRange value) => new EguiPCursorRange {
+        primary = (EguiPCursor)value.Primary,
+        secondary = (EguiPCursor)value.Secondary,
     }
 }
 
@@ -7863,7 +7879,7 @@ public unsafe partial struct PlatformOutput {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly PlatformOutput Default = (PlatformOutput)Vx.platform_output_default();
+    public static readonly PlatformOutput Default = (PlatformOutput)Egui.platform_output_default();
 
     /* UNIMPLEMENTED (field) 
     /// <summary>
@@ -7919,6 +7935,7 @@ public unsafe partial struct PlatformOutput {
     /// </summary>
     public nuint NumCompletedPasses;
     
+    /* UNIMPLEMENTED (field) 
     /// <summary>
     /// Was <c>RequestDiscard</c> called during the latest pass?
     /// 
@@ -7927,24 +7944,25 @@ public unsafe partial struct PlatformOutput {
     /// If empty, there was never any calls.
     /// </summary>
     public List<RepaintCause> RequestDiscardReasons;
+    */
     
     public string EventsDescription() {
-        Vx.platform_output_events_description();
+        Egui.platform_output_events_description();
     
     }
     
     public void Append(PlatformOutput newer) {
-        Vx.platform_output_append(TODO_ARG(newer));
+        Egui.platform_output_append(TODO_ARG(newer));
     
     }
     
     public PlatformOutput Take() {
-        Vx.platform_output_take();
+        Egui.platform_output_take();
     
     }
     
     public bool RequestedDiscard() {
-        Vx.platform_output_requested_discard();
+        Egui.platform_output_requested_discard();
     
     }
     
@@ -7952,14 +7970,14 @@ public unsafe partial struct PlatformOutput {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static PlatformOutput operator(VxPlatformOutput value) => new PlatformOutput {
+    public static PlatformOutput operator(EguiPlatformOutput value) => new PlatformOutput {
         Commands = VEC_CONV_TODO(value.commands),
-        CursorIcon = value.cursor_icon.Cast<VxCursorIcon, CursorIcon>(),
-        OpenUrl = value.open_url.has_value ? (VxOpenUrl)value.open_url.value : null,
+        CursorIcon = value.cursor_icon.Cast<EguiCursorIcon, CursorIcon>(),
+        OpenUrl = value.open_url.has_value ? (EguiOpenUrl)value.open_url.value : null,
         CopiedText = STRING_CONV_TODO,
         Events = VEC_CONV_TODO(value.events),
         MutableTextUnderCursor = value.mutable_text_under_cursor,
-        Ime = value.ime.has_value ? (VxIMEOutput)value.ime.value : null,
+        Ime = value.ime.has_value ? (EguiIMEOutput)value.ime.value : null,
         NumCompletedPasses = value.num_completed_passes,
         RequestDiscardReasons = VEC_CONV_TODO(value.request_discard_reasons),
     }
@@ -7969,17 +7987,17 @@ public unsafe partial struct PlatformOutput {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxPlatformOutput operator(PlatformOutput value) => new VxPlatformOutput {
+    public static EguiPlatformOutput operator(PlatformOutput value) => new EguiPlatformOutput {
         commands = VEC_CONV_TODO(value.Commands),
-        cursor_icon = value.CursorIcon.Cast<CursorIcon, VxCursorIcon>(),
-        open_url = new VxOptionOpenUrl {
+        cursor_icon = value.CursorIcon.Cast<CursorIcon, EguiCursorIcon>(),
+        open_url = new EguiOptionOpenUrl {
             has_value = value.OpenUrl.HasValue,
             value = value.OpenUrl.GetValueOrDefault(),
         },
         copied_text = STRING_CONV_TODO,
         events = VEC_CONV_TODO(value.Events),
         mutable_text_under_cursor = value.MutableTextUnderCursor,
-        ime = new VxOptionImeOutput {
+        ime = new EguiOptionImeOutput {
             has_value = value.Ime.HasValue,
             value = value.Ime.GetValueOrDefault(),
         },
@@ -8006,7 +8024,7 @@ public unsafe partial struct RawInput {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly RawInput Default = (RawInput)Vx.raw_input_default();
+    public static readonly RawInput Default = (RawInput)Egui.raw_input_default();
 
     /* UNIMPLEMENTED (field) 
     /// <summary>
@@ -8032,7 +8050,7 @@ public unsafe partial struct RawInput {
     /// 
     /// <c>None</c> will be treated as "same as last frame", with the default being a very big area.
     /// </summary>
-    public IBox2? ScreenRect;
+    public Rect? ScreenRect;
     
     /// <summary>
     /// Maximum size of one side of the font texture.
@@ -8072,11 +8090,14 @@ public unsafe partial struct RawInput {
     public List<Event> Events;
     */
     
+    /* UNIMPLEMENTED (field) 
     /// <summary>
     /// Dragged files hovering over egui.
     /// </summary>
     public List<HoveredFile> HoveredFiles;
+    */
     
+    /* UNIMPLEMENTED (field) 
     /// <summary>
     /// Dragged files dropped into egui.
     /// 
@@ -8084,6 +8105,7 @@ public unsafe partial struct RawInput {
     /// been disabled in <c>ViewportBuilder</c>.
     /// </summary>
     public List<DroppedFile> DroppedFiles;
+    */
     
     /// <summary>
     /// The native window has the keyboard focus (i.e. is receiving key presses).
@@ -8100,22 +8122,22 @@ public unsafe partial struct RawInput {
     public Theme? SystemTheme;
     
     public ViewportInfo Viewport() {
-        Vx.raw_input_viewport();
+        Egui.raw_input_viewport();
     
     }
     
     public RawInput Take() {
-        Vx.raw_input_take();
+        Egui.raw_input_take();
     
     }
     
     public void Append(RawInput newer) {
-        Vx.raw_input_append(TODO_ARG(newer));
+        Egui.raw_input_append(TODO_ARG(newer));
     
     }
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.raw_input_ui(TODO_ARG(ui));
+        Egui.raw_input_ui(TODO_ARG(ui));
     
     }
     
@@ -8123,10 +8145,10 @@ public unsafe partial struct RawInput {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static RawInput operator(VxRawInput value) => new RawInput {
+    public static RawInput operator(EguiRawInput value) => new RawInput {
         ViewportId = value.viewport_id,
         Viewports = value.viewports,
-        ScreenRect = value.screen_rect.has_value ? (VxIBox2)value.screen_rect.value : null,
+        ScreenRect = value.screen_rect.has_value ? (EguiRect)value.screen_rect.value : null,
         MaxTextureSide = value.max_texture_side.has_value ? value.max_texture_side.value : null,
         Time = value.time.has_value ? value.time.value : null,
         PredictedDt = value.predicted_dt,
@@ -8135,7 +8157,7 @@ public unsafe partial struct RawInput {
         HoveredFiles = VEC_CONV_TODO(value.hovered_files),
         DroppedFiles = VEC_CONV_TODO(value.dropped_files),
         Focused = value.focused,
-        SystemTheme = value.system_theme.has_value ? value.system_theme.value.Cast<Theme, VxTheme>() : null,
+        SystemTheme = value.system_theme.has_value ? value.system_theme.value.Cast<Theme, EguiTheme>() : null,
     }
     */
     
@@ -8143,28 +8165,28 @@ public unsafe partial struct RawInput {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxRawInput operator(RawInput value) => new VxRawInput {
+    public static EguiRawInput operator(RawInput value) => new EguiRawInput {
         viewport_id = value.ViewportId,
         viewports = value.Viewports,
-        screen_rect = new VxOptionIBox2 {
+        screen_rect = new EguiOptionRect {
             has_value = value.ScreenRect.HasValue,
             value = value.ScreenRect.GetValueOrDefault(),
         },
-        max_texture_side = new VxOptionUsize {
+        max_texture_side = new EguiOptionUsize {
             has_value = value.MaxTextureSide.HasValue,
             value = value.MaxTextureSide.GetValueOrDefault(),
         },
-        time = new VxOptionF64 {
+        time = new EguiOptionF64 {
             has_value = value.Time.HasValue,
             value = value.Time.GetValueOrDefault(),
         },
         predicted_dt = value.PredictedDt,
-        modifiers = (VxModifiers)value.Modifiers,
+        modifiers = (EguiModifiers)value.Modifiers,
         events = VEC_CONV_TODO(value.Events),
         hovered_files = VEC_CONV_TODO(value.HoveredFiles),
         dropped_files = VEC_CONV_TODO(value.DroppedFiles),
         focused = value.Focused,
-        system_theme = new VxOptionTheme {
+        system_theme = new EguiOptionTheme {
             has_value = value.SystemTheme.HasValue,
             value = value.SystemTheme.GetValueOrDefault(),
         },
@@ -8176,10 +8198,12 @@ public unsafe partial struct RawInput {
 /// What called <c>RequestRepaint</c> or <c>RequestDiscard</c>?
 /// </summary>
 public unsafe partial struct RepaintCause {
+    /* UNIMPLEMENTED (field) 
     /// <summary>
     /// What file had the call that requested the repaint?
     /// </summary>
-    public string File;
+    public str File;
+    */
     
     /// <summary>
     /// What line number of the call that requested the repaint?
@@ -8194,12 +8218,12 @@ public unsafe partial struct RepaintCause {
     */
     
     public RepaintCause() {
-        Vx.repaint_cause_new();
+        Egui.repaint_cause_new();
     
     }
     
     public static RepaintCause NewReason(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Cow", id: Id(1271), args: Some(AngleBracketed { args: [Lifetime("'static"), Type(Primitive("str"))], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) reason) {
-        Vx.repaint_cause_new_reason(TODO_ARG(reason));
+        Egui.repaint_cause_new_reason(TODO_ARG(reason));
     
     }
     
@@ -8207,7 +8231,7 @@ public unsafe partial struct RepaintCause {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static RepaintCause operator(VxRepaintCause value) => new RepaintCause {
+    public static RepaintCause operator(EguiRepaintCause value) => new RepaintCause {
         File = value.file,
         Line = value.line,
         Reason = value.reason,
@@ -8218,7 +8242,7 @@ public unsafe partial struct RepaintCause {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxRepaintCause operator(RepaintCause value) => new VxRepaintCause {
+    public static EguiRepaintCause operator(RepaintCause value) => new EguiRepaintCause {
         file = value.File,
         line = value.Line,
         reason = value.Reason,
@@ -8256,9 +8280,9 @@ public unsafe partial struct RequestRepaintInfo {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static RequestRepaintInfo operator(VxRequestRepaintInfo value) => new RequestRepaintInfo {
+    public static RequestRepaintInfo operator(EguiRequestRepaintInfo value) => new RequestRepaintInfo {
         ViewportId = value.viewport_id,
-        Delay = TimeSpan.FromSeconds(value.delay / Vx.TIME_SECOND),
+        Delay = TimeSpan.FromSeconds(value.delay / Egui.TIME_SECOND),
         CurrentCumulativePassNr = value.current_cumulative_pass_nr,
     }
     */
@@ -8267,9 +8291,9 @@ public unsafe partial struct RequestRepaintInfo {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxRequestRepaintInfo operator(RequestRepaintInfo value) => new VxRequestRepaintInfo {
+    public static EguiRequestRepaintInfo operator(RequestRepaintInfo value) => new EguiRequestRepaintInfo {
         viewport_id = value.ViewportId,
-        delay = Vx.TIME_SECOND * value.Delay.TotalSeconds,
+        delay = Egui.TIME_SECOND * value.Delay.TotalSeconds,
         current_cumulative_pass_nr = value.CurrentCumulativePassNr,
     }
     */
@@ -8286,7 +8310,7 @@ public unsafe partial struct RowVertexIndices {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static RowVertexIndices operator(VxRowVertexIndices value) => new RowVertexIndices {
+    public static RowVertexIndices operator(EguiRowVertexIndices value) => new RowVertexIndices {
         Row = value.row,
         VertexIndices = value.vertex_indices,
     }
@@ -8296,7 +8320,7 @@ public unsafe partial struct RowVertexIndices {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxRowVertexIndices operator(RowVertexIndices value) => new VxRowVertexIndices {
+    public static EguiRowVertexIndices operator(RowVertexIndices value) => new EguiRowVertexIndices {
         row = value.Row,
         vertex_indices = value.VertexIndices,
     }
@@ -8312,7 +8336,7 @@ public unsafe partial struct ScrollAnimation {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly ScrollAnimation Default = (ScrollAnimation)Vx.scroll_animation_default();
+    public static readonly ScrollAnimation Default = (ScrollAnimation)Egui.scroll_animation_default();
 
     /// <summary>
     /// With what speed should we scroll? (Default: 1000.0)
@@ -8325,29 +8349,29 @@ public unsafe partial struct ScrollAnimation {
     public Rangef Duration;
     
     public ScrollAnimation(float pointsPerSecond, Rangef duration) {
-        Vx.scroll_animation_new(TODO_ARG(pointsPerSecond), TODO_ARG(duration));
+        Egui.scroll_animation_new(TODO_ARG(pointsPerSecond), TODO_ARG(duration));
     
     }
     
     public static ScrollAnimation None() {
-        Vx.scroll_animation_none();
+        Egui.scroll_animation_none();
     
     }
     
     public static ScrollAnimation Duration(float t) {
-        Vx.scroll_animation_duration(TODO_ARG(t));
+        Egui.scroll_animation_duration(TODO_ARG(t));
     
     }
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.scroll_animation_ui(TODO_ARG(ui));
+        Egui.scroll_animation_ui(TODO_ARG(ui));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static ScrollAnimation operator(VxScrollAnimation value) => new ScrollAnimation {
+    public static ScrollAnimation operator(EguiScrollAnimation value) => new ScrollAnimation {
         PointsPerSecond = value.points_per_second,
         Duration = (Rangef)value.duration,
     }
@@ -8355,9 +8379,9 @@ public unsafe partial struct ScrollAnimation {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxScrollAnimation operator(ScrollAnimation value) => new VxScrollAnimation {
+    public static EguiScrollAnimation operator(ScrollAnimation value) => new EguiScrollAnimation {
         points_per_second = value.PointsPerSecond,
-        duration = (VxRangef)value.Duration,
+        duration = (EguiRangef)value.Duration,
     }
 }
 
@@ -8373,7 +8397,7 @@ public unsafe partial struct ScrollStyle {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly ScrollStyle Default = (ScrollStyle)Vx.scroll_style_default();
+    public static readonly ScrollStyle Default = (ScrollStyle)Egui.scroll_style_default();
 
     /// <summary>
     /// If <c>True</c>, scroll bars float above the content, partially covering it.
@@ -8484,39 +8508,39 @@ public unsafe partial struct ScrollStyle {
     public float InteractHandleOpacity;
     
     public static ScrollStyle Solid() {
-        Vx.scroll_style_solid();
+        Egui.scroll_style_solid();
     
     }
     
     public static ScrollStyle Thin() {
-        Vx.scroll_style_thin();
+        Egui.scroll_style_thin();
     
     }
     
     public static ScrollStyle Floating() {
-        Vx.scroll_style_floating();
+        Egui.scroll_style_floating();
     
     }
     
     public float AllocatedWidth() {
-        Vx.scroll_style_allocated_width();
+        Egui.scroll_style_allocated_width();
     
     }
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.scroll_style_ui(TODO_ARG(ui));
+        Egui.scroll_style_ui(TODO_ARG(ui));
     
     }
     
     public void DetailsUi(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.scroll_style_details_ui(TODO_ARG(ui));
+        Egui.scroll_style_details_ui(TODO_ARG(ui));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static ScrollStyle operator(VxScrollStyle value) => new ScrollStyle {
+    public static ScrollStyle operator(EguiScrollStyle value) => new ScrollStyle {
         Floating = value.floating,
         BarWidth = value.bar_width,
         HandleMinLength = value.handle_min_length,
@@ -8536,7 +8560,7 @@ public unsafe partial struct ScrollStyle {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxScrollStyle operator(ScrollStyle value) => new VxScrollStyle {
+    public static EguiScrollStyle operator(ScrollStyle value) => new EguiScrollStyle {
         floating = value.Floating,
         bar_width = value.BarWidth,
         handle_min_length = value.HandleMinLength,
@@ -8561,31 +8585,31 @@ public unsafe partial struct Selection {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly Selection Default = (Selection)Vx.selection_default();
+    public static readonly Selection Default = (Selection)Egui.selection_default();
 
-    public Color4 BgFill;
+    public Color32 BgFill;
     
     public Stroke Stroke;
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.selection_ui(TODO_ARG(ui));
+        Egui.selection_ui(TODO_ARG(ui));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static Selection operator(VxSelection value) => new Selection {
-        BgFill = (Color4)value.bg_fill,
+    public static Selection operator(EguiSelection value) => new Selection {
+        BgFill = (Color32)value.bg_fill,
         Stroke = (Stroke)value.stroke,
     }
     
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxSelection operator(Selection value) => new VxSelection {
-        bg_fill = (VxColor4)value.BgFill,
-        stroke = (VxStroke)value.Stroke,
+    public static EguiSelection operator(Selection value) => new EguiSelection {
+        bg_fill = (EguiColor32)value.BgFill,
+        stroke = (EguiStroke)value.Stroke,
     }
 }
 
@@ -8593,7 +8617,7 @@ public unsafe partial struct Settings {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly Settings Default = (Settings)Vx.settings_default();
+    public static readonly Settings Default = (Settings)Egui.settings_default();
 
     /// <summary>
     /// Maximum number of undos.
@@ -8623,7 +8647,7 @@ public unsafe partial struct Settings {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static Settings operator(VxSettings value) => new Settings {
+    public static Settings operator(EguiSettings value) => new Settings {
         MaxUndos = value.max_undos,
         StableTime = value.stable_time,
         AutoSaveInterval = value.auto_save_interval,
@@ -8632,7 +8656,7 @@ public unsafe partial struct Settings {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxSettings operator(Settings value) => new VxSettings {
+    public static EguiSettings operator(Settings value) => new EguiSettings {
         max_undos = value.MaxUndos,
         stable_time = value.StableTime,
         auto_save_interval = value.AutoSaveInterval,
@@ -8648,19 +8672,19 @@ public unsafe partial struct SizedTexture {
     public Vec2 Size;
     
     public SizedTexture(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "TextureId", id: Id(3499), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) id, ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Vec2", id: Id(150), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) size) {
-        Vx.sized_texture_new(TODO_ARG(id), TODO_ARG(size));
+        Egui.sized_texture_new(TODO_ARG(id), TODO_ARG(size));
     
     }
     
     public static SizedTexture FromHandle(TextureHandle handle) {
-        Vx.sized_texture_from_handle(TODO_ARG(handle));
+        Egui.sized_texture_from_handle(TODO_ARG(handle));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static SizedTexture operator(VxSizedTexture value) => new SizedTexture {
+    public static SizedTexture operator(EguiSizedTexture value) => new SizedTexture {
         Id = (TextureId)value.id,
         Size = (Vec2)value.size,
     }
@@ -8668,9 +8692,9 @@ public unsafe partial struct SizedTexture {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxSizedTexture operator(SizedTexture value) => new VxSizedTexture {
-        id = (VxTextureId)value.Id,
-        size = (VxVec2)value.Size,
+    public static EguiSizedTexture operator(SizedTexture value) => new EguiSizedTexture {
+        id = (EguiTextureId)value.Id,
+        size = (EguiVec2)value.Size,
     }
 }
 
@@ -8681,7 +8705,7 @@ public unsafe partial struct Spacing {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly Spacing Default = (Spacing)Vx.spacing_default();
+    public static readonly Spacing Default = (Spacing)Egui.spacing_default();
 
     /// <summary>
     /// Horizontal and vertical spacing between widgets.
@@ -8801,20 +8825,20 @@ public unsafe partial struct Spacing {
     /// </summary>
     public ScrollStyle Scroll;
     
-    public Tuple([ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) }), ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) })]) IconRectangles(IBox2 rect) {
-        Vx.spacing_icon_rectangles(TODO_ARG(rect));
+    public Tuple([ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) }), ResolvedPath(Path { path: "Rect", id: Id(162), args: Some(AngleBracketed { args: [], constraints: [] }) })]) IconRectangles(Rect rect) {
+        Egui.spacing_icon_rectangles(TODO_ARG(rect));
     
     }
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.spacing_ui(TODO_ARG(ui));
+        Egui.spacing_ui(TODO_ARG(ui));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static Spacing operator(VxSpacing value) => new Spacing {
+    public static Spacing operator(EguiSpacing value) => new Spacing {
         ItemSpacing = (Vec2)value.item_spacing,
         WindowMargin = (Margin)value.window_margin,
         ButtonPadding = (Vec2)value.button_padding,
@@ -8840,13 +8864,13 @@ public unsafe partial struct Spacing {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxSpacing operator(Spacing value) => new VxSpacing {
-        item_spacing = (VxVec2)value.ItemSpacing,
-        window_margin = (VxMargin)value.WindowMargin,
-        button_padding = (VxVec2)value.ButtonPadding,
-        menu_margin = (VxMargin)value.MenuMargin,
+    public static EguiSpacing operator(Spacing value) => new EguiSpacing {
+        item_spacing = (EguiVec2)value.ItemSpacing,
+        window_margin = (EguiMargin)value.WindowMargin,
+        button_padding = (EguiVec2)value.ButtonPadding,
+        menu_margin = (EguiMargin)value.MenuMargin,
         indent = value.Indent,
-        interact_size = (VxVec2)value.InteractSize,
+        interact_size = (EguiVec2)value.InteractSize,
         slider_width = value.SliderWidth,
         slider_rail_height = value.SliderRailHeight,
         combo_width = value.ComboWidth,
@@ -8854,13 +8878,13 @@ public unsafe partial struct Spacing {
         icon_width = value.IconWidth,
         icon_width_inner = value.IconWidthInner,
         icon_spacing = value.IconSpacing,
-        default_area_size = (VxVec2)value.DefaultAreaSize,
+        default_area_size = (EguiVec2)value.DefaultAreaSize,
         tooltip_width = value.TooltipWidth,
         menu_width = value.MenuWidth,
         menu_spacing = value.MenuSpacing,
         indent_ends_with_horizontal_line = value.IndentEndsWithHorizontalLine,
         combo_height = value.ComboHeight,
-        scroll = (VxScrollStyle)value.Scroll,
+        scroll = (EguiScrollStyle)value.Scroll,
     }
 }
 
@@ -8877,7 +8901,7 @@ public unsafe partial struct Style {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly Style Default = (Style)Vx.style_default();
+    public static readonly Style Default = (Style)Egui.style_default();
 
     /* UNIMPLEMENTED (field) 
     /// <summary>
@@ -9007,27 +9031,27 @@ public unsafe partial struct Style {
     public ScrollAnimation ScrollAnimation;
     
     public WidgetVisuals Interact(Response response) {
-        Vx.style_interact(TODO_ARG(response));
+        Egui.style_interact(TODO_ARG(response));
     
     }
     
     public WidgetVisuals InteractSelectable(Response response, bool selected) {
-        Vx.style_interact_selectable(TODO_ARG(response), TODO_ARG(selected));
+        Egui.style_interact_selectable(TODO_ARG(response), TODO_ARG(selected));
     
     }
     
     public WidgetVisuals Noninteractive() {
-        Vx.style_noninteractive();
+        Egui.style_noninteractive();
     
     }
     
     public List<TextStyle> TextStyles() {
-        Vx.style_text_styles();
+        Egui.style_text_styles();
     
     }
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.style_ui(TODO_ARG(ui));
+        Egui.style_ui(TODO_ARG(ui));
     
     }
     
@@ -9035,10 +9059,10 @@ public unsafe partial struct Style {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static Style operator(VxStyle value) => new Style {
+    public static Style operator(EguiStyle value) => new Style {
         OverrideTextStyle = value.override_text_style.has_value ? value.override_text_style.value : null,
         OverrideFontId = value.override_font_id.has_value ? value.override_font_id.value : null,
-        OverrideTextValign = value.override_text_valign.has_value ? (VxAlign)value.override_text_valign.value : null,
+        OverrideTextValign = value.override_text_valign.has_value ? (EguiAlign)value.override_text_valign.value : null,
         TextStyles = value.text_styles,
         DragValueTextStyle = value.drag_value_text_style,
         NumberFormatter = value.number_formatter,
@@ -9060,39 +9084,39 @@ public unsafe partial struct Style {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxStyle operator(Style value) => new VxStyle {
-        override_text_style = new VxOptionTextStyle {
+    public static EguiStyle operator(Style value) => new EguiStyle {
+        override_text_style = new EguiOptionTextStyle {
             has_value = value.OverrideTextStyle.HasValue,
             value = value.OverrideTextStyle.GetValueOrDefault(),
         },
-        override_font_id = new VxOptionCrate::fontId {
+        override_font_id = new EguiOptionCrate::fontId {
             has_value = value.OverrideFontId.HasValue,
             value = value.OverrideFontId.GetValueOrDefault(),
         },
-        override_text_valign = new VxOptionAlign {
+        override_text_valign = new EguiOptionAlign {
             has_value = value.OverrideTextValign.HasValue,
             value = value.OverrideTextValign.GetValueOrDefault(),
         },
         text_styles = value.TextStyles,
         drag_value_text_style = value.DragValueTextStyle,
         number_formatter = value.NumberFormatter,
-        wrap = new VxOptionBool {
+        wrap = new EguiOptionBool {
             has_value = value.Wrap.HasValue,
             value = value.Wrap.GetValueOrDefault(),
         },
-        wrap_mode = new VxOptionCrate::textWrapMode {
+        wrap_mode = new EguiOptionCrate::textWrapMode {
             has_value = value.WrapMode.HasValue,
             value = value.WrapMode.GetValueOrDefault(),
         },
-        spacing = (VxSpacing)value.Spacing,
-        interaction = (VxInteraction)value.Interaction,
-        visuals = (VxVisuals)value.Visuals,
+        spacing = (EguiSpacing)value.Spacing,
+        interaction = (EguiInteraction)value.Interaction,
+        visuals = (EguiVisuals)value.Visuals,
         animation_time = value.AnimationTime,
-        debug = (VxDebugOptions)value.Debug,
+        debug = (EguiDebugOptions)value.Debug,
         explanation_tooltips = value.ExplanationTooltips,
         url_in_tooltip = value.UrlInTooltip,
         always_scroll_the_only_direction = value.AlwaysScrollTheOnlyDirection,
-        scroll_animation = (VxScrollAnimation)value.ScrollAnimation,
+        scroll_animation = (EguiScrollAnimation)value.ScrollAnimation,
     }
     */
 }
@@ -9104,7 +9128,7 @@ public unsafe partial struct TextCursorStyle {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly TextCursorStyle Default = (TextCursorStyle)Vx.text_cursor_style_default();
+    public static readonly TextCursorStyle Default = (TextCursorStyle)Egui.text_cursor_style_default();
 
     /// <summary>
     /// The color and width of the text cursor
@@ -9134,7 +9158,7 @@ public unsafe partial struct TextCursorStyle {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static TextCursorStyle operator(VxTextCursorStyle value) => new TextCursorStyle {
+    public static TextCursorStyle operator(EguiTextCursorStyle value) => new TextCursorStyle {
         Stroke = (Stroke)value.stroke,
         Preview = value.preview,
         Blink = value.blink,
@@ -9145,8 +9169,8 @@ public unsafe partial struct TextCursorStyle {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxTextCursorStyle operator(TextCursorStyle value) => new VxTextCursorStyle {
-        stroke = (VxStroke)value.Stroke,
+    public static EguiTextCursorStyle operator(TextCursorStyle value) => new EguiTextCursorStyle {
+        stroke = (EguiStroke)value.Stroke,
         preview = value.Preview,
         blink = value.Blink,
         on_duration = value.OnDuration,
@@ -9165,7 +9189,7 @@ public unsafe partial struct UiBuilder {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly UiBuilder Default = (UiBuilder)Vx.ui_builder_default();
+    public static readonly UiBuilder Default = (UiBuilder)Egui.ui_builder_default();
 
     public Id? IdSalt;
     
@@ -9173,7 +9197,7 @@ public unsafe partial struct UiBuilder {
     
     public LayerId? LayerId;
     
-    public IBox2? MaxRect;
+    public Rect? MaxRect;
     
     public Layout? Layout;
     
@@ -9190,57 +9214,57 @@ public unsafe partial struct UiBuilder {
     public Sense? Sense;
     
     public UiBuilder() {
-        Vx.ui_builder_new();
+        Egui.ui_builder_new();
     
     }
     
     public UiBuilder IdSalt(ImplTrait([TraitBound { trait_: Path { path: "Hash", id: Id(83), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) idSalt) {
-        Vx.ui_builder_id_salt(TODO_ARG(idSalt));
+        Egui.ui_builder_id_salt(TODO_ARG(idSalt));
     
     }
     
     public UiBuilder UiStackInfo(UiStackInfo uiStackInfo) {
-        Vx.ui_builder_ui_stack_info(TODO_ARG(uiStackInfo));
+        Egui.ui_builder_ui_stack_info(TODO_ARG(uiStackInfo));
     
     }
     
     public UiBuilder LayerId(LayerId layerId) {
-        Vx.ui_builder_layer_id(TODO_ARG(layerId));
+        Egui.ui_builder_layer_id(TODO_ARG(layerId));
     
     }
     
-    public UiBuilder MaxRect(IBox2 maxRect) {
-        Vx.ui_builder_max_rect(TODO_ARG(maxRect));
+    public UiBuilder MaxRect(Rect maxRect) {
+        Egui.ui_builder_max_rect(TODO_ARG(maxRect));
     
     }
     
     public UiBuilder Layout(Layout layout) {
-        Vx.ui_builder_layout(TODO_ARG(layout));
+        Egui.ui_builder_layout(TODO_ARG(layout));
     
     }
     
     public UiBuilder Disabled() {
-        Vx.ui_builder_disabled();
+        Egui.ui_builder_disabled();
     
     }
     
     public UiBuilder Invisible() {
-        Vx.ui_builder_invisible();
+        Egui.ui_builder_invisible();
     
     }
     
     public UiBuilder SizingPass() {
-        Vx.ui_builder_sizing_pass();
+        Egui.ui_builder_sizing_pass();
     
     }
     
     public UiBuilder Style(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Arc", id: Id(1246), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "Style", id: Id(493), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) style) {
-        Vx.ui_builder_style(TODO_ARG(style));
+        Egui.ui_builder_style(TODO_ARG(style));
     
     }
     
     public UiBuilder Sense(Sense sense) {
-        Vx.ui_builder_sense(TODO_ARG(sense));
+        Egui.ui_builder_sense(TODO_ARG(sense));
     
     }
     
@@ -9248,17 +9272,17 @@ public unsafe partial struct UiBuilder {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static UiBuilder operator(VxUiBuilder value) => new UiBuilder {
-        IdSalt = value.id_salt.has_value ? (VxId)value.id_salt.value : null,
+    public static UiBuilder operator(EguiUiBuilder value) => new UiBuilder {
+        IdSalt = value.id_salt.has_value ? (EguiId)value.id_salt.value : null,
         UiStackInfo = (UiStackInfo)value.ui_stack_info,
-        LayerId = value.layer_id.has_value ? (VxLayerId)value.layer_id.value : null,
-        MaxRect = value.max_rect.has_value ? (VxIBox2)value.max_rect.value : null,
-        Layout = value.layout.has_value ? (VxLayout)value.layout.value : null,
+        LayerId = value.layer_id.has_value ? (EguiLayerId)value.layer_id.value : null,
+        MaxRect = value.max_rect.has_value ? (EguiRect)value.max_rect.value : null,
+        Layout = value.layout.has_value ? (EguiLayout)value.layout.value : null,
         Disabled = value.disabled,
         Invisible = value.invisible,
         SizingPass = value.sizing_pass,
         Style = value.style.has_value ? value.style.value : null,
-        Sense = value.sense.has_value ? (VxSense)value.sense.value : null,
+        Sense = value.sense.has_value ? (EguiSense)value.sense.value : null,
     }
     */
     
@@ -9266,32 +9290,32 @@ public unsafe partial struct UiBuilder {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxUiBuilder operator(UiBuilder value) => new VxUiBuilder {
-        id_salt = new VxOptionId {
+    public static EguiUiBuilder operator(UiBuilder value) => new EguiUiBuilder {
+        id_salt = new EguiOptionId {
             has_value = value.IdSalt.HasValue,
             value = value.IdSalt.GetValueOrDefault(),
         },
-        ui_stack_info = (VxUiStackInfo)value.UiStackInfo,
-        layer_id = new VxOptionLayerId {
+        ui_stack_info = (EguiUiStackInfo)value.UiStackInfo,
+        layer_id = new EguiOptionLayerId {
             has_value = value.LayerId.HasValue,
             value = value.LayerId.GetValueOrDefault(),
         },
-        max_rect = new VxOptionIBox2 {
+        max_rect = new EguiOptionRect {
             has_value = value.MaxRect.HasValue,
             value = value.MaxRect.GetValueOrDefault(),
         },
-        layout = new VxOptionLayout {
+        layout = new EguiOptionLayout {
             has_value = value.Layout.HasValue,
             value = value.Layout.GetValueOrDefault(),
         },
         disabled = value.Disabled,
         invisible = value.Invisible,
         sizing_pass = value.SizingPass,
-        style = new VxOptionStd::sync::arc {
+        style = new EguiOptionStd::sync::arc {
             has_value = value.Style.HasValue,
             value = value.Style.GetValueOrDefault(),
         },
-        sense = new VxOptionSense {
+        sense = new EguiOptionSense {
             has_value = value.Sense.HasValue,
             value = value.Sense.GetValueOrDefault(),
         },
@@ -9306,7 +9330,7 @@ public unsafe partial struct UiStackInfo {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly UiStackInfo Default = (UiStackInfo)Vx.ui_stack_info_default();
+    public static readonly UiStackInfo Default = (UiStackInfo)Egui.ui_stack_info_default();
 
     public UiKind? Kind;
     
@@ -9317,22 +9341,22 @@ public unsafe partial struct UiStackInfo {
     */
     
     public UiStackInfo(UiKind kind) {
-        Vx.ui_stack_info_new(TODO_ARG(kind));
+        Egui.ui_stack_info_new(TODO_ARG(kind));
     
     }
     
     public UiStackInfo WithFrame(Frame frame) {
-        Vx.ui_stack_info_with_frame(TODO_ARG(frame));
+        Egui.ui_stack_info_with_frame(TODO_ARG(frame));
     
     }
     
     public UiStackInfo WithTag(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "String", id: Id(1295), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) key) {
-        Vx.ui_stack_info_with_tag(TODO_ARG(key));
+        Egui.ui_stack_info_with_tag(TODO_ARG(key));
     
     }
     
     public UiStackInfo WithTagValue(ImplTrait([TraitBound { trait_: Path { path: "Into", id: Id(39), args: Some(AngleBracketed { args: [Type(ResolvedPath(Path { path: "String", id: Id(1295), args: Some(AngleBracketed { args: [], constraints: [] }) }))], constraints: [] }) }, generic_params: [], modifier: None }]) key, ImplTrait([TraitBound { trait_: Path { path: "Any", id: Id(23), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }, TraitBound { trait_: Path { path: "Send", id: Id(11), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }, TraitBound { trait_: Path { path: "Sync", id: Id(13), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }, Outlives("'static")]) value) {
-        Vx.ui_stack_info_with_tag_value(TODO_ARG(key), TODO_ARG(value));
+        Egui.ui_stack_info_with_tag_value(TODO_ARG(key), TODO_ARG(value));
     
     }
     
@@ -9340,8 +9364,8 @@ public unsafe partial struct UiStackInfo {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static UiStackInfo operator(VxUiStackInfo value) => new UiStackInfo {
-        Kind = value.kind.has_value ? value.kind.value.Cast<UiKind, VxUiKind>() : null,
+    public static UiStackInfo operator(EguiUiStackInfo value) => new UiStackInfo {
+        Kind = value.kind.has_value ? value.kind.value.Cast<UiKind, EguiUiKind>() : null,
         Frame = (Frame)value.frame,
         Tags = value.tags,
     }
@@ -9351,12 +9375,12 @@ public unsafe partial struct UiStackInfo {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxUiStackInfo operator(UiStackInfo value) => new VxUiStackInfo {
-        kind = new VxOptionUiKind {
+    public static EguiUiStackInfo operator(UiStackInfo value) => new EguiUiStackInfo {
+        kind = new EguiOptionUiKind {
             has_value = value.Kind.HasValue,
             value = value.Kind.GetValueOrDefault(),
         },
-        frame = (VxFrame)value.Frame,
+        frame = (EguiFrame)value.Frame,
         tags = value.Tags,
     }
     */
@@ -9370,7 +9394,7 @@ public unsafe partial struct UserData {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly UserData Default = (UserData)Vx.user_data_default();
+    public static readonly UserData Default = (UserData)Egui.user_data_default();
 
     /* UNIMPLEMENTED (field) 
     /// <summary>
@@ -9381,7 +9405,7 @@ public unsafe partial struct UserData {
     */
     
     public UserData(ImplTrait([TraitBound { trait_: Path { path: "Any", id: Id(23), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }, TraitBound { trait_: Path { path: "Send", id: Id(11), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }, TraitBound { trait_: Path { path: "Sync", id: Id(13), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) userInfo) {
-        Vx.user_data_new(TODO_ARG(userInfo));
+        Egui.user_data_new(TODO_ARG(userInfo));
     
     }
     
@@ -9389,7 +9413,7 @@ public unsafe partial struct UserData {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static UserData operator(VxUserData value) => new UserData {
+    public static UserData operator(EguiUserData value) => new UserData {
         Data = value.data.has_value ? value.data.value : null,
     }
     */
@@ -9398,8 +9422,8 @@ public unsafe partial struct UserData {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxUserData operator(UserData value) => new VxUserData {
-        data = new VxOptionStd::sync::arc {
+    public static EguiUserData operator(UserData value) => new EguiUserData {
+        data = new EguiOptionStd::sync::arc {
             has_value = value.Data.HasValue,
             value = value.Data.GetValueOrDefault(),
         },
@@ -9414,7 +9438,7 @@ public unsafe partial struct ViewportIdPair {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly ViewportIdPair Default = (ViewportIdPair)Vx.viewport_id_pair_default();
+    public static readonly ViewportIdPair Default = (ViewportIdPair)Egui.viewport_id_pair_default();
 
     /* UNIMPLEMENTED (field) 
     public ViewportId This;
@@ -9425,7 +9449,7 @@ public unsafe partial struct ViewportIdPair {
     */
     
     public static ViewportIdPair FromSelfAndParent(ViewportId this, ViewportId parent) {
-        Vx.viewport_id_pair_from_self_and_parent(TODO_ARG(this), TODO_ARG(parent));
+        Egui.viewport_id_pair_from_self_and_parent(TODO_ARG(this), TODO_ARG(parent));
     
     }
     
@@ -9433,7 +9457,7 @@ public unsafe partial struct ViewportIdPair {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static ViewportIdPair operator(VxViewportIdPair value) => new ViewportIdPair {
+    public static ViewportIdPair operator(EguiViewportIdPair value) => new ViewportIdPair {
         This = value.this,
         Parent = value.parent,
     }
@@ -9443,7 +9467,7 @@ public unsafe partial struct ViewportIdPair {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxViewportIdPair operator(ViewportIdPair value) => new VxViewportIdPair {
+    public static EguiViewportIdPair operator(ViewportIdPair value) => new EguiViewportIdPair {
         this = value.This,
         parent = value.Parent,
     }
@@ -9462,7 +9486,7 @@ public unsafe partial struct ViewportInfo {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly ViewportInfo Default = (ViewportInfo)Vx.viewport_info_default();
+    public static readonly ViewportInfo Default = (ViewportInfo)Egui.viewport_info_default();
 
     /* UNIMPLEMENTED (field) 
     /// <summary>
@@ -9476,7 +9500,9 @@ public unsafe partial struct ViewportInfo {
     /// </summary>
     public string? Title;
     
+    /* UNIMPLEMENTED (field) 
     public List<ViewportEvent> Events;
+    */
     
     /// <summary>
     /// The OS native pixels-per-point.
@@ -9498,14 +9524,14 @@ public unsafe partial struct ViewportInfo {
     /// 
     /// This is the content rectangle of the viewport.
     /// </summary>
-    public IBox2? InnerRect;
+    public Rect? InnerRect;
     
     /// <summary>
     /// The outer rectangle of the native window, in monitor space and ui points scale.
     /// 
     /// This is the content rectangle plus decoration chrome.
     /// </summary>
-    public IBox2? OuterRect;
+    public Rect? OuterRect;
     
     /// <summary>
     /// Are we minimized?
@@ -9530,17 +9556,17 @@ public unsafe partial struct ViewportInfo {
     public bool? Focused;
     
     public bool CloseRequested() {
-        Vx.viewport_info_close_requested();
+        Egui.viewport_info_close_requested();
     
     }
     
     public ViewportInfo Take() {
-        Vx.viewport_info_take();
+        Egui.viewport_info_take();
     
     }
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.viewport_info_ui(TODO_ARG(ui));
+        Egui.viewport_info_ui(TODO_ARG(ui));
     
     }
     
@@ -9548,14 +9574,14 @@ public unsafe partial struct ViewportInfo {
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static ViewportInfo operator(VxViewportInfo value) => new ViewportInfo {
+    public static ViewportInfo operator(EguiViewportInfo value) => new ViewportInfo {
         Parent = value.parent.has_value ? value.parent.value : null,
         Title = value.title.has_value ? STRING_CONV_TODO : null,
         Events = VEC_CONV_TODO(value.events),
         NativePixelsPerPoint = value.native_pixels_per_point.has_value ? value.native_pixels_per_point.value : null,
-        MonitorSize = value.monitor_size.has_value ? (VxVec2)value.monitor_size.value : null,
-        InnerRect = value.inner_rect.has_value ? (VxIBox2)value.inner_rect.value : null,
-        OuterRect = value.outer_rect.has_value ? (VxIBox2)value.outer_rect.value : null,
+        MonitorSize = value.monitor_size.has_value ? (EguiVec2)value.monitor_size.value : null,
+        InnerRect = value.inner_rect.has_value ? (EguiRect)value.inner_rect.value : null,
+        OuterRect = value.outer_rect.has_value ? (EguiRect)value.outer_rect.value : null,
         Minimized = value.minimized.has_value ? value.minimized.value : null,
         Maximized = value.maximized.has_value ? value.maximized.value : null,
         Fullscreen = value.fullscreen.has_value ? value.fullscreen.value : null,
@@ -9567,45 +9593,45 @@ public unsafe partial struct ViewportInfo {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxViewportInfo operator(ViewportInfo value) => new VxViewportInfo {
-        parent = new VxOptionCrate::viewportId {
+    public static EguiViewportInfo operator(ViewportInfo value) => new EguiViewportInfo {
+        parent = new EguiOptionCrate::viewportId {
             has_value = value.Parent.HasValue,
             value = value.Parent.GetValueOrDefault(),
         },
-        title = new VxOptionString {
+        title = new EguiOptionString {
             has_value = value.Title.HasValue,
             value = value.Title.GetValueOrDefault(),
         },
         events = VEC_CONV_TODO(value.Events),
-        native_pixels_per_point = new VxOptionF32 {
+        native_pixels_per_point = new EguiOptionF32 {
             has_value = value.NativePixelsPerPoint.HasValue,
             value = value.NativePixelsPerPoint.GetValueOrDefault(),
         },
-        monitor_size = new VxOptionVec2 {
+        monitor_size = new EguiOptionVec2 {
             has_value = value.MonitorSize.HasValue,
             value = value.MonitorSize.GetValueOrDefault(),
         },
-        inner_rect = new VxOptionIBox2 {
+        inner_rect = new EguiOptionRect {
             has_value = value.InnerRect.HasValue,
             value = value.InnerRect.GetValueOrDefault(),
         },
-        outer_rect = new VxOptionIBox2 {
+        outer_rect = new EguiOptionRect {
             has_value = value.OuterRect.HasValue,
             value = value.OuterRect.GetValueOrDefault(),
         },
-        minimized = new VxOptionBool {
+        minimized = new EguiOptionBool {
             has_value = value.Minimized.HasValue,
             value = value.Minimized.GetValueOrDefault(),
         },
-        maximized = new VxOptionBool {
+        maximized = new EguiOptionBool {
             has_value = value.Maximized.HasValue,
             value = value.Maximized.GetValueOrDefault(),
         },
-        fullscreen = new VxOptionBool {
+        fullscreen = new EguiOptionBool {
             has_value = value.Fullscreen.HasValue,
             value = value.Fullscreen.GetValueOrDefault(),
         },
-        focused = new VxOptionBool {
+        focused = new EguiOptionBool {
             has_value = value.Focused.HasValue,
             value = value.Focused.GetValueOrDefault(),
         },
@@ -9625,7 +9651,7 @@ public unsafe partial struct Visuals {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly Visuals Default = (Visuals)Vx.visuals_default();
+    public static readonly Visuals Default = (Visuals)Egui.visuals_default();
 
     /// <summary>
     /// If true, the visuals are overall dark with light text.
@@ -9651,7 +9677,7 @@ public unsafe partial struct Visuals {
     /// but its alpha may be different based on whether or not
     /// it is disabled, non-interactive, hovered etc.
     /// </summary>
-    public Color4? OverrideTextColor;
+    public Color32? OverrideTextColor;
     
     /// <summary>
     /// Visual styles of widgets
@@ -9663,41 +9689,41 @@ public unsafe partial struct Visuals {
     /// <summary>
     /// The color used for <c>Hyperlink</c>,
     /// </summary>
-    public Color4 HyperlinkColor;
+    public Color32 HyperlinkColor;
     
     /// <summary>
     /// Something just barely different from the background color.
     /// Used for <c>Striped</c>.
     /// </summary>
-    public Color4 FaintBgColor;
+    public Color32 FaintBgColor;
     
     /// <summary>
     /// Very dark or light color (for corresponding theme).
     /// Used as the background of text edits, scroll bars and others things
     /// that needs to look different from other interactive stuff.
     /// </summary>
-    public Color4 ExtremeBgColor;
+    public Color32 ExtremeBgColor;
     
     /// <summary>
     /// Background color behind code-styled monospaced labels.
     /// </summary>
-    public Color4 CodeBgColor;
+    public Color32 CodeBgColor;
     
     /// <summary>
     /// A good color for warning text (e.g. orange).
     /// </summary>
-    public Color4 WarnFgColor;
+    public Color32 WarnFgColor;
     
     /// <summary>
     /// A good color for error text (e.g. red).
     /// </summary>
-    public Color4 ErrorFgColor;
+    public Color32 ErrorFgColor;
     
     public CornerRadius WindowCornerRadius;
     
     public Shadow WindowShadow;
     
-    public Color4 WindowFill;
+    public Color32 WindowFill;
     
     public Stroke WindowStroke;
     
@@ -9711,7 +9737,7 @@ public unsafe partial struct Visuals {
     /// <summary>
     /// Panel background color
     /// </summary>
-    public Color4 PanelFill;
+    public Color32 PanelFill;
     
     public Shadow PopupShadow;
     
@@ -9782,81 +9808,81 @@ public unsafe partial struct Visuals {
     public NumericColorSpace NumericColorSpace;
     
     public WidgetVisuals Noninteractive() {
-        Vx.visuals_noninteractive();
+        Egui.visuals_noninteractive();
     
     }
     
-    public Color4 TextColor() {
-        Vx.visuals_text_color();
+    public Color32 TextColor() {
+        Egui.visuals_text_color();
     
     }
     
-    public Color4 WeakTextColor() {
-        Vx.visuals_weak_text_color();
+    public Color32 WeakTextColor() {
+        Egui.visuals_weak_text_color();
     
     }
     
-    public Color4 StrongTextColor() {
-        Vx.visuals_strong_text_color();
+    public Color32 StrongTextColor() {
+        Egui.visuals_strong_text_color();
     
     }
     
-    public Color4 WindowFill() {
-        Vx.visuals_window_fill();
+    public Color32 WindowFill() {
+        Egui.visuals_window_fill();
     
     }
     
     public Stroke WindowStroke() {
-        Vx.visuals_window_stroke();
+        Egui.visuals_window_stroke();
     
     }
     
-    public Color4 FadeOutToColor() {
-        Vx.visuals_fade_out_to_color();
+    public Color32 FadeOutToColor() {
+        Egui.visuals_fade_out_to_color();
     
     }
     
-    public Color4 GrayOut(Color4 color) {
-        Vx.visuals_gray_out(TODO_ARG(color));
+    public Color32 GrayOut(Color32 color) {
+        Egui.visuals_gray_out(TODO_ARG(color));
     
     }
     
     public static Visuals Dark() {
-        Vx.visuals_dark();
+        Egui.visuals_dark();
     
     }
     
     public static Visuals Light() {
-        Vx.visuals_light();
+        Egui.visuals_light();
     
     }
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.visuals_ui(TODO_ARG(ui));
+        Egui.visuals_ui(TODO_ARG(ui));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static Visuals operator(VxVisuals value) => new Visuals {
+    public static Visuals operator(EguiVisuals value) => new Visuals {
         DarkMode = value.dark_mode,
-        OverrideTextColor = value.override_text_color.has_value ? (VxColor4)value.override_text_color.value : null,
+        OverrideTextColor = value.override_text_color.has_value ? (EguiColor32)value.override_text_color.value : null,
         Widgets = (Widgets)value.widgets,
         Selection = (Selection)value.selection,
-        HyperlinkColor = (Color4)value.hyperlink_color,
-        FaintBgColor = (Color4)value.faint_bg_color,
-        ExtremeBgColor = (Color4)value.extreme_bg_color,
-        CodeBgColor = (Color4)value.code_bg_color,
-        WarnFgColor = (Color4)value.warn_fg_color,
-        ErrorFgColor = (Color4)value.error_fg_color,
+        HyperlinkColor = (Color32)value.hyperlink_color,
+        FaintBgColor = (Color32)value.faint_bg_color,
+        ExtremeBgColor = (Color32)value.extreme_bg_color,
+        CodeBgColor = (Color32)value.code_bg_color,
+        WarnFgColor = (Color32)value.warn_fg_color,
+        ErrorFgColor = (Color32)value.error_fg_color,
         WindowCornerRadius = (CornerRadius)value.window_corner_radius,
         WindowShadow = (Shadow)value.window_shadow,
-        WindowFill = (Color4)value.window_fill,
+        WindowFill = (Color32)value.window_fill,
         WindowStroke = (Stroke)value.window_stroke,
         WindowHighlightTopmost = value.window_highlight_topmost,
         MenuCornerRadius = (CornerRadius)value.menu_corner_radius,
-        PanelFill = (Color4)value.panel_fill,
+        PanelFill = (Color32)value.panel_fill,
         PopupShadow = (Shadow)value.popup_shadow,
         ResizeCornerSize = value.resize_corner_size,
         TextCursor = (TextCursorStyle)value.text_cursor,
@@ -9867,51 +9893,51 @@ public unsafe partial struct Visuals {
         Striped = value.striped,
         SliderTrailingFill = value.slider_trailing_fill,
         HandleShape = (HandleShape)value.handle_shape,
-        InteractCursor = value.interact_cursor.has_value ? value.interact_cursor.value.Cast<CursorIcon, VxCursorIcon>() : null,
+        InteractCursor = value.interact_cursor.has_value ? value.interact_cursor.value.Cast<CursorIcon, EguiCursorIcon>() : null,
         ImageLoadingSpinners = value.image_loading_spinners,
-        NumericColorSpace = value.numeric_color_space.Cast<VxNumericColorSpace, NumericColorSpace>(),
+        NumericColorSpace = value.numeric_color_space.Cast<EguiNumericColorSpace, NumericColorSpace>(),
     }
     
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxVisuals operator(Visuals value) => new VxVisuals {
+    public static EguiVisuals operator(Visuals value) => new EguiVisuals {
         dark_mode = value.DarkMode,
-        override_text_color = new VxOptionColor4 {
+        override_text_color = new EguiOptionColor32 {
             has_value = value.OverrideTextColor.HasValue,
             value = value.OverrideTextColor.GetValueOrDefault(),
         },
-        widgets = (VxWidgets)value.Widgets,
-        selection = (VxSelection)value.Selection,
-        hyperlink_color = (VxColor4)value.HyperlinkColor,
-        faint_bg_color = (VxColor4)value.FaintBgColor,
-        extreme_bg_color = (VxColor4)value.ExtremeBgColor,
-        code_bg_color = (VxColor4)value.CodeBgColor,
-        warn_fg_color = (VxColor4)value.WarnFgColor,
-        error_fg_color = (VxColor4)value.ErrorFgColor,
-        window_corner_radius = (VxCornerRadius)value.WindowCornerRadius,
-        window_shadow = (VxShadow)value.WindowShadow,
-        window_fill = (VxColor4)value.WindowFill,
-        window_stroke = (VxStroke)value.WindowStroke,
+        widgets = (EguiWidgets)value.Widgets,
+        selection = (EguiSelection)value.Selection,
+        hyperlink_color = (EguiColor32)value.HyperlinkColor,
+        faint_bg_color = (EguiColor32)value.FaintBgColor,
+        extreme_bg_color = (EguiColor32)value.ExtremeBgColor,
+        code_bg_color = (EguiColor32)value.CodeBgColor,
+        warn_fg_color = (EguiColor32)value.WarnFgColor,
+        error_fg_color = (EguiColor32)value.ErrorFgColor,
+        window_corner_radius = (EguiCornerRadius)value.WindowCornerRadius,
+        window_shadow = (EguiShadow)value.WindowShadow,
+        window_fill = (EguiColor32)value.WindowFill,
+        window_stroke = (EguiStroke)value.WindowStroke,
         window_highlight_topmost = value.WindowHighlightTopmost,
-        menu_corner_radius = (VxCornerRadius)value.MenuCornerRadius,
-        panel_fill = (VxColor4)value.PanelFill,
-        popup_shadow = (VxShadow)value.PopupShadow,
+        menu_corner_radius = (EguiCornerRadius)value.MenuCornerRadius,
+        panel_fill = (EguiColor32)value.PanelFill,
+        popup_shadow = (EguiShadow)value.PopupShadow,
         resize_corner_size = value.ResizeCornerSize,
-        text_cursor = (VxTextCursorStyle)value.TextCursor,
+        text_cursor = (EguiTextCursorStyle)value.TextCursor,
         clip_rect_margin = value.ClipRectMargin,
         button_frame = value.ButtonFrame,
         collapsing_header_frame = value.CollapsingHeaderFrame,
         indent_has_left_vline = value.IndentHasLeftVline,
         striped = value.Striped,
         slider_trailing_fill = value.SliderTrailingFill,
-        handle_shape = (VxHandleShape)value.HandleShape,
-        interact_cursor = new VxOptionCursorIcon {
+        handle_shape = (EguiHandleShape)value.HandleShape,
+        interact_cursor = new EguiOptionCursorIcon {
             has_value = value.InteractCursor.HasValue,
             value = value.InteractCursor.GetValueOrDefault(),
         },
         image_loading_spinners = value.ImageLoadingSpinners,
-        numeric_color_space = value.NumericColorSpace.Cast<NumericColorSpace, VxNumericColorSpace>(),
+        numeric_color_space = value.NumericColorSpace.Cast<NumericColorSpace, EguiNumericColorSpace>(),
     }
 }
 
@@ -9960,86 +9986,86 @@ public unsafe partial struct WidgetInfo {
     public RangeInclusive? TextSelection;
     
     public WidgetInfo(WidgetType typ) {
-        Vx.widget_info_new(TODO_ARG(typ));
+        Egui.widget_info_new(TODO_ARG(typ));
     
     }
     
     public static WidgetInfo Labeled(WidgetType typ, bool enabled, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) label) {
-        Vx.widget_info_labeled(TODO_ARG(typ), TODO_ARG(enabled), TODO_ARG(label));
+        Egui.widget_info_labeled(TODO_ARG(typ), TODO_ARG(enabled), TODO_ARG(label));
     
     }
     
     public static WidgetInfo Selected(WidgetType typ, bool enabled, bool selected, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) label) {
-        Vx.widget_info_selected(TODO_ARG(typ), TODO_ARG(enabled), TODO_ARG(selected), TODO_ARG(label));
+        Egui.widget_info_selected(TODO_ARG(typ), TODO_ARG(enabled), TODO_ARG(selected), TODO_ARG(label));
     
     }
     
     public static WidgetInfo DragValue(bool enabled, double value) {
-        Vx.widget_info_drag_value(TODO_ARG(enabled), TODO_ARG(value));
+        Egui.widget_info_drag_value(TODO_ARG(enabled), TODO_ARG(value));
     
     }
     
     public static WidgetInfo Slider(bool enabled, double value, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) label) {
-        Vx.widget_info_slider(TODO_ARG(enabled), TODO_ARG(value), TODO_ARG(label));
+        Egui.widget_info_slider(TODO_ARG(enabled), TODO_ARG(value), TODO_ARG(label));
     
     }
     
     public static WidgetInfo TextEdit(bool enabled, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) prevTextValue, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) textValue) {
-        Vx.widget_info_text_edit(TODO_ARG(enabled), TODO_ARG(prevTextValue), TODO_ARG(textValue));
+        Egui.widget_info_text_edit(TODO_ARG(enabled), TODO_ARG(prevTextValue), TODO_ARG(textValue));
     
     }
     
     public static WidgetInfo TextSelectionChanged(bool enabled, RangeInclusive textSelection, ImplTrait([TraitBound { trait_: Path { path: "ToString", id: Id(1298), args: Some(AngleBracketed { args: [], constraints: [] }) }, generic_params: [], modifier: None }]) currentTextValue) {
-        Vx.widget_info_text_selection_changed(TODO_ARG(enabled), TODO_ARG(textSelection), TODO_ARG(currentTextValue));
+        Egui.widget_info_text_selection_changed(TODO_ARG(enabled), TODO_ARG(textSelection), TODO_ARG(currentTextValue));
     
     }
     
     public string Description() {
-        Vx.widget_info_description();
+        Egui.widget_info_description();
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static WidgetInfo operator(VxWidgetInfo value) => new WidgetInfo {
-        Typ = value.typ.Cast<VxWidgetType, WidgetType>(),
+    public static WidgetInfo operator(EguiWidgetInfo value) => new WidgetInfo {
+        Typ = value.typ.Cast<EguiWidgetType, WidgetType>(),
         Enabled = value.enabled,
         Label = value.label.has_value ? STRING_CONV_TODO : null,
         CurrentTextValue = value.current_text_value.has_value ? STRING_CONV_TODO : null,
         PrevTextValue = value.prev_text_value.has_value ? STRING_CONV_TODO : null,
         Selected = value.selected.has_value ? value.selected.value : null,
         Value = value.value.has_value ? value.value.value : null,
-        TextSelection = value.text_selection.has_value ? (VxRangeInclusive)value.text_selection.value : null,
+        TextSelection = value.text_selection.has_value ? (EguiRangeInclusive)value.text_selection.value : null,
     }
     
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxWidgetInfo operator(WidgetInfo value) => new VxWidgetInfo {
-        typ = value.Typ.Cast<WidgetType, VxWidgetType>(),
+    public static EguiWidgetInfo operator(WidgetInfo value) => new EguiWidgetInfo {
+        typ = value.Typ.Cast<WidgetType, EguiWidgetType>(),
         enabled = value.Enabled,
-        label = new VxOptionString {
+        label = new EguiOptionString {
             has_value = value.Label.HasValue,
             value = value.Label.GetValueOrDefault(),
         },
-        current_text_value = new VxOptionString {
+        current_text_value = new EguiOptionString {
             has_value = value.CurrentTextValue.HasValue,
             value = value.CurrentTextValue.GetValueOrDefault(),
         },
-        prev_text_value = new VxOptionString {
+        prev_text_value = new EguiOptionString {
             has_value = value.PrevTextValue.HasValue,
             value = value.PrevTextValue.GetValueOrDefault(),
         },
-        selected = new VxOptionBool {
+        selected = new EguiOptionBool {
             has_value = value.Selected.HasValue,
             value = value.Selected.GetValueOrDefault(),
         },
-        value = new VxOptionF64 {
+        value = new EguiOptionF64 {
             has_value = value.Value.HasValue,
             value = value.Value.GetValueOrDefault(),
         },
-        text_selection = new VxOptionRangeInclusive {
+        text_selection = new EguiOptionRangeInclusive {
             has_value = value.TextSelection.HasValue,
             value = value.TextSelection.GetValueOrDefault(),
         },
@@ -10072,14 +10098,14 @@ public unsafe partial struct WidgetRect {
     /// <summary>
     /// The full widget rectangle, in local layer coordinates.
     /// </summary>
-    public IBox2 Rect;
+    public Rect Rect;
     
     /// <summary>
     /// Where the widget is, in local layer coordinates.
     /// 
     /// This is after clipping with the parent ui clip rect.
     /// </summary>
-    public IBox2 InteractRect;
+    public Rect InteractRect;
     
     /// <summary>
     /// How the widget responds to interaction.
@@ -10099,18 +10125,18 @@ public unsafe partial struct WidgetRect {
     public bool Enabled;
     
     public WidgetRect Transform(emath::TSTransform transform) {
-        Vx.widget_rect_transform(TODO_ARG(transform));
+        Egui.widget_rect_transform(TODO_ARG(transform));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static WidgetRect operator(VxWidgetRect value) => new WidgetRect {
+    public static WidgetRect operator(EguiWidgetRect value) => new WidgetRect {
         Id = (Id)value.id,
         LayerId = (LayerId)value.layer_id,
-        Rect = (IBox2)value.rect,
-        InteractRect = (IBox2)value.interact_rect,
+        Rect = (Rect)value.rect,
+        InteractRect = (Rect)value.interact_rect,
         Sense = (Sense)value.sense,
         Enabled = value.enabled,
     }
@@ -10118,12 +10144,12 @@ public unsafe partial struct WidgetRect {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxWidgetRect operator(WidgetRect value) => new VxWidgetRect {
-        id = (VxId)value.Id,
-        layer_id = (VxLayerId)value.LayerId,
-        rect = (VxIBox2)value.Rect,
-        interact_rect = (VxIBox2)value.InteractRect,
-        sense = (VxSense)value.Sense,
+    public static EguiWidgetRect operator(WidgetRect value) => new EguiWidgetRect {
+        id = (EguiId)value.Id,
+        layer_id = (EguiLayerId)value.LayerId,
+        rect = (EguiRect)value.Rect,
+        interact_rect = (EguiRect)value.InteractRect,
+        sense = (EguiSense)value.Sense,
         enabled = value.Enabled,
     }
 }
@@ -10138,14 +10164,14 @@ public unsafe partial struct WidgetVisuals {
     /// 
     /// Must never be <c>Transparent</c>.
     /// </summary>
-    public Color4 BgFill;
+    public Color32 BgFill;
     
     /// <summary>
     /// Background color of widgets that can _optionally_ have a background fill, such as buttons.
     /// 
     /// May be <c>Transparent</c>.
     /// </summary>
-    public Color4 WeakBgFill;
+    public Color32 WeakBgFill;
     
     /// <summary>
     /// For surrounding rectangle of things that need it,
@@ -10169,27 +10195,27 @@ public unsafe partial struct WidgetVisuals {
     /// </summary>
     public float Expansion;
     
-    public Color4 TextColor() {
-        Vx.widget_visuals_text_color();
+    public Color32 TextColor() {
+        Egui.widget_visuals_text_color();
     
     }
     
     public CornerRadius Rounding() {
-        Vx.widget_visuals_rounding();
+        Egui.widget_visuals_rounding();
     
     }
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.widget_visuals_ui(TODO_ARG(ui));
+        Egui.widget_visuals_ui(TODO_ARG(ui));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static WidgetVisuals operator(VxWidgetVisuals value) => new WidgetVisuals {
-        BgFill = (Color4)value.bg_fill,
-        WeakBgFill = (Color4)value.weak_bg_fill,
+    public static WidgetVisuals operator(EguiWidgetVisuals value) => new WidgetVisuals {
+        BgFill = (Color32)value.bg_fill,
+        WeakBgFill = (Color32)value.weak_bg_fill,
         BgStroke = (Stroke)value.bg_stroke,
         CornerRadius = (CornerRadius)value.corner_radius,
         FgStroke = (Stroke)value.fg_stroke,
@@ -10199,12 +10225,12 @@ public unsafe partial struct WidgetVisuals {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxWidgetVisuals operator(WidgetVisuals value) => new VxWidgetVisuals {
-        bg_fill = (VxColor4)value.BgFill,
-        weak_bg_fill = (VxColor4)value.WeakBgFill,
-        bg_stroke = (VxStroke)value.BgStroke,
-        corner_radius = (VxCornerRadius)value.CornerRadius,
-        fg_stroke = (VxStroke)value.FgStroke,
+    public static EguiWidgetVisuals operator(WidgetVisuals value) => new EguiWidgetVisuals {
+        bg_fill = (EguiColor32)value.BgFill,
+        weak_bg_fill = (EguiColor32)value.WeakBgFill,
+        bg_stroke = (EguiStroke)value.BgStroke,
+        corner_radius = (EguiCornerRadius)value.CornerRadius,
+        fg_stroke = (EguiStroke)value.FgStroke,
         expansion = value.Expansion,
     }
 }
@@ -10216,7 +10242,7 @@ public unsafe partial struct Widgets {
     /// <summary>
     /// Returns the "default value" for a type.
     /// </summary>
-    public static readonly Widgets Default = (Widgets)Vx.widgets_default();
+    public static readonly Widgets Default = (Widgets)Egui.widgets_default();
 
     /// <summary>
     /// The style of a widget that you cannot interact with.
@@ -10249,29 +10275,29 @@ public unsafe partial struct Widgets {
     public WidgetVisuals Open;
     
     public WidgetVisuals Style(Response response) {
-        Vx.widgets_style(TODO_ARG(response));
+        Egui.widgets_style(TODO_ARG(response));
     
     }
     
     public static Widgets Dark() {
-        Vx.widgets_dark();
+        Egui.widgets_dark();
     
     }
     
     public static Widgets Light() {
-        Vx.widgets_light();
+        Egui.widgets_light();
     
     }
     
     public void Ui(BorrowedRef { lifetime: None, is_mutable: true, type_: ResolvedPath(Path { path: "crate::Ui", id: Id(238), args: Some(AngleBracketed { args: [], constraints: [] }) }) } ui) {
-        Vx.widgets_ui(TODO_ARG(ui));
+        Egui.widgets_ui(TODO_ARG(ui));
     
     }
     
     /// <summary>
     /// Converts from the Rust to the C# version of this type.
     /// </summary>
-    public static Widgets operator(VxWidgets value) => new Widgets {
+    public static Widgets operator(EguiWidgets value) => new Widgets {
         Noninteractive = (WidgetVisuals)value.noninteractive,
         Inactive = (WidgetVisuals)value.inactive,
         Hovered = (WidgetVisuals)value.hovered,
@@ -10282,12 +10308,12 @@ public unsafe partial struct Widgets {
     /// <summary>
     /// Converts from the C# to the Rust version of this type.
     /// </summary>
-    public static VxWidgets operator(Widgets value) => new VxWidgets {
-        noninteractive = (VxWidgetVisuals)value.Noninteractive,
-        inactive = (VxWidgetVisuals)value.Inactive,
-        hovered = (VxWidgetVisuals)value.Hovered,
-        active = (VxWidgetVisuals)value.Active,
-        open = (VxWidgetVisuals)value.Open,
+    public static EguiWidgets operator(Widgets value) => new EguiWidgets {
+        noninteractive = (EguiWidgetVisuals)value.Noninteractive,
+        inactive = (EguiWidgetVisuals)value.Inactive,
+        hovered = (EguiWidgetVisuals)value.Hovered,
+        active = (EguiWidgetVisuals)value.Active,
+        open = (EguiWidgetVisuals)value.Open,
     }
 }
 

@@ -39,7 +39,7 @@ fn main() {
         builder = builder.input_extern_file(file);
     }
 
-    builder = builder.input_extern_file(output_dir.join("gui.rs"));
+    builder = builder.input_extern_file(output_dir.join("egui.rs"));
 
     let output_file = output_dir.join("Bindings.g.cs");
     builder.generate_csharp_file(&output_file).expect("Failed to generate C# bindings");
