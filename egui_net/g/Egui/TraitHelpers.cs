@@ -165,7 +165,7 @@ namespace Egui {
         public static void serialize_option_Align(Align? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -183,7 +183,7 @@ namespace Egui {
         public static void serialize_option_CCursorRange(CCursorRange? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -201,7 +201,7 @@ namespace Egui {
         public static void serialize_option_Color32(Color32? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -219,7 +219,7 @@ namespace Egui {
         public static void serialize_option_CursorIcon(CursorIcon? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -237,7 +237,7 @@ namespace Egui {
         public static void serialize_option_CursorRange(CursorRange? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -255,7 +255,7 @@ namespace Egui {
         public static void serialize_option_FontId(FontId? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -273,7 +273,7 @@ namespace Egui {
         public static void serialize_option_IMEOutput(IMEOutput? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -291,7 +291,7 @@ namespace Egui {
         public static void serialize_option_OpenUrl(OpenUrl? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -309,7 +309,7 @@ namespace Egui {
         public static void serialize_option_Pos2(Pos2? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -327,7 +327,7 @@ namespace Egui {
         public static void serialize_option_RangeInclusive(RangeInclusive? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -345,7 +345,7 @@ namespace Egui {
         public static void serialize_option_Rect(Rect? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -363,7 +363,7 @@ namespace Egui {
         public static void serialize_option_ScrollingToTarget(ScrollingToTarget? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -381,7 +381,7 @@ namespace Egui {
         public static void serialize_option_SystemTime(SystemTime? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -399,7 +399,7 @@ namespace Egui {
         public static void serialize_option_TextStyle(TextStyle? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -417,7 +417,7 @@ namespace Egui {
         public static void serialize_option_TextWrapMode(TextWrapMode? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -435,7 +435,7 @@ namespace Egui {
         public static void serialize_option_Vec2(Vec2? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -453,7 +453,7 @@ namespace Egui {
         public static void serialize_option_ViewportId(ViewportId? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                value.Value.Serialize(serializer);
+                (value ?? default).Serialize(serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -471,7 +471,7 @@ namespace Egui {
         public static void serialize_option_bool(bool? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                serializer.serialize_bool(value.Value);
+                serializer.serialize_bool((value ?? default));
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -489,7 +489,7 @@ namespace Egui {
         public static void serialize_option_f32(float? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                serializer.serialize_f32(value.Value);
+                serializer.serialize_f32((value ?? default));
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -507,7 +507,7 @@ namespace Egui {
         public static void serialize_option_f64(double? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                serializer.serialize_f64(value.Value);
+                serializer.serialize_f64((value ?? default));
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -525,7 +525,7 @@ namespace Egui {
         public static void serialize_option_str(string? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                serializer.serialize_str(value.Value);
+                serializer.serialize_str((value ?? default));
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -543,7 +543,7 @@ namespace Egui {
         public static void serialize_option_tuple2_Rot2_Vec2((Rot2, Vec2)? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                TraitHelpers.serialize_tuple2_Rot2_Vec2(value.Value, serializer);
+                TraitHelpers.serialize_tuple2_Rot2_Vec2((value ?? default), serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }
@@ -561,7 +561,7 @@ namespace Egui {
         public static void serialize_option_vector_u8(ImmutableList<byte>? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
-                TraitHelpers.serialize_vector_u8(value.Value, serializer);
+                TraitHelpers.serialize_vector_u8((value ?? default), serializer);
             } else {
                 serializer.serialize_option_tag(false);
             }

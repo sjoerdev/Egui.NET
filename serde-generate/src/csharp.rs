@@ -454,7 +454,7 @@ if (value is not null) {{
     serializer.serialize_option_tag(false);
 }}
 "#,
-                    self.quote_serialize_value("value.Value", format)
+                    self.quote_serialize_value("(value ?? default)", format)
                 )?;
             }
 
