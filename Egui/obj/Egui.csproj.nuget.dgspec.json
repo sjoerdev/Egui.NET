@@ -1,26 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "/Users/ddwyer/Documents/Git/Personal/Egui.NET/Egui/Egui.csproj": {}
+    "C:\\Users\\Douglas\\Documents\\GitHub\\Egui.NET\\Egui\\Egui.csproj": {}
   },
   "projects": {
-    "/Users/ddwyer/Documents/Git/Personal/Egui.NET/Egui/Egui.csproj": {
+    "C:\\Users\\Douglas\\Documents\\GitHub\\Egui.NET\\Egui\\Egui.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/ddwyer/Documents/Git/Personal/Egui.NET/Egui/Egui.csproj",
+        "projectUniqueName": "C:\\Users\\Douglas\\Documents\\GitHub\\Egui.NET\\Egui\\Egui.csproj",
         "projectName": "Egui",
-        "projectPath": "/Users/ddwyer/Documents/Git/Personal/Egui.NET/Egui/Egui.csproj",
-        "packagesPath": "/Users/ddwyer/.nuget/packages/",
-        "outputPath": "/Users/ddwyer/Documents/Git/Personal/Egui.NET/Egui/obj/",
+        "projectPath": "C:\\Users\\Douglas\\Documents\\GitHub\\Egui.NET\\Egui\\Egui.csproj",
+        "packagesPath": "C:\\Users\\Douglas\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Douglas\\Documents\\GitHub\\Egui.NET\\Egui\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/ddwyer/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Douglas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "/usr/local/Cellar/dotnet/9.0.5/libexec/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -60,7 +66,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/Cellar/dotnet/9.0.5/libexec/sdk/9.0.106/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

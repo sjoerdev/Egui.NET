@@ -1,0 +1,5 @@
+C:\Users\Douglas\Documents\GitHub\Egui.NET\Egui\obj\Debug\net9.0\Egui.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Douglas\Documents\GitHub\Egui.NET\Egui\obj\Debug\net9.0\Egui.AssemblyInfoInputs.cache
+C:\Users\Douglas\Documents\GitHub\Egui.NET\Egui\obj\Debug\net9.0\Egui.AssemblyInfo.cs
+C:\Users\Douglas\Documents\GitHub\Egui.NET\Egui\obj\Debug\net9.0\Egui.csproj.CoreCompileInputs.cache
+C:\Users\Douglas\Documents\GitHub\Egui.NET\Egui\obj\Debug\net9.0\Egui.sourcelink.json

@@ -24,8 +24,15 @@
 		<CargoProfileOutput Condition="'$(Configuration)'=='Release'">release</CargoProfileOutput>
 	</PropertyGroup>
 
-  <ItemGroup>
-		<Compile Include="../egui_capi/ag/Bindings.g.cs" />
+	<Target Name="BuildEgui" BeforeTargets="BeforeCompile">
+		<Exec Command="cargo build --profile $(CargoProfile) --target $(CargoTarget) $(CargoUnstableOptions) $(CargoFeatures)"
+			  WorkingDirectory=".."/>
+	</Target>
+
+    <ItemGroup>
+		<Compile Include="../egui_net/g/Egui/*.cs" />
+		<Compile Include="../serde-generate/runtime/csharp/Bincode/*.cs" />
+		<Compile Include="../serde-generate/runtime/csharp/Serde/*.cs" />
 	</ItemGroup>
 
   <ItemGroup>

@@ -1,9 +1,10 @@
 [workspace]
 members = [
     "egui_net",
-    "egui_net_bindgen"
+    "egui_net_bindgen",
+    "serde-generate"
 ]
-
+default-members = [ "egui_net" ]
 resolver = "2"
 
 [workspace.package]
@@ -11,6 +12,13 @@ edition = "2024"
 version = "0.1.0"
 
 [workspace.dependencies]
+
+# Internal dependencies
+egui_net = { path = "egui_net" }
+egui_net_bindgen = { path = "egui_net_bindgen" }
+serde-generate = { path = "serde-generate", default-features = false, features = [ "csharp" ] }
+
+# External dependencies
 convert_case = { version = "0.7.1", default-features = false }
 csbindgen = { version = "1.9.3", default-features = false }
 egui = { version = "0.31.1", default-features = false, features = [ "serde" ] }
