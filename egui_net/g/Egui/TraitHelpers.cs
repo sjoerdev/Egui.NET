@@ -1,6 +1,7 @@
 #pragma warning disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,128 +9,128 @@ using System.Numerics;
 
 namespace Egui {
     static class TraitHelpers {
-        public static void serialize_array2_Align_array(ReadOnlyMemory<Align> value, Serde.ISerializer serializer) {
-            if (value.Length != 2) {
-                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Length + " instead of " + 2);
+        public static void serialize_array2_Align_array(ImmutableList<Align> value, Serde.ISerializer serializer) {
+            if (value.Count != 2) {
+                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Count + " instead of " + 2);
             }
             foreach (var item in value) {
                 item.Serialize(serializer);
             }
         }
 
-        public static ReadOnlyMemory<Align> deserialize_array2_Align_array(Serde.IDeserializer deserializer) {
+        public static ImmutableList<Align> deserialize_array2_Align_array(Serde.IDeserializer deserializer) {
             Align[] obj = new Align[2];
             for (int i = 0; i < 2; i++) {
                 obj[i] = AlignExtensions.Deserialize(deserializer);
             }
-            return new ReadOnlyMemory<Align>(obj);
+            return obj.ToImmutableList();
         }
 
-        public static void serialize_array2_f64_array(ReadOnlyMemory<double> value, Serde.ISerializer serializer) {
-            if (value.Length != 2) {
-                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Length + " instead of " + 2);
+        public static void serialize_array2_f64_array(ImmutableList<double> value, Serde.ISerializer serializer) {
+            if (value.Count != 2) {
+                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Count + " instead of " + 2);
             }
             foreach (var item in value) {
                 serializer.serialize_f64(item);
             }
         }
 
-        public static ReadOnlyMemory<double> deserialize_array2_f64_array(Serde.IDeserializer deserializer) {
+        public static ImmutableList<double> deserialize_array2_f64_array(Serde.IDeserializer deserializer) {
             double[] obj = new double[2];
             for (int i = 0; i < 2; i++) {
                 obj[i] = deserializer.deserialize_f64();
             }
-            return new ReadOnlyMemory<double>(obj);
+            return obj.ToImmutableList();
         }
 
-        public static void serialize_array2_i8_array(ReadOnlyMemory<sbyte> value, Serde.ISerializer serializer) {
-            if (value.Length != 2) {
-                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Length + " instead of " + 2);
+        public static void serialize_array2_i8_array(ImmutableList<sbyte> value, Serde.ISerializer serializer) {
+            if (value.Count != 2) {
+                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Count + " instead of " + 2);
             }
             foreach (var item in value) {
                 serializer.serialize_i8(item);
             }
         }
 
-        public static ReadOnlyMemory<sbyte> deserialize_array2_i8_array(Serde.IDeserializer deserializer) {
+        public static ImmutableList<sbyte> deserialize_array2_i8_array(Serde.IDeserializer deserializer) {
             sbyte[] obj = new sbyte[2];
             for (int i = 0; i < 2; i++) {
                 obj[i] = deserializer.deserialize_i8();
             }
-            return new ReadOnlyMemory<sbyte>(obj);
+            return obj.ToImmutableList();
         }
 
-        public static void serialize_array2_option_ScrollingToTarget_array(ReadOnlyMemory<ScrollingToTarget?> value, Serde.ISerializer serializer) {
-            if (value.Length != 2) {
-                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Length + " instead of " + 2);
+        public static void serialize_array2_option_ScrollingToTarget_array(ImmutableList<ScrollingToTarget?> value, Serde.ISerializer serializer) {
+            if (value.Count != 2) {
+                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Count + " instead of " + 2);
             }
             foreach (var item in value) {
                 TraitHelpers.serialize_option_ScrollingToTarget(item, serializer);
             }
         }
 
-        public static ReadOnlyMemory<ScrollingToTarget?> deserialize_array2_option_ScrollingToTarget_array(Serde.IDeserializer deserializer) {
+        public static ImmutableList<ScrollingToTarget?> deserialize_array2_option_ScrollingToTarget_array(Serde.IDeserializer deserializer) {
             ScrollingToTarget?[] obj = new ScrollingToTarget?[2];
             for (int i = 0; i < 2; i++) {
                 obj[i] = TraitHelpers.deserialize_option_ScrollingToTarget(deserializer);
             }
-            return new ReadOnlyMemory<ScrollingToTarget?>(obj);
+            return obj.ToImmutableList();
         }
 
-        public static void serialize_array2_option_f32_array(ReadOnlyMemory<float?> value, Serde.ISerializer serializer) {
-            if (value.Length != 2) {
-                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Length + " instead of " + 2);
+        public static void serialize_array2_option_f32_array(ImmutableList<float?> value, Serde.ISerializer serializer) {
+            if (value.Count != 2) {
+                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Count + " instead of " + 2);
             }
             foreach (var item in value) {
                 TraitHelpers.serialize_option_f32(item, serializer);
             }
         }
 
-        public static ReadOnlyMemory<float?> deserialize_array2_option_f32_array(Serde.IDeserializer deserializer) {
+        public static ImmutableList<float?> deserialize_array2_option_f32_array(Serde.IDeserializer deserializer) {
             float?[] obj = new float?[2];
             for (int i = 0; i < 2; i++) {
                 obj[i] = TraitHelpers.deserialize_option_f32(deserializer);
             }
-            return new ReadOnlyMemory<float?>(obj);
+            return obj.ToImmutableList();
         }
 
-        public static void serialize_array2_u64_array(ReadOnlyMemory<ulong> value, Serde.ISerializer serializer) {
-            if (value.Length != 2) {
-                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Length + " instead of " + 2);
+        public static void serialize_array2_u64_array(ImmutableList<ulong> value, Serde.ISerializer serializer) {
+            if (value.Count != 2) {
+                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Count + " instead of " + 2);
             }
             foreach (var item in value) {
                 serializer.serialize_u64(item);
             }
         }
 
-        public static ReadOnlyMemory<ulong> deserialize_array2_u64_array(Serde.IDeserializer deserializer) {
+        public static ImmutableList<ulong> deserialize_array2_u64_array(Serde.IDeserializer deserializer) {
             ulong[] obj = new ulong[2];
             for (int i = 0; i < 2; i++) {
                 obj[i] = deserializer.deserialize_u64();
             }
-            return new ReadOnlyMemory<ulong>(obj);
+            return obj.ToImmutableList();
         }
 
-        public static void serialize_array4_u8_array(ReadOnlyMemory<byte> value, Serde.ISerializer serializer) {
-            if (value.Length != 4) {
-                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Length + " instead of " + 4);
+        public static void serialize_array4_u8_array(ImmutableList<byte> value, Serde.ISerializer serializer) {
+            if (value.Count != 4) {
+                throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Count + " instead of " + 4);
             }
             foreach (var item in value) {
                 serializer.serialize_u8(item);
             }
         }
 
-        public static ReadOnlyMemory<byte> deserialize_array4_u8_array(Serde.IDeserializer deserializer) {
+        public static ImmutableList<byte> deserialize_array4_u8_array(Serde.IDeserializer deserializer) {
             byte[] obj = new byte[4];
             for (int i = 0; i < 4; i++) {
                 obj[i] = deserializer.deserialize_u8();
             }
-            return new ReadOnlyMemory<byte>(obj);
+            return obj.ToImmutableList();
         }
 
-        public static void serialize_map_TextStyle_to_FontId(Serde.ValueDictionary<TextStyle, FontId> value, Serde.ISerializer serializer) {
-            serializer.serialize_len(value.Length);
-            int[] offsets = new int[value.Length];
+        public static void serialize_map_TextStyle_to_FontId(ImmutableDictionary<TextStyle, FontId> value, Serde.ISerializer serializer) {
+            serializer.serialize_len(value.Count);
+            int[] offsets = new int[value.Count];
             int count = 0;
             foreach (KeyValuePair<TextStyle, FontId> entry in value) {
                 offsets[count++] = serializer.get_buffer_offset();
@@ -139,7 +140,7 @@ namespace Egui {
             serializer.sort_map_entries(offsets);
         }
 
-        public static Serde.ValueDictionary<TextStyle, FontId> deserialize_map_TextStyle_to_FontId(Serde.IDeserializer deserializer) {
+        public static ImmutableDictionary<TextStyle, FontId> deserialize_map_TextStyle_to_FontId(Serde.IDeserializer deserializer) {
             long length = deserializer.deserialize_len();
             var obj = new Dictionary<TextStyle, FontId>();
             int previous_key_start = 0;
@@ -158,7 +159,7 @@ namespace Egui {
                 var value = FontId.Deserialize(deserializer);
                 obj[key] = value;
             }
-            return new Serde.ValueDictionary<TextStyle, FontId>(obj);
+            return obj.ToImmutableDictionary();
         }
 
         public static void serialize_option_Align(Align? value, Serde.ISerializer serializer) {
@@ -557,7 +558,7 @@ namespace Egui {
             }
         }
 
-        public static void serialize_option_vector_u8(ReadOnlyMemory<byte>? value, Serde.ISerializer serializer) {
+        public static void serialize_option_vector_u8(ImmutableList<byte>? value, Serde.ISerializer serializer) {
             if (value is not null) {
                 serializer.serialize_option_tag(true);
                 TraitHelpers.serialize_vector_u8(value.Value, serializer);
@@ -566,7 +567,7 @@ namespace Egui {
             }
         }
 
-        public static ReadOnlyMemory<byte>? deserialize_option_vector_u8(Serde.IDeserializer deserializer) {
+        public static ImmutableList<byte>? deserialize_option_vector_u8(Serde.IDeserializer deserializer) {
             bool tag = deserializer.deserialize_option_tag();
             if (!tag) {
                 return null;
@@ -587,84 +588,84 @@ namespace Egui {
             );
         }
 
-        public static void serialize_vector_Color32(ReadOnlyMemory<Color32> value, Serde.ISerializer serializer) {
-            serializer.serialize_len(value.Length);
+        public static void serialize_vector_Color32(ImmutableList<Color32> value, Serde.ISerializer serializer) {
+            serializer.serialize_len(value.Count);
             foreach (var item in value) {
                 item.Serialize(serializer);
             }
         }
 
-        public static ReadOnlyMemory<Color32> deserialize_vector_Color32(Serde.IDeserializer deserializer) {
+        public static ImmutableList<Color32> deserialize_vector_Color32(Serde.IDeserializer deserializer) {
             long length = deserializer.deserialize_len();
             Color32[] obj = new Color32[length];
             for (int i = 0; i < length; i++) {
                 obj[i] = Color32.Deserialize(deserializer);
             }
-            return new ReadOnlyMemory<Color32>(obj);
+            return obj.ToImmutableList();
         }
 
-        public static void serialize_vector_OutputCommand(ReadOnlyMemory<OutputCommand> value, Serde.ISerializer serializer) {
-            serializer.serialize_len(value.Length);
+        public static void serialize_vector_OutputCommand(ImmutableList<OutputCommand> value, Serde.ISerializer serializer) {
+            serializer.serialize_len(value.Count);
             foreach (var item in value) {
                 item.Serialize(serializer);
             }
         }
 
-        public static ReadOnlyMemory<OutputCommand> deserialize_vector_OutputCommand(Serde.IDeserializer deserializer) {
+        public static ImmutableList<OutputCommand> deserialize_vector_OutputCommand(Serde.IDeserializer deserializer) {
             long length = deserializer.deserialize_len();
             OutputCommand[] obj = new OutputCommand[length];
             for (int i = 0; i < length; i++) {
                 obj[i] = OutputCommand.Deserialize(deserializer);
             }
-            return new ReadOnlyMemory<OutputCommand>(obj);
+            return obj.ToImmutableList();
         }
 
-        public static void serialize_vector_OutputEvent(ReadOnlyMemory<OutputEvent> value, Serde.ISerializer serializer) {
-            serializer.serialize_len(value.Length);
+        public static void serialize_vector_OutputEvent(ImmutableList<OutputEvent> value, Serde.ISerializer serializer) {
+            serializer.serialize_len(value.Count);
             foreach (var item in value) {
                 item.Serialize(serializer);
             }
         }
 
-        public static ReadOnlyMemory<OutputEvent> deserialize_vector_OutputEvent(Serde.IDeserializer deserializer) {
+        public static ImmutableList<OutputEvent> deserialize_vector_OutputEvent(Serde.IDeserializer deserializer) {
             long length = deserializer.deserialize_len();
             OutputEvent[] obj = new OutputEvent[length];
             for (int i = 0; i < length; i++) {
                 obj[i] = OutputEvent.Deserialize(deserializer);
             }
-            return new ReadOnlyMemory<OutputEvent>(obj);
+            return obj.ToImmutableList();
         }
 
-        public static void serialize_vector_ViewportEvent(ReadOnlyMemory<ViewportEvent> value, Serde.ISerializer serializer) {
-            serializer.serialize_len(value.Length);
+        public static void serialize_vector_ViewportEvent(ImmutableList<ViewportEvent> value, Serde.ISerializer serializer) {
+            serializer.serialize_len(value.Count);
             foreach (var item in value) {
                 item.Serialize(serializer);
             }
         }
 
-        public static ReadOnlyMemory<ViewportEvent> deserialize_vector_ViewportEvent(Serde.IDeserializer deserializer) {
+        public static ImmutableList<ViewportEvent> deserialize_vector_ViewportEvent(Serde.IDeserializer deserializer) {
             long length = deserializer.deserialize_len();
             ViewportEvent[] obj = new ViewportEvent[length];
             for (int i = 0; i < length; i++) {
                 obj[i] = ViewportEventExtensions.Deserialize(deserializer);
             }
-            return new ReadOnlyMemory<ViewportEvent>(obj);
+            return obj.ToImmutableList();
         }
 
-        public static void serialize_vector_u8(ReadOnlyMemory<byte> value, Serde.ISerializer serializer) {
-            serializer.serialize_len(value.Length);
+        public static void serialize_vector_u8(ImmutableList<byte> value, Serde.ISerializer serializer) {
+            serializer.serialize_len(value.Count);
             foreach (var item in value) {
                 serializer.serialize_u8(item);
             }
         }
 
-        public static ReadOnlyMemory<byte> deserialize_vector_u8(Serde.IDeserializer deserializer) {
+        public static ImmutableList<byte> deserialize_vector_u8(Serde.IDeserializer deserializer) {
             long length = deserializer.deserialize_len();
             byte[] obj = new byte[length];
             for (int i = 0; i < length; i++) {
                 obj[i] = deserializer.deserialize_u8();
             }
-            return new ReadOnlyMemory<byte>(obj);
+            return obj.ToImmutableList();
         }
 
     }

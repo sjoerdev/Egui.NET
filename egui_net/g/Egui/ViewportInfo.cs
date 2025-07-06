@@ -1,6 +1,7 @@
 #pragma warning disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace Egui {
     public partial struct ViewportInfo : IEquatable<ViewportInfo> {
         public ViewportId? Parent;
         public string? Title;
-        public ReadOnlyMemory<ViewportEvent> Events;
+        public ImmutableList<ViewportEvent> Events;
         public float? NativePixelsPerPoint;
         public Vec2? MonitorSize;
         public Rect? InnerRect;

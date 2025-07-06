@@ -1,6 +1,7 @@
 #pragma warning disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Egui {
         public string Name;
         public string Mime;
         public SystemTime? LastModified;
-        public ReadOnlyMemory<byte>? Bytes;
+        public ImmutableList<byte>? Bytes;
 
 
         internal void Serialize(Serde.ISerializer serializer) {

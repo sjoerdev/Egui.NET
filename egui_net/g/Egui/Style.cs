@@ -1,6 +1,7 @@
 #pragma warning disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Egui {
         public TextStyle? OverrideTextStyle;
         public FontId? OverrideFontId;
         public Align? OverrideTextValign;
-        public Serde.ValueDictionary<TextStyle, FontId> TextStyles;
+        public ImmutableDictionary<TextStyle, FontId> TextStyles;
         public TextStyle DragValueTextStyle;
         public bool? Wrap;
         public TextWrapMode? WrapMode;

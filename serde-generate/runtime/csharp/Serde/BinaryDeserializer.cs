@@ -1,7 +1,10 @@
+#pragma warning disable
+
 // Copyright (c) Facebook, Inc. and its affiliates
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 using System;
+using System.Collections.Immutable;
 using System.IO;
 using System.Numerics;
 using System.Text;
@@ -65,7 +68,7 @@ namespace Serde
             return utf8.GetString(content);
         }
 
-        public ReadOnlyMemory<byte> deserialize_bytes()
+        public ImmutableList<byte> deserialize_bytes()
         {
             long len = deserialize_len();
             if (len < 0 || len > int.MaxValue)
@@ -75,7 +78,7 @@ namespace Serde
             byte[] content = reader.ReadBytes((int)len);
             if (content.Length < len)
                 throw new DeserializationException($"Need {len - content.Length} more bytes for byte array");
-            return new ReadOnlyMemory<byte>(content);
+            return content.ToImmutableList();
         }
 
         public bool deserialize_bool()

@@ -1,7 +1,10 @@
+#pragma warning disable
+
 // Copyright (c) Facebook, Inc. and its affiliates
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Numerics;
@@ -62,9 +65,9 @@ namespace Serde
 
         public byte[] get_bytes() => buffer.ToArray();
 
-        public void serialize_str(string value) => serialize_bytes(new ReadOnlyMemory<byte>(utf8.GetBytes(value)));
+        public void serialize_str(string value) => serialize_bytes(utf8.GetBytes(value).ToImmutableList());
 
-        public void serialize_bytes(ReadOnlyMemory<byte> value)
+        public void serialize_bytes(ImmutableList<byte> value)
         {
             serialize_len(value.Count);
             foreach (byte b in value)

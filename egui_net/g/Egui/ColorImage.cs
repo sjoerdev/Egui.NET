@@ -1,6 +1,7 @@
 #pragma warning disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,8 @@ using System.Numerics;
 namespace Egui {
 
     public partial struct ColorImage : IEquatable<ColorImage> {
-        public ReadOnlyMemory<ulong> Size;
-        public ReadOnlyMemory<Color32> Pixels;
+        public ImmutableList<ulong> Size;
+        public ImmutableList<Color32> Pixels;
 
 
         internal void Serialize(Serde.ISerializer serializer) {

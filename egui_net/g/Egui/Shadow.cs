@@ -1,6 +1,7 @@
 #pragma warning disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ using System.Numerics;
 namespace Egui {
 
     public partial struct Shadow : IEquatable<Shadow> {
-        public ReadOnlyMemory<sbyte> Offset;
+        public ImmutableList<sbyte> Offset;
         public byte Blur;
         public byte Spread;
         public Color32 Color;

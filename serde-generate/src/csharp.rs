@@ -168,6 +168,7 @@ where
             r"#pragma warning disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -278,12 +279,12 @@ using System.Numerics;"
             F64 => "double".into(),
             Char => "char".into(),
             Str => "string".into(),
-            Bytes => "ReadOnlyMemory<byte>".into(),
+            Bytes => "ImmutableList<byte>".into(),
 
             Option(format) => format!("{}?", self.quote_type(format)),
-            Seq(format) => format!("ReadOnlyMemory<{}>", self.quote_type(format)),
+            Seq(format) => format!("ImmutableList<{}>", self.quote_type(format)),
             Map { key, value } => format!(
-                "Serde.ValueDictionary<{}, {}>",
+                "ImmutableDictionary<{}, {}>",
                 self.quote_type(key),
                 self.quote_type(value)
             ),
@@ -291,7 +292,7 @@ using System.Numerics;"
             TupleArray {
                 content,
                 size: _size,
-            } => format!("ReadOnlyMemory<{}>", self.quote_type(content),),
+            } => format!("ImmutableList<{}>", self.quote_type(content),),
             Variable(_) => panic!("unexpected value"),
         }
     }
@@ -461,7 +462,7 @@ if (value is not null) {{
                 write!(
                     self.out,
                     r#"
-serializer.serialize_len(value.Length);
+serializer.serialize_len(value.Count);
 foreach (var item in value) {{
     {}
 }}
@@ -474,8 +475,8 @@ foreach (var item in value) {{
                 write!(
                     self.out,
                     r#"
-serializer.serialize_len(value.Length);
-int[] offsets = new int[value.Length];
+serializer.serialize_len(value.Count);
+int[] offsets = new int[value.Count];
 int count = 0;
 foreach (KeyValuePair<{}, {}> entry in value) {{
     offsets[count++] = serializer.get_buffer_offset();
@@ -503,8 +504,8 @@ serializer.sort_map_entries(offsets);
                 write!(
                     self.out,
                     r#"
-if (value.Length != {0}) {{
-    throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Length + " instead of " + {0});
+if (value.Count != {0}) {{
+    throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Count + " instead of " + {0});
 }}
 foreach (var item in value) {{
     {1}
@@ -556,7 +557,7 @@ long length = deserializer.deserialize_len();
 for (int i = 0; i < length; i++) {{
     obj[i] = {1};
 }}
-return new ReadOnlyMemory<{0}>(obj);
+return obj.ToImmutableList();
 "#,
                     self.quote_type(format),
                     self.quote_deserialize(format)
@@ -585,7 +586,7 @@ for (long i = 0; i < length; i++) {{
     var value = {3};
     obj[key] = value;
 }}
-return new Serde.ValueDictionary<{0}, {1}>(obj);
+return obj.ToImmutableDictionary();
 "#,
                     self.quote_type(key),
                     self.quote_type(value),
@@ -617,7 +618,7 @@ return ({}
 for (int i = 0; i < {1}; i++) {{
     obj[i] = {2};
 }}
-return new ReadOnlyMemory<{0}>(obj);
+return obj.ToImmutableList();
 "#,
                     self.quote_type(content),
                     size,
@@ -891,7 +892,7 @@ return new ReadOnlyMemory<{0}>(obj);
         self.output_comment(name)?;
         writeln!(
             self.out,
-            "public partial struct {0} : IEquatable<{0}> {{",
+            "public partial struct {0} {{",
             name
         )?;
         let reserved_names = variants
@@ -900,6 +901,7 @@ return new ReadOnlyMemory<{0}>(obj);
             .collect::<Vec<_>>();
         self.enter_class(name, &reserved_names);
 
+        /*
         // Serialize/Deserialize
         if self.generator.config.serialization {
             writeln!(
@@ -997,7 +999,7 @@ switch (index) {{"#,
         )?;
         //writeln!(self.out, "object ICloneable.Clone() => Clone();\n")?;
 
-        //self.output_variants(name, variants)?;
+        //self.output_variants(name, variants)?; */
         self.leave_class(&reserved_names);
         writeln!(self.out, "}}\n")
     }

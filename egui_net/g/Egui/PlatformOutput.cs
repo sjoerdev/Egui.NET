@@ -1,6 +1,7 @@
 #pragma warning disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,11 +10,11 @@ using System.Numerics;
 namespace Egui {
 
     public partial struct PlatformOutput : IEquatable<PlatformOutput> {
-        public ReadOnlyMemory<OutputCommand> Commands;
+        public ImmutableList<OutputCommand> Commands;
         public CursorIcon CursorIcon;
         public OpenUrl? OpenUrl;
         public string CopiedText;
-        public ReadOnlyMemory<OutputEvent> Events;
+        public ImmutableList<OutputEvent> Events;
         public bool MutableTextUnderCursor;
         public IMEOutput? Ime;
         public ulong NumCompletedPasses;

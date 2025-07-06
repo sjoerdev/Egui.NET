@@ -1,6 +1,7 @@
 #pragma warning disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,11 @@ namespace Egui {
 
     public partial struct State : IEquatable<State> {
         public Vec2 Offset;
-        public ReadOnlyMemory<ScrollingToTarget?> OffsetTarget;
+        public ImmutableList<ScrollingToTarget?> OffsetTarget;
         public Vec2b ShowScroll;
         public Vec2b ContentIsTooLarge;
         public Vec2b ScrollBarInteraction;
-        public ReadOnlyMemory<float?> ScrollStartOffsetFromTopLeft;
+        public ImmutableList<float?> ScrollStartOffsetFromTopLeft;
         public Vec2b ScrollStuckToEnd;
         public Rect? InteractRect;
 
