@@ -9,10 +9,26 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Types of attention to request from a user when a native window is not in focus.
+    ///
+    /// See winit's documentationuser_attention_type for platform-specific meaning of the attention types.
+    ///
+    /// user_attention_type: https://docs.rs/winit/latest/winit/window/enum.UserAttentionType.html
+    /// </summary>
     public enum UserAttentionType {
-        Critical = 0,
-        Informational = 1,
-        Reset = 2,
+            /// <summary>
+            /// Request an elevated amount of animations and flair for the window and the task bar or dock icon.
+            /// </summary>
+            Critical = 0,
+            /// <summary>
+            /// Request a standard amount of attention-grabbing actions.
+            /// </summary>
+            Informational = 1,
+            /// <summary>
+            /// Reset the attention request and interrupt related animations and flashes.
+            /// </summary>
+            Reset = 2,
     }
     internal static class UserAttentionTypeExtensions {
 

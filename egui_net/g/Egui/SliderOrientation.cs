@@ -9,9 +9,12 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Specifies the orientation of a <c>Slider</c>.
+    /// </summary>
     public enum SliderOrientation {
-        Horizontal = 0,
-        Vertical = 1,
+            Horizontal = 0,
+            Vertical = 1,
     }
     internal static class SliderOrientationExtensions {
 

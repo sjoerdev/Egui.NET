@@ -9,10 +9,22 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// The unit associated with the numeric value of a mouse wheel event
+    /// </summary>
     public enum MouseWheelUnit {
-        Point = 0,
-        Line = 1,
-        Page = 2,
+            /// <summary>
+            /// Number of ui points (logical pixels)
+            /// </summary>
+            Point = 0,
+            /// <summary>
+            /// Number of lines
+            /// </summary>
+            Line = 1,
+            /// <summary>
+            /// Number of pages
+            /// </summary>
+            Page = 2,
     }
     internal static class MouseWheelUnitExtensions {
 

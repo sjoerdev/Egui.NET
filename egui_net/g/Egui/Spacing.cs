@@ -9,26 +9,107 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Controls the sizes and distances between widgets.
+    /// </summary>
     public partial struct Spacing : IEquatable<Spacing> {
+        /// <summary>
+        /// Horizontal and vertical spacing between widgets.
+        ///
+        /// To add extra space between widgets, use <c>AddSpace</c>.
+        ///
+        /// <c>ItemSpacing</c> is inserted _after_ adding a widget, so to increase the spacing between
+        /// widgets <c>A</c> and <c>B</c> you need to change <c>ItemSpacing</c> before adding <c>A</c>.
+        /// </summary>
         public Vec2 ItemSpacing;
+        /// <summary>
+        /// Horizontal and vertical margins within a window frame.
+        /// </summary>
         public Margin WindowMargin;
+        /// <summary>
+        /// Button size is text size plus this on each side
+        /// </summary>
         public Vec2 ButtonPadding;
+        /// <summary>
+        /// Horizontal and vertical margins within a menu frame.
+        /// </summary>
         public Margin MenuMargin;
+        /// <summary>
+        /// Indent collapsing regions etc by this much.
+        /// </summary>
         public float Indent;
+        /// <summary>
+        /// Minimum size of a <c>DragValue</c>, color picker button, and other small widgets.
+        /// <c>InteractSize.y</c> is the default height of button, slider, etc.
+        /// Anything clickable should be (at least) this size.
+        /// </summary>
         public Vec2 InteractSize;
+        /// <summary>
+        /// Default width of a <c>Slider</c>.
+        /// </summary>
         public float SliderWidth;
+        /// <summary>
+        /// Default rail height of a <c>Slider</c>.
+        /// </summary>
         public float SliderRailHeight;
+        /// <summary>
+        /// Default (minimum) width of a <c>ComboBox</c>.
+        /// </summary>
         public float ComboWidth;
+        /// <summary>
+        /// Default width of a <c>TextEdit</c>.
+        /// </summary>
         public float TextEditWidth;
+        /// <summary>
+        /// Checkboxes, radio button and collapsing headers have an icon at the start.
+        /// This is the width/height of the outer part of this icon (e.g. the BOX of the checkbox).
+        /// </summary>
         public float IconWidth;
+        /// <summary>
+        /// Checkboxes, radio button and collapsing headers have an icon at the start.
+        /// This is the width/height of the inner part of this icon (e.g. the check of the checkbox).
+        /// </summary>
         public float IconWidthInner;
+        /// <summary>
+        /// Checkboxes, radio button and collapsing headers have an icon at the start.
+        /// This is the spacing between the icon and the text
+        /// </summary>
         public float IconSpacing;
+        /// <summary>
+        /// The size used for the <c>MaxRect</c> the first frame.
+        ///
+        /// Text will wrap at this width, and images that expand to fill the available space
+        /// will expand to this size.
+        ///
+        /// If the contents are smaller than this size, the area will shrink to fit the contents.
+        /// If the contents overflow, the area will grow.
+        /// </summary>
         public Vec2 DefaultAreaSize;
+        /// <summary>
+        /// Width of a tooltip (<c>OnHoverUi</c>, <c>OnHoverText</c> etc).
+        /// </summary>
         public float TooltipWidth;
+        /// <summary>
+        /// The default wrapping width of a menu.
+        ///
+        /// Items longer than this will wrap to a new line.
+        /// </summary>
         public float MenuWidth;
+        /// <summary>
+        /// Horizontal distance between a menu and a submenu.
+        /// </summary>
         public float MenuSpacing;
+        /// <summary>
+        /// End indented regions with a horizontal line
+        /// </summary>
         public bool IndentEndsWithHorizontalLine;
+        /// <summary>
+        /// Height of a combo-box before showing scroll bars.
+        /// </summary>
         public float ComboHeight;
+        /// <summary>
+        /// Controls the spacing of a <c>ScrollArea</c>.
+        /// </summary>
         public ScrollStyle Scroll;
 
 

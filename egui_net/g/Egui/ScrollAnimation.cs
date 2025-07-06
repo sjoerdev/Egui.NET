@@ -9,8 +9,19 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Scroll animation configuration, used when programmatically scrolling somewhere (e.g. with <c>ScrollToCursor</c>)
+    /// The animation duration is calculated based on the distance to be scrolled via <c>PointsPerSecond</c>
+    /// and can be clamped to a min / max duration via <c>Duration</c>.
+    /// </summary>
     public partial struct ScrollAnimation : IEquatable<ScrollAnimation> {
+        /// <summary>
+        /// With what speed should we scroll? (Default: 1000.0)
+        /// </summary>
         public float PointsPerSecond;
+        /// <summary>
+        /// The min / max scroll duration.
+        /// </summary>
         public Rangef Duration;
 
 

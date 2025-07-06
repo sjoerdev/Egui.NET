@@ -9,8 +9,21 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Information about text being edited.
+    ///
+    /// Useful for IME.
+    /// </summary>
     public partial struct IMEOutput : IEquatable<IMEOutput> {
+        /// <summary>
+        /// Where the <c>TextEdit</c> is located on screen.
+        /// </summary>
         public Rect Rect;
+        /// <summary>
+        /// Where the primary cursor is.
+        ///
+        /// This is a very thin rectangle.
+        /// </summary>
         public Rect CursorRect;
 
 

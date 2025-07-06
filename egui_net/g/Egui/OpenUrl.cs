@@ -9,6 +9,9 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Open this url in a browser.
+    /// </summary>
     public partial struct OpenUrl : IEquatable<OpenUrl> {
         public string Url;
         public bool NewTab;

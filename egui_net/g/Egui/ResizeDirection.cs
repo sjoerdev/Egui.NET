@@ -10,14 +10,14 @@ using System.Numerics;
 namespace Egui {
 
     public enum ResizeDirection {
-        North = 0,
-        South = 1,
-        East = 2,
-        West = 3,
-        NorthEast = 4,
-        SouthEast = 5,
-        NorthWest = 6,
-        SouthWest = 7,
+            North = 0,
+            South = 1,
+            East = 2,
+            West = 3,
+            NorthEast = 4,
+            SouthEast = 5,
+            NorthWest = 6,
+            SouthWest = 7,
     }
     internal static class ResizeDirectionExtensions {
 

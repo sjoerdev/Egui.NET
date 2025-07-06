@@ -9,11 +9,30 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// In what phase a touch event is in.
+    /// </summary>
     public enum TouchPhase {
-        Start = 0,
-        Move = 1,
-        End = 2,
-        Cancel = 3,
+            /// <summary>
+            /// User just placed a touch point on the touch surface
+            /// </summary>
+            Start = 0,
+            /// <summary>
+            /// User moves a touch point along the surface. This event is also sent when
+            /// any attributes (position, force, …) of the touch point change.
+            /// </summary>
+            Move = 1,
+            /// <summary>
+            /// User lifted the finger or pen from the surface, or slid off the edge of
+            /// the surface
+            /// </summary>
+            End = 2,
+            /// <summary>
+            /// Touch operation has been disrupted by something (various reasons are possible,
+            /// maybe a pop-up alert or any other kind of interruption which may not have
+            /// been intended by the user)
+            /// </summary>
+            Cancel = 3,
     }
     internal static class TouchPhaseExtensions {
 

@@ -9,12 +9,31 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Mouse button (or similar for touch input)
+    /// </summary>
     public enum PointerButton {
-        Primary = 0,
-        Secondary = 1,
-        Middle = 2,
-        Extra1 = 3,
-        Extra2 = 4,
+            /// <summary>
+            /// The primary mouse button is usually the left one.
+            /// </summary>
+            Primary = 0,
+            /// <summary>
+            /// The secondary mouse button is usually the right one,
+            /// and most often used for context menus or other optional things.
+            /// </summary>
+            Secondary = 1,
+            /// <summary>
+            /// The tertiary mouse button is usually the middle mouse button (e.g. clicking the scroll wheel).
+            /// </summary>
+            Middle = 2,
+            /// <summary>
+            /// The first extra mouse button on some mice. In web typically corresponds to the Browser back button.
+            /// </summary>
+            Extra1 = 3,
+            /// <summary>
+            /// The second extra mouse button on some mice. In web typically corresponds to the Browser forward button.
+            /// </summary>
+            Extra2 = 4,
     }
     internal static class PointerButtonExtensions {
 

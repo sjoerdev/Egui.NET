@@ -9,10 +9,13 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Set window to be always-on-top, always-on-bottom, or neither.
+    /// </summary>
     public enum WindowLevel {
-        Normal = 0,
-        AlwaysOnBottom = 1,
-        AlwaysOnTop = 2,
+            Normal = 0,
+            AlwaysOnBottom = 1,
+            AlwaysOnTop = 2,
     }
     internal static class WindowLevelExtensions {
 

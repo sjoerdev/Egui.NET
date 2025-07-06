@@ -9,20 +9,108 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Controls the spacing and visuals of a <c>ScrollArea</c>.
+    ///
+    /// There are three presets to chose from:
+    /// * <c>Solid</c>
+    /// * <c>Thin</c>
+    /// * <c>Floating</c>
+    /// </summary>
     public partial struct ScrollStyle : IEquatable<ScrollStyle> {
+        /// <summary>
+        /// If <c>True</c>, scroll bars float above the content, partially covering it.
+        ///
+        /// If <c>False</c>, the scroll bars allocate space, shrinking the area
+        /// available to the contents.
+        ///
+        /// This also changes the colors of the scroll-handle to make
+        /// it more promiment.
+        /// </summary>
         public bool Floating;
+        /// <summary>
+        /// The width of the scroll bars at it largest.
+        /// </summary>
         public float BarWidth;
+        /// <summary>
+        /// Make sure the scroll handle is at least this big
+        /// </summary>
         public float HandleMinLength;
+        /// <summary>
+        /// Margin between contents and scroll bar.
+        /// </summary>
         public float BarInnerMargin;
+        /// <summary>
+        /// Margin between scroll bar and the outer container (e.g. right of a vertical scroll bar).
+        /// Only makes sense for non-floating scroll bars.
+        /// </summary>
         public float BarOuterMargin;
+        /// <summary>
+        /// The thin width of floating scroll bars that the user is NOT hovering.
+        ///
+        /// When the user hovers the scroll bars they expand to <c>BarWidth</c>.
+        /// </summary>
         public float FloatingWidth;
+        /// <summary>
+        /// How much space is allocated for a floating scroll bar?
+        ///
+        /// Normally this is zero, but you could set this to something small
+        /// like 4.0 and set <c>DormantHandleOpacity</c> and
+        /// <c>DormantBackgroundOpacity</c> to e.g. 0.5
+        /// so as to always show a thin scroll bar.
+        /// </summary>
         public float FloatingAllocatedWidth;
+        /// <summary>
+        /// If true, use colors with more contrast. Good for floating scroll bars.
+        /// </summary>
         public bool ForegroundColor;
+        /// <summary>
+        /// The opaqueness of the background when the user is neither scrolling
+        /// nor hovering the scroll area.
+        ///
+        /// This is only for floating scroll bars.
+        /// Solid scroll bars are always opaque.
+        /// </summary>
         public float DormantBackgroundOpacity;
+        /// <summary>
+        /// The opaqueness of the background when the user is hovering
+        /// the scroll area, but not the scroll bar.
+        ///
+        /// This is only for floating scroll bars.
+        /// Solid scroll bars are always opaque.
+        /// </summary>
         public float ActiveBackgroundOpacity;
+        /// <summary>
+        /// The opaqueness of the background when the user is hovering
+        /// over the scroll bars.
+        ///
+        /// This is only for floating scroll bars.
+        /// Solid scroll bars are always opaque.
+        /// </summary>
         public float InteractBackgroundOpacity;
+        /// <summary>
+        /// The opaqueness of the handle when the user is neither scrolling
+        /// nor hovering the scroll area.
+        ///
+        /// This is only for floating scroll bars.
+        /// Solid scroll bars are always opaque.
+        /// </summary>
         public float DormantHandleOpacity;
+        /// <summary>
+        /// The opaqueness of the handle when the user is hovering
+        /// the scroll area, but not the scroll bar.
+        ///
+        /// This is only for floating scroll bars.
+        /// Solid scroll bars are always opaque.
+        /// </summary>
         public float ActiveHandleOpacity;
+        /// <summary>
+        /// The opaqueness of the handle when the user is hovering
+        /// over the scroll bars.
+        ///
+        /// This is only for floating scroll bars.
+        /// Solid scroll bars are always opaque.
+        /// </summary>
         public float InteractHandleOpacity;
 
 

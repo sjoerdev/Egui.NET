@@ -9,12 +9,40 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// bg = background, fg = foreground.
+    /// </summary>
     public partial struct WidgetVisuals : IEquatable<WidgetVisuals> {
+        /// <summary>
+        /// Background color of widgets that must have a background fill,
+        /// such as the slider background, a checkbox background, or a radio button background.
+        ///
+        /// Must never be <c>Transparent</c>.
+        /// </summary>
         public Color32 BgFill;
+        /// <summary>
+        /// Background color of widgets that can _optionally_ have a background fill, such as buttons.
+        ///
+        /// May be <c>Transparent</c>.
+        /// </summary>
         public Color32 WeakBgFill;
+        /// <summary>
+        /// For surrounding rectangle of things that need it,
+        /// like buttons, the box of the checkbox, etc.
+        /// Should maybe be called <c>FrameStroke</c>.
+        /// </summary>
         public Stroke BgStroke;
+        /// <summary>
+        /// Button frames etc.
+        /// </summary>
         public CornerRadius CornerRadius;
+        /// <summary>
+        /// Stroke and text color of the interactive part of a component (button text, slider grab, check-mark, …).
+        /// </summary>
         public Stroke FgStroke;
+        /// <summary>
+        /// Make the frame this much larger.
+        /// </summary>
         public float Expansion;
 
 

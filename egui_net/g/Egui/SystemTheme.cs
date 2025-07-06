@@ -10,9 +10,9 @@ using System.Numerics;
 namespace Egui {
 
     public enum SystemTheme {
-        SystemDefault = 0,
-        Light = 1,
-        Dark = 2,
+            SystemDefault = 0,
+            Light = 1,
+            Dark = 2,
     }
     internal static class SystemThemeExtensions {
 

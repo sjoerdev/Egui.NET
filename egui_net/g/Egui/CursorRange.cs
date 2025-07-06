@@ -9,8 +9,20 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// A selected text range (could be a range of length zero).
+    /// </summary>
     public partial struct CursorRange : IEquatable<CursorRange> {
+        /// <summary>
+        /// When selecting with a mouse, this is where the mouse was released.
+        /// When moving with e.g. shift+arrows, this is what moves.
+        /// Note that the two ends can come in any order, and also be equal (no selection).
+        /// </summary>
         public Cursor Primary;
+        /// <summary>
+        /// When selecting with a mouse, this is where the mouse was first pressed.
+        /// This part of the cursor does not move when shift is down.
+        /// </summary>
         public Cursor Secondary;
 
 

@@ -9,6 +9,9 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Selected text, selected elements etc
+    /// </summary>
     public partial struct Selection : IEquatable<Selection> {
         public Color32 BgFill;
         public Stroke Stroke;

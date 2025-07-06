@@ -9,11 +9,34 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// The visuals of widgets for different states of interaction.
+    /// </summary>
     public partial struct Widgets : IEquatable<Widgets> {
+        /// <summary>
+        /// The style of a widget that you cannot interact with.
+        /// * <c>Noninteractive.bgStroke</c> is the outline of windows.
+        /// * <c>Noninteractive.bgFill</c> is the background color of windows.
+        /// * <c>Noninteractive.fgStroke</c> is the normal text color.
+        /// </summary>
         public WidgetVisuals Noninteractive;
+        /// <summary>
+        /// The style of an interactive widget, such as a button, at rest.
+        /// </summary>
         public WidgetVisuals Inactive;
+        /// <summary>
+        /// The style of an interactive widget while you hover it, or when it is highlighted.
+        ///
+        /// See <c>Hovered</c>, <c>Highlighted</c> and <c>Highlight</c>.
+        /// </summary>
         public WidgetVisuals Hovered;
+        /// <summary>
+        /// The style of an interactive widget as you are clicking or dragging it.
+        /// </summary>
         public WidgetVisuals Active;
+        /// <summary>
+        /// The style of a button that has an open menu beneath it (e.g. a combo-box)
+        /// </summary>
         public WidgetVisuals Open;
 
 

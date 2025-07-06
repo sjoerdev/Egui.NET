@@ -9,6 +9,9 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// A pair of <c>ViewportId</c>, used to identify a viewport and its parent.
+    /// </summary>
     public partial struct ViewportIdPair : IEquatable<ViewportIdPair> {
         public ViewportId This;
         public ViewportId Parent;

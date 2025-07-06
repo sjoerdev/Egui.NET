@@ -9,11 +9,29 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// A file dropped into egui.
+    /// </summary>
     public partial struct DroppedFile : IEquatable<DroppedFile> {
+        /// <summary>
+        /// Set by the <c>EguiWinit</c> backend.
+        /// </summary>
         public string? Path;
+        /// <summary>
+        /// Name of the file. Set by the <c>Eframe</c> web backend.
+        /// </summary>
         public string Name;
+        /// <summary>
+        /// With the <c>Eframe</c> web backend, this is set to the mime-type of the file (if available).
+        /// </summary>
         public string Mime;
+        /// <summary>
+        /// Set by the <c>Eframe</c> web backend.
+        /// </summary>
         public SystemTime? LastModified;
+        /// <summary>
+        /// Set by the <c>Eframe</c> web backend.
+        /// </summary>
         public ImmutableList<byte>? Bytes;
 
 

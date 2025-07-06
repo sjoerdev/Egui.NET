@@ -9,14 +9,51 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// How and when interaction happens.
+    /// </summary>
     public partial struct Interaction : IEquatable<Interaction> {
+        /// <summary>
+        /// How close a widget must be to the mouse to have a chance to register as a click or drag.
+        ///
+        /// If this is larger than zero, it gets easier to hit widgets,
+        /// which is important for e.g. touch screens.
+        /// </summary>
         public float InteractRadius;
+        /// <summary>
+        /// Radius of the interactive area of the side of a window during drag-to-resize.
+        /// </summary>
         public float ResizeGrabRadiusSide;
+        /// <summary>
+        /// Radius of the interactive area of the corner of a window during drag-to-resize.
+        /// </summary>
         public float ResizeGrabRadiusCorner;
+        /// <summary>
+        /// If <c>False</c>, tooltips will show up anytime you hover anything, even if mouse is still moving
+        /// </summary>
         public bool ShowTooltipsOnlyWhenStill;
+        /// <summary>
+        /// Delay in seconds before showing tooltips after the mouse stops moving
+        /// </summary>
         public float TooltipDelay;
+        /// <summary>
+        /// If you have waited for a tooltip and then hover some other widget within
+        /// this many seconds, then show the new tooltip right away,
+        /// skipping <c>TooltipDelay</c>.
+        ///
+        /// This lets the user quickly move over some dead space to hover the next thing.
+        /// </summary>
         public float TooltipGraceTime;
+        /// <summary>
+        /// Can you select the text on a <c>Label</c> by default?
+        /// </summary>
         public bool SelectableLabels;
+        /// <summary>
+        /// Can the user select text that span multiple labels?
+        ///
+        /// The default is <c>True</c>, but text selection can be slightly glitchy,
+        /// so you may want to disable it.
+        /// </summary>
         public bool MultiWidgetTextSelect;
 
 

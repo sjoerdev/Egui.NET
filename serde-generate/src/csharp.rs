@@ -901,6 +901,19 @@ return obj.ToImmutableList();
             .collect::<Vec<_>>();
         self.enter_class(name, &reserved_names);
 
+        // Serialize/Deserialize
+        if self.generator.config.serialization {
+            writeln!(
+                self.out,
+                "\ninternal void Serialize(Serde.ISerializer serializer) {{ throw new NotImplementedException(); }}"
+            )?;
+            write!(
+                self.out,
+                "\ninternal static {} Deserialize(Serde.IDeserializer deserializer) {{ throw new NotImplementedException(); }}",
+                name
+            )?;
+        }
+
         /*
         // Serialize/Deserialize
         if self.generator.config.serialization {
@@ -1012,11 +1025,14 @@ switch (index) {{"#,
         writeln!(self.out)?;
         self.output_comment(name)?;
         writeln!(self.out, "public enum {} {{", name)?;
+        self.enter_class(name, &[]);
         self.out.indent();
         for (index, variant) in variants {
+            self.output_comment(&variant.name)?;
             writeln!(self.out, "{} = {},", variant.name, index)?;
         }
         self.out.unindent();
+        self.leave_class(&[]);
         writeln!(self.out, "}}")?;
 
         if self.generator.config.serialization {

@@ -9,14 +9,55 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// The non-rendering part of what egui emits each frame.
+    ///
+    /// You can access (and modify) this with <c>Output</c>.
+    ///
+    /// The backend should use this.
+    /// </summary>
     public partial struct PlatformOutput : IEquatable<PlatformOutput> {
+        /// <summary>
+        /// Commands that the egui integration should execute at the end of a frame.
+        /// </summary>
         public ImmutableList<OutputCommand> Commands;
+        /// <summary>
+        /// Set the cursor to this icon.
+        /// </summary>
         public CursorIcon CursorIcon;
+        /// <summary>
+        /// If set, open this url.
+        /// </summary>
         public OpenUrl? OpenUrl;
+        /// <summary>
+        /// If set, put this text in the system clipboard. Ignore if empty.
+        ///
+        /// This is often a response to <c>Copy</c> or <c>Cut</c>.
+        /// </summary>
         public string CopiedText;
+        /// <summary>
+        /// Events that may be useful to e.g. a screen reader.
+        /// </summary>
         public ImmutableList<OutputEvent> Events;
+        /// <summary>
+        /// Is there a mutable <c>TextEdit</c> under the cursor?
+        /// Use by <c>Eframe</c> web to show/hide mobile keyboard and IME agent.
+        /// </summary>
         public bool MutableTextUnderCursor;
+        /// <summary>
+        /// This is set if, and only if, the user is currently editing text.
+        ///
+        /// Useful for IME.
+        /// </summary>
         public IMEOutput? Ime;
+        /// <summary>
+        /// How many ui passes is this the sum of?
+        ///
+        /// See <c>RequestDiscard</c> for details.
+        ///
+        /// This is incremented at the END of each frame,
+        /// so this will be <c>0</c> for the first pass.
+        /// </summary>
         public ulong NumCompletedPasses;
 
 

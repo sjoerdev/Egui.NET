@@ -9,6 +9,9 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// State regarding panels.
+    /// </summary>
     public partial struct PanelState : IEquatable<PanelState> {
         public Rect Rect;
 

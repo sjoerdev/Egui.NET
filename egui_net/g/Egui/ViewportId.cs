@@ -9,6 +9,11 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// A unique identifier of a viewport.
+    ///
+    /// This is returned by <c>ViewportId</c> and <c>ParentViewportId</c>.
+    /// </summary>
     public partial struct ViewportId : IEquatable<ViewportId> {
         public Id Value;
 

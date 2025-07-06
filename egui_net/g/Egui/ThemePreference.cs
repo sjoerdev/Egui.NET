@@ -9,10 +9,22 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// The user's theme preference.
+    /// </summary>
     public enum ThemePreference {
-        Dark = 0,
-        Light = 1,
-        System = 2,
+            /// <summary>
+            /// Dark mode: light text on a dark background.
+            /// </summary>
+            Dark = 0,
+            /// <summary>
+            /// Light mode: dark text on a light background.
+            /// </summary>
+            Light = 1,
+            /// <summary>
+            /// Follow the system's theme preference.
+            /// </summary>
+            System = 2,
     }
     internal static class ThemePreferenceExtensions {
 

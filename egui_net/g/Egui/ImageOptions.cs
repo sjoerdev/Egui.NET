@@ -10,10 +10,38 @@ using System.Numerics;
 namespace Egui {
 
     public partial struct ImageOptions : IEquatable<ImageOptions> {
+        /// <summary>
+        /// Select UV range. Default is (0,0) in top-left, (1,1) bottom right.
+        /// </summary>
         public Rect Uv;
+        /// <summary>
+        /// A solid color to put behind the image. Useful for transparent images.
+        /// </summary>
         public Color32 BgFill;
+        /// <summary>
+        /// Multiply image color with this. Default is WHITE (no tint).
+        /// </summary>
         public Color32 Tint;
+        /// <summary>
+        /// Rotate the image about an origin by some angle
+        ///
+        /// Positive angle is clockwise.
+        /// Origin is a vector in normalized UV space ((0,0) in top-left, (1,1) bottom right).
+        ///
+        /// To rotate about the center you can pass <c>Splat(0.5)</c> as the origin.
+        ///
+        /// Due to limitations in the current implementation,
+        /// this will turn off rounding of the image.
+        /// </summary>
         public (Rot2, Vec2)? Rotation;
+        /// <summary>
+        /// Round the corners of the image.
+        ///
+        /// The default is no rounding (<c>Zero</c>).
+        ///
+        /// Due to limitations in the current implementation,
+        /// this will turn off any rotation of the image.
+        /// </summary>
         public CornerRadius CornerRadius;
 
 

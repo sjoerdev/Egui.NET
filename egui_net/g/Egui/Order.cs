@@ -9,12 +9,32 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Different layer categories
+    /// </summary>
     public enum Order {
-        Background = 0,
-        Middle = 1,
-        Foreground = 2,
-        Tooltip = 3,
-        Debug = 4,
+            /// <summary>
+            /// Painted behind all floating windows
+            /// </summary>
+            Background = 0,
+            /// <summary>
+            /// Normal moveable windows that you reorder by click
+            /// </summary>
+            Middle = 1,
+            /// <summary>
+            /// Popups, menus etc that should always be painted on top of windows
+            /// Foreground objects can also have tooltips
+            /// </summary>
+            Foreground = 2,
+            /// <summary>
+            /// Things floating on top of everything else, like tooltips.
+            /// You cannot interact with these.
+            /// </summary>
+            Tooltip = 3,
+            /// <summary>
+            /// Debug layer, always painted last / on top
+            /// </summary>
+            Debug = 4,
     }
     internal static class OrderExtensions {
 

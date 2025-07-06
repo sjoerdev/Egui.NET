@@ -9,6 +9,9 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Use a <c>TextStyle</c> to look up the <c>FontId</c> in <c>TextStyles</c>.
+    /// </summary>
     public partial struct Style : IEquatable<Style> {
         public TextStyle? OverrideTextStyle;
         public FontId? OverrideFontId;

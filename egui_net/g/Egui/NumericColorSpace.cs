@@ -9,9 +9,20 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// How to display numeric color values.
+    /// </summary>
     public enum NumericColorSpace {
-        GammaByte = 0,
-        Linear = 1,
+            /// <summary>
+            /// RGB is 0-255 in gamma space.
+            ///
+            /// Alpha is 0-255 in linear space.
+            /// </summary>
+            GammaByte = 0,
+            /// <summary>
+            /// 0-1 in linear space.
+            /// </summary>
+            Linear = 1,
     }
     internal static class NumericColorSpaceExtensions {
 

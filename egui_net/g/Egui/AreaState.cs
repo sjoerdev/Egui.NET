@@ -9,9 +9,24 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// State of an <c>Area</c> that is persisted between frames.
+    ///
+    /// Areas back <c>Window</c>s and other floating containers,
+    /// like tooltips and the popups of <c>ComboBox</c>.
+    /// </summary>
     public partial struct AreaState : IEquatable<AreaState> {
+        /// <summary>
+        /// Last known position of the pivot.
+        /// </summary>
         public Pos2? PivotPos;
+        /// <summary>
+        /// The anchor point of the area, i.e. where on the area the <c>PivotPos</c> refers to.
+        /// </summary>
         public Align2 Pivot;
+        /// <summary>
+        /// If false, clicks goes straight through to what is behind us. Useful for tooltips etc.
+        /// </summary>
         public bool Interactable;
 
 

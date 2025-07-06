@@ -9,10 +9,30 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Indicate whether the horizontal and vertical scroll bars must be always visible, hidden or visible when needed.
+    /// </summary>
     public enum ScrollBarVisibility {
-        AlwaysHidden = 0,
-        VisibleWhenNeeded = 1,
-        AlwaysVisible = 2,
+            /// <summary>
+            /// Hide scroll bar even if they are needed.
+            ///
+            /// You can still scroll, with the scroll-wheel
+            /// and by dragging the contents, but there is no
+            /// visual indication of how far you have scrolled.
+            /// </summary>
+            AlwaysHidden = 0,
+            /// <summary>
+            /// Show scroll bars only when the content size exceeds the container,
+            /// i.e. when there is any need to scroll.
+            ///
+            /// This is the default.
+            /// </summary>
+            VisibleWhenNeeded = 1,
+            /// <summary>
+            /// Always show the scroll bar, even if the contents fit in the container
+            /// and there is no need to scroll.
+            /// </summary>
+            AlwaysVisible = 2,
     }
     internal static class ScrollBarVisibilityExtensions {
 

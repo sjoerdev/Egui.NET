@@ -9,6 +9,11 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// The state of a text cursor selection.
+    ///
+    /// Used for <c>TextEdit</c> and <c>Label</c>.
+    /// </summary>
     public partial struct TextCursorState : IEquatable<TextCursorState> {
         public CursorRange? CursorRange;
         public CCursorRange? CcursorRange;

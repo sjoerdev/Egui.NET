@@ -9,6 +9,9 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// A <c>Frame</c>.
+    /// </summary>
     public partial struct Frame : IEquatable<Frame> {
         public Margin InnerMargin;
         public Color32 Fill;

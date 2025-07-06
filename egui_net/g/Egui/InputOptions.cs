@@ -9,9 +9,27 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Options for input state handling.
+    /// </summary>
     public partial struct InputOptions : IEquatable<InputOptions> {
+        /// <summary>
+        /// After a pointer-down event, if the pointer moves more than this, it won't become a click.
+        /// </summary>
         public float MaxClickDist;
+        /// <summary>
+        /// If the pointer is down for longer than this it will no longer register as a click.
+        ///
+        /// If a touch is held for this many seconds while still, then it will register as a
+        /// "long-touch" which is equivalent to a secondary click.
+        ///
+        /// This is to support "press and hold for context menu" on touch screens.
+        /// </summary>
         public double MaxClickDuration;
+        /// <summary>
+        /// The new pointer press must come within this many seconds from previous pointer release
+        /// for double click (or when this value is doubled, triple click) to count.
+        /// </summary>
         public double MaxDoubleClickDelay;
 
 

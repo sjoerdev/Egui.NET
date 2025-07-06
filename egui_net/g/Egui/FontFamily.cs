@@ -10,7 +10,10 @@ using System.Numerics;
 namespace Egui {
 
     public partial struct FontFamily {
-    }
+
+        internal void Serialize(Serde.ISerializer serializer) { throw new NotImplementedException(); }
+
+        internal static FontFamily Deserialize(Serde.IDeserializer deserializer) { throw new NotImplementedException(); }}
 
 
 } // end of namespace Egui

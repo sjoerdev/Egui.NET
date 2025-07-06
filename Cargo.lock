@@ -591,6 +591,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "csbindgen"
+version = "1.9.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c26b9831049b947d154bba920e4124053def72447be6fb106a96f483874b482a"
+dependencies = [
+ "regex",
+ "syn 2.0.104",
+]
+
+[[package]]
 name = "der"
 version = "0.7.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -709,6 +719,7 @@ dependencies = [
 name = "egui_net"
 version = "0.1.0"
 dependencies = [
+ "csbindgen",
  "egui_net_bindgen",
 ]
 

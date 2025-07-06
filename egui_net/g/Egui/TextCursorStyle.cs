@@ -9,11 +9,29 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Look and feel of the text cursor.
+    /// </summary>
     public partial struct TextCursorStyle : IEquatable<TextCursorStyle> {
+        /// <summary>
+        /// The color and width of the text cursor
+        /// </summary>
         public Stroke Stroke;
+        /// <summary>
+        /// Show where the text cursor would be if you clicked?
+        /// </summary>
         public bool Preview;
+        /// <summary>
+        /// Should the cursor blink?
+        /// </summary>
         public bool Blink;
+        /// <summary>
+        /// When blinking, this is how long the cursor is visible.
+        /// </summary>
         public float OnDuration;
+        /// <summary>
+        /// When blinking, this is how long the cursor is invisible.
+        /// </summary>
         public float OffDuration;
 
 

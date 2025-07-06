@@ -3,7 +3,11 @@ name = "egui_net"
 edition.workspace = true
 version.workspace = true
 
+[lib]
+crate-type = [ "cdylib" ]
+
 [dependencies]
 
 [build-dependencies]
+csbindgen.workspace = true
 egui_net_bindgen.workspace = true

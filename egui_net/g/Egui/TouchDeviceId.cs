@@ -9,6 +9,9 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// this is a <c>U64</c> as values of this kind can always be obtained by hashing
+    /// </summary>
     public partial struct TouchDeviceId : IEquatable<TouchDeviceId> {
         public ulong Value;
 

@@ -9,6 +9,11 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Unique identification of a touch occurrence (finger or pen or …).
+    /// A Touch ID is valid until the finger is lifted.
+    /// A new ID is used for the next touch.
+    /// </summary>
     public partial struct TouchId : IEquatable<TouchId> {
         public ulong Value;
 

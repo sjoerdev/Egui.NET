@@ -10,9 +10,9 @@ using System.Numerics;
 namespace Egui {
 
     public enum IMEPurpose {
-        Normal = 0,
-        Password = 1,
-        Terminal = 2,
+            Normal = 0,
+            Password = 1,
+            Terminal = 2,
     }
     internal static class ImePurposeExtensions {
 

@@ -9,7 +9,15 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// The text edit state stored between frames.
+    ///
+    /// Attention: You also need to <c>Store</c> the updated state.
+    /// </summary>
     public partial struct TextEditState : IEquatable<TextEditState> {
+        /// <summary>
+        /// Controls the text selection.
+        /// </summary>
         public TextCursorState Cursor;
 
 

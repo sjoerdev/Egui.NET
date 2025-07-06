@@ -9,8 +9,23 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// An input event from the backend into egui, about a specific viewport.
+    /// </summary>
     public enum ViewportEvent {
-        Close = 0,
+            /// <summary>
+            /// The user clicked the close-button on the window, or similar.
+            ///
+            /// If this is the root viewport, the application will exit
+            /// after this frame unless you send a
+            /// <c>CancelClose</c> command.
+            ///
+            /// If this is not the root viewport,
+            /// it is up to the user to hide this viewport the next frame.
+            ///
+            /// This even will wake up both the child and parent viewport.
+            /// </summary>
+            Close = 0,
     }
     internal static class ViewportEventExtensions {
 

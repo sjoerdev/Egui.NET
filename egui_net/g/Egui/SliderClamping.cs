@@ -9,10 +9,29 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Specifies how values in a <c>Slider</c> are clamped.
+    /// </summary>
     public enum SliderClamping {
-        Never = 0,
-        Edits = 1,
-        Always = 2,
+            /// <summary>
+            /// Values are not clamped.
+            ///
+            /// This means editing the value with the keyboard,
+            /// or dragging the number next to the slider will always work.
+            ///
+            /// The actual slider part is always clamped though.
+            /// </summary>
+            Never = 0,
+            /// <summary>
+            /// Users cannot enter new values that are outside the range.
+            ///
+            /// Existing values remain intact though.
+            /// </summary>
+            Edits = 1,
+            /// <summary>
+            /// Always clamp values, even existing ones.
+            /// </summary>
+            Always = 2,
     }
     internal static class SliderClampingExtensions {
 

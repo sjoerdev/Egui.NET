@@ -9,15 +9,58 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Options for help debug egui by adding extra visualization
+    /// </summary>
     public partial struct DebugOptions : IEquatable<DebugOptions> {
+        /// <summary>
+        /// Always show callstack to ui on hover.
+        ///
+        /// Useful for figuring out where in the code some UI is being created.
+        ///
+        /// Only works in debug builds.
+        /// Requires the <c>Callstack</c> feature.
+        /// Does not work on web.
+        /// </summary>
         public bool DebugOnHover;
+        /// <summary>
+        /// Show callstack for the current widget on hover if all modifier keys are pressed down.
+        ///
+        /// Useful for figuring out where in the code some UI is being created.
+        ///
+        /// Only works in debug builds.
+        /// Requires the <c>Callstack</c> feature.
+        /// Does not work on web.
+        ///
+        /// Default is <c>True</c> in debug builds, on native, if the <c>Callstack</c> feature is enabled.
+        /// </summary>
         public bool DebugOnHoverWithAllModifiers;
+        /// <summary>
+        /// If we show the hover ui, include where the next widget is placed.
+        /// </summary>
         public bool HoverShowsNext;
+        /// <summary>
+        /// Show which widgets make their parent wider
+        /// </summary>
         public bool ShowExpandWidth;
+        /// <summary>
+        /// Show which widgets make their parent higher
+        /// </summary>
         public bool ShowExpandHeight;
         public bool ShowResize;
+        /// <summary>
+        /// Show an overlay on all interactive widgets.
+        /// </summary>
         public bool ShowInteractiveWidgets;
+        /// <summary>
+        /// Show interesting widgets under the mouse cursor.
+        /// </summary>
         public bool ShowWidgetHits;
+        /// <summary>
+        /// If true, highlight widgets that are not aligned to <c>GuiRounding</c>.
+        ///
+        /// See <c>GuiRounding</c> for more.
+        /// </summary>
         public bool ShowUnaligned;
 
 

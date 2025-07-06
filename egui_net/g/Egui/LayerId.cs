@@ -9,6 +9,10 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// An identifier for a paint layer.
+    /// Also acts as an identifier for <c>Area</c>:s.
+    /// </summary>
     public partial struct LayerId : IEquatable<LayerId> {
         public Order Order;
         public Id Id;

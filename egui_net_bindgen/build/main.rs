@@ -2,6 +2,7 @@ use rustdoc_types::*;
 use std::fmt::Write;
 use std::path::*;
 
+/// Types that should be ignored during generation.
 const EXCLUDE_TYPES: &[&str] = &[
     "Event",  // todo
     "InputState",  // todo
@@ -25,6 +26,7 @@ fn impls_contains(krate: &Crate, impls: &[Id], path: &str) -> bool {
     false
 }
 
+/// Retrieves a list of all `egui` types that are serializable.
 fn gather_serde_tys(krate: &Crate, exclude_tys: &[&str]) -> Vec<Id> {
     let mut result = Vec::new();
 
@@ -51,6 +53,7 @@ fn gather_serde_tys(krate: &Crate, exclude_tys: &[&str]) -> Vec<Id> {
     result
 }
 
+/// Emits a function that will perform reflection on all serializable types.
 fn emit_serde_tracer(krate: &Crate, exclude_tys: &[&str]) -> String {
     let ids = gather_serde_tys(krate, exclude_tys);
 
@@ -68,6 +71,7 @@ fn emit_serde_tracer(krate: &Crate, exclude_tys: &[&str]) -> String {
     result
 }
 
+/// Autogenerates a function for performing reflection on `egui` types.
 fn main() {
     let krate = serde_json::from_str::<Crate>(include_str!("../src/egui.json")).expect("Failed to parse egui");
     let out_dir = std::env::var("OUT_DIR").expect("Failed to get output directory");

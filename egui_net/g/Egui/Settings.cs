@@ -10,8 +10,27 @@ using System.Numerics;
 namespace Egui {
 
     public partial struct Settings : IEquatable<Settings> {
+        /// <summary>
+        /// Maximum number of undos.
+        /// If your state is resource intensive, you should keep this low.
+        ///
+        /// Default: <c>100</c>
+        /// </summary>
         public ulong MaxUndos;
+        /// <summary>
+        /// When that state hasn't changed for this many seconds,
+        /// create a new undo point (if one is needed).
+        ///
+        /// Default value: <c>1.0</c> seconds.
+        /// </summary>
         public float StableTime;
+        /// <summary>
+        /// If the state is changing so often that we never get to <c>StableTime</c>,
+        /// then still create a save point every <c>AutoSaveInterval</c> seconds,
+        /// so we have something to undo to.
+        ///
+        /// Default value: <c>30</c> seconds.
+        /// </summary>
         public float AutoSaveInterval;
 
 

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Egui")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a1cedba408a5d3a9ea15fbed86c8e9e595984f3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f5d0bf0b8898eeaf6e7152117956e0859e51934")]
 [assembly: System.Reflection.AssemblyProductAttribute("Egui")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Egui")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

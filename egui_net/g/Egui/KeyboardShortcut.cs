@@ -9,6 +9,12 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// A keyboard shortcut, e.g. <c>Ctrl+alt+w</c>.
+    ///
+    /// Can be used with <c>ConsumeShortcut</c>
+    /// and <c>FormatShortcut</c>.
+    /// </summary>
     public partial struct KeyboardShortcut : IEquatable<KeyboardShortcut> {
         public Modifiers Modifiers;
         public Key LogicalKey;

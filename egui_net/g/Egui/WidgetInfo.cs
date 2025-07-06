@@ -9,14 +9,41 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Describes a widget such as a <c>Button</c> or a <c>TextEdit</c>.
+    /// </summary>
     public partial struct WidgetInfo : IEquatable<WidgetInfo> {
+        /// <summary>
+        /// The type of widget this is.
+        /// </summary>
         public WidgetType Typ;
+        /// <summary>
+        /// Whether the widget is enabled.
+        /// </summary>
         public bool Enabled;
+        /// <summary>
+        /// The text on labels, buttons, checkboxes etc.
+        /// </summary>
         public string? Label;
+        /// <summary>
+        /// The contents of some editable text (for <c>TextEdit</c> fields).
+        /// </summary>
         public string? CurrentTextValue;
+        /// <summary>
+        /// The previous text value.
+        /// </summary>
         public string? PrevTextValue;
+        /// <summary>
+        /// The current value of checkboxes and radio buttons.
+        /// </summary>
         public bool? Selected;
+        /// <summary>
+        /// The current value of sliders etc.
+        /// </summary>
         public double? Value;
+        /// <summary>
+        /// Selected range of characters in <c>CurrentTextValue</c>.
+        /// </summary>
         public RangeInclusive? TextSelection;
 
 

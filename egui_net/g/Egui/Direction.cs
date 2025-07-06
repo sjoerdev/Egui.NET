@@ -9,11 +9,14 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Layout direction, one of <c>LeftToRight</c>, <c>RightToLeft</c>, <c>TopDown</c>, <c>BottomUp</c>.
+    /// </summary>
     public enum Direction {
-        LeftToRight = 0,
-        RightToLeft = 1,
-        TopDown = 2,
-        BottomUp = 3,
+            LeftToRight = 0,
+            RightToLeft = 1,
+            TopDown = 2,
+            BottomUp = 3,
     }
     internal static class DirectionExtensions {
 

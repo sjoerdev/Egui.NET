@@ -10,7 +10,16 @@ using System.Numerics;
 namespace Egui {
 
     public partial struct PCursorRange : IEquatable<PCursorRange> {
+        /// <summary>
+        /// When selecting with a mouse, this is where the mouse was released.
+        /// When moving with e.g. shift+arrows, this is what moves.
+        /// Note that the two ends can come in any order, and also be equal (no selection).
+        /// </summary>
         public PCursor Primary;
+        /// <summary>
+        /// When selecting with a mouse, this is where the mouse was first pressed.
+        /// This part of the cursor does not move when shift is down.
+        /// </summary>
         public PCursor Secondary;
 
 

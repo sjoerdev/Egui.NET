@@ -9,17 +9,66 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Information about the current viewport, given as input each frame.
+    ///
+    /// <c>None</c> means "unknown".
+    ///
+    /// All units are in ui "points", which can be calculated from native physical pixels
+    /// using <c>PixelsPerPoint</c> = <c>ZoomFactor</c> * <c>NativePixelsPerPoint</c>;
+    /// </summary>
     public partial struct ViewportInfo : IEquatable<ViewportInfo> {
+        /// <summary>
+        /// Parent viewport, if known.
+        /// </summary>
         public ViewportId? Parent;
+        /// <summary>
+        /// Name of the viewport, if known.
+        /// </summary>
         public string? Title;
         public ImmutableList<ViewportEvent> Events;
+        /// <summary>
+        /// The OS native pixels-per-point.
+        ///
+        /// This should always be set, if known.
+        ///
+        /// On web this takes browser scaling into account,
+        /// and corresponds to <c>Window.devicePixelRatio</c> in JavaScript.
+        /// </summary>
         public float? NativePixelsPerPoint;
+        /// <summary>
+        /// Current monitor size in egui points.
+        /// </summary>
         public Vec2? MonitorSize;
+        /// <summary>
+        /// The inner rectangle of the native window, in monitor space and ui points scale.
+        ///
+        /// This is the content rectangle of the viewport.
+        /// </summary>
         public Rect? InnerRect;
+        /// <summary>
+        /// The outer rectangle of the native window, in monitor space and ui points scale.
+        ///
+        /// This is the content rectangle plus decoration chrome.
+        /// </summary>
         public Rect? OuterRect;
+        /// <summary>
+        /// Are we minimized?
+        /// </summary>
         public bool? Minimized;
+        /// <summary>
+        /// Are we maximized?
+        /// </summary>
         public bool? Maximized;
+        /// <summary>
+        /// Are we in fullscreen mode?
+        /// </summary>
         public bool? Fullscreen;
+        /// <summary>
+        /// Is the window focused and able to receive input?
+        ///
+        /// This should be the same as <c>Focused</c>.
+        /// </summary>
         public bool? Focused;
 
 

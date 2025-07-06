@@ -10,9 +10,9 @@ using System.Numerics;
 namespace Egui {
 
     public enum CursorGrab {
-        None = 0,
-        Confined = 1,
-        Locked = 2,
+            None = 0,
+            Confined = 1,
+            Locked = 2,
     }
     internal static class CursorGrabExtensions {
 

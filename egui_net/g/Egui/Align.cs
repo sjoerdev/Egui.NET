@@ -10,9 +10,9 @@ using System.Numerics;
 namespace Egui {
 
     public enum Align {
-        Min = 0,
-        Center = 1,
-        Max = 2,
+            Min = 0,
+            Center = 1,
+            Max = 2,
     }
     internal static class AlignExtensions {
 

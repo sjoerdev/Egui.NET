@@ -10,9 +10,9 @@ using System.Numerics;
 namespace Egui {
 
     public enum TextWrapMode {
-        Extend = 0,
-        Wrap = 1,
-        Truncate = 2,
+            Extend = 0,
+            Wrap = 1,
+            Truncate = 2,
     }
     internal static class TextWrapModeExtensions {
 

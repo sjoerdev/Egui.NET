@@ -9,8 +9,17 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// A file about to be dropped into egui.
+    /// </summary>
     public partial struct HoveredFile : IEquatable<HoveredFile> {
+        /// <summary>
+        /// Set by the <c>EguiWinit</c> backend.
+        /// </summary>
         public string? Path;
+        /// <summary>
+        /// With the <c>Eframe</c> web backend, this is set to the mime-type of the file (if available).
+        /// </summary>
         public string Mime;
 
 

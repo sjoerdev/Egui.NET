@@ -9,9 +9,18 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Dark or Light theme.
+    /// </summary>
     public enum Theme {
-        Dark = 0,
-        Light = 1,
+            /// <summary>
+            /// Dark mode: light text on a dark background.
+            /// </summary>
+            Dark = 0,
+            /// <summary>
+            /// Light mode: dark text on a light background.
+            /// </summary>
+            Light = 1,
     }
     internal static class ThemeExtensions {
 

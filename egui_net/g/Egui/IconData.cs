@@ -9,9 +9,24 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Image data for an application icon.
+    ///
+    /// Use a square image, e.g. 256x256 pixels.
+    /// You can use a transparent background.
+    /// </summary>
     public partial struct IconData : IEquatable<IconData> {
+        /// <summary>
+        /// RGBA pixels, with separate/unmultiplied alpha.
+        /// </summary>
         public ImmutableList<byte> Rgba;
+        /// <summary>
+        /// Image width. This should be a multiple of 4.
+        /// </summary>
         public uint Width;
+        /// <summary>
+        /// Image height. This should be a multiple of 4.
+        /// </summary>
         public uint Height;
 
 

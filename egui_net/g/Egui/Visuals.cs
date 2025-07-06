@@ -9,36 +9,138 @@ using System.Numerics;
 
 namespace Egui {
 
+    /// <summary>
+    /// Controls the visual style (colors etc) of egui.
+    ///
+    /// You can change the visuals of a <c>Ui</c> with <c>VisualsMut</c>
+    /// and of everything with <c>SetVisualsOf</c>.
+    ///
+    /// If you want to change fonts, use <c>SetFonts</c> instead.
+    /// </summary>
     public partial struct Visuals : IEquatable<Visuals> {
+        /// <summary>
+        /// If true, the visuals are overall dark with light text.
+        /// If false, the visuals are overall light with dark text.
+        ///
+        /// NOTE: setting this does very little by itself,
+        /// this is more to provide a convenient summary of the rest of the settings.
+        /// </summary>
         public bool DarkMode;
+        /// <summary>
+        /// Override default text color for all text.
+        ///
+        /// This is great for setting the color of text for any widget.
+        ///
+        /// If <c>TextColor</c> is <c>None</c> (default), then the text color will be the same as the
+        /// foreground stroke color (<c>FgStroke</c>)
+        /// and will depend on whether or not the widget is being interacted with.
+        ///
+        /// In the future we may instead modulate
+        /// the <c>TextColor</c> based on whether or not it is interacted with
+        /// so that <c>Visuals.textColor</c> is always used,
+        /// but its alpha may be different based on whether or not
+        /// it is disabled, non-interactive, hovered etc.
+        /// </summary>
         public Color32? OverrideTextColor;
+        /// <summary>
+        /// Visual styles of widgets
+        /// </summary>
         public Widgets Widgets;
         public Selection Selection;
+        /// <summary>
+        /// The color used for <c>Hyperlink</c>,
+        /// </summary>
         public Color32 HyperlinkColor;
+        /// <summary>
+        /// Something just barely different from the background color.
+        /// Used for <c>Striped</c>.
+        /// </summary>
         public Color32 FaintBgColor;
+        /// <summary>
+        /// Very dark or light color (for corresponding theme).
+        /// Used as the background of text edits, scroll bars and others things
+        /// that needs to look different from other interactive stuff.
+        /// </summary>
         public Color32 ExtremeBgColor;
+        /// <summary>
+        /// Background color behind code-styled monospaced labels.
+        /// </summary>
         public Color32 CodeBgColor;
+        /// <summary>
+        /// A good color for warning text (e.g. orange).
+        /// </summary>
         public Color32 WarnFgColor;
+        /// <summary>
+        /// A good color for error text (e.g. red).
+        /// </summary>
         public Color32 ErrorFgColor;
         public CornerRadius WindowCornerRadius;
         public Shadow WindowShadow;
         public Color32 WindowFill;
         public Stroke WindowStroke;
+        /// <summary>
+        /// Highlight the topmost window.
+        /// </summary>
         public bool WindowHighlightTopmost;
         public CornerRadius MenuCornerRadius;
+        /// <summary>
+        /// Panel background color
+        /// </summary>
         public Color32 PanelFill;
         public Shadow PopupShadow;
         public float ResizeCornerSize;
+        /// <summary>
+        /// How the text cursor acts.
+        /// </summary>
         public TextCursorStyle TextCursor;
+        /// <summary>
+        /// Allow child widgets to be just on the border and still have a stroke with some thickness
+        /// </summary>
         public float ClipRectMargin;
+        /// <summary>
+        /// Show a background behind buttons.
+        /// </summary>
         public bool ButtonFrame;
+        /// <summary>
+        /// Show a background behind collapsing headers.
+        /// </summary>
         public bool CollapsingHeaderFrame;
+        /// <summary>
+        /// Draw a vertical lien left of indented region, in e.g. <c>CollapsingHeader</c>.
+        /// </summary>
         public bool IndentHasLeftVline;
+        /// <summary>
+        /// Whether or not Grids and Tables should be striped by default
+        /// (have alternating rows differently colored).
+        /// </summary>
         public bool Striped;
+        /// <summary>
+        /// Show trailing color behind the circle of a <c>Slider</c>. Default is OFF.
+        ///
+        /// Enabling this will affect ALL sliders, and can be enabled/disabled per slider with <c>TrailingFill</c>.
+        /// </summary>
         public bool SliderTrailingFill;
+        /// <summary>
+        /// Shape of the handle for sliders and similar widgets.
+        ///
+        /// Changing this will affect ALL sliders, and can be enabled/disabled per slider with <c>HandleShape</c>.
+        /// </summary>
         public HandleShape HandleShape;
+        /// <summary>
+        /// Should the cursor change when the user hovers over an interactive/clickable item?
+        ///
+        /// This is consistent with a lot of browser-based applications (vscode, github
+        /// all turn your cursor into <c>PointingHand</c> when a button is
+        /// hovered) but it is inconsistent with native UI toolkits.
+        /// </summary>
         public CursorIcon? InteractCursor;
+        /// <summary>
+        /// Show a spinner when loading an image.
+        /// </summary>
         public bool ImageLoadingSpinners;
+        /// <summary>
+        /// How to display numeric color values.
+        /// </summary>
         public NumericColorSpace NumericColorSpace;
 
 

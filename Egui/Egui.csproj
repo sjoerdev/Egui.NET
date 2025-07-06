@@ -36,13 +36,13 @@
 	</ItemGroup>
 
   <ItemGroup>
-		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/vxcore_capi.dll" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/egui_net.dll" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/libvxcore_capi.dylib" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/libegui_net.dylib" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/libvxcore_capi.so" Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/libegui_net.so" Condition="$([MSBuild]::IsOSPlatform('Linux'))">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
