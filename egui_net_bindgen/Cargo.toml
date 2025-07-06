@@ -1,0 +1,16 @@
+[package]
+name = "egui_net_bindgen"
+edition.workspace = true
+version.workspace = true
+build = "build/main.rs"
+
+[dependencies]
+convert_case.workspace = true
+egui.workspace = true
+rustdoc-types.workspace = true
+serde_json.workspace = true
+serde-reflection.workspace = true
+
+[build-dependencies]
+rustdoc-types.workspace = true
+serde_json.workspace = true

@@ -1,0 +1,19 @@
+[workspace]
+members = [
+    "egui_net",
+    "egui_net_bindgen"
+]
+
+resolver = "2"
+
+[workspace.package]
+edition = "2024"
+version = "0.1.0"
+
+[workspace.dependencies]
+convert_case = { version = "0.7.1", default-features = false }
+csbindgen = { version = "1.9.3", default-features = false }
+egui = { version = "0.31.1", default-features = false, features = [ "serde" ] }
+rustdoc-types = { version = "0.35.0", default-features = false }
+serde_json = { version = "1.0.138", default-features = false, features = [ "std" ] }
+serde-reflection = { version = "0.5.0", default-features = false }

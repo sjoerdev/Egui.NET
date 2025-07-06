@@ -1,0 +1,6 @@
+[package]
+name = "egui_net"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
