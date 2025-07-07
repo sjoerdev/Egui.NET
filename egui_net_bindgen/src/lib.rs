@@ -88,6 +88,7 @@ impl BindingsGenerator {
                 result.push(format!("{}", self.krate.paths[&id].path.join("_")));
             }
         }
+        result.sort();
         result
     }
 
