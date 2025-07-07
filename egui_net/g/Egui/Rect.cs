@@ -9,9 +9,6 @@ using System.Numerics;
 
 namespace Egui {
 
-    /// <summary>
-    /// Rectangular handle
-    /// </summary>
     public partial struct Rect : IEquatable<Rect> {
         public Pos2 Min;
         public Pos2 Max;

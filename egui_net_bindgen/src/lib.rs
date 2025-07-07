@@ -107,7 +107,7 @@ impl BindingsGenerator {
     /// Gets the `rustdoc` ID for a type given its name.
     fn get_type_id(&self, name: &str) -> Option<RdId> {
         self.krate.index.iter()
-            .filter_map(|(id, item)| (item.name.as_deref() == Some(name)).then_some(id.clone()))
+            .filter_map(|(id, item)| (matches!(item.inner, ItemEnum::Enum(_) | ItemEnum::Struct(_)) && item.name.as_deref() == Some(name)).then_some(id.clone()))
             .next()
     }
 

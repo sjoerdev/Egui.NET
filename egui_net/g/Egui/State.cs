@@ -10,6 +10,9 @@ using System.Numerics;
 namespace Egui {
 
     public partial struct State : IEquatable<State> {
+        /// <summary>
+        /// Positive offset means scrolling down/right
+        /// </summary>
         public Vec2 Offset;
         public ImmutableList<ScrollingToTarget?> OffsetTarget;
         public Vec2b ShowScroll;

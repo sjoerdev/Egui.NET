@@ -9,9 +9,6 @@ using System.Numerics;
 
 namespace Egui {
 
-    /// <summary>
-    /// Directly select size and font family
-    /// </summary>
     public partial struct FontId : IEquatable<FontId> {
         public float Size;
         public FontFamily Family;

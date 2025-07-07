@@ -10,10 +10,17 @@ using System.Numerics;
 namespace Egui {
 
     /// <summary>
-    /// Open this url in a browser.
+    /// What URL to open, and how.
+    ///
+    /// Use with <c>OpenUrl</c>.
     /// </summary>
     public partial struct OpenUrl : IEquatable<OpenUrl> {
         public string Url;
+        /// <summary>
+        /// If <c>True</c>, open the url in a new tab.
+        /// If <c>False</c> open it in the same tab.
+        /// Only matters when in a web browser.
+        /// </summary>
         public bool NewTab;
 
 
