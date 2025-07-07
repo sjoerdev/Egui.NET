@@ -39,8 +39,8 @@ impl BindingsGenerator {
         }.run()
     }
 
+    /// Executes the bindings generator.
     fn run(mut self) {
-        
         let config = CodeGeneratorConfig::new("Egui".to_string())
             .with_serialization(true)
             .with_c_style_enums(true)
