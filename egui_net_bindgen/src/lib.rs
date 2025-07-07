@@ -41,17 +41,54 @@ impl BindingsGenerator {
 
     /// Executes the bindings generator.
     fn run(mut self) {
+        let path_to_clear = self.output_path.join("Egui");
+        let _ = std::fs::remove_dir_all(path_to_clear);
+
         let config = CodeGeneratorConfig::new("Egui".to_string())
             .with_serialization(true)
             .with_c_style_enums(true)
             .with_comments(self.gather_doc_comments());
         let generator = CodeGenerator::new(&config);
 
+        self.emit_fn_enum();
         self.rename_struct_fields();
         
-        let path_to_clear = self.output_path.join("Egui");
-        let _ = std::fs::remove_dir_all(path_to_clear);
         generator.write_source_files(self.output_path, &self.registry).expect("Failed to write source files");
+    }
+
+    /// Emits an `enum` containing the names of all public `egui` functions.
+    fn emit_fn_enum(&self) {
+        let variants = self.fn_enum_variant_names();
+        let mut result = String::new();
+        
+        result += "#[derive(Clone, Copy)]\n";
+        result += "#[repr(C)]\n";
+        result += "pub enum EguiFn {\n    ";
+        result += &variants.join(",\n    ").trim();
+        result += "}\n";
+
+        result += "impl EguiFn {\n";
+        result += "    /// All enum variants.\n";
+        result += "    pub const ALL: &[Self] = &[\n    ";
+        result += &variants.iter().map(|x| "Self::".to_string() + x).collect::<Vec<_>>().join(",\n    ").trim();
+        result += "    ];\n";
+        result += "}\n";
+
+        std::fs::write(self.output_path.join("egui_fn.rs"), result).expect("Failed to write egui function enum");
+    }
+
+    /// Gets the variant names for an `enum` containing all public `egui` functions.
+    fn fn_enum_variant_names(&self) -> Vec<String> {
+        let mut result = Vec::new();
+        for id in self.gather_fns() {
+            if let Some(impl_ty) = self.declaring_type(id) {
+                result.push(format!("{}_{}", self.krate.paths[&impl_ty].path.join("_"), self.krate.index[&id].name.clone().unwrap_or_default()));
+            }
+            else if self.krate.paths.contains_key(&id) {
+                result.push(format!("{}", self.krate.paths[&id].path.join("_")));
+            }
+        }
+        result
     }
 
     /// Gets all doc-comments to emit for types and fields.
@@ -78,6 +115,25 @@ impl BindingsGenerator {
             }
         }
         result
+    }
+
+    /// Gets a list of all functions that should be bound for `egui`.
+    fn gather_fns(&self) -> Vec<RdId> {
+        self.krate.index.iter()
+            .filter_map(|(id, item)| (item.crate_id == 0 && matches!(item.inner, ItemEnum::Function(_))).then_some(id.clone()))
+            .collect()
+    }
+
+    /// Gets the ID of the type that declares the given function.
+    fn declaring_type(&self, fn_id: RdId) -> Option<RdId> {
+        self.krate.index.values()
+            .filter_map(|item| if let ItemEnum::Impl(Impl { for_: Type::ResolvedPath(p), items, .. }) = &item.inner {
+                items.contains(&fn_id).then_some(p.id)
+            }
+            else {
+                None
+            })
+            .next()
     }
     
     /// Renames all fields in the registry from Rust to C# casing.
