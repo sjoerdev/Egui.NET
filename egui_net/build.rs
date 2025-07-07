@@ -5,7 +5,11 @@ use std::path::*;
 
 /// Generates C# bindings for all C API files in the crate.
 fn main() {
-    let output_dir = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").expect("Failed to get manifest directory")).join("g");
+    let output_dir = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").expect("Failed to get target directory"))
+        .join("../target")
+        .join(std::env::var("TARGET").expect("Failed to get target"))
+        .join(std::env::var("PROFILE").expect("Failed to get profile"))
+        .join("bindings");
     
     BindingsGenerator::generate(&output_dir);
     

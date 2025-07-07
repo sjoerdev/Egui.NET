@@ -30,7 +30,7 @@
 	</Target>
 
     <ItemGroup>
-		<Compile Include="../egui_net/g/Egui/*.cs" />
+		<Compile Include="../target/$(CargoTarget)/$(CargoProfileOutput)/bindings/**/*.cs" />
 		<Compile Include="../serde-generate/runtime/csharp/Bincode/*.cs" />
 		<Compile Include="../serde-generate/runtime/csharp/Serde/*.cs" />
 	</ItemGroup>
