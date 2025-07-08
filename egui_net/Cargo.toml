@@ -7,6 +7,9 @@ version.workspace = true
 crate-type = [ "cdylib" ]
 
 [dependencies]
+bincode.workspace = true
+egui.workspace = true
+serde.workspace = true
 
 [build-dependencies]
 csbindgen.workspace = true

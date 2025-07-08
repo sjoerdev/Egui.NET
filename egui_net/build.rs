@@ -7,8 +7,6 @@ use std::path::*;
 fn main() {
     let output_dir = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").expect("Failed to get target directory"))
         .join("../target")
-        .join(std::env::var("TARGET").expect("Failed to get target"))
-        .join(std::env::var("PROFILE").expect("Failed to get profile"))
         .join("bindings");
     
     BindingsGenerator::generate(&output_dir);
@@ -28,21 +26,22 @@ fn main() {
         .csharp_class_name("Egui")
         .csharp_class_accessibility("internal")
         .csharp_dll_name(lib_name)
+        .always_included_types(["EguiFn"])
         .csharp_generate_const_filter(|_| true);
 
     for file in get_all_files("src") {
         builder = builder.input_extern_file(file);
     }
 
-    // use for bindings builder = builder.input_extern_file(output_dir.join("bindings.rs"));
+    builder = builder.input_extern_file(output_dir.join("egui_fn.rs"));
 
     let output_file = output_dir.join("Bindings.g.cs");
-    builder.generate_csharp_file(&output_file).expect("Failed to generate C# bindings");
+    /*builder.generate_csharp_file(&output_file).expect("Failed to generate C# bindings");
 
     let mut file_contents = read_to_string(&output_file).expect("Failed to read bindings file.");
     file_contents = file_contents.replace(" egui_", " ");
     file_contents = file_contents.replace(" Egui_", " ");
-    write(output_file, file_contents).expect("Failed to generate renamed C# bindings");
+    write(output_file, file_contents).expect("Failed to generate renamed C# bindings");*/
 }
 
 /// Returns a list containing all files in the provided directory (and subdirectories).

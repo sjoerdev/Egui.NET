@@ -17,6 +17,15 @@ use serde_reflection::*;
 use std::borrow::*;
 use std::path::*;
 
+/// Function names to be ignored during generation.
+const IGNORE_FNS: &[&str] = &[
+    "bits",
+    "fmt",
+    "from",
+    "from_bits",
+    "from_bits_retain",
+];
+
 include!(concat!(env!("OUT_DIR"), "/tracer.rs"));
 
 /// Holds context for use during bindings generation.
@@ -43,6 +52,7 @@ impl BindingsGenerator {
     fn run(mut self) {
         let path_to_clear = self.output_path.join("Egui");
         let _ = std::fs::remove_dir_all(path_to_clear);
+        let _ = std::fs::create_dir_all(&self.output_path);
 
         let config = CodeGeneratorConfig::new("Egui".to_string())
             .with_serialization(true)
@@ -61,6 +71,7 @@ impl BindingsGenerator {
         let variants = self.fn_enum_variant_names();
         let mut result = String::new();
         
+        result += "#[allow(warnings)]\n";
         result += "#[derive(Clone, Copy)]\n";
         result += "#[repr(C)]\n";
         result += "pub enum EguiFn {\n    ";
@@ -121,7 +132,11 @@ impl BindingsGenerator {
     /// Gets a list of all functions that should be bound for `egui`.
     fn gather_fns(&self) -> Vec<RdId> {
         self.krate.index.iter()
-            .filter_map(|(id, item)| (item.crate_id == 0 && matches!(item.inner, ItemEnum::Function(_))).then_some(id.clone()))
+            .filter_map(|(id, item)| (
+                item.crate_id == 0
+                && matches!(item.inner, ItemEnum::Function(_))
+                && item.name.as_deref().map(|x| !IGNORE_FNS.contains(&x)).unwrap_or(true)
+            ).then_some(id.clone()))
             .collect()
     }
 

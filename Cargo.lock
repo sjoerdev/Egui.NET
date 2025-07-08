@@ -719,8 +719,11 @@ dependencies = [
 name = "egui_net"
 version = "0.1.0"
 dependencies = [
+ "bincode",
  "csbindgen",
+ "egui",
  "egui_net_bindgen",
+ "serde",
 ]
 
 [[package]]

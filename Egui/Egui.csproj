@@ -30,7 +30,7 @@
 	</Target>
 
     <ItemGroup>
-		<Compile Include="../target/$(CargoTarget)/$(CargoProfileOutput)/bindings/**/*.cs" />
+		<Compile Include="../target/bindings/**/*.cs" />
 		<Compile Include="../serde-generate/runtime/csharp/Bincode/*.cs" />
 		<Compile Include="../serde-generate/runtime/csharp/Serde/*.cs" />
 	</ItemGroup>
