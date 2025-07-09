@@ -35,6 +35,10 @@ namespace Serde
             containerDepthBudget = maxContainerDepth;
         }
 
+        public void Reset() {
+            buffer.SetLength(0);
+        }
+
         public void Dispose() => output.Dispose();
 
         public void increase_container_depth()
@@ -63,7 +67,7 @@ namespace Serde
 
         public void serialize_f64(double value) => output.Write(value);
 
-        public ReadOnlySpan<byte> get_bytes() => buffer.GetBuffer();
+        public ReadOnlySpan<byte> get_bytes() => new ReadOnlySpan<byte>(buffer.GetBuffer(), 0, (int)buffer.Length);
 
         public void serialize_str(string value) => serialize_bytes(utf8.GetBytes(value).ToImmutableList());
 

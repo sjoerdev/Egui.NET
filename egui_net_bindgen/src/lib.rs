@@ -195,7 +195,11 @@ impl BindingsGenerator {
             write!(f, "int {cs_name}");
         }
         
-        write!(f, ") {{");
+        writeln!(f, ") {{");
+
+        writeln!(f, "    var serializer = EguiMarshal.GetSerializer();")?;
+
+        // use extension methods for consistent serde all around?
 
         if ty == FnType::Constructor {
             //writeln!(f, "    this = result;")?;
