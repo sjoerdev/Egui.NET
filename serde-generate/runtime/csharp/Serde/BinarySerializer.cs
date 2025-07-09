@@ -63,7 +63,7 @@ namespace Serde
 
         public void serialize_f64(double value) => output.Write(value);
 
-        public byte[] get_bytes() => buffer.ToArray();
+        public ReadOnlySpan<byte> get_bytes() => buffer.GetBuffer();
 
         public void serialize_str(string value) => serialize_bytes(utf8.GetBytes(value).ToImmutableList());
 

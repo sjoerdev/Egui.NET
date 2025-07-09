@@ -56,6 +56,6 @@ namespace Serde
 
         void sort_map_entries(int[] offsets);
 
-        byte[] get_bytes();
+        ReadOnlySpan<byte> get_bytes();
     }
 }

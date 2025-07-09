@@ -4,14 +4,14 @@ use std::path::*;
 
 /// Types that should be ignored during generation.
 const EXCLUDE_TYPES: &[&str] = &[
-    "Event",  // todo
-    "InputState",  // todo
+    "Event",
+    "InputState",
     "Options",
-    "PointerState",  // todo
-    "RawInput",  // todo
+    "PointerState",
+    "RawInput",
     "Undoer",
     "UserData",
-    "ViewportCommand"  // todo
+    "ViewportCommand"
 ];
 
 /// Determines whether `x` implements the trait with `path`.

@@ -1,3 +1,5 @@
+#![allow(warnings)]
+
 /*use egui::*;
 use egui::Id;
 use egui::output::*;
@@ -10,15 +12,21 @@ use egui::text_selection::*;
 use egui::util::undoer::*;*/
 use serde::*;
 use serde::de::*;
+use std::borrow::*;
 use std::mem::*;
 
 include!(concat!(env!("CARGO_MANIFEST_DIR"), "/../target/bindings/egui_fn.rs"));
 
+/// A registry containing all `egui` functions callable from C#.
 const EGUI_FNS: EguiFnMap = egui_fn_map()
-    .with_0(EguiFn::egui_containers_area_AreaState_default, egui::AreaState::default)
-    .with_1(EguiFn::egui_containers_area_AreaState_default, go_one);
+    .with(EguiFn::egui_containers_area_AreaState_default, egui::AreaState::default as fn() -> _)
+    .with(EguiFn::egui_containers_area_AreaState_default, go_one2 as fn(_) -> _);
 
-fn go_one(x: &str) {
+fn go_one(x: &str, y: &[u8]) {
+
+}
+
+fn go_one2(x: egui::Style) {
 
 }
 
@@ -29,17 +37,7 @@ struct EguiFnMap {
 
 impl EguiFnMap {
     /// Adds a function and returns the new map.
-    pub const fn with_0<R>(mut self, binding: EguiFn, f: fn() -> R) -> Self
-    where R: 'static + Serialize
-    {
-        self.inner[binding as usize] = Some(EguiFnInvoker::new(f));
-        self
-    }
-    
-    /// Adds a function and returns the new map.
-    pub const fn with_1<A0, R>(mut self, binding: EguiFn, f: fn(A0) -> R) -> Self
-    where A0: 'static + for<'a> Deserialize<'a>, R: 'static + Serialize
-    {
+    pub const fn with(mut self, binding: EguiFn, f: impl EguiFnInvokable) -> Self {
         self.inner[binding as usize] = Some(EguiFnInvoker::new(f));
         self
     }
@@ -88,21 +86,90 @@ trait EguiFnInvokable: 'static + Copy + Send + Sync {
     fn invoke(&self, args: &[u8], ret: &mut Vec<u8>);
 }
 
-impl<R: 'static + Serialize> EguiFnInvokable for fn() -> R
-where R: 'static + Serialize
+impl<T: 'static + Copy + Send + Sync + CallBorrow> EguiFnInvokable for T
+where T::Input: 'static + DeserializeOwned, T::Output: Serialize
 {
     fn invoke(&self, args: &[u8], ret: &mut Vec<u8>) {
-        bincode::serialize_into(ret, &self()).expect("Failed to encode result")
+        let deserialized_args = bincode::deserialize(args).expect("Failed to decode args");
+        bincode::serialize_into(ret, &self.call(deserialized_args)).expect("Failed to encode result")
     }
 }
 
+trait CallBorrow {
+    type Input;
+    type Output;
 
+    fn call(&self, args: Self::Input) -> Self::Output;
+}
 
-impl<A0, R> EguiFnInvokable for fn(A0) -> R
-where A0: 'static + for<'a> Deserialize<'a>, R: 'static + Serialize
-{
-    fn invoke(&self, args: &[u8], ret: &mut Vec<u8>) {
-        let (arg0, ) = bincode::deserialize(args).expect("Failed to decode args");
-        bincode::serialize_into(ret, &self(arg0)).expect("Failed to encode result")
+impl<R> CallBorrow for fn() -> R {
+    type Input = ();
+    type Output = R;
+
+    fn call(&self, (): Self::Input) -> Self::Output {
+        self()
+    }
+}
+
+impl<R> CallBorrow for unsafe fn() -> R {
+    type Input = ();
+    type Output = R;
+
+    fn call(&self, (): Self::Input) -> Self::Output {
+        unsafe { self() }
+    }
+}
+
+impl<A0, R> CallBorrow for fn(A0) -> R {
+    type Input = (A0, );
+    type Output = R;
+
+    fn call(&self, (arg_0, ): Self::Input) -> Self::Output {
+        self(arg_0)
+    }
+}
+
+impl<A0: ?Sized + ToOwned, R> CallBorrow for fn(&A0) -> R {
+    type Input = (A0::Owned, );
+    type Output = R;
+
+    fn call(&self, (arg_0, ): Self::Input) -> Self::Output {
+        self(arg_0.borrow())
+    }
+}
+
+impl<A0, A1, R> CallBorrow for fn(A0, A1) -> R {
+    type Input = (A0, A1);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1): Self::Input) -> Self::Output {
+        self(arg_0, arg_1)
+    }
+}
+
+impl<A0: ?Sized + ToOwned, A1, R> CallBorrow for fn(&A0, A1) -> R {
+    type Input = (A0::Owned, A1);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1, ): Self::Input) -> Self::Output {
+        self(arg_0.borrow(), arg_1)
+    }
+}
+
+impl<A0, A1: ?Sized + ToOwned, R> CallBorrow for fn(A0, &A1) -> R {
+    type Input = (A0, A1::Owned);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1): Self::Input) -> Self::Output {
+        self(arg_0, arg_1.borrow())
+    }
+}
+
+impl<A0: ?Sized + ToOwned, A1: ?Sized + ToOwned, R> CallBorrow for fn(&A0, &A1) -> R {
+    type Input = (A0::Owned, A1::Owned);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1, ): Self::Input) -> Self::Output {
+        self(arg_0.borrow(), arg_1.borrow())
     }
 }
