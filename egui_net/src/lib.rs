@@ -1,5 +1,7 @@
 #![allow(warnings)]
 
+#![feature(thread_local)]
+
 /*use egui::*;
 use egui::Id;
 use egui::output::*;
@@ -19,15 +21,93 @@ include!(concat!(env!("CARGO_MANIFEST_DIR"), "/../target/bindings/egui_fn.rs"));
 
 /// A registry containing all `egui` functions callable from C#.
 const EGUI_FNS: EguiFnMap = egui_fn_map()
-    .with(EguiFn::egui_containers_area_AreaState_default, egui::AreaState::default as fn() -> _)
-    .with(EguiFn::egui_containers_area_AreaState_default, go_one2 as fn(_) -> _);
+    .with(EguiFn::egui_containers_area_AreaState_default, egui::AreaState::default as fn() -> _);
 
-fn go_one(x: &str, y: &[u8]) {
-
+/// Describes the result of an `egui` call.
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct EguiInvokeResult {
+    /// Whether the function was found.
+    pub fn_found: bool,
+    /// If [`Self::fn_found`], then the serialized data that the function returned.
+    pub return_value: EguiSliceU8
 }
 
-fn go_one2(x: egui::Style) {
+impl EguiInvokeResult {
+    /// The result that is returned if the function was found and executed.
+    /// 
+    /// # Safety
+    /// 
+    /// The returned object should not outlive `return_value`.
+    pub const fn success(return_value: &[u8]) -> Self {
+        Self {
+            fn_found: true,
+            return_value: EguiSliceU8::from_slice(return_value)
+        }
+    }
 
+    /// The result that is returned if the function was not bound.
+    pub const fn not_found() -> Self {
+        Self {
+            fn_found: false,
+            return_value: EguiSliceU8::from_slice(&[])
+        }
+    }
+}
+
+/// Describes a section of a `u8` array.
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct EguiSliceU8 {
+    /// A pointer to the data buffer.
+    pub data: *const u8,
+    /// The length of the data in bytes.
+    pub len: usize
+}
+
+impl EguiSliceU8 {
+    /// Converts `x` to an FFI-compatible slice.
+    /// 
+    /// # Safety
+    /// 
+    /// The lifetime of the returned slice should not outlive `x`. 
+    pub const fn from_slice(x: &[u8]) -> Self {
+        Self {
+            data: x.as_ptr(),
+            len: x.len()
+        }
+    }
+
+    /// Converts this object to a Rust slice.
+    /// 
+    /// # Safety
+    /// 
+    /// For this function call to be sound, `self` must refer
+    /// to a valid array of `u8` with at least [`Self::len`] elements.
+    pub unsafe fn to_slice(&self) -> &[u8] {
+        if self.len == 0 {
+            &[]
+        }
+        else {
+            std::slice::from_raw_parts(self.data, self.len)
+        }
+    }
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn egui_invoke(f: EguiFn, args: EguiSliceU8) -> EguiInvokeResult {
+    /// The serialization buffer to which results will be written.
+    #[thread_local]
+    static mut RETURN_BUFFER: Vec<u8> = Vec::new();
+    
+    let return_buffer = &mut *std::ptr::addr_of_mut!(RETURN_BUFFER);
+    if let Some(invoker) = EGUI_FNS.inner[f as usize] {
+        invoker.invoke(args.to_slice(), return_buffer);
+        EguiInvokeResult::success(&return_buffer)
+    }
+    else {
+        EguiInvokeResult::not_found()
+    }
 }
 
 struct EguiFnMap {
@@ -50,6 +130,7 @@ const fn egui_fn_map() -> EguiFnMap {
     }
 }
 
+/// A type-erased `egui` function that may be called with serialized arguments/result.
 #[derive(Copy, Clone, Debug)]
 struct EguiFnInvoker {
     /// The `fn` object to pass to `func`.

@@ -36,12 +36,12 @@ fn main() {
     builder = builder.input_extern_file(output_dir.join("egui_fn.rs"));
 
     let output_file = output_dir.join("Bindings.g.cs");
-    /*builder.generate_csharp_file(&output_file).expect("Failed to generate C# bindings");
+    builder.generate_csharp_file(&output_file).expect("Failed to generate C# bindings");
 
     let mut file_contents = read_to_string(&output_file).expect("Failed to read bindings file.");
     file_contents = file_contents.replace(" egui_", " ");
     file_contents = file_contents.replace(" Egui_", " ");
-    write(output_file, file_contents).expect("Failed to generate renamed C# bindings");*/
+    write(output_file, file_contents).expect("Failed to generate renamed C# bindings");
 }
 
 /// Returns a list containing all files in the provided directory (and subdirectories).
