@@ -90,24 +90,10 @@ namespace Serde
 
         public void serialize_u64(ulong value) => output.Write(value);
 
-        public void serialize_u128(BigInteger value)
+        public void serialize_u128(UInt128 value)
         {
-            if (value >> 128 != 0)
-            {
-                throw new SerializationException("Invalid value for an unsigned int128");
-            }
-            byte[] content = value.ToByteArray();
-            // BigInteger.ToByteArray() may add a most-significant zero
-            // byte for signing purpose: ignore it.
-            Debug.Assert(content.Length <= 16 || content[16] == 0);
-
-            for (int i = 0; i < 16; i++)
-            {
-                if (i < content.Length)
-                    output.Write(content[i]);
-                else
-                    output.Write((byte)0); // Complete with zeros if needed.
-            }
+            output.Write((ulong)value);
+            output.Write((ulong)(value >> 64));
         }
 
         public void serialize_i8(sbyte value) => output.Write(value);
@@ -118,24 +104,10 @@ namespace Serde
 
         public void serialize_i64(long value) => output.Write(value);
 
-        public void serialize_i128(BigInteger value)
+        public void serialize_i128(Int128 value)
         {
-            if (value >= 0)
-            {
-                if (value >> 127 != 0)
-                {
-                    throw new SerializationException("Invalid value for a signed int128");
-                }
-                serialize_u128(value);
-            }
-            else
-            {
-                if ((-(value + 1)) >> 127 != 0)
-                {
-                    throw new SerializationException("Invalid value for a signed int128");
-                }
-                serialize_u128(value + (BigInteger.One << 128));
-            }
+            output.Write((ulong)value);
+            output.Write((ulong)((UInt128)value >> 64));
         }
 
         public void serialize_option_tag(bool value) => output.Write(value);

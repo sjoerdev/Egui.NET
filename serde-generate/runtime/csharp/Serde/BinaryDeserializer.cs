@@ -18,6 +18,7 @@ namespace Serde
         protected readonly Encoding utf8 = Encoding.GetEncoding("utf-8", new EncoderExceptionFallback(), new DecoderExceptionFallback());
         private long containerDepthBudget;
 
+        // todo: use non-copy
         public BinaryDeserializer(byte[] _input, long maxContainerDepth) : this(new ArraySegment<byte>(_input), maxContainerDepth) { }
 
         public BinaryDeserializer(ArraySegment<byte> _input, long maxContainerDepth)
@@ -102,17 +103,9 @@ namespace Serde
 
         public ulong deserialize_u64() => reader.ReadUInt64();
 
-        public BigInteger deserialize_u128()
+        public UInt128 deserialize_u128()
         {
-            BigInteger signed = deserialize_i128();
-            if (signed >= 0)
-            {
-                return signed;
-            }
-            else
-            {
-                return signed + (BigInteger.One << 128);
-            }
+            return new UInt128(reader.ReadUInt64(), reader.ReadUInt64());
         }
 
         public sbyte deserialize_i8() => reader.ReadSByte();
@@ -123,12 +116,9 @@ namespace Serde
 
         public long deserialize_i64() => reader.ReadInt64();
 
-        public BigInteger deserialize_i128()
+        public Int128 deserialize_i128()
         {
-            byte[] content = reader.ReadBytes(16);
-            if (content.Length < 16)
-                throw new DeserializationException("Need more bytes to deserialize 128-bit integer");
-            return new BigInteger(content);
+            return (Int128)deserialize_u128();
         }
 
         public bool deserialize_option_tag()

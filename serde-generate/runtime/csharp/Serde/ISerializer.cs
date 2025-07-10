@@ -30,7 +30,7 @@ namespace Serde
 
         void serialize_u64(ulong value);
 
-        void serialize_u128(BigInteger value);
+        void serialize_u128(UInt128 value);
 
         void serialize_i8(sbyte value);
 
@@ -40,7 +40,7 @@ namespace Serde
 
         void serialize_i64(long value);
 
-        void serialize_i128(BigInteger value);
+        void serialize_i128(Int128 value);
 
         void serialize_len(long value);
 

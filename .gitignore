@@ -1,3 +1,4 @@
-Egui/bin
-Egui/obj
+.vs
+**/bin
+**/obj
 **/target

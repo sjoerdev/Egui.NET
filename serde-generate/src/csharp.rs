@@ -742,6 +742,8 @@ return obj.ToImmutableList();
 
         // Serialize
         if self.generator.config.serialization {
+            writeln!(self.out, "\ninternal static void Serialize(Serde.ISerializer serializer, {name} value) => value.Serialize(serializer);");
+
             writeln!(
                 self.out,
                 "\ninternal {}void Serialize(Serde.ISerializer serializer) {{",
@@ -789,13 +791,13 @@ return obj.ToImmutableList();
             writeln!(self.out, "deserializer.increase_container_depth();")?;
             writeln!(
                 self.out,
-                "{0} obj = new {0} {{\n\t{1} }};",
+                "{0} obj = default;\n\t{1}",
                 name,
                 fields
                     .iter()
-                    .map(|f| format!("{} = {}", f.name, self.quote_deserialize(&f.value)))
+                    .map(|f| format!("obj.{} = {};\n\t", f.name, self.quote_deserialize(&f.value)))
                     .collect::<Vec<_>>()
-                    .join(",\n\t")
+                    .join("")
             )?;
             writeln!(self.out, "deserializer.decrease_container_depth();")?;
             writeln!(self.out, "return obj;")?;

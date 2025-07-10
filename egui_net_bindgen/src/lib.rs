@@ -109,6 +109,43 @@ impl BindingsGenerator {
         generator.write_source_files(self.output_path, &self.registry).expect("Failed to write source files");
     }
 
+    /// Gets the C# name for a type, or returns [`None`] if the type
+    /// could not be resolved.
+    fn cs_type_name(&self, self_ty: Option<&str>, ty: &Type) -> Option<String> {
+        Some(match ty {
+            Type::ResolvedPath(path) => {
+                let name = path.path.split("::").last().expect("Type was empty");
+                if self.registry.contains_key(name) {
+                    name.to_string()
+                }
+                else {
+                    return None;
+                }
+            },
+            Type::Generic(x) if x == "Self" => self_ty?.to_string(),
+            Type::Primitive(x) => Self::cs_primitive_name(&x)?.to_string(),
+            Type::Tuple(items) => format!("ValueTuple<{}>",
+                items.iter().map(|x| self.cs_type_name(self_ty, x)).collect::<Option<Vec<_>>>()?.join(", ")),
+            Type::Slice(type_)
+            | Type::Array { type_, .. } => format!("ImmutableList<{}>", self.cs_type_name(self_ty, &type_)?),
+            Type::ImplTrait(generic_bounds) => if format!("{generic_bounds:?}").contains("ToString") {
+                "string".to_string()
+            }
+            else {
+                return None
+            },
+            Type::BorrowedRef { is_mutable: false, type_, .. } => self.cs_type_name(self_ty, &type_)?,
+            Type::DynTrait(_)
+            | Type::Generic(_)
+            | Type::Pat { .. }
+            | Type::Infer
+            | Type::RawPointer { .. }
+            | Type::QualifiedPath { .. }
+            | Type::BorrowedRef { is_mutable: true, .. }
+            | Type::FunctionPointer(_) => return None,
+        })
+    }
+
     /// Determines whether the type with the given name has a particular field.
     fn ty_has_field(&self, ty_name: &str, field: &str) -> bool {
         if let Some(ContainerFormat::Struct(fields)) = self.registry.get(ty_name) {
@@ -125,9 +162,9 @@ impl BindingsGenerator {
         let mut result = String::new();
 
         result += "#pragma warning disable\n";
+        result += "using System.Collections.Immutable;\n";
         result += "namespace Egui;\n";
 
-        let mut resul2 = String::new();
         for id in self.gather_fns() {
             let _ = self.emit_cs_fn_binding(&mut std::fmt::Formatter::new(&mut result, Default::default()), id);
         }
@@ -157,7 +194,6 @@ impl BindingsGenerator {
         let item = &self.krate.index[&id];
         let ItemEnum::Function(func) = &item.inner else { panic!("Expected id to refer to a function") };
 
-        //let has_this = func.sig.inputs.first().map(|x| if x.0 == "self" { panic!("{x:?}"); false } else { false }).unwrap_or(false);
         let has_this = func.sig.inputs.first().map(|(name, _)| name == "self").unwrap_or_default();
         let returns_this = func.sig.output.as_ref().map(|x| x == &Type::Generic("Self".to_string())).unwrap_or_default();
         let original_name = item.name.as_deref().expect("Failed to get function name");
@@ -167,23 +203,30 @@ impl BindingsGenerator {
             writeln!(f, "/// {}", comment.replace("\n", "\n/// "))?;
         }
 
-        if !has_this && returns_this && cs_name == "New" {
+        if !has_this && returns_this && (cs_name == "New" || cs_name == "Default") {
             write!(f, "public {}", ty_name.expect("Expected type to be provided"))?;
-            self.emit_cs_fn_def(f, FnType::Constructor, &func.sig)?;
+            self.emit_cs_fn_def(f, ty_name, id, FnType::Constructor, &func.sig)?;
         }
         else {
-            write!(f, "public {} void {}", ["static", "readonly"][has_this as usize], cs_name)?;
-            self.emit_cs_fn_def(f, [FnType::Static, FnType::Instance][has_this as usize], &func.sig)?;
+            let return_name = func.sig.output.as_ref().and_then(|x| self.cs_type_name(ty_name, x))
+                .unwrap_or("void".to_string());
+            
+            write!(f, "public {} {return_name} {}", ["static", "readonly"][has_this as usize], cs_name)?;
+
+            self.emit_cs_fn_def(f, ty_name, id, [FnType::Static, FnType::Instance][has_this as usize], &func.sig)?;
         }
 
         Ok(())
     }
 
     /// Emits the body of a C# function (excluding the name and return type).
-    fn emit_cs_fn_def(&self, f: &mut std::fmt::Formatter, ty: FnType, sig: &FunctionSignature) -> std::fmt::Result {
+    fn emit_cs_fn_def(&self, f: &mut std::fmt::Formatter, ty_name: Option<&str>, id: RdId, ty: FnType, sig: &FunctionSignature) -> std::fmt::Result {
         write!(f, "(")?;
         
         let mut first = true;
+
+        let mut generic_args = Vec::new();
+        
         for (name, ty) in sig.inputs.iter().skip((ty == FnType::Instance) as usize) {
             if !first {
                 write!(f, ", ")?;
@@ -191,19 +234,39 @@ impl BindingsGenerator {
 
             first = false;
 
+            let param_ty = self.cs_type_name(ty_name, ty).ok_or(std::fmt::Error)?;
+            generic_args.push(param_ty.clone());
             let cs_name = name.to_case(Case::Camel);
-            write!(f, "int {cs_name}");
+            write!(f, "{param_ty} {cs_name}")?;
         }
         
         writeln!(f, ") {{");
 
-        writeln!(f, "    var serializer = EguiMarshal.GetSerializer();")?;
+        if let Some(return_ty) = &sig.output {
+            generic_args.push(self.cs_type_name(ty_name, return_ty).ok_or(std::fmt::Error)?);
 
-        // use extension methods for consistent serde all around?
-
-        if ty == FnType::Constructor {
-            //writeln!(f, "    this = result;")?;
+            if ty == FnType::Constructor {
+                write!(f, "   this = ")?;
+            }
+            else {
+                write!(f, "   return ")?;
+            }
         }
+        else {
+            write!(f, "    ")?;
+        }
+
+        if generic_args.is_empty() {
+            writeln!(f, "EguiMarshal.Call(")?;
+        }
+        else {
+            writeln!(f, "EguiMarshal.Call<{}>(", generic_args.join(", "))?;
+        }
+
+        let enum_name = format!("EguiFn.{}", self.fn_enum_variant_name(id));
+        write!(f, "{}", [enum_name].into_iter().chain(sig.inputs.iter().skip((ty == FnType::Instance) as usize).map(|(name, _)| name.to_case(Case::Camel)))
+            .collect::<Vec<_>>().join(", "))?;
+        writeln!(f, ");")?;
 
         writeln!(f, "}}")?;
         Ok(())
@@ -422,6 +485,27 @@ impl BindingsGenerator {
         }
         
         result.trim().to_string()
+    }
+
+    /// Converts the given Rust primitive to a C# primitive, or returns
+    /// [`None`] if the primitive was not recognized.
+    fn cs_primitive_name(x: &str) -> Option<&'static str> {
+        Some(match x {
+            "bool" => "bool",
+            "u8" => "byte",
+            "u16" => "ushort",
+            "u32" => "uint",
+            "u64" => "ulong",
+            "i8" => "sbyte",
+            "i16" => "short",
+            "i32" => "int",
+            "i64" => "long",
+            "f32" => "float",
+            "f64" => "double",
+            "isize" => "nint",
+            "usize" => "nuint",
+            _ => return None
+        })
     }
 }
 

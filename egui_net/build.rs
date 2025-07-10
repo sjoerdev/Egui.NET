@@ -14,11 +14,11 @@ fn main() {
     let lib_name;
     #[cfg(windows)]
     {
-        lib_name = "egui_capi";
+        lib_name = "egui_net";
     }
     #[cfg(unix)]
     {
-        lib_name = "libegui_capi";
+        lib_name = "libegui_net";
     }
 
     let mut builder = Builder::default()
@@ -39,8 +39,6 @@ fn main() {
     builder.generate_csharp_file(&output_file).expect("Failed to generate C# bindings");
 
     let mut file_contents = read_to_string(&output_file).expect("Failed to read bindings file.");
-    file_contents = file_contents.replace(" egui_", " ");
-    file_contents = file_contents.replace(" Egui_", " ");
     write(output_file, file_contents).expect("Failed to generate renamed C# bindings");
 }
 

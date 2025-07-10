@@ -21,6 +21,7 @@ include!(concat!(env!("CARGO_MANIFEST_DIR"), "/../target/bindings/egui_fn.rs"));
 
 /// A registry containing all `egui` functions callable from C#.
 const EGUI_FNS: EguiFnMap = egui_fn_map()
+    .with(EguiFn::egui_containers_frame_Frame_none, egui::containers::frame::Frame::none as fn() -> _)
     .with(EguiFn::egui_containers_area_AreaState_default, egui::AreaState::default as fn() -> _);
 
 /// Describes the result of an `egui` call.
@@ -60,7 +61,7 @@ impl EguiInvokeResult {
 #[repr(C)]
 pub struct EguiSliceU8 {
     /// A pointer to the data buffer.
-    pub data: *const u8,
+    pub ptr: *const u8,
     /// The length of the data in bytes.
     pub len: usize
 }
@@ -73,7 +74,7 @@ impl EguiSliceU8 {
     /// The lifetime of the returned slice should not outlive `x`. 
     pub const fn from_slice(x: &[u8]) -> Self {
         Self {
-            data: x.as_ptr(),
+            ptr: x.as_ptr(),
             len: x.len()
         }
     }
@@ -89,7 +90,7 @@ impl EguiSliceU8 {
             &[]
         }
         else {
-            std::slice::from_raw_parts(self.data, self.len)
+            std::slice::from_raw_parts(self.ptr, self.len)
         }
     }
 }

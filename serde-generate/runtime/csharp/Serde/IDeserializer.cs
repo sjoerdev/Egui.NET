@@ -30,7 +30,7 @@ namespace Serde
 
         ulong deserialize_u64();
 
-        BigInteger deserialize_u128();
+        UInt128 deserialize_u128();
 
         sbyte deserialize_i8();
 
@@ -40,7 +40,7 @@ namespace Serde
 
         long deserialize_i64();
 
-        BigInteger deserialize_i128();
+        Int128 deserialize_i128();
 
         long deserialize_len();
 
