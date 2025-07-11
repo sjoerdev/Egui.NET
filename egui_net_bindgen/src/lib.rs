@@ -24,6 +24,7 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_containers_frame_Frame_corner_radius",
     "egui_containers_frame_Frame_stroke",
     "egui_containers_frame_Frame_shadow",
+    "egui_data_input_RawInput_viewport",
     "egui_style_Visuals_window_stroke",
     "egui_containers_frame_Frame_inner_margin",
     "egui_style_Visuals_window_fill",
@@ -297,9 +298,10 @@ impl BindingsGenerator {
             let ItemEnum::Function(func) = &self.krate.index[id].inner else { panic!("Expected function items only") };
             let cast_params = func.sig.inputs.iter().map(|(_, ty)| if matches!(ty, Type::BorrowedRef { .. }) { "&_" } else { "_" })
                 .collect::<Vec<_>>().join(", ");
+            let return_ty = if matches!(func.sig.output, Some(Type::BorrowedRef { .. })) { "_" } else { "_" };
             let enum_name = self.fn_enum_variant_name(*id);
             let path = self.fn_enum_path(*id);
-            writeln!(f, "    .with(EguiFn::{enum_name}, {path} as fn({cast_params}) -> _)")?;
+            writeln!(f, "    .with(EguiFn::{enum_name}, {path} as fn({cast_params}) -> {return_ty})")?;
         }
         writeln!(f, ";")?;
         Ok(())
@@ -454,14 +456,14 @@ impl BindingsGenerator {
             .record_samples_for_tuple_structs(true)
             .record_samples_for_structs(true));
 
-        trace_auto_serde_types(&mut tracer);
 
         tracer.trace_value(&mut samples, &Options::default()).expect("Failed to trace Options");
-        tracer.trace_value(&mut samples, &UserData::default()).expect("Failed to trace UserData");
         
         tracer.trace_simple_type::<Align>().expect("Failed to trace Align");
         tracer.trace_simple_type::<FontFamily>().expect("Failed to trace FontFamily");
         tracer.trace_simple_type::<TextWrapMode>().expect("Failed to trace TextWrapMode");
+        
+        trace_auto_serde_types(&mut tracer);
 
         tracer.registry().expect("Failed to generate serde registry")
     }
@@ -568,3 +570,7 @@ enum FnType {
     /// The function should be treated as a static method.
     Static
 }
+
+// Replacement for [`egui::UserData`] because it is not compatible with [`serde_reflection`].
+//#[derive(Copy, Clone, Debug, Serialize, Deserialize)]
+//struct UserData();

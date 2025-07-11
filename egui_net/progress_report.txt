@@ -1,4 +1,4 @@
-138 / 1681 (8%) bound
+140 / 1681 (8%) bound
 egui_WidgetType_clone
 egui_cache_cache_storage_CacheStorage_cache
 egui_cache_cache_storage_CacheStorage_clone
@@ -440,8 +440,6 @@ egui_data_input_Modifiers_bitor_assign
 egui_data_input_MouseWheelUnit_clone
 egui_data_input_PointerButton_clone
 egui_data_input_RawInput_append
-egui_data_input_RawInput_clone
-egui_data_input_RawInput_default
 egui_data_input_RawInput_take
 egui_data_input_RawInput_ui
 egui_data_input_RawInput_viewport

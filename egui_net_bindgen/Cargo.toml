@@ -8,6 +8,7 @@ build = "build/main.rs"
 convert_case.workspace = true
 egui.workspace = true
 rustdoc-types.workspace = true
+serde.workspace = true
 serde_json.workspace = true
 serde-generate.workspace = true
 serde-reflection.workspace = true

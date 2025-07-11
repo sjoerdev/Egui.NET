@@ -733,6 +733,7 @@ dependencies = [
  "convert_case",
  "egui",
  "rustdoc-types",
+ "serde",
  "serde-generate",
  "serde-reflection",
  "serde_json",
@@ -1960,12 +1961,14 @@ dependencies = [
 [[package]]
 name = "serde-reflection"
 version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5bef77b40d103fda6c10d29c21f5c78c980e8570e1a290a648a9ff5011f96e1"
 dependencies = [
+ "bincode",
  "erased-discriminant",
  "once_cell",
  "serde",
+ "serde_bytes",
+ "serde_json",
+ "serde_yaml",
  "thiserror 1.0.69",
  "typeid",
 ]
