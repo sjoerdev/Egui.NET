@@ -917,10 +917,33 @@ return obj.ToImmutableList();
 
         // Serialize/Deserialize
         if self.generator.config.serialization {
+            write!(
+                self.out,
+                "\ninternal void Serialize(Serde.ISerializer serializer) {{"
+            )?;
+            self.out.indent();
             writeln!(
                 self.out,
-                "\ninternal void Serialize(Serde.ISerializer serializer) {{ throw new NotImplementedException(); }}"
+                r#"
+switch (_variantId.GetValueOrDefault(-1)) {{"#,
             )?;
+            self.out.indent();
+            for (index, _) in variants {
+                writeln!(
+                    self.out,
+                    "case {index}: _variant{index}.Serialize(serializer); break;",
+                )?;
+            }
+            writeln!(
+                self.out,
+                r#"default: throw new Serde.DeserializationException("Uninitialized {} value");"#,
+                name,
+            )?;
+            self.out.unindent();
+            writeln!(self.out, "}}")?;
+            self.out.unindent();
+            writeln!(self.out, "}}")?;
+            
             write!(
                 self.out,
                 "\ninternal static {} Deserialize(Serde.IDeserializer deserializer) {{",
