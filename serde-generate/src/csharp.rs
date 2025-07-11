@@ -684,10 +684,10 @@ return obj.ToImmutableList();
             self.output_comment(name)?;
             writeln!(
                 self.out,
-                "public partial struct {0} : {1}, IEquatable<{0}> {{",
-                name, base
+                "public partial struct {0} : IEquatable<{0}> {{",
+                name
             )?;
-            "override "
+            ""
         } else {
             self.output_comment(name)?;
             writeln!(
@@ -903,20 +903,18 @@ return obj.ToImmutableList();
             .collect::<Vec<_>>();
         self.enter_class(name, &reserved_names);
 
-        // Serialize/Deserialize
-        if self.generator.config.serialization {
-            writeln!(
-                self.out,
-                "\ninternal void Serialize(Serde.ISerializer serializer) {{ throw new NotImplementedException(); }}"
-            )?;
-            write!(
-                self.out,
-                "\ninternal static {} Deserialize(Serde.IDeserializer deserializer) {{ throw new NotImplementedException(); }}",
-                name
-            )?;
+        writeln!(self.out, "private int? _variantId;")?;
+
+        for (id, variant) in variants {
+            writeln!(self.out, "\nprivate {} _variant{id};", variant.name)?;
         }
 
-        /*
+        for (id, variant) in variants {
+            writeln!(self.out, "\npublic static implicit operator {name}({} value) {{", variant.name)?;
+            writeln!(self.out, "    return new {name} {{ _variantId = {id}, _variant{id} = value }};")?;
+            writeln!(self.out, "}}")?;
+        }
+
         // Serialize/Deserialize
         if self.generator.config.serialization {
             writeln!(
@@ -962,9 +960,9 @@ switch (index) {{"#,
         // HashCode
         writeln!(self.out, "public override int GetHashCode() {{")?;
         self.out.indent();
-        writeln!(self.out, "switch (this) {{")?;
-        for variant in variants.values() {
-            writeln!(self.out, "case {} x: return x.GetHashCode();", variant.name)?;
+        writeln!(self.out, "switch (_variantId.GetValueOrDefault(-1)) {{")?;
+        for (id, _) in variants {
+            writeln!(self.out, "case {id}: return _variant{id}.GetHashCode();")?;
         }
         writeln!(
             self.out,
@@ -974,6 +972,7 @@ switch (index) {{"#,
         self.out.unindent();
         writeln!(self.out, "}}")?;
 
+        
         // Equals
         writeln!(
             self.out,
@@ -983,26 +982,23 @@ switch (index) {{"#,
 
         writeln!(self.out, "public bool Equals({} other) {{", name)?;
         self.out.indent();
-        writeln!(self.out, "if (other == null) return false;")?;
-        writeln!(self.out, "if (ReferenceEquals(this, other)) return true;")?;
-        writeln!(self.out, "if (GetType() != other.GetType()) return false;")?;
-        writeln!(self.out, "switch (this) {{")?;
-        for variant in variants.values() {
+        writeln!(self.out, "if (_variantId != other._variantId) return false;")?;
+        writeln!(self.out, "switch (_variantId.GetValueOrDefault(-1)) {{")?;
+        for id in variants.keys() {
             writeln!(
                 self.out,
-                "case {0} x: return x.Equals(({0})other);",
-                variant.name
+                "case {id}: return _variant{id}.Equals(other._variant{id});",
             )?;
         }
         writeln!(
             self.out,
-            r#"default: throw new InvalidOperationException("Unknown variant type");"#
+            r#"default: return true;"#
         )?;
         writeln!(self.out, "}}")?;
         self.out.unindent();
         writeln!(self.out, "}}\n")?;
 
-        // Clone
+        /*// Clone
         writeln!(
             self.out,
             "/// <summary>Creates a shallow clone of the object.</summary>"
@@ -1013,8 +1009,8 @@ switch (index) {{"#,
             name
         )?;
         //writeln!(self.out, "object ICloneable.Clone() => Clone();\n")?;
-
-        //self.output_variants(name, variants)?; */
+*/
+        self.output_variants(name, variants)?; 
         self.leave_class(&reserved_names);
         writeln!(self.out, "}}\n")
     }

@@ -11,7 +11,7 @@ public class Program
 
     public static void Main(string[] args)
     {
-        var frame = new Frame();
+        var frame = Frame.CentralPanel(new Style());
 
         WindowOptions options = WindowOptions.Default;
         options.Size = new Vector2D<int>(800, 600);

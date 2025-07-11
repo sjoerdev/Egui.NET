@@ -19,6 +19,26 @@ use serde_reflection::*;
 use std::borrow::*;
 use std::path::*;
 
+/// Functions to exclude when automatically generating bindings.
+const BINDING_EXCLUDE_FNS: &[&str] = &[
+    "egui_containers_frame_Frame_corner_radius",
+    "egui_containers_frame_Frame_stroke",
+    "egui_containers_frame_Frame_shadow",
+    "egui_style_Visuals_window_stroke",
+    "egui_containers_frame_Frame_inner_margin",
+    "egui_style_Visuals_window_fill",
+    "egui_style_ScrollAnimation_duration",
+    "egui_style_Style_noninteractive",
+    "egui_data_output_WidgetInfo_selected",
+    "egui_style_ScrollStyle_floating",
+    "egui_containers_frame_Frame_outer_margin",
+    "egui_style_Style_text_styles",
+    "egui_style_Visuals_noninteractive",
+    "egui_data_output_OpenUrl_new_tab",
+    "egui_text_selection_cursor_range_CursorRange_on_event",
+    "egui_viewport_ViewportIdPair_from_self_and_parent"
+];
+
 /// A list of fully-qualified function IDs to ignore during generation.
 const IGNORE_FNS: &[&str] = &[
     "alloc_borrow_Cow_as_str",
@@ -35,21 +55,8 @@ const IGNORE_FNS: &[&str] = &[
     "alloc_string_String_is_mutable",
     "alloc_string_String_replace_with",
     "alloc_string_String_take",
-    "egui_containers_frame_Frame_corner_radius",
-    "egui_containers_frame_Frame_stroke",
-    "egui_containers_frame_Frame_shadow",
-    "egui_style_Visuals_window_stroke",
-    "egui_containers_frame_Frame_inner_margin",
-    "egui_style_Visuals_window_fill",
-    "egui_style_ScrollAnimation_duration",
-    "egui_data_output_WidgetInfo_selected",
-    "egui_containers_frame_Frame_fill",
-    "egui_style_ScrollStyle_floating",
-    "egui_containers_frame_Frame_outer_margin",
-    "egui_style_Style_text_styles",
-    "egui_data_output_OpenUrl_new_tab",
-    "egui_text_selection_cursor_range_CursorRange_on_event",
-    "egui_viewport_ViewportIdPair_from_self_and_parent"
+    "egui___run_test_ctx",
+    "egui___run_test_ui",
 ];
 
 /// Function names to be ignored during generation.
@@ -102,7 +109,6 @@ impl BindingsGenerator {
             .with_comments(self.gather_doc_comments());
         let generator = CodeGenerator::new(&config);
 
-        self.emit_fn_enum();
         self.emit_cs_fn_bindings();
         self.rename_struct_fields();
         
@@ -128,15 +134,10 @@ impl BindingsGenerator {
                 items.iter().map(|x| self.cs_type_name(self_ty, x)).collect::<Option<Vec<_>>>()?.join(", ")),
             Type::Slice(type_)
             | Type::Array { type_, .. } => format!("ImmutableList<{}>", self.cs_type_name(self_ty, &type_)?),
-            Type::ImplTrait(generic_bounds) => if format!("{generic_bounds:?}").contains("ToString") {
-                "string".to_string()
-            }
-            else {
-                return None
-            },
             Type::BorrowedRef { is_mutable: false, type_, .. } => self.cs_type_name(self_ty, &type_)?,
             Type::DynTrait(_)
             | Type::Generic(_)
+            | Type::ImplTrait(_)
             | Type::Pat { .. }
             | Type::Infer
             | Type::RawPointer { .. }
@@ -165,10 +166,19 @@ impl BindingsGenerator {
         result += "using System.Collections.Immutable;\n";
         result += "namespace Egui;\n";
 
+        let mut bound_ids = Vec::new();
         for id in self.gather_fns() {
-            let _ = self.emit_cs_fn_binding(&mut std::fmt::Formatter::new(&mut result, Default::default()), id);
+            if BINDING_EXCLUDE_FNS.contains(&&*self.fn_enum_variant_name(id)) {
+                continue;
+            }
+
+            let result = self.emit_cs_fn_binding(&mut std::fmt::Formatter::new(&mut result, Default::default()), id);
+            if result.is_ok() {
+                bound_ids.push(id);
+            }
         }
 
+        self.emit_fn_enum(&bound_ids);
         std::fs::write(self.output_path.join("EguiFn.g.cs"), result).expect("Failed to write C# function bindings");
     }
 
@@ -181,12 +191,13 @@ impl BindingsGenerator {
                         let mut fn_def = String::new();
                         self.emit_cs_fn(&mut std::fmt::Formatter::new(&mut fn_def, Default::default()), Some(ty_name), id)?;
                         writeln!(f, "public partial struct {ty_name} {{\n{fn_def}\n}}")?;
+                        return Ok(());
                     }
                 }
             }
         }
 
-        Ok(())
+        Err(std::fmt::Error)
     }
 
     /// Writes a single C# method definition to `f`.
@@ -194,10 +205,15 @@ impl BindingsGenerator {
         let item = &self.krate.index[&id];
         let ItemEnum::Function(func) = &item.inner else { panic!("Expected id to refer to a function") };
 
-        let has_this = func.sig.inputs.first().map(|(name, _)| name == "self").unwrap_or_default();
+        let has_this = func.sig.inputs.first().map(|(name, ty)| name == "self" && !matches!(ty, Type::BorrowedRef { is_mutable: true, .. })).unwrap_or_default();
         let returns_this = func.sig.output.as_ref().map(|x| x == &Type::Generic("Self".to_string())).unwrap_or_default();
         let original_name = item.name.as_deref().expect("Failed to get function name");
-        let cs_name = original_name.to_case(Case::Pascal);
+        let cs_name = if ty_name.map(|x| self.ty_has_field(x, original_name)).unwrap_or_default() {
+            format!("with_{original_name}").to_case(Case::Pascal)
+        }
+        else {
+            original_name.to_case(Case::Pascal)
+        };
 
         if let Some(comment) = self.get_doc_comment(id) {
             writeln!(f, "/// {}", comment.replace("\n", "\n/// "))?;
@@ -240,7 +256,7 @@ impl BindingsGenerator {
             write!(f, "{param_ty} {cs_name}")?;
         }
         
-        writeln!(f, ") {{");
+        writeln!(f, ") {{")?;
 
         if let Some(return_ty) = &sig.output {
             generic_args.push(self.cs_type_name(ty_name, return_ty).ok_or(std::fmt::Error)?);
@@ -272,13 +288,30 @@ impl BindingsGenerator {
         Ok(())
     }
 
+    /// Emits a registry of all functions that have been bound.
+    /// Returns a 
+    fn emit_fn_enum_bindings(&self, f: &mut std::fmt::Formatter, bound_ids: &[RdId]) -> std::fmt::Result {
+        writeln!(f, "const AUTOGENERATED_EGUI_FNS: EguiFnMap = egui_fn_map()")?;
+
+        for id in bound_ids {
+            let ItemEnum::Function(func) = &self.krate.index[id].inner else { panic!("Expected function items only") };
+            let cast_params = func.sig.inputs.iter().map(|(_, ty)| if matches!(ty, Type::BorrowedRef { .. }) { "&_" } else { "_" })
+                .collect::<Vec<_>>().join(", ");
+            let enum_name = self.fn_enum_variant_name(*id);
+            let path = self.fn_enum_path(*id);
+            writeln!(f, "    .with(EguiFn::{enum_name}, {path} as fn({cast_params}) -> _)")?;
+        }
+        writeln!(f, ";")?;
+        Ok(())
+    }
+
     /// Emits an `enum` containing the names of all public `egui` functions.
-    fn emit_fn_enum(&self) {
+    fn emit_fn_enum(&self, bound_ids: &[RdId]) {
         let variants = self.fn_enum_variant_names();
         let mut result = String::new();
         
         result += "#[allow(warnings)]\n";
-        result += "#[derive(Clone, Copy)]\n";
+        result += "#[derive(Clone, Copy, Debug)]\n";
         result += "#[repr(C)]\n";
         result += "pub enum EguiFn {\n    ";
         result += &variants.join(",\n    ").trim();
@@ -290,6 +323,9 @@ impl BindingsGenerator {
         result += &variants.iter().map(|x| "Self::".to_string() + x).collect::<Vec<_>>().join(",\n    ").trim();
         result += "    ];\n";
         result += "}\n";
+
+        self.emit_fn_enum_bindings(&mut std::fmt::Formatter::new(&mut result, Default::default()), bound_ids)
+            .expect("Failed to emit function enum bindings");
 
         std::fs::write(self.output_path.join("egui_fn.rs"), result).expect("Failed to write egui function enum");
     }
@@ -308,6 +344,19 @@ impl BindingsGenerator {
         }
         else if self.krate.paths.contains_key(&id) {
             format!("{}", self.krate.paths[&id].path.join("_"))
+        }
+        else {
+            panic!("Item was not a bindable egui function")
+        }
+    }
+
+    /// Gets the Rust path of a function with `id`.
+    fn fn_enum_path(&self, id: RdId) -> String {
+        if let Some(impl_ty) = self.declaring_type(id) {
+            format!("{}::{}", self.krate.paths[&impl_ty].path.last().expect("Couldn't find type name"), self.krate.index[&id].name.clone().unwrap_or_default())
+        }
+        else if self.krate.paths.contains_key(&id) {
+            self.krate.index[&id].name.clone().unwrap_or_default()
         }
         else {
             panic!("Item was not a bindable egui function")

@@ -18,7 +18,8 @@
 		<CargoUnstableOptions Condition="'$(Configuration)'=='Release'">-Z build-std=panic_abort,std</CargoUnstableOptions>
 
 		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('Windows'))">x86_64-pc-windows-msvc</CargoTarget>
-		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('OSX'))">aarch64-apple-darwin</CargoTarget>
+		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('OSX')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'Arm64'">aarch64-apple-darwin</CargoTarget>
+		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('OSX')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'x64'">x86_64-apple-darwin</CargoTarget>
 		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('Linux'))">x86_64-unknown-linux-gnu</CargoTarget>
 
 		<CargoProfileOutput Condition="'$(Configuration)'=='Debug'">debug</CargoProfileOutput>

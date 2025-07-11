@@ -62,7 +62,7 @@ internal static class EguiMarshal
             var bytes = serializer.get_bytes();
             fixed (byte* ptr = bytes)
             {
-                var result = Egui.egui_invoke(func, new EguiSliceU8
+                var result = EguiBindings.egui_invoke(func, new EguiSliceU8
                 {
                     ptr = ptr,
                     len = (nuint)bytes.Length
@@ -85,7 +85,7 @@ internal static class EguiMarshal
             var bytes = serializer.get_bytes();
             fixed (byte* ptr = bytes)
             {
-                var result = Egui.egui_invoke(func, new EguiSliceU8
+                var result = EguiBindings.egui_invoke(func, new EguiSliceU8
                 {
                     ptr = ptr,
                     len = (nuint)bytes.Length

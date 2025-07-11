@@ -23,7 +23,7 @@ fn main() {
 
     let mut builder = Builder::default()
         .csharp_namespace("Egui")
-        .csharp_class_name("Egui")
+        .csharp_class_name("EguiBindings")
         .csharp_class_accessibility("internal")
         .csharp_dll_name(lib_name)
         .always_included_types(["EguiFn"])
@@ -38,7 +38,7 @@ fn main() {
     let output_file = output_dir.join("Bindings.g.cs");
     builder.generate_csharp_file(&output_file).expect("Failed to generate C# bindings");
 
-    let mut file_contents = read_to_string(&output_file).expect("Failed to read bindings file.");
+    let file_contents = read_to_string(&output_file).expect("Failed to read bindings file.");
     write(output_file, file_contents).expect("Failed to generate renamed C# bindings");
 }
 
