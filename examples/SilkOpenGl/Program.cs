@@ -11,6 +11,9 @@ public class Program
 
     public static void Main(string[] args)
     {
+        var X = (Sense.ClickAndDrag.IsFocusable(), Sense.Hover.IsFocusable(), Sense.DragOnly.SensesDrag());
+
+
         var frame = Frame.CentralPanel(new Style());
 
         WindowOptions options = WindowOptions.Default;

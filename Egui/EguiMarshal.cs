@@ -68,7 +68,7 @@ internal static class EguiMarshal
                     len = (nuint)bytes.Length
                 });
 
-                AssertSuccess(func, result);
+                AssertSuccess(result);
             }
         }
     }
@@ -91,29 +91,23 @@ internal static class EguiMarshal
                     len = (nuint)bytes.Length
                 });
 
-                return DeserializeResult<R>(func, result);
+                return DeserializeResult<R>(result);
             }
         }
     }
 
-    private static unsafe R DeserializeResult<R>(EguiFn func, EguiInvokeResult result)
+    private unsafe static R DeserializeResult<R>(EguiInvokeResult result)
     {
-        if (result.fn_found)
-        {
-            var deserializer = new BincodeDeserializer(new ReadOnlySpan<byte>(result.return_value.ptr, (int)result.return_value.len).ToArray());
-            return SerializerCache<R>.Deserializer(deserializer);
-        }
-        else
-        {
-            throw new NotImplementedException($"Function {func} not defined");
-        }
+        AssertSuccess(result);
+        var deserializer = new BincodeDeserializer(new ReadOnlySpan<byte>(result.return_value.ptr, (int)result.return_value.len).ToArray());
+        return SerializerCache<R>.Deserializer(deserializer);
     }
 
-    private static void AssertSuccess(EguiFn func, EguiInvokeResult result)
+    private unsafe static void AssertSuccess(EguiInvokeResult result)
     {
-        if (!result.fn_found)
+        if (!result.success)
         {
-            throw new NotImplementedException($"Function {func} not defined");
+            throw new InvalidOperationException(new string((char*)result.return_value.ptr, 0, (int)result.return_value.len / sizeof(char)));
         }
     }
 

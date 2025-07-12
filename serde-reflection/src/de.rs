@@ -221,7 +221,6 @@ impl<'de, 'a> de::Deserializer<'de> for Deserializer<'de, 'a> {
                     }
                 }
 
-                use serde::de::*;
                 let inner = self::Deserializer::new(self.tracer, self.samples, &mut format);
                 let _ = inner.deserialize_unit(UserDataVisitor);
                 visitor.visit_none()
