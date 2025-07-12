@@ -3,6 +3,11 @@
 #![feature(thread_local)]
 
 use egui::*;
+use egui::emath::*;
+use egui::emath::*;
+use egui::epaint::*;
+use egui::epaint::tessellator::*;
+use egui::epaint::text::*;
 use egui::Id;
 use egui::output::*;
 use egui::panel::*;
@@ -270,6 +275,78 @@ impl<A0: ?Sized + ToOwned, A1: ?Sized + ToOwned, R> CallBorrow for fn(&A0, &A1) 
 
     fn call(&self, (arg_0, arg_1, ): Self::Input) -> Self::Output {
         self(arg_0.borrow(), arg_1.borrow())
+    }
+}
+
+impl<A0, A1, A2, R> CallBorrow for fn(A0, A1, A2) -> R {
+    type Input = (A0, A1, A2);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
+        self(arg_0, arg_1, arg_2)
+    }
+}
+
+impl<A0: ?Sized + ToOwned, A1, A2, R> CallBorrow for fn(&A0, A1, A2) -> R {
+    type Input = (A0::Owned, A1, A2);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
+        self(arg_0.borrow(), arg_1, arg_2)
+    }
+}
+
+impl<A0, A1: ?Sized + ToOwned, A2, R> CallBorrow for fn(A0, &A1, A2) -> R {
+    type Input = (A0, A1::Owned, A2);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
+        self(arg_0, arg_1.borrow(), arg_2)
+    }
+}
+
+impl<A0: ?Sized + ToOwned, A1: ?Sized + ToOwned, A2, R> CallBorrow for fn(&A0, &A1, A2) -> R {
+    type Input = (A0::Owned, A1::Owned, A2);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
+        self(arg_0.borrow(), arg_1.borrow(), arg_2)
+    }
+}
+
+impl<A0, A1, A2: ?Sized + ToOwned, R> CallBorrow for fn(A0, A1, &A2) -> R {
+    type Input = (A0, A1, A2::Owned);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
+        self(arg_0, arg_1, arg_2.borrow())
+    }
+}
+
+impl<A0: ?Sized + ToOwned, A1, A2: ?Sized + ToOwned, R> CallBorrow for fn(&A0, A1, &A2) -> R {
+    type Input = (A0::Owned, A1, A2::Owned);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
+        self(arg_0.borrow(), arg_1, arg_2.borrow())
+    }
+}
+
+impl<A0, A1: ?Sized + ToOwned, A2: ?Sized + ToOwned, R> CallBorrow for fn(A0, &A1, &A2) -> R {
+    type Input = (A0, A1::Owned, A2::Owned);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
+        self(arg_0, arg_1.borrow(), arg_2.borrow())
+    }
+}
+
+impl<A0: ?Sized + ToOwned, A1: ?Sized + ToOwned, A2: ?Sized + ToOwned, R> CallBorrow for fn(&A0, &A1, &A2) -> R {
+    type Input = (A0::Owned, A1::Owned, A2::Owned);
+    type Output = R;
+
+    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
+        self(arg_0.borrow(), arg_1.borrow(), arg_2.borrow())
     }
 }
 

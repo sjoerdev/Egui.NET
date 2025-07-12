@@ -14,10 +14,12 @@ use egui::text_edit::*;
 use egui::util::undoer::*;
 use rustdoc_types::*;
 use rustdoc_types::Id as RdId;
+use rustdoc_types::Path as RdPath;
 use serde_generate::*;
 use serde_generate::csharp::*;
 use serde_reflection::*;
 use std::borrow::*;
+use std::collections::HashMap;
 use std::path::*;
 
 /// Functions to exclude when automatically generating bindings.
@@ -54,8 +56,20 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_viewport_ViewportIdPair_from_self_and_parent",
 ];
 
+/// Types to exclude from generation.
+const BINDING_EXCLUDE_TYPES: &[&str] = &[
+    "History",
+    "Sense"
+];
+
+/// Types for which fields/serialization logic should not be generated.
+const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
+    "UiStack"
+];
+
 /// A list of fully-qualified function IDs to ignore during generation.
 const IGNORE_FNS: &[&str] = &[
+    // Random extra stuff which we don't want that got lumped into documentation
     "alloc_borrow_Cow_as_str",
     "alloc_borrow_Cow_clear",
     "alloc_borrow_Cow_delete_char_range",
@@ -72,6 +86,132 @@ const IGNORE_FNS: &[&str] = &[
     "alloc_string_String_take",
     "alloc_borrow_Cow_type_id",
     "alloc_string_String_type_id",
+    "ab_glyph_outlined_Outline",
+    "ab_glyph_outlined_OutlineCurve",
+    "ahash_random_state_RandomState",
+    "alloc_collections_btree_map_Keys",
+    "alloc_collections_btree_map_ValuesMut",
+    "alloc_collections_btree_map_drop_DropGuard",
+    "alloc_vec_drain_drop_DropGuard",
+    "core_cell_BorrowRefMut",
+    "core_char_decode_DecodeUtf16",
+    "core_convert_num_FloatToInt",
+    "core_core_arch_simd_u32x4",
+    "core_core_arch_simd_u64x4",
+    "core_core_arch_x86___m128i",
+    "core_core_simd_simd_num_int_SimdInt",
+    "core_error_Source",
+    "core_fmt_UpperExp",
+    "core_iter_adapters_map_while_MapWhile",
+    "core_num_nonzero_NonZeroU128_from_f64",
+    "core_num_nonzero_NonZeroU128_to_f64",
+    "core_num_nonzero_NonZeroU16_from_f64",
+    "core_num_nonzero_NonZeroU16_to_f64",
+    "core_num_nonzero_NonZeroU32_from_f64",
+    "core_num_nonzero_NonZeroU32_to_f64",
+    "core_num_nonzero_NonZeroU64_from_f64",
+    "core_num_nonzero_NonZeroU64_to_f64",
+    "core_num_nonzero_NonZeroU8_from_f64",
+    "core_num_nonzero_NonZeroU8_to_f64",
+    "core_num_nonzero_NonZeroUsize_from_f64",
+    "core_num_nonzero_NonZeroUsize_to_f64",
+    "core_pat_RangePattern",
+    "core_ptr_unique_Unique",
+    "core_slice_iter_RSplitMut",
+    "core_str_iter_EscapeDefault",
+    "core_str_iter_MatchIndicesInternal",
+    "core_sync_atomic_AtomicU16",
+    "core_task_wake_LocalWaker",
+    "core_core_arch_x86_splat_JustOne",
+    "core_core_arch_simd_splat_JustOne",
+    "ab_glyph_font_arc_FontArc",
+    "alloc_alloc_Global",
+    "alloc_alloc_alloc",
+    "alloc_collections_btree_set_Range",
+    "alloc_collections_vec_deque_iter_mut_IterMut",
+    "compiler_builtins_int_big_u256",
+    "compiler_builtins_math_libm_support_env_Round",
+    "core_array_iter_IntoIter",
+    "core_clone_uninit_InitializingSlice",
+    "core_core_arch_simd_i32x32",
+    "core_core_simd_simd_ptr_mut_ptr_SimdMutPtr",
+    "core_error_private_Internal",
+    "core_future_ready_Ready",
+    "core_iter_adapters_map_Map",
+    "core_iter_adapters_map_windows_Buffer",
+    "core_iter_adapters_skip_Skip",
+    "core_marker_ConstParamTy_",
+    "core_marker_PhantomData",
+    "core_num_fmt_Formatted",
+    "core_ops_arith_Neg",
+    "core_ops_async_function_AsyncFnOnce",
+    "core_ops_try_trait_Try",
+    "core_ptr_with_exposed_provenance",
+    "core_slice_iter_ChunksExactMut",
+    "core_slice_iter_RSplit",
+    "core_sync_atomic_AtomicU32",
+    "core_sync_exclusive_Exclusive",
+    "hashbrown_raw_RawTable",
+    "lock_api_rwlock_RawRwLockRecursive",
+    "once_cell",
+    "rustc_demangle_TryDemangleError",
+    "serde___private_de_StrDeserializer",
+    "serde___private_ser_FlatMapSerializeTupleVariantAsMapValue",
+    "serde_de_impls_deserialize_BoundVisitor",
+    "serde_de_impls_deserialize_SocketAddrKind",
+    "std_backtrace_rs_dbghelp_Init",
+    "std_backtrace_rs_windows_sys_CONTEXT_0_0",
+    "std_backtrace_rs_windows_sys_KNONVOLATILE_CONTEXT_POINTERS_1",
+    "std_backtrace_rs_windows_sys_STACKFRAME64",
+    "std_backtrace_rs_windows_sys_STACKFRAME_EX",
+    "std_backtrace_rs_windows_sys_SYMBOL_INFOW",
+    "std_collections_hash_map_OccupiedEntry",
+    "std_collections_hash_map_VacantEntry",
+    "std_collections_hash_set_Intersection",
+    "std_f16",
+    "std_io_stdio_StdinRaw",
+    "std_panic_PanicHookInfo",
+    "std_process_ChildStdin",
+    "std_sys_net_connection_socket_TcpListener",
+    "std_sys_pal_windows_c_windows_sys_CONSOLE_READCONSOLE_CONTROL",
+    "std_sys_pal_windows_c_windows_sys_SYSTEM_INFO_0_0",
+    "std_thread_local_AccessError",
+    "ttf_parser_NormalizedCoordinate",
+    "ttf_parser_ggg_feature_variations_FeatureVariations",
+    "ttf_parser_parser_LazyArrayIter16",
+    "ttf_parser_parser_Stream",
+    "ttf_parser_tables_cff_encoding_Supplement",
+    "ttf_parser_tables_feat_FeatureNames",
+    "ttf_parser_tables_kerx_Subtable1",
+    "ttf_parser_tables_morx_Chain",
+    "ttf_parser_tables_morx_Coverage",
+    "ttf_parser_tables_svg_SvgDocumentsList",
+    "ttf_parser_tables_trak_TrackTableRecord",
+    "zerocopy_AsBytes",
+    "ab_glyph_font_Font",
+    "alloc_collections_btree_append_MergeIter",
+    "alloc_collections_btree_map_RangeMut",
+    "alloc_collections_btree_set_Iter",
+    "alloc_collections_btree_set_val_SetValZST",
+    "alloc_ffi_c_str_NulError",
+    "alloc_vec",
+    "alloc_vec_drain_Drain",
+    "bitflags_parser_ParseErrorKind",
+    "compiler_builtins_math_libm_fma_Norm",
+    "core_core_arch_simd_i8x32",
+    "core_core_arch_simd_m16x16",
+    "core_core_arch_simd_u32x2",
+    "core_fmt_Arguments",
+    "core_marker_UnsizedConstParamTy",
+    "core_net_ip_addr_Ipv6MulticastScope",
+    "core_ops_bit_Shl",
+    "core_ops_range_Bound",
+    "core_ops_range_RangeBounds",
+    "core_ptr_without_provenance",
+    "core_slice_iter_SplitInclusiveMut",
+    "core_str_BytesIsNotEmpty",
+    "core_str_pattern_MultiCharEqSearcher",
+    "core_str_pattern_SearchStep",
 
     // Sense: these functions are disabled since Sense is implemented as a C# flags enum
     // with builtin bitwise operations
@@ -115,21 +255,34 @@ const IGNORE_FNS: &[&str] = &[
 
     "egui___run_test_ctx",
     "egui___run_test_ui",
+
+    "serde_de_impls_deserialize_NonZeroVisitor",
+    "serde_de_impls_deserialize_in_place_TupleInPlaceVisitor"
 ];
 
 /// Function names to be ignored during generation.
 const IGNORE_FN_NAMES: &[&str] = &[
+    "add",
+    "add_assign",
     "bits",
     "cmp",
     "deserialize",
+    "div",
+    "div_assign",
     "eq",
     "hash",
     "fmt",
     "from",
     "from_bits",
     "from_bits_retain",
+    "index",
+    "index_mut",
+    "mul",
+    "mul_assign",
     "partial_cmp",
     "serialize",
+    "sub",
+    "sub_assign",
     "value"
 ];
 
@@ -148,8 +301,12 @@ pub struct BindingsGenerator {
 impl BindingsGenerator {
     /// Creates autogenerated bindings for all `serde` types.
     pub fn generate(path: &std::path::Path) {
+        let mut krate = serde_json::from_str::<Crate>(include_str!("egui.json")).expect("Failed to parse egui");
+        Self::merge_crates(&mut krate, &serde_json::from_str::<Crate>(include_str!("emath.json")).expect("Failed to parse emath"));
+        Self::merge_crates(&mut krate, &serde_json::from_str::<Crate>(include_str!("epaint.json")).expect("Failed to parse epaint"));
+
         BindingsGenerator {
-            krate: serde_json::from_str::<Crate>(include_str!("egui.json")).expect("Failed to parse egui"),
+            krate,
             output_path: path.to_path_buf(),
             registry: Self::trace_serde_types()
         }.run()
@@ -169,8 +326,16 @@ impl BindingsGenerator {
 
         self.emit_cs_fn_bindings();
         self.rename_struct_fields();
+        self.remove_excluded_serialized_tys();
         
         generator.write_source_files(self.output_path, &self.registry).expect("Failed to write source files");
+    }
+
+    /// Removes types from the registry that should be excluded from the output.
+    fn remove_excluded_serialized_tys(&mut self) {
+        for ty in BINDING_EXCLUDE_TYPE_DEFINITIONS {
+            let _ = self.registry.remove(*ty);
+        }
     }
 
     /// Gets the C# name for a type, or returns [`None`] if the type
@@ -455,7 +620,10 @@ impl BindingsGenerator {
                 item.crate_id == 0
                 && matches!(item.inner, ItemEnum::Function(_))
                 && (self.declaring_type(*id).is_some() || self.krate.paths.contains_key(id))
-                && !IGNORE_FNS.contains(&&*self.fn_enum_variant_name(*id))
+                && {
+                    let variant_name = self.fn_enum_variant_name(*id);
+                    variant_name.starts_with("e") &&!IGNORE_FNS.contains(&&*variant_name)
+                }
                 && item.name.as_deref().map(|x| !IGNORE_FN_NAMES.contains(&x)).unwrap_or(true)
             ).then_some(id.clone()))
             .collect()
@@ -523,10 +691,17 @@ impl BindingsGenerator {
         tracer.trace_simple_type::<TextWrapMode>().expect("Failed to trace TextWrapMode");
         tracer.trace_simple_type::<PinchType>().expect("Failed to trace PinchType");
         tracer.trace_simple_type::<PointerEvent>().expect("Failed to trace PointerEvent");
+        tracer.trace_simple_type::<ProgressBarText>().expect("Failed to trace ProgressBarText");
         
         trace_auto_serde_types(&mut tracer);
 
-        tracer.registry().expect("Failed to generate serde registry")
+        let mut result = tracer.registry().expect("Failed to generate serde registry");
+
+        for ty in BINDING_EXCLUDE_TYPES {
+            let _ = result.remove(*ty);
+        }
+
+        result
     }
 
     /// Removes all code examples from the given documentation string.
@@ -619,6 +794,57 @@ impl BindingsGenerator {
             _ => return None
         })
     }
+
+    /// Combines two crate documentation objects into one.
+    fn merge_crates(target: &mut Crate, source: &Crate) {
+        assert!(!target.includes_private);
+        assert!(!source.includes_private);
+
+        let mut remapper = CrateIdRemapper::new(target);
+
+        for (old_id, item) in source.index.iter().map(|(a, b)| (*a, b.clone())) {
+            let new_id = remapper.map(old_id);
+            target.index.insert(new_id, Item {
+                id: new_id,
+                links: item.links.into_iter().map(|(k, v)| (k, remapper.map(v))).collect(),
+                inner: match item.inner {
+                    ItemEnum::Enum(x) => ItemEnum::Enum(Enum {
+                        variants: x.variants.into_iter().map(|x| remapper.map(x)).collect(),
+                        ..x
+                    }),
+                    ItemEnum::Struct(x) => ItemEnum::Struct(Struct {
+                        kind: match x.kind {
+                            StructKind::Unit => StructKind::Unit,
+                            StructKind::Tuple(ids) => StructKind::Tuple(ids.into_iter().map(|x| x.map(|y| remapper.map(y))).collect()),
+                            StructKind::Plain { fields, has_stripped_fields } => StructKind::Plain { fields: fields.into_iter().map(|x| remapper.map(x)).collect(), has_stripped_fields },
+                        },
+                        ..x
+                    }),
+                    ItemEnum::Function(function) => ItemEnum::Function(Function {
+                        sig: FunctionSignature {
+                            inputs: function.sig.inputs.into_iter().map(|(k, v)| (k, remapper.map_type(v))).collect(),
+                            output: function.sig.output.map(|x| remapper.map_type(x)),
+                            is_c_variadic: function.sig.is_c_variadic
+                        },
+                        ..function
+                    }),
+                    ItemEnum::Impl(x) => ItemEnum::Impl(Impl {
+                        for_: remapper.map_type(x.for_),
+                        trait_: x.trait_.map(|x| RdPath { id: remapper.map(x.id), ..x }),
+                        items: x.items.iter().map(|x| remapper.map(*x)).collect(),
+                        ..x
+                    }),
+                    x => x
+                },
+                ..item
+            });
+        }
+
+        for (old_id, path) in source.paths.iter().map(|(a, b)| (*a, b.clone())) {
+            let new_id = remapper.map(old_id);
+            target.paths.insert(new_id, path);
+        }
+    }
 }
 
 /// How to emit a particular function.
@@ -630,4 +856,43 @@ enum FnType {
     Instance,
     /// The function should be treated as a static method.
     Static
+}
+
+/// Facilitates assigning new IDs to items.
+struct CrateIdRemapper {
+    /// The next available ID.
+    next_id: u32,
+    /// A map from old IDs to new IDs.
+    remappings: HashMap<RdId, RdId>
+}
+
+impl CrateIdRemapper {
+    /// Creates a new remapper.
+    pub fn new(target: &Crate) -> Self {
+        let next_id = target.index.keys().map(|x| x.0).max().unwrap_or_default() + 1;
+        Self {
+            next_id,
+            remappings: HashMap::default()
+        }
+    }
+
+    /// Maps an old ID to a new ID.
+    pub fn map(&mut self, id: RdId) -> RdId {
+        *self.remappings.entry(id).or_insert_with(|| {
+            let result = Id(self.next_id);
+            self.next_id += 1;
+            result
+        })
+    }
+
+    /// Maps all relevant IDs within `ty` to new ones.
+    pub fn map_type(&mut self, ty: Type) -> Type {
+        match ty {
+            Type::ResolvedPath(path) => Type::ResolvedPath(RdPath {
+                id: self.map(path.id),
+                ..path
+            }),
+            x => x,
+        }
+    }
 }

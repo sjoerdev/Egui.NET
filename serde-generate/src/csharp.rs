@@ -341,7 +341,7 @@ using System.Numerics;"
                 })
                 .unwrap();
         }
-        writeln!(self.out, "static class TraitHelpers {{")?;
+        writeln!(self.out, "static partial class TraitHelpers {{")?;
         let reserved_names = &[];
         self.enter_class("TraitHelpers", reserved_names);
         for (mangled_name, subtype) in &subtypes {

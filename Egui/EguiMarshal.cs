@@ -15,11 +15,6 @@ internal static class EguiMarshal
     [ThreadStatic]
     private static BincodeSerializer? _serializer;
 
-    /// <summary>
-    /// The deserializer to use for temporary operations.
-    /// </summary>
-    private static BincodeDeserializer? _deserializer;
-
     public static void Call(EguiFn func)
     {
         Call<NoArgument>(func, default);
