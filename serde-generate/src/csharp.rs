@@ -705,7 +705,8 @@ return obj.ToImmutableList();
             self.output_comment(&field.name)?;
             writeln!(
                 self.out,
-                "public {} {};",
+                "{} {} {};",
+                ["public", "private"][field.name.starts_with("_") as usize],
                 self.quote_type(&field.value),
                 field.name
             )?;

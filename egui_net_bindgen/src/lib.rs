@@ -396,7 +396,7 @@ impl BindingsGenerator {
     fn ty_has_field(&self, ty_name: &str, field: &str) -> bool {
         if let Some(ContainerFormat::Struct(fields)) = self.registry.get(ty_name) {
             if fields.iter().find(|x| x.name == field).is_some() {
-                return true;
+                return !Self::field_is_private(&self.krate, ty_name, field);
             }
         }
 
@@ -682,10 +682,15 @@ impl BindingsGenerator {
     
     /// Renames all fields in the registry from Rust to C# casing.
     fn rename_struct_fields(&mut self) {
-        for item in self.registry.values_mut() {
+        for (ty_name, item) in &mut self.registry {
             match item {
                 ContainerFormat::Struct(nameds) => for field in nameds {
-                    field.name = field.name.to_case(Case::Pascal);
+                    if Self::field_is_private(&self.krate, &ty_name, &field.name) {
+                        field.name = format!("_{}", field.name.to_case(Case::Camel));
+                    }
+                    else {
+                        field.name = field.name.to_case(Case::Pascal);
+                    }
                 },
                 _ => {},
             }
@@ -695,7 +700,8 @@ impl BindingsGenerator {
     /// Gets the C# doc-comment to use for an item given its ID.
     fn get_doc_comment(&self, id: RdId) -> Option<String> {
         let docs = self.krate.index[&id].docs.clone().unwrap_or_default();
-        let converted_docs = Self::inline_code_to_cs(&Self::strip_links(&Self::strip_code_comments(docs.trim_end())));
+        let converted_docs = Self::inline_code_to_cs(&Self::strip_links(&Self::strip_code_comments(docs.trim_end())))
+            .replace("\n\n", "<br/>\n\n");
         if converted_docs.is_empty() {
             None
         }
@@ -885,6 +891,27 @@ impl BindingsGenerator {
             let new_id = remapper.map(old_id);
             target.paths.insert(new_id, path);
         }
+    }
+
+    /// Determines whether a field is private.
+    fn field_is_private(krate: &Crate, ty_name: &str, field_name: &str) -> bool {
+        for item in krate.index.values() {
+            if item.name.as_deref() == Some(ty_name) {
+                if let ItemEnum::Struct(Struct { kind: StructKind::Plain { fields, .. }, .. }) = &item.inner {
+                    for field_id in fields {
+                        let field = &krate.index[field_id];
+                        if field.name.as_deref() == Some(field_name) {
+                            return false;
+                        }
+                    }
+
+                    // Private fields are those that do not show up in the fields list
+                    return true;
+                }
+            }
+        }
+        
+        false
     }
 }
 
