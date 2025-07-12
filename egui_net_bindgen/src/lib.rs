@@ -2,14 +2,15 @@
 
 use convert_case::*;
 use egui::*;
+use egui::epaint::*;
 use egui::Id;
+use egui::os::*;
 use egui::output::*;
 use egui::panel::*;
 use egui::scroll_area::*;
 use egui::style::*;
 use egui::text::*;
 use egui::text_edit::*;
-use egui::text_selection::*;
 use egui::util::undoer::*;
 use rustdoc_types::*;
 use rustdoc_types::Id as RdId;
@@ -33,21 +34,24 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_data_output_WidgetInfo_selected",
     "egui_style_ScrollStyle_floating",
     "egui_containers_frame_Frame_outer_margin",
-    "egui_sense_Sense_iter_names",
-    "egui_sense_Sense_not",
-    "egui_sense_Sense_remove",
-    "egui_sense_Sense_set",
-    "egui_sense_Sense_sub",
-    "egui_sense_Sense_sub_assign",
-    "egui_sense_Sense_symmetric_difference",
-    "egui_sense_Sense_toggle",
-    "egui_sense_Sense_union",
 
+    "egui_input_state_InputState_begin_pass",
+    "egui_input_state_InputState_viewport",
+    "egui_layout_Layout_align_size_within_rect",
+    
     "egui_style_Style_text_styles",
     "egui_style_Visuals_noninteractive",
     "egui_data_output_OpenUrl_new_tab",
     "egui_text_selection_cursor_range_CursorRange_on_event",
-    "egui_viewport_ViewportIdPair_from_self_and_parent"
+
+    "egui_ui_stack_UiStack_has_visible_frame",
+    "egui_ui_stack_UiStack_is_area_ui",
+    "egui_ui_stack_UiStack_is_root_ui",
+    "egui_ui_stack_UiStack_is_panel_ui",
+    "egui_ui_stack_UiStack_contained_in",
+    "egui_ui_stack_UiStack_frame",
+
+    "egui_viewport_ViewportIdPair_from_self_and_parent",
 ];
 
 /// A list of fully-qualified function IDs to ignore during generation.
@@ -66,6 +70,8 @@ const IGNORE_FNS: &[&str] = &[
     "alloc_string_String_is_mutable",
     "alloc_string_String_replace_with",
     "alloc_string_String_take",
+    "alloc_borrow_Cow_type_id",
+    "alloc_string_String_type_id",
 
     // Sense: these functions are disabled since Sense is implemented as a C# flags enum
     // with builtin bitwise operations
@@ -97,7 +103,16 @@ const IGNORE_FNS: &[&str] = &[
     "egui_sense_Sense_is_all",
     "egui_sense_Sense_is_empty",
     "egui_sense_Sense_iter",
-    
+    "egui_sense_Sense_iter_names",
+    "egui_sense_Sense_not",
+    "egui_sense_Sense_remove",
+    "egui_sense_Sense_set",
+    "egui_sense_Sense_sub",
+    "egui_sense_Sense_sub_assign",
+    "egui_sense_Sense_symmetric_difference",
+    "egui_sense_Sense_toggle",
+    "egui_sense_Sense_union",
+
     "egui___run_test_ctx",
     "egui___run_test_ui",
 ];
@@ -501,9 +516,13 @@ impl BindingsGenerator {
 
         tracer.trace_value(&mut samples, &Options::default()).expect("Failed to trace Options");
         
+        tracer.trace_type::<AlphaFromCoverage>(&samples).expect("Failed to trace AlphaFromCoverage");
+        tracer.trace_type::<TextureId>(&samples).expect("Failed to trace AlphaFromCoverage");
         tracer.trace_simple_type::<Align>().expect("Failed to trace Align");
         tracer.trace_simple_type::<FontFamily>().expect("Failed to trace FontFamily");
         tracer.trace_simple_type::<TextWrapMode>().expect("Failed to trace TextWrapMode");
+        tracer.trace_simple_type::<PinchType>().expect("Failed to trace PinchType");
+        tracer.trace_simple_type::<PointerEvent>().expect("Failed to trace PointerEvent");
         
         trace_auto_serde_types(&mut tracer);
 
@@ -612,7 +631,3 @@ enum FnType {
     /// The function should be treated as a static method.
     Static
 }
-
-// Replacement for [`egui::UserData`] because it is not compatible with [`serde_reflection`].
-//#[derive(Copy, Clone, Debug, Serialize, Deserialize)]
-//struct UserData();

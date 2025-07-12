@@ -4,7 +4,6 @@ use std::path::*;
 
 /// Types that should be ignored during generation.
 const EXCLUDE_TYPES: &[&str] = &[
-    "InputState",
     "Options",
     "PointerState",
     "Undoer",

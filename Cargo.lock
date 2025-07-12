@@ -20,9 +20,9 @@ checksum = "b2187590a23ab1e3df8681afdf0987c48504d80291f002fcdb651f0ef5e25169"
 
 [[package]]
 name = "accesskit"
-version = "0.17.1"
+version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d3d3b8f9bae46a948369bc4a03e815d4ed6d616bd00de4051133a5019dc31c5a"
+checksum = "e25ae84c0260bdf5df07796d7cc4882460de26a2b406ec0e6c42461a723b271b"
 dependencies = [
  "enumn",
  "serde",
@@ -691,9 +691,8 @@ dependencies = [
 
 [[package]]
 name = "ecolor"
-version = "0.31.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc4feb366740ded31a004a0e4452fbf84e80ef432ecf8314c485210229672fd1"
+version = "0.32.0"
+source = "git+https://github.com/DouglasDwyer/egui?rev=c53e605d88abcacaa789a4a5a328229033b76629#c53e605d88abcacaa789a4a5a328229033b76629"
 dependencies = [
  "emath",
  "serde",
@@ -701,9 +700,8 @@ dependencies = [
 
 [[package]]
 name = "egui"
-version = "0.31.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "25dd34cec49ab55d85ebf70139cb1ccd29c977ef6b6ba4fe85489d6877ee9ef3"
+version = "0.32.0"
+source = "git+https://github.com/DouglasDwyer/egui?rev=c53e605d88abcacaa789a4a5a328229033b76629#c53e605d88abcacaa789a4a5a328229033b76629"
 dependencies = [
  "accesskit",
  "ahash",
@@ -713,6 +711,8 @@ dependencies = [
  "nohash-hasher",
  "profiling",
  "serde",
+ "smallvec",
+ "unicode-segmentation",
 ]
 
 [[package]]
@@ -766,9 +766,8 @@ dependencies = [
 
 [[package]]
 name = "emath"
-version = "0.31.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9e4cadcff7a5353ba72b7fea76bf2122b5ebdbc68e8155aa56dfdea90083fe1b"
+version = "0.32.0"
+source = "git+https://github.com/DouglasDwyer/egui?rev=c53e605d88abcacaa789a4a5a328229033b76629#c53e605d88abcacaa789a4a5a328229033b76629"
 dependencies = [
  "serde",
 ]
@@ -786,9 +785,8 @@ dependencies = [
 
 [[package]]
 name = "epaint"
-version = "0.31.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41fcc0f5a7c613afd2dee5e4b30c3e6acafb8ad6f0edb06068811f708a67c562"
+version = "0.32.0"
+source = "git+https://github.com/DouglasDwyer/egui?rev=c53e605d88abcacaa789a4a5a328229033b76629#c53e605d88abcacaa789a4a5a328229033b76629"
 dependencies = [
  "ab_glyph",
  "ahash",
@@ -1803,9 +1801,9 @@ dependencies = [
 
 [[package]]
 name = "rustdoc-types"
-version = "0.35.0"
+version = "0.39.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bf583db9958b3161d7980a56a8ee3c25e1a40708b81259be72584b7e0ea07c95"
+checksum = "e3b61d5673c3f4b49d35be6a58c49210596f61b8db580bc3b6d9dee5e9dc5458"
 dependencies = [
  "serde",
 ]
@@ -1961,14 +1959,12 @@ dependencies = [
 [[package]]
 name = "serde-reflection"
 version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e5bef77b40d103fda6c10d29c21f5c78c980e8570e1a290a648a9ff5011f96e1"
 dependencies = [
- "bincode",
  "erased-discriminant",
  "once_cell",
  "serde",
- "serde_bytes",
- "serde_json",
- "serde_yaml",
  "thiserror 1.0.69",
  "typeid",
 ]
