@@ -4,6 +4,7 @@ use std::path::*;
 
 /// Types that should be ignored during generation.
 const EXCLUDE_TYPES: &[&str] = &[
+    "History",
     "Options",
     "PointerState",
     "Undoer",
@@ -49,13 +50,13 @@ fn gather_serde_tys(krate: &Crate, exclude_tys: &[&str]) -> Vec<Id> {
 }
 
 /// Emits a function that will perform reflection on all serializable types.
-fn emit_serde_tracer(krate: &Crate, exclude_tys: &[&str]) -> String {
+fn emit_tracer(name: &str, krate: &Crate, exclude_tys: &[&str]) -> String {
     let ids = gather_serde_tys(krate, exclude_tys);
 
     let mut result = String::new();
     
     result.push_str("/// Registers all serializable `egui` types with the reflection system.\n");
-    result.push_str("fn trace_auto_serde_types(tracer: &mut ::serde_reflection::Tracer) {\n");
+    result.push_str(&format!("fn trace_auto_{name}_types(tracer: &mut ::serde_reflection::Tracer) {{\n"));
 
     for id in ids {
         let name = krate.index[&id].name.clone().unwrap_or_default();
@@ -68,9 +69,12 @@ fn emit_serde_tracer(krate: &Crate, exclude_tys: &[&str]) -> String {
 
 /// Autogenerates a function for performing reflection on `egui` types.
 fn main() {
-    let krate = serde_json::from_str::<Crate>(include_str!("../src/egui.json")).expect("Failed to parse egui");
     let out_dir = std::env::var("OUT_DIR").expect("Failed to get output directory");
     let out_file = PathBuf::from(out_dir).join("tracer.rs");
-    let tracer_definition = emit_serde_tracer(&krate, EXCLUDE_TYPES);
-    std::fs::write(out_file, tracer_definition).expect("Failed to write tracer bindings");
+    
+    let egui_tracer = emit_tracer("egui", &serde_json::from_str::<Crate>(include_str!("../src/egui.json")).expect("Failed to parse egui"), EXCLUDE_TYPES);
+    let emath_tracer = emit_tracer("epaint", &serde_json::from_str::<Crate>(include_str!("../src/emath.json")).expect("Failed to parse emath"), EXCLUDE_TYPES);
+    let epaint_tracer = emit_tracer("emath", &serde_json::from_str::<Crate>(include_str!("../src/epaint.json")).expect("Failed to parse epaint"), EXCLUDE_TYPES);
+    
+    std::fs::write(out_file, format!("{egui_tracer}\n{emath_tracer}\n{epaint_tracer}")).expect("Failed to write tracer bindings");
 }

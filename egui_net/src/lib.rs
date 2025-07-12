@@ -8,6 +8,7 @@ use egui::emath::*;
 use egui::epaint::*;
 use egui::epaint::tessellator::*;
 use egui::epaint::text::*;
+use egui::epaint::text::cursor::*;
 use egui::Id;
 use egui::output::*;
 use egui::panel::*;

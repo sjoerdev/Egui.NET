@@ -2,7 +2,10 @@
 
 use convert_case::*;
 use egui::*;
+use egui::emath::*;
 use egui::epaint::*;
+use egui::epaint::text::*;
+use egui::epaint::text::cursor::*;
 use egui::Id;
 use egui::os::*;
 use egui::output::*;
@@ -37,6 +40,7 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_style_ScrollStyle_floating",
     "egui_containers_frame_Frame_outer_margin",
 
+    "epaint_image_ColorImage_region_by_pixels",
     "egui_input_state_InputState_begin_pass",
     "egui_input_state_InputState_viewport",
     "egui_layout_Layout_align_size_within_rect",
@@ -212,6 +216,18 @@ const IGNORE_FNS: &[&str] = &[
     "core_str_BytesIsNotEmpty",
     "core_str_pattern_MultiCharEqSearcher",
     "core_str_pattern_SearchStep",
+    "epaint_text_fonts___deserialize___Visitor",
+    "ecolor_rgba___deserialize___Visitor",
+
+    // Needs four function arguments
+    "emath_rect_align_RectAlign_align_rect",
+    "emath_rect_transform_RectTransform_to",
+    "epaint_text_fonts___deserialize___FieldVisitor",
+    "epaint_text_fonts_FontData_from_static",
+    "epaint_text_fonts_FontData_as_ref",
+
+    // Frame: redudant function (same as NONE)
+    "egui_containers_frame_Frame_new",
 
     // Sense: these functions are disabled since Sense is implemented as a C# flags enum
     // with builtin bitwise operations
@@ -253,6 +269,12 @@ const IGNORE_FNS: &[&str] = &[
     "egui_sense_Sense_toggle",
     "egui_sense_Sense_union",
 
+    // UiBuilder: redundant function (same as default)
+    "egui_ui_builder_UiBuilder_new",
+
+    // Spinner: redundant function (same as default)
+    "egui_widgets_spinner_Spinner_new",
+    
     "egui___run_test_ctx",
     "egui___run_test_ui",
 
@@ -414,6 +436,7 @@ impl BindingsGenerator {
                         let mut fn_def = String::new();
                         self.emit_cs_fn(&mut std::fmt::Formatter::new(&mut fn_def, Default::default()), Some(ty_name), id)?;
                         writeln!(f, "public partial struct {ty_name} {{\n{fn_def}\n}}")?;
+                        
                         return Ok(());
                     }
                 }
@@ -429,7 +452,9 @@ impl BindingsGenerator {
         let ItemEnum::Function(func) = &item.inner else { panic!("Expected id to refer to a function") };
 
         let has_this = func.sig.inputs.first().map(|(name, ty)| name == "self" && !matches!(ty, Type::BorrowedRef { is_mutable: true, .. })).unwrap_or_default();
-        let returns_this = func.sig.output.as_ref().map(|x| x == &Type::Generic("Self".to_string())).unwrap_or_default();
+        let returns_this = func.sig.output.as_ref().map(|x| x == &Type::Generic("Self".to_string()) || (if let Type::ResolvedPath(p) = x {
+            Some(p.path.as_str()) == ty_name 
+        } else { false })).unwrap_or_default();
         let original_name = item.name.as_deref().expect("Failed to get function name");
         let cs_name = if ty_name.map(|x| self.ty_has_field(x, original_name)).unwrap_or_default() {
             format!("with_{original_name}").to_case(Case::Pascal)
@@ -438,11 +463,25 @@ impl BindingsGenerator {
             original_name.to_case(Case::Pascal)
         };
 
+        let constructor = !has_this && returns_this && (cs_name == "New" || cs_name == "Default");
+
         if let Some(comment) = self.get_doc_comment(id) {
             writeln!(f, "/// {}", comment.replace("\n", "\n/// "))?;
         }
+        else if constructor {
+            writeln!(f, "/// <summary>")?;
+            if cs_name == "Default" {
+                writeln!(f, "/// Returns the \"default value\" for a type.")?;
+                writeln!(f, "/// Default values are often some kind of initial value, identity value, or anything else that may make sense as a default.")?;
+                
+            }
+            else {
+                writeln!(f, "/// Constructs a new instance of this type.")?;
+            }
+            writeln!(f, "/// </summary>")?;
+        }
 
-        if !has_this && returns_this && (cs_name == "New" || cs_name == "Default") {
+        if constructor {
             write!(f, "public {}", ty_name.expect("Expected type to be provided"))?;
             self.emit_cs_fn_def(f, ty_name, id, FnType::Constructor, &func.sig)?;
         }
@@ -693,7 +732,9 @@ impl BindingsGenerator {
         tracer.trace_simple_type::<PointerEvent>().expect("Failed to trace PointerEvent");
         tracer.trace_simple_type::<ProgressBarText>().expect("Failed to trace ProgressBarText");
         
-        trace_auto_serde_types(&mut tracer);
+        trace_auto_egui_types(&mut tracer);
+        trace_auto_emath_types(&mut tracer);
+        trace_auto_epaint_types(&mut tracer);
 
         let mut result = tracer.registry().expect("Failed to generate serde registry");
 
