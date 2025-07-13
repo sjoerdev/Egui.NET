@@ -10,6 +10,7 @@ use egui::epaint::tessellator::*;
 use egui::epaint::text::*;
 use egui::epaint::text::cursor::*;
 use egui::Id;
+use egui::os::*;
 use egui::output::*;
 use egui::panel::*;
 use egui::scroll_area::*;

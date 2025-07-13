@@ -912,12 +912,17 @@ return obj.ToImmutableList();
 
         for (id, variant) in variants {
             writeln!(self.out, "\npublic static implicit operator {name}({} value) {{", variant.name)?;
-            writeln!(self.out, "    return new {name} {{ _variantId = {id}, _variant{id} = value }};")?;
+            writeln!(self.out, "    {name} result = default;")?;
+            writeln!(self.out, "    result._variantId = {id};")?;
+            writeln!(self.out, "    result._variant{id} = value;")?;
+            writeln!(self.out, "    return result;")?;
             writeln!(self.out, "}}")?;
         }
 
         // Serialize/Deserialize
         if self.generator.config.serialization {
+            writeln!(self.out, "\ninternal static void Serialize(Serde.ISerializer serializer, {name} value) => value.Serialize(serializer);");
+
             write!(
                 self.out,
                 "\ninternal void Serialize(Serde.ISerializer serializer) {{"
