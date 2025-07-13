@@ -60,6 +60,8 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "epaint_shapes_shape_Shape_rect_stroke",
     "egui_data_output_OutputEvent_widget_info",
     "epaint_image_AlphaFromCoverage_alpha_from_coverage",
+
+    "egui_viewport_ViewportIdPair_from_self_and_parent"
 ];
 
 /// Types to exclude from generation.
@@ -447,13 +449,19 @@ impl BindingsGenerator {
     /// Writes a single C# method definition (with appropriate type qualifiers) to `f`.
     fn emit_cs_fn_binding(&self, f: &mut std::fmt::Formatter, id: RdId) -> std::fmt::Result {
         if let Some(impl_ty) = self.declaring_type(id).and_then(|x| self.krate.index.get(&x)) {
-            if matches!(impl_ty.inner, ItemEnum::Struct(_))
-                || (matches!(impl_ty.inner, ItemEnum::Enum(_)) && !self.is_primitive_enum(impl_ty.id)) {
+            if matches!(impl_ty.inner, ItemEnum::Struct(_)) || matches!(impl_ty.inner, ItemEnum::Enum(_)) {
                 if let Some(ty_name) = impl_ty.name.as_deref() {
                     if self.registry.contains_key(ty_name) {
                         let mut fn_def = String::new();
-                        self.emit_cs_fn(&mut std::fmt::Formatter::new(&mut fn_def, Default::default()), Some(ty_name), id)?;
-                        writeln!(f, "public partial struct {ty_name} {{\n{fn_def}\n}}")?;
+                        let primitive_enum = self.is_primitive_enum(impl_ty.id);
+                        self.emit_cs_fn(&mut std::fmt::Formatter::new(&mut fn_def, Default::default()), Some(ty_name), id, primitive_enum)?;
+                        
+                        if primitive_enum {
+                            writeln!(f, "public static partial class {ty_name}Extensions {{\n{fn_def}\n}}")?;
+                        }
+                        else {
+                            writeln!(f, "public partial struct {ty_name} {{\n{fn_def}\n}}")?;
+                        }
                         
                         return Ok(());
                     }
@@ -465,7 +473,7 @@ impl BindingsGenerator {
     }
 
     /// Writes a single C# method definition to `f`.
-    fn emit_cs_fn(&self, f: &mut std::fmt::Formatter, ty_name: Option<&str>, id: RdId) -> std::fmt::Result {
+    fn emit_cs_fn(&self, f: &mut std::fmt::Formatter, ty_name: Option<&str>, id: RdId, extension: bool) -> std::fmt::Result {
         let item = &self.krate.index[&id];
         let ItemEnum::Function(func) = &item.inner else { panic!("Expected id to refer to a function") };
 
@@ -500,31 +508,47 @@ impl BindingsGenerator {
         }
 
         if constructor {
+            if extension {
+                return Err(std::fmt::Error);
+            }
+
             write!(f, "public {}", ty_name.expect("Expected type to be provided"))?;
             self.emit_cs_fn_def(f, ty_name, id, FnType::Constructor, &func.sig)?;
         }
         else {
             let return_name = func.sig.output.as_ref().and_then(|x| self.cs_type_name(ty_name, x))
                 .unwrap_or("void".to_string());
-            
-            write!(f, "public {} {return_name} {}", ["static", "readonly"][has_this as usize], cs_name)?;
 
-            self.emit_cs_fn_def(f, ty_name, id, [FnType::Static, FnType::Instance][has_this as usize], &func.sig)?;
+            let (qualifiers, fn_type) = match (has_this, extension) {
+                (false, false) => ("static", FnType::Static),
+                (true, false) => ("readonly", FnType::Instance),
+                (true, true) => ("static", FnType::Extension),
+                _ => return Err(std::fmt::Error)
+            };
+            
+            write!(f, "public {qualifiers} {return_name} {cs_name}")?;
+
+            self.emit_cs_fn_def(f, ty_name, id, fn_type, &func.sig)?;
         }
 
         Ok(())
     }
 
     /// Emits the body of a C# function (excluding the name and return type).
-    fn emit_cs_fn_def(&self, f: &mut std::fmt::Formatter, ty_name: Option<&str>, id: RdId, ty: FnType, sig: &FunctionSignature) -> std::fmt::Result {
+    fn emit_cs_fn_def(&self, f: &mut std::fmt::Formatter, ty_name: Option<&str>, id: RdId, fn_ty: FnType, sig: &FunctionSignature) -> std::fmt::Result {
         write!(f, "(")?;
         
         let mut first = true;
 
         let mut generic_args = Vec::new();
         
-        for (name, ty) in sig.inputs.iter().skip((ty == FnType::Instance) as usize) {
-            if !first {
+        for (name, ty) in sig.inputs.iter().skip((fn_ty == FnType::Instance) as usize) {
+            if first {
+                if fn_ty == FnType::Extension {
+                    write!(f, "this ")?;
+                }
+            }
+            else {
                 write!(f, ", ")?;
             }
 
@@ -541,7 +565,7 @@ impl BindingsGenerator {
         if let Some(return_ty) = &sig.output {
             generic_args.push(self.cs_type_name(ty_name, return_ty).ok_or(std::fmt::Error)?);
 
-            if ty == FnType::Constructor {
+            if fn_ty == FnType::Constructor {
                 write!(f, "   this = ")?;
             }
             else {
@@ -560,7 +584,7 @@ impl BindingsGenerator {
         }
 
         let enum_name = format!("EguiFn.{}", self.fn_enum_variant_name(id));
-        write!(f, "{}", [enum_name].into_iter().chain(sig.inputs.iter().skip((ty == FnType::Instance) as usize).map(|(name, _)| name.to_case(Case::Camel)))
+        write!(f, "{}", [enum_name].into_iter().chain(sig.inputs.iter().skip((fn_ty == FnType::Instance) as usize).map(|(name, _)| name.to_case(Case::Camel)))
             .collect::<Vec<_>>().join(", "))?;
         writeln!(f, ");")?;
 
@@ -991,6 +1015,8 @@ impl BindingsGenerator {
 enum FnType {
     /// The function should be treated as a constructor.
     Constructor,
+    /// The function should be treated as an instance extension method.
+    Extension,
     /// The function should be treated as an instance method.
     Instance,
     /// The function should be treated as a static method.

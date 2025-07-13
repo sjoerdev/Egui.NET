@@ -41,22 +41,11 @@ public readonly struct Sense
     public static readonly Sense Drag = DragNoFocus | Focusable;
 
     /// <summary>
-    /// Sense both clicks, drags and hover (e.g. a slider or window).
-    /// Note that this will introduce a latency when dragging, because when the user starts a press egui can't know if this is the start of a click or a drag, and it won�t know until the cursor has either moved a certain distance, or the user has released the mouse button.
+    /// Sense both clicks, drags and hover (e.g. a slider or window).<br/>
+    /// Note that this will introduce a latency when dragging, because when the user starts a press egui can't know if this is the start of a click or a drag, and it won't know until the cursor has either moved a certain distance, or the user has released the mouse button.<br/>
     /// See <c>IsDecidedlyDragging</c> for details.
     /// </summary>
     public static readonly Sense ClickAndDrag = ClickNoFocus | DragNoFocus | Focusable;
-
-    /// <summary>
-    /// Returns true if we sense either clicks or drags.
-    /// </summary>
-    public bool Interactive => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_interactive, _value);
-
-    public bool SensesClick => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_senses_click, _value);
-
-    public bool SensesDrag => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_senses_drag, _value);
-
-    public bool IsFocusable => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_is_focusable, _value);
 
     /// <summary>
     /// The internal value of the enum.
@@ -71,6 +60,17 @@ public readonly struct Sense
     {
         _value = value;
     }
+
+    /// <summary>
+    /// Returns true if we sense either clicks or drags.
+    /// </summary>
+    public bool Interactive() => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_interactive, _value);
+
+    public bool SensesClick() => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_senses_click, _value);
+
+    public bool SensesDrag() => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_senses_drag, _value);
+
+    public bool IsFocusable() => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_is_focusable, _value);
 
     internal void Serialize(Serde.ISerializer serializer) {
         serializer.increase_container_depth();

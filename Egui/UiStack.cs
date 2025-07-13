@@ -47,7 +47,7 @@ public partial struct UiStack : IEquatable<UiStack> {
         UiStack obj = default;
             obj.Id = Id.Deserialize(deserializer);
             obj.Info = UiStackInfo.Deserialize(deserializer);
-            obj.LayoutDirection = DirectionExtensions.Deserialize(deserializer);
+            obj.LayoutDirection = DirectionSerdeExtensions.Deserialize(deserializer);
             obj.MinRect = Rect.Deserialize(deserializer);
             obj.MaxRect = Rect.Deserialize(deserializer);
             obj.Parent = TraitHelpers.deserialize_option_UiStack(deserializer);

@@ -395,7 +395,7 @@ using System.Numerics;"
         match format {
             TypeName(name) => {
                 if self.cstyle_enum_names.contains(name) {
-                    let extensions_name = format!("{}Extensions", name.to_camel_case());
+                    let extensions_name = format!("{}SerdeExtensions", name.to_camel_case());
                     format!(
                         "{}.Deserialize(deserializer)",
                         self.quote_qualified_name(&extensions_name)
@@ -1063,7 +1063,7 @@ switch (index) {{"#,
         writeln!(self.out, "}}")?;
 
         if self.generator.config.serialization {
-            let ext_name = format!("{}Extensions", name.to_camel_case());
+            let ext_name = format!("{}SerdeExtensions", name.to_camel_case());
             writeln!(self.out, "internal static class {} {{", ext_name)?;
             self.enter_class(&ext_name, &[]);
 
