@@ -28,29 +28,28 @@ use std::path::*;
 
 /// Functions to exclude when automatically generating bindings.
 const BINDING_EXCLUDE_FNS: &[&str] = &[
-    "egui_containers_frame_Frame_corner_radius",
-    "egui_containers_frame_Frame_stroke",
-    "egui_containers_frame_Frame_shadow",
     "egui_data_input_RawInput_viewport",
-    "egui_style_Visuals_window_stroke",
-    "egui_containers_frame_Frame_inner_margin",
-    "egui_style_Visuals_window_fill",
-    "egui_style_ScrollAnimation_duration",
     "egui_style_Style_noninteractive",
     "egui_data_output_WidgetInfo_selected",
-    "egui_style_ScrollStyle_floating",
-    "egui_containers_frame_Frame_outer_margin",
 
-    "epaint_image_ColorImage_region_by_pixels",
+    "egui_data_output_WidgetInfo_text_edit",
+    "egui_data_output_WidgetInfo_text_selection_changed",
     "egui_input_state_InputState_begin_pass",
     "egui_input_state_InputState_viewport",
     "egui_layout_Layout_align_size_within_rect",
     
     "egui_style_Style_text_styles",
     "egui_style_Visuals_noninteractive",
-    "egui_data_output_OpenUrl_new_tab",
     "egui_text_selection_cursor_range_CursorRange_on_event",
 
+    "egui_ui_stack_UiStack_has_visible_frame",
+    "egui_ui_stack_UiStack_is_area_ui",
+    "egui_ui_stack_UiStack_is_root_ui",
+    "egui_ui_stack_UiStack_is_panel_ui",
+    "egui_ui_stack_UiStack_contained_in",
+    "egui_ui_stack_UiStack_frame",
+
+    "epaint_image_ColorImage_region_by_pixels",
     "epaint_shapes_rect_shape_RectShape_new",
     "epaint_shapes_rect_shape_RectShape_stroke",
     "epaint_shapes_bezier_shape_CubicBezierShape_from_points_stroke",
@@ -61,15 +60,6 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "epaint_shapes_shape_Shape_rect_stroke",
     "egui_data_output_OutputEvent_widget_info",
     "epaint_image_AlphaFromCoverage_alpha_from_coverage",
-
-    "egui_ui_stack_UiStack_has_visible_frame",
-    "egui_ui_stack_UiStack_is_area_ui",
-    "egui_ui_stack_UiStack_is_root_ui",
-    "egui_ui_stack_UiStack_is_panel_ui",
-    "egui_ui_stack_UiStack_contained_in",
-    "egui_ui_stack_UiStack_frame",
-
-    "egui_viewport_ViewportIdPair_from_self_and_parent",
 ];
 
 /// Types to exclude from generation.
@@ -228,7 +218,7 @@ const IGNORE_FNS: &[&str] = &[
     "core_str_BytesIsNotEmpty",
     "core_str_pattern_MultiCharEqSearcher",
     "core_str_pattern_SearchStep",
-    
+
     // Needs four function arguments
     "emath_rect_align_RectAlign_align_rect",
     "emath_rect_transform_RectTransform_to",
@@ -385,12 +375,19 @@ impl BindingsGenerator {
             },
             Type::Generic(x) if x == "Self" => self_ty?.to_string(),
             Type::ImplTrait(x) => if x.len() == 1
-                && let Some(GenericBound::TraitBound { trait_: RdPath { path, args: trait_generics, .. }, .. }) = x.first()
-                && path == "Into"
-                && let Some(GenericArgs::AngleBracketed { args, .. }) = trait_generics.as_deref()
-                && args.len() == 1
-                && let GenericArg::Type(inner_ty) = &args[0] {
-                    self.cs_type_name(self_ty, inner_ty)?
+                && let Some(GenericBound::TraitBound { trait_: RdPath { path, args: trait_generics, .. }, .. }) = x.first() {
+                    if path == "ToString" {
+                        "string".to_string()
+                    }
+                    else if path == "Into"
+                        && let Some(GenericArgs::AngleBracketed { args, .. }) = trait_generics.as_deref()
+                        && args.len() == 1
+                        && let GenericArg::Type(inner_ty) = &args[0] {
+                        self.cs_type_name(self_ty, inner_ty)?
+                    }
+                    else {
+                        return None
+                    }
                 }
                 else {
                     return None
@@ -579,7 +576,7 @@ impl BindingsGenerator {
             let ty_name = self.declaring_type(*id).and_then(|x| self.krate.index[&x].name.clone());
     
             let ItemEnum::Function(func) = &self.krate.index[id].inner else { panic!("Expected function items only") };
-            let cast_params = func.sig.inputs.iter().map(|(_, ty)| self.format_rs_parameter_ty(ty_name.as_deref(), ty))
+            let cast_params = func.sig.inputs.iter().map(|(_, ty)| self.rs_parameter_name(ty_name.as_deref(), ty))
                 .collect::<Vec<_>>().join(", ");
             let return_ty = if matches!(func.sig.output, Some(Type::BorrowedRef { .. })) { "_" } else { "_" };
             let enum_name = self.fn_enum_variant_name(*id);
@@ -616,26 +613,33 @@ impl BindingsGenerator {
     }
 
     /// Writes the type of a Rust parameter to aid type inference during compilation.
-    fn format_rs_parameter_ty(&self, self_ty: Option<&str>, ty: &Type) -> String {
+    fn rs_parameter_name(&self, self_ty: Option<&str>, ty: &Type) -> String {
         match ty {
             Type::ResolvedPath(path) => path.path.split("::").last().expect("Type was empty").to_string(),
             Type::Generic(x) if x == "Self" => self_ty.expect("No self type available").to_string(),
             Type::ImplTrait(x) => if x.len() == 1
-                && let Some(GenericBound::TraitBound { trait_: RdPath { path, args: trait_generics, .. }, .. }) = x.first()
-                && path == "Into"
-                && let Some(GenericArgs::AngleBracketed { args, .. }) = trait_generics.as_deref()
-                && args.len() == 1
-                && let GenericArg::Type(inner_ty) = &args[0] {
-                    self.format_rs_parameter_ty(self_ty, inner_ty)
+                && let Some(GenericBound::TraitBound { trait_: RdPath { path, args: trait_generics, .. }, .. }) = x.first() {
+                    if path == "ToString" {
+                        "String".to_string()
+                    }
+                    else if path == "Into"
+                        && let Some(GenericArgs::AngleBracketed { args, .. }) = trait_generics.as_deref()
+                        && args.len() == 1
+                        && let GenericArg::Type(inner_ty) = &args[0] {
+                        self.rs_parameter_name(self_ty, inner_ty)
+                    }
+                    else {
+                        "_".to_string()
+                    }
                 }
                 else {
                     "_".to_string()
                 }
             Type::Primitive(x) => x.to_string(),
             Type::Tuple(items) => format!("({})",
-                items.iter().map(|x| self.format_rs_parameter_ty(self_ty, x)).chain(["".to_string()]).collect::<Vec<_>>().join(", ")),
+                items.iter().map(|x| self.rs_parameter_name(self_ty, x)).chain(["".to_string()]).collect::<Vec<_>>().join(", ")),
             Type::Slice(_) | Type::Array { .. } => "_".to_string(),
-            Type::BorrowedRef { is_mutable: false, type_, .. } => format!("&{}", self.format_rs_parameter_ty(self_ty, &type_)),
+            Type::BorrowedRef { is_mutable: false, type_, .. } => format!("&{}", self.rs_parameter_name(self_ty, &type_)),
             Type::DynTrait(_)
             | Type::Generic(_)
             | Type::Pat { .. }
