@@ -228,13 +228,10 @@ const IGNORE_FNS: &[&str] = &[
     "core_str_BytesIsNotEmpty",
     "core_str_pattern_MultiCharEqSearcher",
     "core_str_pattern_SearchStep",
-    "epaint_text_fonts___deserialize___Visitor",
-    "ecolor_rgba___deserialize___Visitor",
-
+    
     // Needs four function arguments
     "emath_rect_align_RectAlign_align_rect",
     "emath_rect_transform_RectTransform_to",
-    "epaint_text_fonts___deserialize___FieldVisitor",
     "epaint_text_fonts_FontData_from_static",
     "epaint_text_fonts_FontData_as_ref",
 
@@ -299,6 +296,7 @@ const IGNORE_FN_NAMES: &[&str] = &[
     "add",
     "add_assign",
     "bits",
+    "clone",
     "cmp",
     "deserialize",
     "div",
@@ -717,7 +715,7 @@ impl BindingsGenerator {
                 && (self.declaring_type(*id).is_some() || self.krate.paths.contains_key(id))
                 && {
                     let variant_name = self.fn_enum_variant_name(*id);
-                    variant_name.starts_with("e") &&!IGNORE_FNS.contains(&&*variant_name)
+                    variant_name.starts_with("e") &&!IGNORE_FNS.contains(&&*variant_name) && !variant_name.contains("___deserialize___")
                 }
                 && item.name.as_deref().map(|x| !IGNORE_FN_NAMES.contains(&x)).unwrap_or(true)
             ).then_some(id.clone()))
