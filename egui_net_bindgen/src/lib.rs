@@ -8,6 +8,8 @@ use egui::epaint::*;
 use egui::epaint::text::*;
 use egui::epaint::text::cursor::*;
 use egui::Id;
+use egui::collapsing_header::*;
+use egui::containers::menu::*;
 use egui::os::*;
 use egui::output::*;
 use egui::panel::*;
@@ -38,6 +40,9 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_input_state_InputState_viewport",
     "egui_layout_Layout_align_size_within_rect",
     
+    "egui_menu_MenuState_new",
+    "egui_menu_MenuState_area_contains",
+
     "egui_style_Style_text_styles",
     "egui_style_Visuals_noninteractive",
     "egui_text_selection_cursor_range_CursorRange_on_event",
@@ -832,6 +837,7 @@ impl BindingsGenerator {
         tracer.trace_simple_type::<PinchType>().expect("Failed to trace PinchType");
         tracer.trace_simple_type::<PointerEvent>().expect("Failed to trace PointerEvent");
         tracer.trace_simple_type::<ProgressBarText>().expect("Failed to trace ProgressBarText");
+        tracer.trace_simple_type::<SidesKind>().expect("Failed to trace SidesKind");
         
         trace_auto_egui_types(&mut tracer);
         trace_auto_emath_types(&mut tracer);
