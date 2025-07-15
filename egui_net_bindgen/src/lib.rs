@@ -39,6 +39,11 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_input_state_InputState_begin_pass",
     "egui_input_state_InputState_viewport",
     "egui_layout_Layout_align_size_within_rect",
+
+    "egui_containers_area_Area_layout",
+    "egui_containers_area_Area_id",
+    "egui_containers_collapsing_header_CollapsingState_id",
+    "egui_containers_scroll_area_ScrollArea_scroll_source",
     
     "egui_menu_MenuState_new",
     "egui_menu_MenuState_area_contains",
@@ -71,6 +76,7 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
 
 /// Types to exclude from generation.
 const BINDING_EXCLUDE_TYPES: &[&str] = &[
+    "DragPanButtons",
     "History",
     "Sense"
 ];
@@ -235,8 +241,54 @@ const IGNORE_FNS: &[&str] = &[
     // Frame: redudant function (same as NONE)
     "egui_containers_frame_Frame_new",
 
-    // Sense: these functions are disabled since Sense is implemented as a C# flags enum
-    // with builtin bitwise operations
+    // DragPanButtons: bindings are written manually 
+    "egui_containers_scene_DragPanButtons_all",
+    "egui_containers_scene_DragPanButtons_bitand",
+    "egui_containers_scene_DragPanButtons_bitand_assign",
+    "egui_containers_scene_DragPanButtons_bitor",
+    "egui_containers_scene_DragPanButtons_bitor_assign",
+    "egui_containers_scene_DragPanButtons_bitxor",
+    "egui_containers_scene_DragPanButtons_bitxor_assign",
+    "egui_containers_scene_DragPanButtons_complement",
+    "egui_containers_scene_DragPanButtons_contains",
+    "egui_containers_scene_DragPanButtons_default",
+    "egui_containers_scene_DragPanButtons_difference",
+    "egui_containers_scene_DragPanButtons_empty",
+    "egui_containers_scene_DragPanButtons_extend",
+    "egui_containers_scene_DragPanButtons_from_bits_truncate",
+    "egui_containers_scene_DragPanButtons_from_iter",
+    "egui_containers_scene_DragPanButtons_from_name",
+    "egui_containers_scene_DragPanButtons_insert",
+    "egui_containers_scene_DragPanButtons_intersection",
+    "egui_containers_scene_DragPanButtons_intersects",
+    "egui_containers_scene_DragPanButtons_into_iter",
+    "egui_containers_scene_DragPanButtons_is_all",
+    "egui_containers_scene_DragPanButtons_is_empty",
+    "egui_containers_scene_DragPanButtons_iter",
+    "egui_containers_scene_DragPanButtons_iter_names",
+    "egui_containers_scene_DragPanButtons_not",
+    "egui_containers_scene_DragPanButtons_remove",
+    "egui_containers_scene_DragPanButtons_set",
+    "egui_containers_scene_DragPanButtons_symmetric_difference",
+    "egui_containers_scene_DragPanButtons_toggle",
+    "egui_containers_scene_DragPanButtons_union",
+
+    // Scene: redundant function (same as default)
+    "egui_containers_scene_Scene_new",
+
+    // Sides: redundant function (same as default)
+    "egui_containers_sides_Sides_new",
+
+    // SubMenu: redundant function (same as default)
+    "egui_containers_menu_SubMenu_new",
+
+    // MenuBar: redundant function (same as default)
+    "egui_containers_menu_MenuBar_new",
+
+    // MenuConfig: redundant function (same as default)
+    "egui_containers_menu_MenuConfig_new",
+
+    // Sense: bindings are written manually
     "egui_sense_Sense_all",
     "egui_sense_Sense_bitand",
     "egui_sense_Sense_bitand_assign",
