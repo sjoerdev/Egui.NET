@@ -47,12 +47,33 @@ internal static class EguiMarshal
 
     public static void Call<A0, A1, A2>(EguiFn func, A0 arg0, A1 arg1, A2 arg2)
     {
+        Call<A0, A1, A2, NoArgument>(func, arg0, arg1, arg2, default);
+    }
+
+    public static R Call<A0, A1, A2, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2)
+    {
+        return Call<A0, A1, A2, NoArgument, R>(func, arg0, arg1, arg2, default);
+    }
+
+    public static void Call<A0, A1, A2, A3>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
+    {
+        Call<A0, A1, A2, A3, NoArgument>(func, arg0, arg1, arg2, arg3, default);
+    }
+
+    public static R Call<A0, A1, A2, A3, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
+    {
+        return Call<A0, A1, A2, A3, NoArgument, R>(func, arg0, arg1, arg2, arg3, default);
+    }
+
+    public static void Call<A0, A1, A2, A3, A4>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
+    {
         unsafe
         {
             var serializer = GetSerializer();
             SerializerCache<A0>.Serializer(serializer, arg0);
             SerializerCache<A1>.Serializer(serializer, arg1);
             SerializerCache<A2>.Serializer(serializer, arg2);
+            SerializerCache<A3>.Serializer(serializer, arg3);
 
             var bytes = serializer.get_bytes();
             fixed (byte* ptr = bytes)
@@ -68,7 +89,7 @@ internal static class EguiMarshal
         }
     }
 
-    public static R Call<A0, A1, A2, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2)
+    public static R Call<A0, A1, A2, A3, A4, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
     {
         unsafe
         {
@@ -76,6 +97,8 @@ internal static class EguiMarshal
             SerializerCache<A0>.Serializer(serializer, arg0);
             SerializerCache<A1>.Serializer(serializer, arg1);
             SerializerCache<A2>.Serializer(serializer, arg2);
+            SerializerCache<A3>.Serializer(serializer, arg3);
+            SerializerCache<A4>.Serializer(serializer, arg4);
 
             var bytes = serializer.get_bytes();
             fixed (byte* ptr = bytes)

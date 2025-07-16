@@ -42,6 +42,8 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_containers_collapsing_header_CollapsingState_id",
     "egui_containers_scroll_area_ScrollArea_scroll_source",
     "egui_viewport_ViewportIdPair_from_self_and_parent",
+    "egui_input_state_InputState_begin_pass",
+    "epaint_image_AlphaFromCoverage_alpha_from_coverage",
 
     "egui_style_Style_text_styles",
     "egui_style_Visuals_noninteractive",
