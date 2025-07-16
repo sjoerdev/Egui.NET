@@ -30,48 +30,31 @@ use std::path::*;
 
 /// Functions to exclude when automatically generating bindings.
 const BINDING_EXCLUDE_FNS: &[&str] = &[
+    // These functions return references which need to be converted to values
     "egui_data_input_RawInput_viewport",
     "egui_style_Style_noninteractive",
-    "egui_data_output_WidgetInfo_selected",
-
-    "egui_data_output_WidgetInfo_text_edit",
-    "egui_data_output_WidgetInfo_text_selection_changed",
-    "egui_input_state_InputState_begin_pass",
     "egui_input_state_InputState_viewport",
-    "egui_layout_Layout_align_size_within_rect",
+    "egui_data_output_OutputEvent_widget_info",
 
+    // These functions have conflicting names with fields or C#
     "egui_containers_area_Area_layout",
     "egui_containers_area_Area_id",
     "egui_containers_collapsing_header_CollapsingState_id",
     "egui_containers_scroll_area_ScrollArea_scroll_source",
-    
-    "egui_menu_MenuState_new",
-    "egui_menu_MenuState_area_contains",
+    "egui_viewport_ViewportIdPair_from_self_and_parent",
 
     "egui_style_Style_text_styles",
     "egui_style_Visuals_noninteractive",
     "egui_text_selection_cursor_range_CursorRange_on_event",
 
-    "egui_ui_stack_UiStack_has_visible_frame",
-    "egui_ui_stack_UiStack_is_area_ui",
-    "egui_ui_stack_UiStack_is_root_ui",
-    "egui_ui_stack_UiStack_is_panel_ui",
-    "egui_ui_stack_UiStack_contained_in",
     "egui_ui_stack_UiStack_frame",
 
+    // These functions have weird parameter types or generics
     "epaint_image_ColorImage_region_by_pixels",
-    "epaint_shapes_rect_shape_RectShape_new",
-    "epaint_shapes_rect_shape_RectShape_stroke",
-    "epaint_shapes_bezier_shape_CubicBezierShape_from_points_stroke",
-    "epaint_shapes_bezier_shape_QuadraticBezierShape_from_points_stroke",
     "epaint_shapes_bezier_shape_CubicBezierShape_split_range",
-    "epaint_shapes_shape_Shape_image",
     "epaint_shapes_shape_Shape_line_segment",
-    "epaint_shapes_shape_Shape_rect_stroke",
-    "egui_data_output_OutputEvent_widget_info",
-    "epaint_image_AlphaFromCoverage_alpha_from_coverage",
+    "egui_data_output_WidgetInfo_text_selection_changed",
 
-    "egui_viewport_ViewportIdPair_from_self_and_parent"
 ];
 
 /// Types to exclude from generation.
@@ -287,6 +270,10 @@ const IGNORE_FNS: &[&str] = &[
 
     // MenuConfig: redundant function (same as default)
     "egui_containers_menu_MenuConfig_new",
+
+    // MenuState: deprecated functions (old type definition)
+    "egui_menu_MenuState_area_contains",
+    "egui_menu_MenuState_new",
 
     // Sense: bindings are written manually
     "egui_sense_Sense_all",

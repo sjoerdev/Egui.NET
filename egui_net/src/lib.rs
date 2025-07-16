@@ -204,6 +204,29 @@ where T::Input: 'static + DeserializeOwned, T::Output: Serialize
     }
 }
 
+/// Implements [`CallBorrow`] for every possible combination of by-value and by-reference parameters.
+macro_rules! impl_call_borrow {
+    ({ $($ty_name:ident,)* }, { $($arg_name:ident,)* }) => {
+        impl_call_borrow!({ $($ty_name,)* }, { $($arg_name,)* }, { }, { }, { }, { }, { });
+    };
+    ({ }, { }, { $($bounds: tt)* }, { $($args: tt)* }, { $($input_tys: tt)* }, { $($arg_names: tt)* }, { $($arg_borrows: tt )* }) => {
+        impl<$($bounds)* R> CallBorrow for fn($($args)*) -> R {
+            type Input = ($($input_tys)*);
+            type Output = R;
+
+            fn call(&self, ($($arg_names)*): Self::Input) -> Self::Output {
+                self($($arg_borrows)*)
+            }
+        }
+    };
+    ({ $first_ty_name:ident, $($rest_ty_name:ident,)* }, { $first_arg_name:ident, $($rest_arg_name:ident,)* }, { $($bounds: tt)* }, { $($args: tt)* }, { $($input_tys: tt)* }, { $($arg_names: tt)* }, { $($arg_borrows: tt)* }) => {
+        impl_call_borrow!({ $($rest_ty_name,)* }, { $($rest_arg_name,)* }, { $first_ty_name, $($bounds)* }, { $first_ty_name, $($args)* }, { $first_ty_name, $($input_tys)* }, { $first_arg_name, $($arg_names)* }, { $first_arg_name, $($arg_borrows)* });
+        impl_call_borrow!({ $($rest_ty_name,)* }, { $($rest_arg_name,)* }, { $first_ty_name: ?Sized + ToOwned, $($bounds)* }, { &$first_ty_name, $($args)* }, { $first_ty_name::Owned, $($input_tys)* }, { $first_arg_name, $($arg_names)* }, { $first_arg_name.borrow(), $($arg_borrows)* });
+    };
+}
+
+/// A trait that allows for passing *values* to a function, some of which
+/// that function may take by immutable reference.
 trait CallBorrow {
     type Input;
     type Output;
@@ -220,140 +243,11 @@ impl<R> CallBorrow for fn() -> R {
     }
 }
 
-impl<R> CallBorrow for unsafe fn() -> R {
-    type Input = ();
-    type Output = R;
-
-    fn call(&self, (): Self::Input) -> Self::Output {
-        unsafe { self() }
-    }
-}
-
-impl<A0, R> CallBorrow for fn(A0) -> R {
-    type Input = (A0, );
-    type Output = R;
-
-    fn call(&self, (arg_0, ): Self::Input) -> Self::Output {
-        self(arg_0)
-    }
-}
-
-impl<A0: ?Sized + ToOwned, R> CallBorrow for fn(&A0) -> R {
-    type Input = (A0::Owned, );
-    type Output = R;
-
-    fn call(&self, (arg_0, ): Self::Input) -> Self::Output {
-        self(arg_0.borrow())
-    }
-}
-
-impl<A0, A1, R> CallBorrow for fn(A0, A1) -> R {
-    type Input = (A0, A1);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1): Self::Input) -> Self::Output {
-        self(arg_0, arg_1)
-    }
-}
-
-impl<A0: ?Sized + ToOwned, A1, R> CallBorrow for fn(&A0, A1) -> R {
-    type Input = (A0::Owned, A1);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1, ): Self::Input) -> Self::Output {
-        self(arg_0.borrow(), arg_1)
-    }
-}
-
-impl<A0, A1: ?Sized + ToOwned, R> CallBorrow for fn(A0, &A1) -> R {
-    type Input = (A0, A1::Owned);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1): Self::Input) -> Self::Output {
-        self(arg_0, arg_1.borrow())
-    }
-}
-
-impl<A0: ?Sized + ToOwned, A1: ?Sized + ToOwned, R> CallBorrow for fn(&A0, &A1) -> R {
-    type Input = (A0::Owned, A1::Owned);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1, ): Self::Input) -> Self::Output {
-        self(arg_0.borrow(), arg_1.borrow())
-    }
-}
-
-impl<A0, A1, A2, R> CallBorrow for fn(A0, A1, A2) -> R {
-    type Input = (A0, A1, A2);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
-        self(arg_0, arg_1, arg_2)
-    }
-}
-
-impl<A0: ?Sized + ToOwned, A1, A2, R> CallBorrow for fn(&A0, A1, A2) -> R {
-    type Input = (A0::Owned, A1, A2);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
-        self(arg_0.borrow(), arg_1, arg_2)
-    }
-}
-
-impl<A0, A1: ?Sized + ToOwned, A2, R> CallBorrow for fn(A0, &A1, A2) -> R {
-    type Input = (A0, A1::Owned, A2);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
-        self(arg_0, arg_1.borrow(), arg_2)
-    }
-}
-
-impl<A0: ?Sized + ToOwned, A1: ?Sized + ToOwned, A2, R> CallBorrow for fn(&A0, &A1, A2) -> R {
-    type Input = (A0::Owned, A1::Owned, A2);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
-        self(arg_0.borrow(), arg_1.borrow(), arg_2)
-    }
-}
-
-impl<A0, A1, A2: ?Sized + ToOwned, R> CallBorrow for fn(A0, A1, &A2) -> R {
-    type Input = (A0, A1, A2::Owned);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
-        self(arg_0, arg_1, arg_2.borrow())
-    }
-}
-
-impl<A0: ?Sized + ToOwned, A1, A2: ?Sized + ToOwned, R> CallBorrow for fn(&A0, A1, &A2) -> R {
-    type Input = (A0::Owned, A1, A2::Owned);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
-        self(arg_0.borrow(), arg_1, arg_2.borrow())
-    }
-}
-
-impl<A0, A1: ?Sized + ToOwned, A2: ?Sized + ToOwned, R> CallBorrow for fn(A0, &A1, &A2) -> R {
-    type Input = (A0, A1::Owned, A2::Owned);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
-        self(arg_0, arg_1.borrow(), arg_2.borrow())
-    }
-}
-
-impl<A0: ?Sized + ToOwned, A1: ?Sized + ToOwned, A2: ?Sized + ToOwned, R> CallBorrow for fn(&A0, &A1, &A2) -> R {
-    type Input = (A0::Owned, A1::Owned, A2::Owned);
-    type Output = R;
-
-    fn call(&self, (arg_0, arg_1, arg_2): Self::Input) -> Self::Output {
-        self(arg_0.borrow(), arg_1.borrow(), arg_2.borrow())
-    }
-}
+impl_call_borrow!({ A0, }, { arg_0, });
+impl_call_borrow!({ A0, A1, }, { arg_0, arg_1, });
+impl_call_borrow!({ A0, A1, A2, }, { arg_0, arg_1, arg_2, });
+impl_call_borrow!({ A0, A1, A2, A3, }, { arg_0, arg_1, arg_2, arg_3, });
+impl_call_borrow!({ A0, A1, A2, A3, A4, }, { arg_0, arg_1, arg_2, arg_3, arg_4, });
 
 /// Functions that can be run as tests.
 #[cfg(test)]
