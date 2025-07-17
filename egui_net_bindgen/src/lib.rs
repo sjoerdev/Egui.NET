@@ -35,6 +35,9 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_style_Style_noninteractive",
     "egui_input_state_InputState_viewport",
     "egui_data_output_OutputEvent_widget_info",
+    "egui_widget_rect_WidgetRects_get",
+    "egui_widget_rect_WidgetRects_info",
+    "epaint_shapes_bezier_shape_CubicBezierShape_flatten_closed",
 
     // These functions have conflicting names with fields or C#
     "egui_containers_area_Area_layout",
@@ -412,13 +415,32 @@ impl BindingsGenerator {
     /// could not be resolved.
     fn cs_type_name(&self, self_ty: Option<&str>, ty: &Type) -> Option<String> {
         Some(match ty {
-            Type::ResolvedPath(path) => {
-                let name = path.path.split("::").last().expect("Type was empty");
-                if self.registry.contains_key(name) {
-                    name.to_string()
-                }
-                else {
-                    return None
+            Type::ResolvedPath(path) => match path.path.as_str() {
+                "Option" | "Vec" => {
+                    let builtin_fn = match path.path.as_str() {
+                        "Option" => |x| format!("{x}?"),
+                        "Vec" => |x| format!("ReadOnlyMemory<{x}>"),
+                        _ => unreachable!()
+                    };
+
+                    let Some(GenericArgs::AngleBracketed { args, .. }) = path.args.as_deref() else { return None };
+                    if args.len() == 1 {
+                        let GenericArg::Type(arg) = &args[0] else { return None };
+                        builtin_fn(self.cs_type_name(self_ty, arg)?)
+                    }
+                    else {
+                        return None
+                    }
+                },
+                "String" | "str" => "string".to_string(),
+                _ => {
+                    let name = path.path.split("::").last().expect("Type was empty");
+                    if self.registry.contains_key(name) {
+                        name.to_string()
+                    }
+                    else {
+                        return None
+                    }
                 }
             },
             Type::Generic(x) if x == "Self" => self_ty?.to_string(),
@@ -685,7 +707,19 @@ impl BindingsGenerator {
     /// Writes the type of a Rust parameter to aid type inference during compilation.
     fn rs_parameter_name(&self, self_ty: Option<&str>, ty: &Type) -> String {
         match ty {
-            Type::ResolvedPath(path) => path.path.split("::").last().expect("Type was empty").to_string(),
+            Type::ResolvedPath(path) => match path.path.as_str() {
+                "Option" | "Vec" => {
+                    let Some(GenericArgs::AngleBracketed { args, .. }) = path.args.as_deref() else { panic!("Unknown generic type") };
+                    if args.len() == 1 {
+                        let GenericArg::Type(arg) = &args[0] else { panic!("Unknown generic type") };
+                        format!("{}<{}>", path.path, self.rs_parameter_name(self_ty, arg))
+                    }
+                    else {
+                        panic!("Unknown generic type")
+                    }
+                },
+                _ => path.path.split("::").last().expect("Type was empty").to_string()
+            },
             Type::Generic(x) if x == "Self" => self_ty.expect("No self type available").to_string(),
             Type::ImplTrait(x) => if x.len() == 1
                 && let Some(GenericBound::TraitBound { trait_: RdPath { path, args: trait_generics, .. }, .. }) = x.first() {
