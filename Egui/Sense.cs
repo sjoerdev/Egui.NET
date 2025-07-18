@@ -64,13 +64,13 @@ public readonly struct Sense
     /// <summary>
     /// Returns true if we sense either clicks or drags.
     /// </summary>
-    public bool Interactive() => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_interactive, _value);
+    public bool Interactive => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_interactive, _value);
 
-    public bool SensesClick() => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_senses_click, _value);
+    public bool SensesClick => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_senses_click, _value);
 
-    public bool SensesDrag() => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_senses_drag, _value);
+    public bool SensesDrag => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_senses_drag, _value);
 
-    public bool IsFocusable() => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_is_focusable, _value);
+    public bool IsFocusable => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_is_focusable, _value);
 
     internal void Serialize(Serde.ISerializer serializer) {
         serializer.increase_container_depth();

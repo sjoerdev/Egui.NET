@@ -44,9 +44,11 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_containers_area_Area_id",
     "egui_containers_collapsing_header_CollapsingState_id",
     "egui_containers_scroll_area_ScrollArea_scroll_source",
+    "egui_data_input_EventFilter_matches",
     "egui_viewport_ViewportIdPair_from_self_and_parent",
     "egui_input_state_InputState_begin_pass",
     "epaint_image_AlphaFromCoverage_alpha_from_coverage",
+    "epaint_shapes_shape_Shape_mesh",
 
     "egui_style_Style_text_styles",
     "egui_style_Visuals_noninteractive",
@@ -285,6 +287,14 @@ const IGNORE_FNS: &[&str] = &[
     "egui_containers_old_popup_show_tooltip_for",
     "egui_containers_old_popup_show_tooltip_text",
     "egui_containers_old_popup_was_tooltip_open_last_frame",
+
+    // Layout: method definitions are just gettings for public fields
+    "egui_layout_Layout_cross_align",
+    "egui_layout_Layout_cross_justify",
+    "egui_layout_Layout_main_align",
+    "egui_layout_Layout_main_dir",
+    "egui_layout_Layout_main_justify",
+    "egui_layout_Layout_main_wrap",
 
     // MenuState: deprecated functions (old type definition)
     "egui_menu_MenuState_area_contains",
@@ -592,7 +602,7 @@ impl BindingsGenerator {
             }
 
             write!(f, "public {}", ty_name.expect("Expected type to be provided"))?;
-            self.emit_cs_fn_def(f, ty_name, id, FnType::Constructor, &func.sig)?;
+            self.emit_cs_fn_def(f, ty_name, id, FnType::Constructor, &func.sig, returns_this)?;
         }
         else {
             let return_name = func.sig.output.as_ref().and_then(|x| self.cs_type_name(ty_name, x))
@@ -607,21 +617,38 @@ impl BindingsGenerator {
             
             write!(f, "public {qualifiers} {return_name} {cs_name}")?;
 
-            self.emit_cs_fn_def(f, ty_name, id, fn_type, &func.sig)?;
+            self.emit_cs_fn_def(f, ty_name, id, fn_type, &func.sig, returns_this)?;
         }
 
         Ok(())
     }
 
     /// Emits the body of a C# function (excluding the name and return type).
-    fn emit_cs_fn_def(&self, f: &mut std::fmt::Formatter, ty_name: Option<&str>, id: RdId, fn_ty: FnType, sig: &FunctionSignature) -> std::fmt::Result {
-        write!(f, "(")?;
+    fn emit_cs_fn_def(
+        &self,
+        f: &mut std::fmt::Formatter,
+        ty_name: Option<&str>,
+        id: RdId,
+        fn_ty: FnType,
+        sig: &FunctionSignature,
+        returns_this: bool
+    ) -> std::fmt::Result {
+        let property = match fn_ty {
+            FnType::Instance => sig.inputs.len() == 1 && sig.output.is_some() && !returns_this,
+            FnType::Static => sig.inputs.is_empty() && sig.output.is_some(),
+            _ => false
+        };
         
+        if !property {
+            write!(f, "(")?;
+        }
+
         let mut first = true;
 
         let mut generic_args = Vec::new();
         
         for (name, ty) in sig.inputs.iter().skip((fn_ty == FnType::Instance) as usize) {
+            if !property {
             if first {
                 if fn_ty == FnType::Extension {
                     write!(f, "this ")?;
@@ -630,16 +657,25 @@ impl BindingsGenerator {
             else {
                 write!(f, ", ")?;
             }
+            }
 
             first = false;
 
             let param_ty = self.cs_type_name(ty_name, ty).ok_or(std::fmt::Error)?;
             generic_args.push(param_ty.clone());
             let cs_name = name.to_case(Case::Camel);
-            write!(f, "{param_ty} {cs_name}")?;
+
+            if !property {
+                write!(f, "{param_ty} {cs_name}")?;
+            }
         }
         
-        writeln!(f, ") {{")?;
+        if property {
+            writeln!(f, "{{ get {{")?;
+        }
+        else {
+            writeln!(f, ") {{")?;
+        }
 
         if let Some(return_ty) = &sig.output {
             generic_args.push(self.cs_type_name(ty_name, return_ty).ok_or(std::fmt::Error)?);
@@ -666,6 +702,10 @@ impl BindingsGenerator {
         write!(f, "{}", [enum_name].into_iter().chain(sig.inputs.iter().skip((fn_ty == FnType::Instance) as usize).map(|(name, _)| name.to_case(Case::Camel)))
             .collect::<Vec<_>>().join(", "))?;
         writeln!(f, ");")?;
+
+        if property {
+            writeln!(f, "}}")?;
+        }
 
         writeln!(f, "}}")?;
         Ok(())

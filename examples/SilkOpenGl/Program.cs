@@ -11,9 +11,7 @@ public class Program
 
     public static void Main(string[] args)
     {
-        var X = (Sense.ClickAndDrag.IsFocusable(), Sense.Hover.IsFocusable(), Sense.DragNoFocus.SensesDrag());
-
-        var frame = Frame.CentralPanel(new Style());
+        var X = (Sense.ClickAndDrag.IsFocusable, Sense.Hover.IsFocusable, Sense.DragNoFocus.SensesDrag);
 
         WindowOptions options = WindowOptions.Default;
         options.Size = new Vector2D<int>(800, 600);
