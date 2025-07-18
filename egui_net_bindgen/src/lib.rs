@@ -38,11 +38,15 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_widget_rect_WidgetRects_get",
     "egui_widget_rect_WidgetRects_info",
     "epaint_shapes_bezier_shape_CubicBezierShape_flatten_closed",
+    "egui_style_Style_interact",
+    "egui_style_Widgets_style",
     "egui_ui_Ui_spacing",
     "egui_ui_Ui_style",
     "egui_ui_Ui_layout",
     "egui_ui_Ui_visuals",
     "egui_ui_Ui_stack",
+    "egui_painter_Painter_with_layer_id",
+    "egui_painter_Painter_with_clip_rect",
 
     // These functions have conflicting names with fields or C#
     "egui_containers_area_Area_layout",
@@ -53,6 +57,7 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_viewport_ViewportIdPair_from_self_and_parent",
     "egui_input_state_InputState_begin_pass",
     "epaint_image_AlphaFromCoverage_alpha_from_coverage",
+    "egui_response_Response_output_event",
     "epaint_shapes_shape_Shape_mesh",
 
     "egui_style_Style_text_styles",
@@ -66,7 +71,9 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "epaint_shapes_bezier_shape_CubicBezierShape_split_range",
     "epaint_shapes_shape_Shape_line_segment",
     "egui_data_output_WidgetInfo_text_selection_changed",
-
+    "egui_ui_Ui_new_child",
+    "egui_ui_Ui_child_ui",
+    "egui_ui_Ui_child_ui_with_id_source"
 ];
 
 /// Types to exclude from generation.
@@ -83,7 +90,8 @@ const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
 
 /// Types that should be converted to `class`es in C# backed by opaque handles.
 const HANDLE_TYPES: &[&str] = &[
-    "Context"
+    "Context",
+    "Painter"
 ];
 
 /// Types that should be converted to `ref struct`s in C# backed by pointers.
@@ -363,6 +371,9 @@ const IGNORE_FNS: &[&str] = &[
 
     // Spinner: redundant function (same as default)
     "egui_widgets_spinner_Spinner_new",
+
+    // Ui: cannot directly reference drop method
+    "egui_ui_Ui_drop",
     
     "egui___run_test_ctx",
     "egui___run_test_ui",
@@ -375,6 +386,8 @@ const IGNORE_FNS: &[&str] = &[
 const IGNORE_FN_NAMES: &[&str] = &[
     "add",
     "add_assign",
+    "bitand",
+    "bitor",
     "bits",
     "clone",
     "cmp",
@@ -495,6 +508,9 @@ impl BindingsGenerator {
                         && let GenericArg::Type(inner_ty) = &args[0] {
                         self.cs_type_name(self_ty, inner_ty)?
                     }
+                    else if path.contains("Hash") {
+                        "Id".to_string()
+                    }
                     else {
                         return None
                     }
@@ -545,6 +561,7 @@ impl BindingsGenerator {
             }
 
             let result = self.emit_cs_fn_binding(&mut std::fmt::Formatter::new(&mut result, Default::default()), id);
+            
             if result.is_ok() {
                 bound_ids.push(id);
             }
@@ -601,7 +618,8 @@ impl BindingsGenerator {
         let item = &self.krate.index[&id];
         let ItemEnum::Function(func) = &item.inner else { panic!("Expected id to refer to a function") };
 
-        let has_this = func.sig.inputs.first().map(|(name, ty)| name == "self" && !matches!(ty, Type::BorrowedRef { is_mutable: true, .. })).unwrap_or_default();
+        let can_have_mut_this = decl_ty == DeclaringType::Handle || decl_ty == DeclaringType::Pointer;
+        let has_this = func.sig.inputs.first().map(|(name, ty)| name == "self" && (can_have_mut_this || !matches!(ty, Type::BorrowedRef { is_mutable: true, .. }))).unwrap_or_default();
         let returns_this = func.sig.output.as_ref().map(|x| x == &Type::Generic("Self".to_string()) || (if let Type::ResolvedPath(p) = x {
             Some(p.path.as_str()) == ty_name 
         } else { false })).unwrap_or_default();
@@ -832,6 +850,9 @@ impl BindingsGenerator {
                         && args.len() == 1
                         && let GenericArg::Type(inner_ty) = &args[0] {
                         self.rs_parameter_name(self_ty, inner_ty)
+                    }
+                    else if path.contains("Hash") {
+                        "Id".to_string()
                     }
                     else {
                         "_".to_string()

@@ -75,7 +75,7 @@ public sealed partial class Context : EguiObject
     }
 
     /// <summary>
-    /// Mutate the currently active <see cref="Style"/>  used by all subsequent windows, panels etc. Use <see cref="AllStylesMut"/> to mutate both dark and light mode styles.
+    /// Mutate the currently active <see cref="Egui.Style"/> used by all subsequent windows, panels etc. Use <see cref="AllStylesMut"/> to mutate both dark and light mode styles.
     /// </summary>
     /// <param name="mutateStyle"></param>
     public void StyleMut(MutateStyle mutateStyle)

@@ -14,6 +14,8 @@ public class Program
         var ctx = new Context();
         ctx.StyleMut((ref Style x) => x.AnimationTime = 0.329f);
 
+        Response r = default;
+
         Console.WriteLine($"CReated a ctx! {ctx.Os}");
 
         WindowOptions options = WindowOptions.Default;

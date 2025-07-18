@@ -375,6 +375,16 @@ impl<P, R> CallBorrowRef for fn(&P) -> R {
     }
 }
 
+impl<P, R> CallBorrowRef for fn(&mut P) -> R {
+    type Input = ();
+    type Output = R;
+    type Reference = P;
+
+    fn call(&self, reference: &mut Self::Reference, (): Self::Input) -> Self::Output {
+        self(reference)
+    }
+}
+
 impl_call_borrow!({ A0, }, { arg_0, });
 impl_call_borrow!({ A0, A1, }, { arg_0, arg_1, });
 impl_call_borrow!({ A0, A1, A2, }, { arg_0, arg_1, arg_2, });
