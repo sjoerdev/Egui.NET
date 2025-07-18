@@ -30,6 +30,7 @@ use std::mem::*;
 use std::ops::*;
 use std::panic;
 use std::panic::catch_unwind;
+use std::sync::*;
 
 include!(concat!(env!("CARGO_MANIFEST_DIR"), "/../target/bindings/egui_fn.rs"));
 

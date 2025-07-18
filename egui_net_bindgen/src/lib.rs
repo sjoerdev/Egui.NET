@@ -276,6 +276,16 @@ const IGNORE_FNS: &[&str] = &[
     // MenuConfig: redundant function (same as default)
     "egui_containers_menu_MenuConfig_new",
 
+    // old_popup: deprecated
+    "egui_containers_old_popup_popup_above_or_below_widget",
+    "egui_containers_old_popup_popup_below_widget",
+    "egui_containers_old_popup_show_tooltip",
+    "egui_containers_old_popup_show_tooltip_at",
+    "egui_containers_old_popup_show_tooltip_at_pointer",
+    "egui_containers_old_popup_show_tooltip_for",
+    "egui_containers_old_popup_show_tooltip_text",
+    "egui_containers_old_popup_was_tooltip_open_last_frame",
+
     // MenuState: deprecated functions (old type definition)
     "egui_menu_MenuState_area_contains",
     "egui_menu_MenuState_new",
@@ -416,8 +426,9 @@ impl BindingsGenerator {
     fn cs_type_name(&self, self_ty: Option<&str>, ty: &Type) -> Option<String> {
         Some(match ty {
             Type::ResolvedPath(path) => match path.path.as_str() {
-                "Option" | "Vec" => {
+                "Arc" | "Option" | "Vec" => {
                     let builtin_fn = match path.path.as_str() {
+                        "Arc" => |x| x,
                         "Option" => |x| format!("{x}?"),
                         "Vec" => |x| format!("ReadOnlyMemory<{x}>"),
                         _ => unreachable!()
@@ -708,7 +719,7 @@ impl BindingsGenerator {
     fn rs_parameter_name(&self, self_ty: Option<&str>, ty: &Type) -> String {
         match ty {
             Type::ResolvedPath(path) => match path.path.as_str() {
-                "Option" | "Vec" => {
+                "Arc" | "Option" | "Vec" => {
                     let Some(GenericArgs::AngleBracketed { args, .. }) = path.args.as_deref() else { panic!("Unknown generic type") };
                     if args.len() == 1 {
                         let GenericArg::Type(arg) = &args[0] else { panic!("Unknown generic type") };
