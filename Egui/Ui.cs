@@ -7,6 +7,11 @@ namespace Egui;
 public readonly ref partial struct Ui
 {
     /// <summary>
+    /// Get a reference to the parent <see cref="Context"/>. 
+    /// </summary>
+    public readonly Context Ctx;
+
+    /// <summary>
     /// A pointer to the underlying UI object.
     /// </summary>
     private readonly nuint _ptr;

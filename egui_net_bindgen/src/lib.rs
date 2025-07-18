@@ -38,6 +38,11 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_widget_rect_WidgetRects_get",
     "egui_widget_rect_WidgetRects_info",
     "epaint_shapes_bezier_shape_CubicBezierShape_flatten_closed",
+    "egui_ui_Ui_spacing",
+    "egui_ui_Ui_style",
+    "egui_ui_Ui_layout",
+    "egui_ui_Ui_visuals",
+    "egui_ui_Ui_stack",
 
     // These functions have conflicting names with fields or C#
     "egui_containers_area_Area_layout",
@@ -79,6 +84,11 @@ const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
 /// Types that should be converted to `class`es in C# backed by opaque handles.
 const HANDLE_TYPES: &[&str] = &[
     "Context"
+];
+
+/// Types that should be converted to `ref struct`s in C# backed by pointers.
+const POINTER_TYPES: &[&str] = &[
+    "Ui"
 ];
 
 /// A list of fully-qualified function IDs to ignore during generation.
@@ -555,6 +565,12 @@ impl BindingsGenerator {
                         
                         writeln!(f, "public sealed partial class {ty_name} {{\n{fn_def}\n}}")?;
                     }
+                    else if POINTER_TYPES.contains(&ty_name) {
+                        let mut fn_def = String::new();
+                        self.emit_cs_fn(&mut std::fmt::Formatter::new(&mut fn_def, Default::default()), Some(ty_name), id, DeclaringType::Pointer)?;
+                        
+                        writeln!(f, "public ref partial struct {ty_name} {{\n{fn_def}\n}}")?;
+                    }
                     else if self.registry.contains_key(ty_name) {
                         let mut fn_def = String::new();
                         let primitive_enum = self.is_primitive_enum(impl_ty.id);
@@ -628,8 +644,8 @@ impl BindingsGenerator {
                 .unwrap_or("void".to_string());
 
             let (qualifiers, fn_type) = match (has_this, decl_ty) {
-                (false, DeclaringType::Handle) | (false, DeclaringType::Struct) => ("static", FnType::Static),
-                (true, DeclaringType::Struct) => ("readonly", FnType::Instance),
+                (false, DeclaringType::Handle) | (false, DeclaringType::Struct) | (false, DeclaringType::Pointer) => ("static", FnType::Static),
+                (true, DeclaringType::Struct) | (true, DeclaringType::Pointer) => ("readonly", FnType::Instance),
                 (true, DeclaringType::Handle) => ("", FnType::Instance),
                 (true, DeclaringType::PrimitiveEnum) => ("static", FnType::Extension),
                 (false, DeclaringType::PrimitiveEnum) => return Err(std::fmt::Error)
@@ -720,12 +736,12 @@ impl BindingsGenerator {
         }
 
         let enum_name = format!("EguiFn.{}", self.fn_enum_variant_name(id));
-        let handle_value = if decl_ty == DeclaringType::Handle {
-            "Handle.ptr".to_string()
-        }
-        else {
-            "0".to_string()
+        let handle_value = match decl_ty {
+            DeclaringType::Handle => "Handle.ptr".to_string(),
+            DeclaringType::Pointer => "_ptr".to_string(),
+            _ => "0".to_string()
         };
+
         write!(f, "{}", [enum_name, handle_value].into_iter().chain(sig.inputs.iter().skip((fn_ty == FnType::Instance) as usize).map(|(name, _)| name.to_case(Case::Camel)))
             .collect::<Vec<_>>().join(", "))?;
         writeln!(f, ");")?;
@@ -745,7 +761,7 @@ impl BindingsGenerator {
         for id in bound_ids {
             let ty_name = self.declaring_type(*id).and_then(|x| self.krate.index[&x].name.clone());
     
-            let with_fn = if ty_name.as_deref().map(|x| HANDLE_TYPES.contains(&x)).unwrap_or_default() {
+            let with_fn = if ty_name.as_deref().map(|x| HANDLE_TYPES.contains(&x) || POINTER_TYPES.contains(&x)).unwrap_or_default() {
                 "with_byref"
             }
             else {
@@ -1185,6 +1201,8 @@ enum DeclaringType {
     Struct,
     /// The type is a garbage-collected `class`.
     Handle,
+    /// The type is a `ref struct`.`
+    Pointer
 }
 
 /// How to emit a particular function.
