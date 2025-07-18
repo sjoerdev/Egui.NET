@@ -35,6 +35,46 @@ public sealed partial class Context : EguiObject
     }
 
     /// <summary>
+    /// Request to discard the visual output of this pass,
+    /// and to immediately do another one.
+    ///
+    /// This can be called to cover up visual glitches during a "sizing pass".
+    /// For instance, when a <see cref="Grid"/>  is first shown we don't yet know the
+    /// width and heights of its columns and rows. egui will do a best guess,
+    /// but it will likely be wrong. Next pass it can read the sizes from the previous
+    /// pass, and from there on the widths will be stable.
+    /// This means the first pass will look glitchy, and ideally should not be shown to the user.
+    /// So <see cref="Grid"/>  calls <see cref="RequestDiscard"/>  to cover up this glitches.
+    ///
+    /// There is a limit to how many passes egui will perform, set by <see cref="Options.MaxPasses"/>  (default=2).
+    /// Therefore, the request might be declined.
+    ///
+    /// You can check if the current pass will be discarded with <see cref="WillDiscard"/> .
+    ///
+    /// You should be very conservative with when you call <see cref="RequestDiscard"/> ,
+    /// as it will cause an extra ui pass, potentially leading to extra CPU use and frame judder.
+    ///
+    /// The given reason should be a human-readable string that explains why `request_discard`
+    /// was called. This will be shown in certain debug situations, to help you figure out
+    /// why a pass was discarded.
+    /// </summary>
+    public void RequestDiscard(string reason)
+    {
+        EguiMarshal.Call(EguiFn.egui_context_Context_request_discard, Handle.ptr, reason);
+    }
+
+    /// <summary>
+    /// Run the ui code for one frame.<br/>
+    /// At most <see cref="Options.MaxPasses"/>  calls will be issued to <paramref name="runUi"/>, and only on the rare occasion that <see cref="RequestDiscard"/> is called. Usually, it will only be called once.<br/>
+    /// Put your widgets into a <see cref="SidePanel"/> , <see cref="TopBottomPanel"/> , <see cref="CentralPanel"/> , <see cref="Window"/>  or <see cref="Area"/> .<br/>
+    /// Instead of calling run, you can alternatively use <see cref="BeginPass"/>  and <see cref="EndPass"/> .<br/>
+    /// </summary>
+    public void Run(RawInput input, Action<Context> runUi)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
     /// Mutate the currently active <see cref="Style"/>  used by all subsequent windows, panels etc. Use <see cref="AllStylesMut"/> to mutate both dark and light mode styles.
     /// </summary>
     /// <param name="mutateStyle"></param>
