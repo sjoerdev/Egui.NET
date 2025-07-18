@@ -11,7 +11,10 @@ public class Program
 
     public static void Main(string[] args)
     {
-        var X = (Sense.ClickAndDrag.IsFocusable, Sense.Hover.IsFocusable, Sense.DragNoFocus.SensesDrag);
+        var ctx = new Context();
+        ctx.StyleMut((ref Style x) => x.AnimationTime = 0.329f);
+        
+        Console.WriteLine($"CReated a ctx! {ctx.Os}");
 
         WindowOptions options = WindowOptions.Default;
         options.Size = new Vector2D<int>(800, 600);

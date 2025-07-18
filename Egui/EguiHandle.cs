@@ -1,17 +1,31 @@
 namespace Egui;
 
-internal class EguiHandle
+internal partial struct EguiHandle
 {
     /// <summary>
-    /// The underlying handle that represents the heap-allocated Rust object.
+    /// Serializes an instance of this value.
     /// </summary>
-    protected readonly nuint _handle;
+    /// <param name="serializer">The serializer to use.</param>
+    internal static void Serialize(Serde.ISerializer serializer, EguiHandle obj)
+    {
+        serializer.increase_container_depth();
+        serializer.serialize_u64(obj.ptr);
+        serializer.serialize_u64(obj.metadata);
+        serializer.decrease_container_depth();
+    }
 
     /// <summary>
-    /// Drops the handle.
+    /// Deserializes an instance of this value.
     /// </summary>
-    ~EguiHandle()
+    /// <param name="deserializer">The deserializer to use.</param>
+    /// <returns>The object that was deserialized.</returns>
+    internal static EguiHandle Deserialize(Serde.IDeserializer deserializer)
     {
-
+        deserializer.increase_container_depth();
+        EguiHandle obj = default;
+        obj.ptr = (nuint)deserializer.deserialize_u64();
+        obj.metadata = (nuint)deserializer.deserialize_u64();
+        deserializer.decrease_container_depth();
+        return obj;
     }
 }

@@ -5,6 +5,8 @@ use std::path::*;
 
 /// Generates C# bindings for all C API files in the crate.
 fn main() {
+    println!("cargo::rerun-if-changed=../egui_net_bindgen");
+
     let output_dir = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").expect("Failed to get target directory"))
         .join("../target")
         .join("bindings");

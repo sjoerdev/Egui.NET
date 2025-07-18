@@ -264,12 +264,15 @@ internal static class EguiMarshal
             }
             else
             {
-                if (typeof(T).GetMethod("Serialize", BindingFlags.Static | BindingFlags.NonPublic) == null)
+                var serializer = typeof(T).GetMethod("Serialize", BindingFlags.Static | BindingFlags.NonPublic)!;
+                var deserializer = typeof(T).GetMethod("Deserialize", BindingFlags.Static | BindingFlags.NonPublic)!;
+
+                if (serializer == null || deserializer == null)
                 {
-                    Console.WriteLine($"hit it for ty {typeof(T)}");
+                    throw new Exception($"Missing serializers for {typeof(T)}");
                 }
-                Serializer = (Action<ISerializer, T>)Delegate.CreateDelegate(typeof(Action<ISerializer, T>), typeof(T).GetMethod("Serialize", BindingFlags.Static | BindingFlags.NonPublic)!);
-                Deserializer = (Func<IDeserializer, T>)Delegate.CreateDelegate(typeof(Func<IDeserializer, T>), typeof(T).GetMethod("Deserialize", BindingFlags.Static | BindingFlags.NonPublic)!);
+                Serializer = (Action<ISerializer, T>)Delegate.CreateDelegate(typeof(Action<ISerializer, T>), serializer);
+                Deserializer = (Func<IDeserializer, T>)Delegate.CreateDelegate(typeof(Func<IDeserializer, T>), deserializer);
             }
         }
     }

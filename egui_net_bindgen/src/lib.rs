@@ -233,6 +233,10 @@ const IGNORE_FNS: &[&str] = &[
     "epaint_text_fonts_FontData_from_static",
     "epaint_text_fonts_FontData_as_ref",
 
+    // Context: manually-defined functions
+    "egui_context_Context_style_mut",
+    "egui_context_Context_style_mut_of",
+
     // Frame: redudant function (same as NONE)
     "egui_containers_frame_Frame_new",
 
@@ -717,7 +721,7 @@ impl BindingsGenerator {
 
         let enum_name = format!("EguiFn.{}", self.fn_enum_variant_name(id));
         let handle_value = if decl_ty == DeclaringType::Handle {
-            "_handle".to_string()
+            "Handle.ptr".to_string()
         }
         else {
             "0".to_string()
