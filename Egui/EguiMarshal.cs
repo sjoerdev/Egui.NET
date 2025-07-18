@@ -15,57 +15,57 @@ internal static class EguiMarshal
     [ThreadStatic]
     private static BincodeSerializer? _serializer;
 
-    public static void Call(EguiFn func)
+    public static void Call(EguiFn func, nuint handle)
     {
-        Call<NoArgument>(func, default);
+        Call<NoArgument>(func, handle, default);
     }
 
-    public static R Call<R>(EguiFn func)
+    public static R Call<R>(EguiFn func, nuint handle)
     {
-        return Call<NoArgument, R>(func, default);
+        return Call<NoArgument, R>(func, handle, default);
     }
 
-    public static void Call<A0>(EguiFn func, A0 arg0)
+    public static void Call<A0>(EguiFn func, nuint handle, A0 arg0)
     {
-        Call<A0, NoArgument>(func, arg0, default);
+        Call<A0, NoArgument>(func, handle, arg0, default);
     }
 
-    public static R Call<A0, R>(EguiFn func, A0 arg0)
+    public static R Call<A0, R>(EguiFn func, nuint handle, A0 arg0)
     {
-        return Call<A0, NoArgument, R>(func, arg0, default);
+        return Call<A0, NoArgument, R>(func, handle, arg0, default);
     }
 
-    public static void Call<A0, A1>(EguiFn func, A0 arg0, A1 arg1)
+    public static void Call<A0, A1>(EguiFn func, nuint handle, A0 arg0, A1 arg1)
     {
-        Call<A0, A1, NoArgument>(func, arg0, arg1, default);
+        Call<A0, A1, NoArgument>(func, handle, arg0, arg1, default);
     }
 
-    public static R Call<A0, A1, R>(EguiFn func, A0 arg0, A1 arg1)
+    public static R Call<A0, A1, R>(EguiFn func, nuint handle, A0 arg0, A1 arg1)
     {
-        return Call<A0, A1, NoArgument, R>(func, arg0, arg1, default);
+        return Call<A0, A1, NoArgument, R>(func, handle, arg0, arg1, default);
     }
 
-    public static void Call<A0, A1, A2>(EguiFn func, A0 arg0, A1 arg1, A2 arg2)
+    public static void Call<A0, A1, A2>(EguiFn func, nuint handle, A0 arg0, A1 arg1, A2 arg2)
     {
-        Call<A0, A1, A2, NoArgument>(func, arg0, arg1, arg2, default);
+        Call<A0, A1, A2, NoArgument>(func, handle, arg0, arg1, arg2, default);
     }
 
-    public static R Call<A0, A1, A2, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2)
+    public static R Call<A0, A1, A2, R>(EguiFn func, nuint handle, A0 arg0, A1 arg1, A2 arg2)
     {
-        return Call<A0, A1, A2, NoArgument, R>(func, arg0, arg1, arg2, default);
+        return Call<A0, A1, A2, NoArgument, R>(func, handle, arg0, arg1, arg2, default);
     }
 
-    public static void Call<A0, A1, A2, A3>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
+    public static void Call<A0, A1, A2, A3>(EguiFn func, nuint handle, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
     {
-        Call<A0, A1, A2, A3, NoArgument>(func, arg0, arg1, arg2, arg3, default);
+        Call<A0, A1, A2, A3, NoArgument>(func, handle, arg0, arg1, arg2, arg3, default);
     }
 
-    public static R Call<A0, A1, A2, A3, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
+    public static R Call<A0, A1, A2, A3, R>(EguiFn func, nuint handle, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
     {
-        return Call<A0, A1, A2, A3, NoArgument, R>(func, arg0, arg1, arg2, arg3, default);
+        return Call<A0, A1, A2, A3, NoArgument, R>(func, handle, arg0, arg1, arg2, arg3, default);
     }
 
-    public static void Call<A0, A1, A2, A3, A4>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
+    public static void Call<A0, A1, A2, A3, A4>(EguiFn func, nuint handle, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
     {
         unsafe
         {
@@ -78,7 +78,7 @@ internal static class EguiMarshal
             var bytes = serializer.get_bytes();
             fixed (byte* ptr = bytes)
             {
-                var result = EguiBindings.egui_invoke(func, new EguiSliceU8
+                var result = EguiBindings.egui_invoke(func, handle, new EguiSliceU8
                 {
                     ptr = ptr,
                     len = (nuint)bytes.Length
@@ -89,7 +89,7 @@ internal static class EguiMarshal
         }
     }
 
-    public static R Call<A0, A1, A2, A3, A4, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
+    public static R Call<A0, A1, A2, A3, A4, R>(EguiFn func, nuint handle, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
     {
         unsafe
         {
@@ -103,7 +103,7 @@ internal static class EguiMarshal
             var bytes = serializer.get_bytes();
             fixed (byte* ptr = bytes)
             {
-                var result = EguiBindings.egui_invoke(func, new EguiSliceU8
+                var result = EguiBindings.egui_invoke(func, handle, new EguiSliceU8
                 {
                     ptr = ptr,
                     len = (nuint)bytes.Length

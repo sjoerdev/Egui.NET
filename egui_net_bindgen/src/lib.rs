@@ -76,6 +76,11 @@ const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
     "UiStack"
 ];
 
+/// Types that should be converted to `class`es in C# backed by opaque handles.
+const HANDLE_TYPES: &[&str] = &[
+    "Context"
+];
+
 /// A list of fully-qualified function IDs to ignore during generation.
 const IGNORE_FNS: &[&str] = &[
     // Random extra stuff which we don't want that got lumped into documentation
@@ -540,10 +545,17 @@ impl BindingsGenerator {
         if let Some(impl_ty) = self.declaring_type(id).and_then(|x| self.krate.index.get(&x)) {
             if matches!(impl_ty.inner, ItemEnum::Struct(_)) || matches!(impl_ty.inner, ItemEnum::Enum(_)) {
                 if let Some(ty_name) = impl_ty.name.as_deref() {
-                    if self.registry.contains_key(ty_name) {
+                    if HANDLE_TYPES.contains(&ty_name) {
+                        let mut fn_def = String::new();
+                        self.emit_cs_fn(&mut std::fmt::Formatter::new(&mut fn_def, Default::default()), Some(ty_name), id, DeclaringType::Handle)?;
+                        
+                        writeln!(f, "public sealed partial class {ty_name} {{\n{fn_def}\n}}")?;
+                    }
+                    else if self.registry.contains_key(ty_name) {
                         let mut fn_def = String::new();
                         let primitive_enum = self.is_primitive_enum(impl_ty.id);
-                        self.emit_cs_fn(&mut std::fmt::Formatter::new(&mut fn_def, Default::default()), Some(ty_name), id, primitive_enum)?;
+                        let decl_ty = if primitive_enum { DeclaringType::PrimitiveEnum } else { DeclaringType::Struct };
+                        self.emit_cs_fn(&mut std::fmt::Formatter::new(&mut fn_def, Default::default()), Some(ty_name), id, decl_ty)?;
                         
                         if primitive_enum {
                             writeln!(f, "public static partial class {ty_name}Extensions {{\n{fn_def}\n}}")?;
@@ -551,9 +563,12 @@ impl BindingsGenerator {
                         else {
                             writeln!(f, "public partial struct {ty_name} {{\n{fn_def}\n}}")?;
                         }
-                        
-                        return Ok(());
                     }
+                    else {
+                        return Err(std::fmt::Error);
+                    }
+
+                    return Ok(());
                 }
             }
         }
@@ -562,7 +577,7 @@ impl BindingsGenerator {
     }
 
     /// Writes a single C# method definition to `f`.
-    fn emit_cs_fn(&self, f: &mut std::fmt::Formatter, ty_name: Option<&str>, id: RdId, extension: bool) -> std::fmt::Result {
+    fn emit_cs_fn(&self, f: &mut std::fmt::Formatter, ty_name: Option<&str>, id: RdId, decl_ty: DeclaringType) -> std::fmt::Result {
         let item = &self.krate.index[&id];
         let ItemEnum::Function(func) = &item.inner else { panic!("Expected id to refer to a function") };
 
@@ -597,27 +612,28 @@ impl BindingsGenerator {
         }
 
         if constructor {
-            if extension {
+            if decl_ty != DeclaringType::Struct {
                 return Err(std::fmt::Error);
             }
 
             write!(f, "public {}", ty_name.expect("Expected type to be provided"))?;
-            self.emit_cs_fn_def(f, ty_name, id, FnType::Constructor, &func.sig, returns_this)?;
+            self.emit_cs_fn_def(f, ty_name, id, decl_ty, FnType::Constructor, &func.sig, returns_this)?;
         }
         else {
             let return_name = func.sig.output.as_ref().and_then(|x| self.cs_type_name(ty_name, x))
                 .unwrap_or("void".to_string());
 
-            let (qualifiers, fn_type) = match (has_this, extension) {
-                (false, false) => ("static", FnType::Static),
-                (true, false) => ("readonly", FnType::Instance),
-                (true, true) => ("static", FnType::Extension),
-                _ => return Err(std::fmt::Error)
+            let (qualifiers, fn_type) = match (has_this, decl_ty) {
+                (false, DeclaringType::Handle) | (false, DeclaringType::Struct) => ("static", FnType::Static),
+                (true, DeclaringType::Struct) => ("readonly", FnType::Instance),
+                (true, DeclaringType::Handle) => ("", FnType::Instance),
+                (true, DeclaringType::PrimitiveEnum) => ("static", FnType::Extension),
+                (false, DeclaringType::PrimitiveEnum) => return Err(std::fmt::Error)
             };
             
             write!(f, "public {qualifiers} {return_name} {cs_name}")?;
 
-            self.emit_cs_fn_def(f, ty_name, id, fn_type, &func.sig, returns_this)?;
+            self.emit_cs_fn_def(f, ty_name, id, decl_ty, fn_type, &func.sig, returns_this)?;
         }
 
         Ok(())
@@ -629,6 +645,7 @@ impl BindingsGenerator {
         f: &mut std::fmt::Formatter,
         ty_name: Option<&str>,
         id: RdId,
+        decl_ty: DeclaringType,
         fn_ty: FnType,
         sig: &FunctionSignature,
         returns_this: bool
@@ -699,7 +716,13 @@ impl BindingsGenerator {
         }
 
         let enum_name = format!("EguiFn.{}", self.fn_enum_variant_name(id));
-        write!(f, "{}", [enum_name].into_iter().chain(sig.inputs.iter().skip((fn_ty == FnType::Instance) as usize).map(|(name, _)| name.to_case(Case::Camel)))
+        let handle_value = if decl_ty == DeclaringType::Handle {
+            "_handle".to_string()
+        }
+        else {
+            "0".to_string()
+        };
+        write!(f, "{}", [enum_name, handle_value].into_iter().chain(sig.inputs.iter().skip((fn_ty == FnType::Instance) as usize).map(|(name, _)| name.to_case(Case::Camel)))
             .collect::<Vec<_>>().join(", "))?;
         writeln!(f, ");")?;
 
@@ -718,13 +741,20 @@ impl BindingsGenerator {
         for id in bound_ids {
             let ty_name = self.declaring_type(*id).and_then(|x| self.krate.index[&x].name.clone());
     
+            let with_fn = if ty_name.as_deref().map(|x| HANDLE_TYPES.contains(&x)).unwrap_or_default() {
+                "with_byref"
+            }
+            else {
+                "with"
+            };
+
             let ItemEnum::Function(func) = &self.krate.index[id].inner else { panic!("Expected function items only") };
             let cast_params = func.sig.inputs.iter().map(|(_, ty)| self.rs_parameter_name(ty_name.as_deref(), ty))
                 .collect::<Vec<_>>().join(", ");
             let return_ty = if matches!(func.sig.output, Some(Type::BorrowedRef { .. })) { "_" } else { "_" };
             let enum_name = self.fn_enum_variant_name(*id);
             let path = self.fn_enum_path(*id);
-            writeln!(f, "    .with(EguiFn::{enum_name}, {path} as fn({cast_params}) -> {return_ty})")?;
+            writeln!(f, "    .{with_fn}(EguiFn::{enum_name}, {path} as fn({cast_params}) -> {return_ty})")?;
         }
         writeln!(f, ";")?;
         Ok(())
@@ -795,13 +825,13 @@ impl BindingsGenerator {
                 items.iter().map(|x| self.rs_parameter_name(self_ty, x)).chain(["".to_string()]).collect::<Vec<_>>().join(", ")),
             Type::Slice(_) | Type::Array { .. } => "_".to_string(),
             Type::BorrowedRef { is_mutable: false, type_, .. } => format!("&{}", self.rs_parameter_name(self_ty, &type_)),
+            Type::BorrowedRef { is_mutable: true, type_, .. } => format!("&mut {}", self.rs_parameter_name(self_ty, &type_)),
             Type::DynTrait(_)
             | Type::Generic(_)
             | Type::Pat { .. }
             | Type::Infer
             | Type::RawPointer { .. }
             | Type::QualifiedPath { .. }
-            | Type::BorrowedRef { is_mutable: true, .. }
             | Type::FunctionPointer(_) => "_".to_string(),
         }
     }
@@ -1140,6 +1170,17 @@ impl BindingsGenerator {
         
         false
     }
+}
+
+/// Describes the type that declares a function.
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+enum DeclaringType {
+    /// The type is a primitive C-style enum.
+    PrimitiveEnum,
+    /// The type is a pass-by-value `struct`.
+    Struct,
+    /// The type is a garbage-collected `class`.
+    Handle,
 }
 
 /// How to emit a particular function.

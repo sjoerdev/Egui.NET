@@ -28,6 +28,7 @@ use std::borrow::*;
 use std::collections::*;
 use std::mem::*;
 use std::ops::*;
+use std::time::*;
 use std::panic;
 use std::panic::catch_unwind;
 use std::sync::*;
@@ -99,7 +100,7 @@ pub unsafe extern "C" fn egui_init() {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn egui_invoke(f: EguiFn, args: EguiSliceU8) -> EguiInvokeResult {
+pub unsafe extern "C" fn egui_invoke(f: EguiFn, ptr: usize, args: EguiSliceU8) -> EguiInvokeResult {
     /// The serialization buffer to which results will be written.
     #[thread_local]
     static mut RETURN_BUFFER: Vec<u8> = Vec::new();
@@ -108,7 +109,7 @@ pub unsafe extern "C" fn egui_invoke(f: EguiFn, args: EguiSliceU8) -> EguiInvoke
         let return_buffer = &mut *std::ptr::addr_of_mut!(RETURN_BUFFER);
         if let Some(invoker) = EGUI_FNS.inner[f as usize] {
             return_buffer.clear();
-            invoker.invoke(args.to_slice(), return_buffer);
+            invoker.invoke(ptr as *mut _, args.to_slice(), return_buffer);
             EguiInvokeResult {
                 success: true,
                 return_value: EguiSliceU8::from_slice(&return_buffer)
@@ -145,9 +146,15 @@ struct EguiFnMap {
 }
 
 impl EguiFnMap {
-    /// Adds a function and returns the new map.
+    /// Adds a function (that has call-by-value semantics) and returns the new map.
     pub const fn with(mut self, binding: EguiFn, f: impl EguiFnInvokable) -> Self {
         self.inner[binding as usize] = Some(EguiFnInvoker::new(f));
+        self
+    }
+
+    /// Adds a function (that has call-by-reference semantics) and returns the new map.
+    pub const fn with_byref(mut self, binding: EguiFn, f: impl EguiFnRefInvokable) -> Self {
+        self.inner[binding as usize] = Some(EguiFnInvoker::new_byref(f));
         self
     }
 }
@@ -165,7 +172,7 @@ struct EguiFnInvoker {
     /// The `fn` object to pass to `func`.
     data: *const (),
     /// The [`EguiFnInvokable::invoke`] method to call.
-    func: unsafe fn(*const (), &[u8], &mut Vec<u8>)
+    func: unsafe fn(*const (), *mut (), &[u8], &mut Vec<u8>)
 }
 
 impl EguiFnInvoker {
@@ -179,29 +186,60 @@ impl EguiFnInvoker {
 
             Self {
                 data: std::ptr::read(&f as *const _ as *const _),
-                func: transmute(F::invoke as fn(_, _, _))
+                func: transmute(F::invoke as unsafe fn(_, _, _, _))
+            }
+        }
+    }
+
+    /// Stores the provided [`EguiFnRefInvokable`] on the stack for later use.
+    /// `F` should be a `fn` pointer.
+    pub const fn new_byref<F: EguiFnRefInvokable>(f: F) -> Self {
+        unsafe {
+            if size_of::<F>() != size_of::<*const ()>() {
+                panic!("Invokable function must be thin pointer");
+            }
+
+            Self {
+                data: std::ptr::read(&f as *const _ as *const _),
+                func: transmute(F::invoke as unsafe fn(_, _, _, _))
             }
         }
     }
 
     /// Invokes the underlying function.
-    pub fn invoke(&self, args: &[u8], ret: &mut Vec<u8>) {
-        unsafe {
-            (self.func)(&self.data as *const _ as *const _, args, ret);
-        }
+    /// 
+    /// # Safety
+    /// 
+    /// For this function call to be sound, `ptr` must refer to a valid instance
+    /// of the invoker function's type.
+    pub unsafe fn invoke(&self, ptr: *mut (), args: &[u8], ret: &mut Vec<u8>) {
+        (self.func)(&self.data as *const _ as *const _, ptr, args, ret)
     }
 }
 
 trait EguiFnInvokable: 'static + Copy + Send + Sync {
-    fn invoke(&self, args: &[u8], ret: &mut Vec<u8>);
+    unsafe fn invoke(&self, ptr: *mut (), args: &[u8], ret: &mut Vec<u8>);
+}
+
+trait EguiFnRefInvokable: 'static + Copy + Send + Sync {
+    unsafe fn invoke(&self, ptr: *mut (), args: &[u8], ret: &mut Vec<u8>);
 }
 
 impl<T: 'static + Copy + Send + Sync + CallBorrow> EguiFnInvokable for T
 where T::Input: 'static + DeserializeOwned, T::Output: Serialize
 {
-    fn invoke(&self, args: &[u8], ret: &mut Vec<u8>) {
+    unsafe fn invoke(&self, _: *mut (), args: &[u8], ret: &mut Vec<u8>) {
         let deserialized_args = bincode::deserialize(args).expect("Failed to decode args");
         bincode::serialize_into(ret, &self.call(deserialized_args)).expect("Failed to encode result")
+    }
+}
+
+impl<T: 'static + Copy + Send + Sync + CallBorrowRef> EguiFnRefInvokable for T
+where T::Input: 'static + DeserializeOwned, T::Output: Serialize
+{
+    unsafe fn invoke(&self, ptr: *mut (), args: &[u8], ret: &mut Vec<u8>) {
+        let deserialized_args = bincode::deserialize(args).expect("Failed to decode args");
+        bincode::serialize_into(ret, &self.call(&mut *ptr.cast(), deserialized_args)).expect("Failed to encode result")
     }
 }
 
@@ -219,6 +257,26 @@ macro_rules! impl_call_borrow {
                 self($($arg_borrows)*)
             }
         }
+
+        impl<P, $($bounds)* R> CallBorrowRef for fn(&P, $($args)*) -> R {
+            type Input = ($($input_tys)*);
+            type Output = R;
+            type Reference = P;
+
+            fn call(&self, reference: &mut Self::Reference, ($($arg_names)*): Self::Input) -> Self::Output {
+                self(reference, $($arg_borrows)*)
+            }
+        }
+
+        impl<P, $($bounds)* R> CallBorrowRef for fn(&mut P, $($args)*) -> R {
+            type Input = ($($input_tys)*);
+            type Output = R;
+            type Reference = P;
+
+            fn call(&self, reference: &mut Self::Reference, ($($arg_names)*): Self::Input) -> Self::Output {
+                self(reference, $($arg_borrows)*)
+            }
+        }
     };
     ({ $first_ty_name:ident, $($rest_ty_name:ident,)* }, { $first_arg_name:ident, $($rest_arg_name:ident,)* }, { $($bounds: tt)* }, { $($args: tt)* }, { $($input_tys: tt)* }, { $($arg_names: tt)* }, { $($arg_borrows: tt)* }) => {
         impl_call_borrow!({ $($rest_ty_name,)* }, { $($rest_arg_name,)* }, { $first_ty_name, $($bounds)* }, { $first_ty_name, $($args)* }, { $first_ty_name, $($input_tys)* }, { $first_arg_name, $($arg_names)* }, { $first_arg_name, $($arg_borrows)* });
@@ -229,9 +287,12 @@ macro_rules! impl_call_borrow {
 /// A trait that allows for passing *values* to a function, some of which
 /// that function may take by immutable reference.
 trait CallBorrow {
+    /// A tuple containing the arguments for the function.
     type Input;
+    /// The return type of the function.
     type Output;
 
+    /// Invokes the function.
     fn call(&self, args: Self::Input) -> Self::Output;
 }
 
@@ -241,6 +302,31 @@ impl<R> CallBorrow for fn() -> R {
 
     fn call(&self, (): Self::Input) -> Self::Output {
         self()
+    }
+}
+
+/// A trait that allows for passing *values* to a function, some of which
+/// that function may take by immutable reference.
+/// The function acts on a reference type.
+trait CallBorrowRef {
+    /// A tuple containing the arguments for the function.
+    type Input;
+    /// The return type of the function.
+    type Output;
+    /// The type that will be passed by reference for the call.
+    type Reference;
+
+    /// Invokes the function.
+    fn call(&self, reference: &mut Self::Reference, args: Self::Input) -> Self::Output;
+}
+
+impl<P, R> CallBorrowRef for fn(&P) -> R {
+    type Input = ();
+    type Output = R;
+    type Reference = P;
+
+    fn call(&self, reference: &mut Self::Reference, (): Self::Input) -> Self::Output {
+        self(reference)
     }
 }
 
