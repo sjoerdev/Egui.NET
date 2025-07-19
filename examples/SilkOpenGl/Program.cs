@@ -37,6 +37,7 @@ public unsafe class Program
     public static void Main(string[] args)
     {
         _ctx = new Context();
+        
         Console.WriteLine($"CReated a ctx! {_ctx.Os}");
 
         WindowOptions options = WindowOptions.Default;
@@ -84,16 +85,19 @@ public unsafe class Program
 
     private static void OnRender(double deltaTime)
     {
+        var scaleFactor = (float)_window.FramebufferSize.X / _window.Size.X;
+
         _input.ViewportId = ViewportId.Root;
         _input.Time = _startTimer.Elapsed.TotalSeconds;
         _input.ScreenRect = Rect.FromMinSize(new Pos2(0, 0), new Vec2(_window.Size.X, _window.Size.Y));
 
+        _input.SystemTheme = Theme.Light;
         _input.Viewports = _input.Viewports.SetItem(_input.ViewportId, new ViewportInfo
         {
             Parent = null,
             Title = "egui test",
             Events = ImmutableList<ViewportEvent>.Empty,
-            NativePixelsPerPoint = 1.0f,
+            NativePixelsPerPoint = scaleFactor,
             MonitorSize = null,
             InnerRect = _input.ScreenRect
         });
@@ -331,13 +335,13 @@ public unsafe class Program
     {
         CheckGlErrors();
         _gl.Disable(GLEnum.ScissorTest);
-        _gl.Viewport(0, 0, (uint)_window.Size.X, (uint)_window.Size.Y);
+        _gl.Viewport(0, 0, (uint)_window.FramebufferSize.X, (uint)_window.FramebufferSize.Y);
         _gl.ClearColor(Color.CornflowerBlue);
         _gl.Clear(ClearBufferMask.ColorBufferBit);
         CheckGlErrors();
 
-        var clippedPrimitives = _ctx.Tessellate(output.Shapes.ToArray(), 1.0f);
-        _glPainter.PaintAndUpdateTextures((uint)_window.Size.X, (uint)_window.Size.Y, 1.0f, clippedPrimitives, output.TexturesDelta);
+        var clippedPrimitives = _ctx.Tessellate(output.Shapes.ToArray(), output.PixelsPerPoint);
+        _glPainter.PaintAndUpdateTextures((uint)_window.FramebufferSize.X, (uint)_window.FramebufferSize.Y, output.PixelsPerPoint, clippedPrimitives, output.TexturesDelta);
     }
 
     private static void CheckGlErrors()

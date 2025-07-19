@@ -75,6 +75,7 @@ fn main() {
     let egui_tracer = emit_tracer("egui", &serde_json::from_str::<Crate>(include_str!("../src/egui.json")).expect("Failed to parse egui"), EXCLUDE_TYPES);
     let emath_tracer = emit_tracer("epaint", &serde_json::from_str::<Crate>(include_str!("../src/emath.json")).expect("Failed to parse emath"), EXCLUDE_TYPES);
     let epaint_tracer = emit_tracer("emath", &serde_json::from_str::<Crate>(include_str!("../src/epaint.json")).expect("Failed to parse epaint"), EXCLUDE_TYPES);
+    let ecolor_tracer = emit_tracer("ecolor", &serde_json::from_str::<Crate>(include_str!("../src/ecolor.json")).expect("Failed to parse ecolor"), EXCLUDE_TYPES);
     
-    std::fs::write(out_file, format!("{egui_tracer}\n{emath_tracer}\n{epaint_tracer}")).expect("Failed to write tracer bindings");
+    std::fs::write(out_file, format!("{egui_tracer}\n{emath_tracer}\n{epaint_tracer}\n{ecolor_tracer}")).expect("Failed to write tracer bindings");
 }

@@ -3,7 +3,7 @@
 #![feature(thread_local)]
 
 use egui::*;
-use egui::emath::*;
+use egui::ecolor::*;
 use egui::emath::*;
 use egui::epaint::*;
 use egui::epaint::tessellator::*;
