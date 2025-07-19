@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using Silk.NET.GLFW;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
+using System.Numerics;
 
 namespace MySilkProgram;
 
@@ -29,6 +30,10 @@ public unsafe class Program
 
     private static Stopwatch _startTimer = new Stopwatch();
 
+    private static bool shift = false;
+    private static bool alt = false;
+    private static bool ctrl = false;
+
     public static void Main(string[] args)
     {
         _ctx = new Context();
@@ -44,7 +49,7 @@ public unsafe class Program
         _window.Load += OnLoad;
         _window.Update += OnUpdate;
         _window.Render += OnRender;
-
+        
         _window.Run();
     }
 
@@ -59,7 +64,17 @@ public unsafe class Program
 
         IInputContext input = _window.CreateInput();
         for (int i = 0; i < input.Keyboards.Count; i++)
+        {
             input.Keyboards[i].KeyDown += KeyDown;
+            input.Keyboards[i].KeyUp += KeyUp;
+        }
+        for (int i = 0; i < input.Mice.Count; i++)
+        {
+            input.Mice[i].MouseMove += MouseMove;
+            input.Mice[i].MouseDown += MouseDown;
+            input.Mice[i].MouseUp += MouseUp;
+        }
+
     }
 
     // These two methods are unused for this tutorial, aside from the logging we added earlier.
@@ -80,7 +95,7 @@ public unsafe class Program
             Events = ImmutableList<ViewportEvent>.Empty,
             NativePixelsPerPoint = 1.0f,
             MonitorSize = null,
-            InnerRect = _input.ScreenRect,
+            InnerRect = _input.ScreenRect
         });
 
         var output = _ctx.Run(_input, ctx =>
@@ -96,10 +111,219 @@ public unsafe class Program
             // todo _ctx.StyleUi(ui);
 
         }//);
+
+        _input = new RawInput();
+    }
+
+    public static Egui.Key? MapKeys(Silk.NET.Input.Key key)
+    {
+        switch (key)
+        {
+            case Silk.NET.Input.Key.Number1: return Egui.Key.Num1;
+            case Silk.NET.Input.Key.Number2: return Egui.Key.Num2;
+            case Silk.NET.Input.Key.Number3: return Egui.Key.Num3;
+            case Silk.NET.Input.Key.Number4: return Egui.Key.Num4;
+            case Silk.NET.Input.Key.Number5: return Egui.Key.Num5;
+            case Silk.NET.Input.Key.Number6: return Egui.Key.Num6;
+            case Silk.NET.Input.Key.Number7: return Egui.Key.Num7;
+            case Silk.NET.Input.Key.Number8: return Egui.Key.Num8;
+            case Silk.NET.Input.Key.Number9: return Egui.Key.Num9;
+            case Silk.NET.Input.Key.Number0: return Egui.Key.Num0;
+            case Silk.NET.Input.Key.Minus: return Egui.Key.Minus;
+            case Silk.NET.Input.Key.Equal: return Egui.Key.Equals;
+            case Silk.NET.Input.Key.Backspace: return Egui.Key.Backspace;
+            case Silk.NET.Input.Key.GraveAccent: return Egui.Key.Backtick;
+
+            case Silk.NET.Input.Key.Tab: return Egui.Key.Tab;
+            case Silk.NET.Input.Key.Q: return Egui.Key.Q;
+            case Silk.NET.Input.Key.W: return Egui.Key.W;
+            case Silk.NET.Input.Key.E: return Egui.Key.E;
+            case Silk.NET.Input.Key.R: return Egui.Key.R;
+            case Silk.NET.Input.Key.T: return Egui.Key.T;
+            case Silk.NET.Input.Key.Y: return Egui.Key.Y;
+            case Silk.NET.Input.Key.U: return Egui.Key.U;
+            case Silk.NET.Input.Key.I: return Egui.Key.I;
+            case Silk.NET.Input.Key.O: return Egui.Key.O;
+            case Silk.NET.Input.Key.P: return Egui.Key.P;
+            case Silk.NET.Input.Key.LeftBracket: return Egui.Key.OpenBracket;
+            case Silk.NET.Input.Key.RightBracket: return Egui.Key.CloseBracket;
+            case Silk.NET.Input.Key.BackSlash: return Egui.Key.Backslash;
+            case Silk.NET.Input.Key.A: return Egui.Key.A;
+            case Silk.NET.Input.Key.S: return Egui.Key.S;
+            case Silk.NET.Input.Key.D: return Egui.Key.D;
+            case Silk.NET.Input.Key.F: return Egui.Key.F;
+            case Silk.NET.Input.Key.G: return Egui.Key.G;
+            case Silk.NET.Input.Key.H: return Egui.Key.H;
+            case Silk.NET.Input.Key.J: return Egui.Key.J;
+            case Silk.NET.Input.Key.K: return Egui.Key.K;
+            case Silk.NET.Input.Key.L: return Egui.Key.L;
+            case Silk.NET.Input.Key.Semicolon: return Egui.Key.Semicolon;
+            case Silk.NET.Input.Key.Apostrophe: return Egui.Key.Quote;
+            case Silk.NET.Input.Key.Z: return Egui.Key.Z;
+            case Silk.NET.Input.Key.X: return Egui.Key.X;
+            case Silk.NET.Input.Key.C: return Egui.Key.C;
+            case Silk.NET.Input.Key.V: return Egui.Key.V;
+            case Silk.NET.Input.Key.B: return Egui.Key.B;
+            case Silk.NET.Input.Key.N: return Egui.Key.N;
+            case Silk.NET.Input.Key.M: return Egui.Key.M;
+            case Silk.NET.Input.Key.Comma: return Egui.Key.Comma;
+            case Silk.NET.Input.Key.Period: return Egui.Key.Period;
+            case Silk.NET.Input.Key.Slash: return Egui.Key.Slash;
+            case Silk.NET.Input.Key.Space: return Egui.Key.Space;
+            case Silk.NET.Input.Key.Enter: return Egui.Key.Enter;
+            case Silk.NET.Input.Key.Escape: return Egui.Key.Escape;
+            case Silk.NET.Input.Key.F1: return Egui.Key.F1;
+            case Silk.NET.Input.Key.F2: return Egui.Key.F2;
+            case Silk.NET.Input.Key.F3: return Egui.Key.F3;
+            case Silk.NET.Input.Key.F4: return Egui.Key.F4;
+            case Silk.NET.Input.Key.F5: return Egui.Key.F5;
+            case Silk.NET.Input.Key.F6: return Egui.Key.F6;
+            case Silk.NET.Input.Key.F7: return Egui.Key.F7;
+            case Silk.NET.Input.Key.F8: return Egui.Key.F8;
+            case Silk.NET.Input.Key.F9: return Egui.Key.F9;
+            case Silk.NET.Input.Key.F10: return Egui.Key.F10;
+            case Silk.NET.Input.Key.F11: return Egui.Key.F11;
+            case Silk.NET.Input.Key.F12: return Egui.Key.F12;
+            case Silk.NET.Input.Key.End: return Egui.Key.End;
+            case Silk.NET.Input.Key.Delete: return Egui.Key.Delete;
+            case Silk.NET.Input.Key.Left: return Egui.Key.ArrowLeft;
+            case Silk.NET.Input.Key.Right: return Egui.Key.ArrowRight;
+            case Silk.NET.Input.Key.Up: return Egui.Key.ArrowUp;
+            case Silk.NET.Input.Key.Down: return Egui.Key.ArrowDown;
+        }
+        
+        return null;
     }
 
     private static void KeyDown(IKeyboard keyboard, Silk.NET.Input.Key key, int keyCode)
     {
+        if (key == Silk.NET.Input.Key.ShiftLeft || key == Silk.NET.Input.Key.ShiftRight)
+        {
+            shift = true;
+        }
+
+        if (key == Silk.NET.Input.Key.AltLeft || key == Silk.NET.Input.Key.AltRight)
+        {
+            alt = true;
+        }
+
+        if (key == Silk.NET.Input.Key.ControlLeft || key == Silk.NET.Input.Key.ControlRight)
+        {
+            ctrl = true;
+        }
+
+        if (ctrl && key == Silk.NET.Input.Key.C)
+        {
+            _input.Events = _input.Events.Add(new Event.Copy());
+            return;
+        }
+        if (ctrl && key == Silk.NET.Input.Key.V)
+        {
+            if (keyboard.ClipboardText.Length > 0)
+            {
+                _input.Events = _input.Events.Add(new Event.Paste() { Value = keyboard.ClipboardText });
+            }
+            return;
+        }
+        if (ctrl && key == Silk.NET.Input.Key.X)
+        {
+            _input.Events = _input.Events.Add(new Event.Cut());
+            return;
+        }
+
+        var mapped = MapKeys(key);
+
+        if (mapped.HasValue)
+        {
+            _input.Events = _input.Events.Add(new Event.Key
+            {
+                key = mapped.Value,
+                physical_key = mapped.Value,
+                pressed = true,
+                modifiers = new() { 
+                    Alt = alt,
+                    Ctrl = ctrl,
+                    Shift = shift
+                }
+
+            });
+        }
+    }
+
+    private static void KeyUp(IKeyboard keyboard, Silk.NET.Input.Key key, int keyCode)
+    {
+        if (key == Silk.NET.Input.Key.ShiftLeft || key == Silk.NET.Input.Key.ShiftRight)
+        {
+            shift = false;
+        }
+
+        if (key == Silk.NET.Input.Key.AltLeft || key == Silk.NET.Input.Key.AltRight)
+        {
+            alt = false;
+        }
+
+        if (key == Silk.NET.Input.Key.ControlLeft || key == Silk.NET.Input.Key.ControlRight)
+        {
+            ctrl = false;
+        }
+
+        var mapped = MapKeys(key);
+
+        if (mapped.HasValue)
+        {
+            _input.Events = _input.Events.Add(new Event.Key
+            {
+                key = mapped.Value,
+                physical_key = mapped.Value,
+                pressed = false,
+                modifiers = new()
+                {
+                    Alt = alt,
+                    Ctrl = ctrl,
+                    Shift = shift
+                }
+            });
+        }
+    }
+
+    private static void MouseMove(IMouse mouse, Vector2 vector)
+    {
+        _input.Events = _input.Events.Add(new Event.MouseMoved
+        {
+            Value = new(vector.X, vector.Y)
+        });
+    }
+
+    private static void MouseDown(IMouse mouse, Silk.NET.Input.MouseButton button)
+    {
+        _input.Events = _input.Events.Add(new Event.PointerButton
+        {
+            button = (Egui.PointerButton)button,
+            pressed = true,
+            pos = new Pos2(mouse.Position.X, mouse.Position.Y),
+            modifiers = new()
+            {
+                Alt = alt,
+                Ctrl = ctrl,
+                Shift = shift
+            }
+        });
+    }
+
+    private static void MouseUp(IMouse mouse, Silk.NET.Input.MouseButton button)
+    {
+        _input.Events = _input.Events.Add(new Event.PointerButton
+        {
+            button = (Egui.PointerButton)button,
+            pressed = false,
+            pos = new Pos2(mouse.Position.X, mouse.Position.Y),
+            modifiers = new()
+            {
+                Alt = alt,
+                Ctrl = ctrl,
+                Shift = shift
+            }
+        });
 
     }
 
