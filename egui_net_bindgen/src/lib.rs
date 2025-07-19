@@ -84,6 +84,7 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
 
 /// Types to exclude from generation.
 const BINDING_EXCLUDE_TYPES: &[&str] = &[
+    "Color32",
     "DragPanButtons",
     "History",
     "Sense"

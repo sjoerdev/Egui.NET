@@ -183,7 +183,6 @@ public unsafe class Program
             _gl.EnableVertexAttribArray((uint)_a_srgba_loc);
             _gl.VertexAttribPointer((uint)_a_srgba_loc, 4, GLEnum.UnsignedByte, false, (uint)sizeof(Vertex), 4 * 4);
 
-            Console.WriteLine($"ummmanged {sizeof(Vertex)}");
             CheckGlErrors();
 
             _eao = _gl.GenBuffer();

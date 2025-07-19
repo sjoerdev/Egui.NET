@@ -830,8 +830,8 @@ return obj.ToImmutableList();
 
         writeln!(self.out, "public bool Equals({} other) {{", name)?;
         self.out.indent();
-        writeln!(self.out, "if (other == null) return false;")?;
-        writeln!(self.out, "if (ReferenceEquals(this, other)) return true;")?;
+        //writeln!(self.out, "if (other == null) return false;")?;
+        //writeln!(self.out, "if (ReferenceEquals(this, other)) return true;")?;
         for field in fields {
             writeln!(
                 self.out,
