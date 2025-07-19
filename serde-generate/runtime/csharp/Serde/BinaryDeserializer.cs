@@ -15,7 +15,7 @@ namespace Serde
     {
         protected readonly ArraySegment<byte> input;
         protected readonly BinaryReader reader;
-        protected readonly Encoding utf8 = Encoding.GetEncoding("utf-8", new EncoderExceptionFallback(), new DecoderExceptionFallback());
+        protected static readonly Encoding utf8 = Encoding.GetEncoding("utf-8", new EncoderExceptionFallback(), new DecoderExceptionFallback());
         private long containerDepthBudget;
 
         // todo: use non-copy
@@ -24,7 +24,7 @@ namespace Serde
         public BinaryDeserializer(ArraySegment<byte> _input, long maxContainerDepth)
         {
             input = _input;
-            reader = new BinaryReader(new MemoryStream(input.Array, input.Offset, input.Count));
+            reader = new BinaryReader(new MemoryStream(input.Array, input.Offset, input.Count), utf8);
             containerDepthBudget = maxContainerDepth;
         }
 
@@ -36,7 +36,29 @@ namespace Serde
         public abstract int deserialize_variant_index();
         public abstract void check_that_key_slices_are_increasing(Range key1, Range key2);
 
-        public char deserialize_char() => throw new DeserializationException("Not implemented: char deserialization");
+        public char deserialize_char()
+        {
+            Span<byte> charBytes = stackalloc byte[4];
+            Span<char> result = stackalloc char[4];
+            for (var i = 0; i < 4; i++)
+            {
+                int r = reader.BaseStream.ReadByte();
+                charBytes[i] = (byte)r;
+
+                utf8.GetDecoder().Convert(charBytes[..(i + 1)], result, false, out _, out var charsRead, out _);
+
+                if (charsRead == 1)
+                {
+                    return result[0];
+                }
+                else if (charsRead > 1)
+                {
+                    return '�';
+                }
+            }
+
+            throw new DeserializationException("Invalid encoded char");
+        }
 
         public float deserialize_f32() => reader.ReadSingle();
 

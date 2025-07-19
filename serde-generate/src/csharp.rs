@@ -835,7 +835,7 @@ return obj.ToImmutableList();
         for field in fields {
             writeln!(
                 self.out,
-                "if (!{0}.Equals(other.{0})) return false;",
+                "if ({0} != other.{0}) return false;",
                 &field.name,
             )?;
         }
@@ -1026,6 +1026,17 @@ switch (index) {{"#,
         writeln!(self.out, "}}")?;
         self.out.unindent();
         writeln!(self.out, "}}\n")?;
+
+        writeln!(
+            self.out,
+            "public static bool operator ==({0} left, {0} right) => Equals(left, right);\n",
+            name
+        )?;
+        writeln!(
+            self.out,
+            "public static bool operator !=({0} left, {0} right) => !Equals(left, right);\n",
+            name
+        )?;
 
         /*// Clone
         writeln!(

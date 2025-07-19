@@ -69,9 +69,9 @@ public sealed partial class Context : EguiObject
     /// Put your widgets into a <see cref="SidePanel"/> , <see cref="TopBottomPanel"/> , <see cref="CentralPanel"/> , <see cref="Window"/>  or <see cref="Area"/> .<br/>
     /// Instead of calling run, you can alternatively use <see cref="BeginPass"/>  and <see cref="EndPass"/> .<br/>
     /// </summary>
-    public void Run(RawInput input, Action<Context> runUi)
+    public FullOutput Run(RawInput input, Action<Context> runUi)
     {
-        throw new NotImplementedException();
+        return EguiMarshal.Call<RawInput, FullOutput>(EguiFn.egui_context_Context_run, Handle.ptr, input);
     }
 
     /// <summary>

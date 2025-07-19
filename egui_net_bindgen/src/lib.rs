@@ -5,11 +5,13 @@ use convert_case::*;
 use egui::*;
 use egui::emath::*;
 use egui::epaint::*;
+use egui::epaint::Primitive;
 use egui::epaint::text::*;
 use egui::epaint::text::cursor::*;
 use egui::Id;
 use egui::collapsing_header::*;
 use egui::containers::menu::*;
+use egui::layers::*;
 use egui::os::*;
 use egui::output::*;
 use egui::panel::*;
@@ -47,6 +49,10 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_ui_Ui_stack",
     "egui_painter_Painter_with_layer_id",
     "egui_painter_Painter_with_clip_rect",
+    "egui_layers_GraphicLayers_get",
+    "epaint_text_fonts_FontData_as_ref",
+    "epaint_text_fonts_FontData_from_static",
+    "emath_rect_transform_RectTransform_to",
 
     // These functions have conflicting names with fields or C#
     "egui_containers_area_Area_layout",
@@ -85,12 +91,14 @@ const BINDING_EXCLUDE_TYPES: &[&str] = &[
 
 /// Types for which fields/serialization logic should not be generated.
 const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
+    "Id",
     "UiStack"
 ];
 
 /// Types that should be converted to `class`es in C# backed by opaque handles.
 const HANDLE_TYPES: &[&str] = &[
     "Context",
+    "Fonts",
     "Painter"
 ];
 
@@ -245,11 +253,22 @@ const IGNORE_FNS: &[&str] = &[
     "core_str_pattern_MultiCharEqSearcher",
     "core_str_pattern_SearchStep",
 
-    // Needs four function arguments
-    "emath_rect_align_RectAlign_align_rect",
-    "emath_rect_transform_RectTransform_to",
-    "epaint_text_fonts_FontData_from_static",
-    "epaint_text_fonts_FontData_as_ref",
+    // FontsImpl: private type
+    "epaint_text_fonts_FontsImpl_definitions",
+    "epaint_text_fonts_FontsImpl_font",
+    "epaint_text_fonts_FontsImpl_has_glyph",
+    "epaint_text_fonts_FontsImpl_has_glyphs",
+    "epaint_text_fonts_FontsImpl_new",
+    "epaint_text_fonts_FontsImpl_pixels_per_point",
+
+    // Mutex: private type
+    "epaint_mutex_mutex_impl_Mutex_default",
+    "epaint_mutex_mutex_impl_Mutex_lock",
+    "epaint_mutex_mutex_impl_Mutex_new",
+    "epaint_mutex_rw_lock_impl_RwLock_default",
+    "epaint_mutex_rw_lock_impl_RwLock_new",
+    "epaint_mutex_rw_lock_impl_RwLock_read",
+    "epaint_mutex_rw_lock_impl_RwLock_write",
 
     // Context: manually-defined functions
     "egui_context_Context_style_mut",
@@ -989,6 +1008,9 @@ impl BindingsGenerator {
                         field.name = field.name.to_case(Case::Pascal);
                     }
                 },
+                ContainerFormat::Enum(variants) => for variant in variants.values_mut() {
+                    variant.name = variant.name.to_case(Case::Pascal);
+                },
                 _ => {},
             }
         }
@@ -1124,6 +1146,7 @@ impl BindingsGenerator {
     fn cs_primitive_name(x: &str) -> Option<&'static str> {
         Some(match x {
             "bool" => "bool",
+            "char" => "char",
             "u8" => "byte",
             "u16" => "ushort",
             "u32" => "uint",

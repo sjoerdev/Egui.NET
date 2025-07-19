@@ -192,6 +192,11 @@ internal static class EguiMarshal
                     return (T)(object)index;
                 };
             }
+            else if (typeof(T) == typeof(string))
+            {
+                Serializer = (serializer, value) => serializer.serialize_str((string)(object)value!);
+                Deserializer = deserializer => (T)(object)deserializer.deserialize_str();
+            }
             else if (typeof(T) == typeof(bool))
             {
                 Serializer = (serializer, value) => serializer.serialize_bool((bool)(object)value!);
@@ -262,6 +267,15 @@ internal static class EguiMarshal
                 Serializer = (serializer, value) => serializer.serialize_f64((double)(object)value!);
                 Deserializer = deserializer => (T)(object)deserializer.deserialize_f64();
             }
+            else if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(ValueTuple<,>))
+            {
+                var genericArgs = typeof(T).GenericTypeArguments;
+                var serializer = typeof(EguiMarshal).GetMethod("TupleSerializer", BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(genericArgs);
+                var deserializer = typeof(EguiMarshal).GetMethod("TupleDeserializer", BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(genericArgs);
+
+                Serializer = (Action<ISerializer, T>)Delegate.CreateDelegate(typeof(Action<ISerializer, T>), serializer);
+                Deserializer = (Func<IDeserializer, T>)Delegate.CreateDelegate(typeof(Func<IDeserializer, T>), deserializer);
+            }
             else
             {
                 var serializer = typeof(T).GetMethod("Serialize", BindingFlags.Static | BindingFlags.NonPublic)!;
@@ -275,6 +289,23 @@ internal static class EguiMarshal
                 Deserializer = (Func<IDeserializer, T>)Delegate.CreateDelegate(typeof(Func<IDeserializer, T>), deserializer);
             }
         }
+    }
+
+    /// <summary>
+    /// Serializes a tuple.
+    /// </summary>
+    private static void TupleSerializer<A0, A1>(ISerializer serializer, (A0, A1) value)
+    {
+        SerializerCache<A0>.Serializer(serializer, value.Item1);
+        SerializerCache<A1>.Serializer(serializer, value.Item2);
+    }
+
+    /// <summary>
+    /// Deserializes a tuple.
+    /// </summary>
+    private static (A0, A1) TupleDeserializer<A0, A1>(IDeserializer deserializer)
+    {
+        return (SerializerCache<A0>.Deserializer(deserializer), SerializerCache<A1>.Deserializer(deserializer));
     }
 
     /// <summary>
