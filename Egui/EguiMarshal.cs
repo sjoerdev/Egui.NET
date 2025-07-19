@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Bincode;
 using Serde;
 
@@ -15,56 +16,67 @@ internal static class EguiMarshal
     [ThreadStatic]
     private static BincodeSerializer? _serializer;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Call(EguiFn func, nuint ptr)
     {
         Call<NoArgument>(func, ptr, default);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static R Call<R>(EguiFn func, nuint ptr)
     {
         return Call<NoArgument, R>(func, ptr, default);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Call<A0>(EguiFn func, nuint ptr, A0 arg0)
     {
         Call<A0, NoArgument>(func, ptr, arg0, default);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static R Call<A0, R>(EguiFn func, nuint ptr, A0 arg0)
     {
         return Call<A0, NoArgument, R>(func, ptr, arg0, default);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Call<A0, A1>(EguiFn func, nuint ptr, A0 arg0, A1 arg1)
     {
         Call<A0, A1, NoArgument>(func, ptr, arg0, arg1, default);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static R Call<A0, A1, R>(EguiFn func, nuint ptr, A0 arg0, A1 arg1)
     {
         return Call<A0, A1, NoArgument, R>(func, ptr, arg0, arg1, default);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Call<A0, A1, A2>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2)
     {
         Call<A0, A1, A2, NoArgument>(func, ptr, arg0, arg1, arg2, default);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static R Call<A0, A1, A2, R>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2)
     {
         return Call<A0, A1, A2, NoArgument, R>(func, ptr, arg0, arg1, arg2, default);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Call<A0, A1, A2, A3>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
     {
         Call<A0, A1, A2, A3, NoArgument>(func, ptr, arg0, arg1, arg2, arg3, default);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static R Call<A0, A1, A2, A3, R>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
     {
         return Call<A0, A1, A2, A3, NoArgument, R>(func, ptr, arg0, arg1, arg2, arg3, default);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Call<A0, A1, A2, A3, A4>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
     {
         unsafe
@@ -89,6 +101,7 @@ internal static class EguiMarshal
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static R Call<A0, A1, A2, A3, A4, R>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
     {
         unsafe
@@ -114,6 +127,7 @@ internal static class EguiMarshal
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private unsafe static R DeserializeResult<R>(EguiInvokeResult result)
     {
         AssertSuccess(result);
@@ -121,6 +135,7 @@ internal static class EguiMarshal
         return SerializerCache<R>.Deserialize(deserializer);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private unsafe static void AssertSuccess(EguiInvokeResult result)
     {
         if (!result.success)
@@ -134,6 +149,7 @@ internal static class EguiMarshal
     /// The returned object is only valid until the next call to this function
     /// (because the underlying buffer is reused).
     /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static BincodeSerializer GetSerializer()
     {
         if (_serializer is null)

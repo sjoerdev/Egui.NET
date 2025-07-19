@@ -71,7 +71,8 @@ public sealed partial class Context : EguiObject
     /// </summary>
     public FullOutput Run(RawInput input, Action<Context> runUi)
     {
-        return EguiMarshal.Call<RawInput, FullOutput>(EguiFn.egui_context_Context_run, Handle.ptr, input);
+        using var callback = new EguiCallback(_ => runUi(this));
+        return EguiMarshal.Call<RawInput, EguiCallback, FullOutput>(EguiFn.egui_context_Context_run, Handle.ptr, input, callback);
     }
 
     /// <summary>

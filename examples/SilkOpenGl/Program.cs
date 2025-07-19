@@ -33,11 +33,13 @@ public unsafe class Program
     private static bool shift = false;
     private static bool alt = false;
     private static bool ctrl = false;
+    private static bool focus = false;
 
     public static void Main(string[] args)
     {
         _ctx = new Context();
-        
+
+        new RichText("bababooey from C#!").Strong();
         Console.WriteLine($"CReated a ctx! {_ctx.Os}");
 
         WindowOptions options = WindowOptions.Default;
@@ -50,7 +52,8 @@ public unsafe class Program
         _window.Load += OnLoad;
         _window.Update += OnUpdate;
         _window.Render += OnRender;
-        
+        _window.FocusChanged += x => focus = x;
+
         _window.Run();
     }
 
@@ -88,6 +91,7 @@ public unsafe class Program
         var scaleFactor = (float)_window.FramebufferSize.X / _window.Size.X;
 
         _input.ViewportId = ViewportId.Root;
+        _input.Focused = focus;
         _input.Time = _startTimer.Elapsed.TotalSeconds;
         _input.ScreenRect = Rect.FromMinSize(new Pos2(0, 0), new Vec2(_window.Size.X, _window.Size.Y));
 
@@ -99,12 +103,25 @@ public unsafe class Program
             Events = ImmutableList<ViewportEvent>.Empty,
             NativePixelsPerPoint = scaleFactor,
             MonitorSize = null,
+            Focused = focus,
             InnerRect = _input.ScreenRect
         });
 
         var output = _ctx.Run(_input, ctx =>
         {
+            new CentralPanel().Show(ctx, ui =>
+            {
+                if (ui.Label(new RichText("HELLO from C#!").Strong().Color(Color32.DarkGreen))
+                    .Clicked)
+                {
+                    Console.WriteLine("im click");
+                }
 
+                /*if (ui.Button("this is an button bro").ClickedBy(PointerButton.Primary))
+                {
+                    Console.WriteLine("im click2");
+                }*/
+            });
         });
 
         DrawOutput(in output);
@@ -292,7 +309,7 @@ public unsafe class Program
 
     private static void MouseMove(IMouse mouse, Vector2 vector)
     {
-        _input.Events = _input.Events.Add(new Event.MouseMoved
+        _input.Events = _input.Events.Add(new Event.PointerMoved
         {
             Value = new(vector.X, vector.Y)
         });

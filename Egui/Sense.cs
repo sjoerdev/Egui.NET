@@ -74,16 +74,13 @@ public readonly struct Sense
 
     internal void Serialize(Serde.ISerializer serializer) {
         serializer.increase_container_depth();
-        serializer.serialize_variant_index(_value);
+        serializer.serialize_u8(_value);
         serializer.decrease_container_depth();
     }
 
     internal static Sense Deserialize(Serde.IDeserializer deserializer) {
         deserializer.increase_container_depth();
-        int index = deserializer.deserialize_variant_index();
-        if (!Enum.IsDefined(typeof(Sense), index))
-            throw new Serde.DeserializationException("Unknown variant index for Sense: " + index);
-        Sense value = (Sense)index;
+        Sense value = (Sense)deserializer.deserialize_u8();
         deserializer.decrease_container_depth();
         return value;
     }

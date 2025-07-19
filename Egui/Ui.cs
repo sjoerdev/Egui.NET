@@ -15,4 +15,15 @@ public readonly ref partial struct Ui
     /// A pointer to the underlying UI object.
     /// </summary>
     private readonly nuint _ptr;
+
+    /// <summary>
+    /// Creates a UI reference.
+    /// </summary>
+    /// <param name="ctx">The context that owns the UI.</param>
+    /// <param name="ptr">A pointer to the UI.</param>
+    internal Ui(Context ctx, nuint ptr)
+    {
+        Ctx = ctx;
+        _ptr = ptr;
+    }
 }

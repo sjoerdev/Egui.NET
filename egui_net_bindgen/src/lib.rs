@@ -13,6 +13,7 @@ use egui::Id;
 use egui::collapsing_header::*;
 use egui::containers::menu::*;
 use egui::layers::*;
+use egui::load::*;
 use egui::os::*;
 use egui::output::*;
 use egui::panel::*;
@@ -54,6 +55,7 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "epaint_text_fonts_FontData_as_ref",
     "epaint_text_fonts_FontData_from_static",
     "emath_rect_transform_RectTransform_to",
+    "egui_widgets_image_Image_image_options",
 
     // These functions have conflicting names with fields or C#
     "egui_containers_area_Area_layout",
@@ -66,6 +68,13 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "epaint_image_AlphaFromCoverage_alpha_from_coverage",
     "egui_response_Response_output_event",
     "epaint_shapes_shape_Shape_mesh",
+    "egui_widgets_radio_button_RadioButton_new",
+    "egui_ui_Ui_selectable_label",
+    "egui_atomics_atom_kind_AtomKind_text",
+    "egui_atomics_atom_kind_AtomKind_image",
+
+    "egui_widgets_image_Image_texture_options",
+    "egui_atomics_atom_layout_AtomLayout_frame",
 
     "egui_style_Style_text_styles",
     "egui_style_Visuals_noninteractive",
@@ -91,7 +100,8 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
 const BINDING_EXCLUDE_TYPES: &[&str] = &[
     "DragPanButtons",
     "History",
-    "Sense"
+    "Sense",
+    "SubMenuButton"
 ];
 
 /// Types for which fields/serialization logic should not be generated.
@@ -537,6 +547,9 @@ impl BindingsGenerator {
                     else if path.contains("Hash") {
                         "Id".to_string()
                     }
+                    else if path.contains("IntoAtoms") {
+                        "Atoms".to_string()
+                    }
                     else {
                         return None
                     }
@@ -644,8 +657,7 @@ impl BindingsGenerator {
         let item = &self.krate.index[&id];
         let ItemEnum::Function(func) = &item.inner else { panic!("Expected id to refer to a function") };
 
-        let can_have_mut_this = decl_ty == DeclaringType::Handle || decl_ty == DeclaringType::Pointer;
-        let has_this = func.sig.inputs.first().map(|(name, ty)| name == "self" && (can_have_mut_this || !matches!(ty, Type::BorrowedRef { is_mutable: true, .. }))).unwrap_or_default();
+        let has_this = func.sig.inputs.first().map(|(name, ty)| name == "self" && (decl_ty.is_byref() || !matches!(ty, Type::BorrowedRef { is_mutable: true, .. }))).unwrap_or_default();
         let returns_this = func.sig.output.as_ref().map(|x| x == &Type::Generic("Self".to_string()) || (if let Type::ResolvedPath(p) = x {
             Some(p.path.as_str()) == ty_name 
         } else { false })).unwrap_or_default();
@@ -724,30 +736,28 @@ impl BindingsGenerator {
             write!(f, "(")?;
         }
 
-        let mut first = true;
-
         let mut generic_args = Vec::new();
         
-        for (name, ty) in sig.inputs.iter().skip((fn_ty == FnType::Instance) as usize) {
-            if !property {
-            if first {
-                if fn_ty == FnType::Extension {
-                    write!(f, "this ")?;
-                }
+        for (i, (name, ty)) in sig.inputs.iter().enumerate() {
+            if fn_ty == FnType::Instance && i == 0 && decl_ty.is_byref() {
+                continue;
             }
-            else {
-                write!(f, ", ")?;
-            }
-            }
-
-            first = false;
-
+            
             let param_ty = self.cs_type_name(ty_name, ty).ok_or(std::fmt::Error)?;
             generic_args.push(param_ty.clone());
+
             let cs_name = name.to_case(Case::Camel);
 
-            if !property {
+            if !property && !(i == 0 && fn_ty == FnType::Instance) {
+                if i == 0 && fn_ty == FnType::Extension {
+                    write!(f, "this ")?;
+                }
+
                 write!(f, "{param_ty} {cs_name}")?;
+
+                if i != sig.inputs.len() - 1 {
+                    write!(f, ", ")?;
+                }
             }
         }
         
@@ -756,6 +766,16 @@ impl BindingsGenerator {
         }
         else {
             writeln!(f, ") {{")?;
+        }
+
+        let handle_value = match decl_ty {
+            DeclaringType::Handle => "Handle.ptr".to_string(),
+            DeclaringType::Pointer => "_ptr".to_string(),
+            _ => "0".to_string()
+        };
+
+        if decl_ty == DeclaringType::Pointer {
+            writeln!(f, "if ({handle_value} == 0) {{ throw new NullReferenceException(\"{} instance was uninitialized\"); }}", ty_name.expect("Failed to get type name"))?;
         }
 
         if let Some(return_ty) = &sig.output {
@@ -780,13 +800,9 @@ impl BindingsGenerator {
         }
 
         let enum_name = format!("EguiFn.{}", self.fn_enum_variant_name(id));
-        let handle_value = match decl_ty {
-            DeclaringType::Handle => "Handle.ptr".to_string(),
-            DeclaringType::Pointer => "_ptr".to_string(),
-            _ => "0".to_string()
-        };
 
-        write!(f, "{}", [enum_name, handle_value].into_iter().chain(sig.inputs.iter().skip((fn_ty == FnType::Instance) as usize).map(|(name, _)| name.to_case(Case::Camel)))
+        write!(f, "{}", [enum_name, handle_value].into_iter().chain(sig.inputs.iter().skip(decl_ty.is_byref() as usize)
+            .map(|(name, _)| if name == "self" && fn_ty != FnType::Extension { "this".to_string() } else { name.to_case(Case::Camel) }))
             .collect::<Vec<_>>().join(", "))?;
         writeln!(f, ");")?;
 
@@ -879,6 +895,9 @@ impl BindingsGenerator {
                     }
                     else if path.contains("Hash") {
                         "Id".to_string()
+                    }
+                    else if path.contains("IntoAtoms") {
+                        "Atoms".to_string()
                     }
                     else {
                         "_".to_string()
@@ -1255,6 +1274,16 @@ enum DeclaringType {
     Handle,
     /// The type is a `ref struct`.`
     Pointer
+}
+
+impl DeclaringType {
+    /// Whether this type is passed by reference.
+    pub fn is_byref(&self) -> bool {
+        match self {
+            Self::PrimitiveEnum | Self::Struct => false,
+            Self::Handle | Self::Pointer => true,
+        }
+    }
 }
 
 /// How to emit a particular function.

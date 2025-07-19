@@ -692,7 +692,7 @@ dependencies = [
 [[package]]
 name = "ecolor"
 version = "0.32.0"
-source = "git+https://github.com/DouglasDwyer/egui?rev=17d4484816339c37b64fbcc72ec6394f4e210087#17d4484816339c37b64fbcc72ec6394f4e210087"
+source = "git+https://github.com/DouglasDwyer/egui?rev=6c8db787b3294cd0bd3644cfb343db4032263a02#6c8db787b3294cd0bd3644cfb343db4032263a02"
 dependencies = [
  "emath",
  "serde",
@@ -701,7 +701,7 @@ dependencies = [
 [[package]]
 name = "egui"
 version = "0.32.0"
-source = "git+https://github.com/DouglasDwyer/egui?rev=17d4484816339c37b64fbcc72ec6394f4e210087#17d4484816339c37b64fbcc72ec6394f4e210087"
+source = "git+https://github.com/DouglasDwyer/egui?rev=6c8db787b3294cd0bd3644cfb343db4032263a02#6c8db787b3294cd0bd3644cfb343db4032263a02"
 dependencies = [
  "accesskit",
  "ahash",
@@ -767,7 +767,7 @@ dependencies = [
 [[package]]
 name = "emath"
 version = "0.32.0"
-source = "git+https://github.com/DouglasDwyer/egui?rev=17d4484816339c37b64fbcc72ec6394f4e210087#17d4484816339c37b64fbcc72ec6394f4e210087"
+source = "git+https://github.com/DouglasDwyer/egui?rev=6c8db787b3294cd0bd3644cfb343db4032263a02#6c8db787b3294cd0bd3644cfb343db4032263a02"
 dependencies = [
  "serde",
 ]
@@ -786,7 +786,7 @@ dependencies = [
 [[package]]
 name = "epaint"
 version = "0.32.0"
-source = "git+https://github.com/DouglasDwyer/egui?rev=17d4484816339c37b64fbcc72ec6394f4e210087#17d4484816339c37b64fbcc72ec6394f4e210087"
+source = "git+https://github.com/DouglasDwyer/egui?rev=6c8db787b3294cd0bd3644cfb343db4032263a02#6c8db787b3294cd0bd3644cfb343db4032263a02"
 dependencies = [
  "ab_glyph",
  "ahash",
@@ -802,7 +802,7 @@ dependencies = [
 [[package]]
 name = "epaint_default_fonts"
 version = "0.32.0"
-source = "git+https://github.com/DouglasDwyer/egui?rev=17d4484816339c37b64fbcc72ec6394f4e210087#17d4484816339c37b64fbcc72ec6394f4e210087"
+source = "git+https://github.com/DouglasDwyer/egui?rev=6c8db787b3294cd0bd3644cfb343db4032263a02#6c8db787b3294cd0bd3644cfb343db4032263a02"
 
 [[package]]
 name = "equivalent"
@@ -2078,6 +2078,9 @@ name = "smallvec"
 version = "1.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "smawk"
