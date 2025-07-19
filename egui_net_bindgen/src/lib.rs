@@ -84,7 +84,6 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
 
 /// Types to exclude from generation.
 const BINDING_EXCLUDE_TYPES: &[&str] = &[
-    "Color32",
     "DragPanButtons",
     "History",
     "Sense"
@@ -92,6 +91,7 @@ const BINDING_EXCLUDE_TYPES: &[&str] = &[
 
 /// Types for which fields/serialization logic should not be generated.
 const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
+    "Color32",
     "Id",
     "UiStack"
 ];
@@ -449,6 +449,7 @@ impl BindingsGenerator {
         let mut krate = serde_json::from_str::<Crate>(include_str!("egui.json")).expect("Failed to parse egui");
         Self::merge_crates(&mut krate, &serde_json::from_str::<Crate>(include_str!("emath.json")).expect("Failed to parse emath"));
         Self::merge_crates(&mut krate, &serde_json::from_str::<Crate>(include_str!("epaint.json")).expect("Failed to parse epaint"));
+        Self::merge_crates(&mut krate, &serde_json::from_str::<Crate>(include_str!("ecolor.json")).expect("Failed to parse epaint"));
 
         BindingsGenerator {
             krate,

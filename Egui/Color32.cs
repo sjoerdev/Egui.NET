@@ -1,6 +1,32 @@
+using System.Drawing;
+
 namespace Egui;
 
-
+/// <summary>
+/// This format is used for space-efficient color representation (32 bits).
+///
+/// Instead of manipulating this directly it is often better
+/// to first convert it to either <c>Rgba</c> or <c>Hsva</c>.
+///
+/// Internally this uses 0-255 gamma space <c>sRGBA</c> color with _premultiplied alpha_.
+///
+/// It's the non-linear ("gamma") values that are multiplied with the alpha.
+///
+/// Premultiplied alpha means that the color values have been pre-multiplied with the alpha (opacity).
+/// This is in contrast with "normal" RGBA, where the alpha is _separate_ (or "unmultiplied").
+/// Using premultiplied alpha has some advantages:
+/// * It allows encoding additive colors
+/// * It is the better way to blend colors, e.g. when filtering texture colors
+/// * Because the above, it is the better way to encode colors in a GPU texture
+///
+/// The color space is assumed to be <c>sRGB</c>.
+///
+/// All operations on <see cref="Color32"/>  are done in "gamma space" (see <https://en.wikipedia.org/wiki/SRGB>).
+/// This is not physically correct, but it is fast and sometimes more perceptually even than linear space.
+/// If you instead want to perform these operations in linear-space color, use <c>Rgba</c>.
+///
+/// An <c>alpha=0<c/> means the color is to be treated as an additive color.
+/// </summary>
 public unsafe partial struct Color32 : IEquatable<Color32>
 {
     /// <summary>
