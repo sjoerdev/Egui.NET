@@ -23,6 +23,7 @@
 #endif
 
 uniform vec2 u_screen_size;
+
 I vec2 a_pos;
 I vec4 a_srgba; // 0-255 sRGB
 I vec2 a_tc;
@@ -35,6 +36,7 @@ void main() {
                       1.0 - 2.0 * a_pos.y / u_screen_size.y,
                       0.0,
                       1.0);
+                      
     v_rgba_in_gamma = a_srgba / 255.0;
     v_tc = a_tc;
 }

@@ -61,7 +61,12 @@ namespace Serde
 
         public abstract void sort_map_entries(int[] offsets);
 
-        public void serialize_char(char value) => throw new SerializationException("Not implemented: char serialization");
+        public void serialize_char(char value)
+        {
+            Span<byte> charBytes = stackalloc byte[4];
+            var len = utf8.GetBytes(new ReadOnlySpan<char>(ref value), charBytes);
+            output.Write(charBytes[..len]);
+        }
 
         public void serialize_f32(float value) => output.Write(value);
 

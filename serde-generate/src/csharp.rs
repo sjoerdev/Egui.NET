@@ -907,7 +907,7 @@ return obj.ToImmutableList();
         writeln!(self.out, "private int? _variantId;")?;
 
         for (id, variant) in variants {
-            writeln!(self.out, "\nprivate {} _variant{id};", variant.name)?;
+            writeln!(self.out, "\npublic {} _variant{id};", variant.name)?;
         }
 
         for (id, variant) in variants {

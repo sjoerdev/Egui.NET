@@ -10,6 +10,8 @@ using Silk.NET.OpenGLES;
 using Silk.NET.Windowing;
 using System.Security.Cryptography;
 using Silk.NET.GLFW;
+using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace MySilkProgram;
 
@@ -103,11 +105,24 @@ public unsafe class Program
 
     private static void DrawOutput(in FullOutput output)
     {
+        CheckGlErrors();
+        _gl.Disable(GLEnum.ScissorTest);
+        _gl.Viewport(0, 0, (uint)_window.Size.X, (uint)_window.Size.Y);
         _gl.ClearColor(Color.CornflowerBlue);
         _gl.Clear(ClearBufferMask.ColorBufferBit);
+        CheckGlErrors();
 
         var clippedPrimitives = _ctx.Tessellate(output.Shapes.ToArray(), 1.0f);
         _glPainter.PaintAndUpdateTextures((uint)_window.Size.X, (uint)_window.Size.Y, 1.0f, clippedPrimitives, output.TexturesDelta);
+    }
+
+    private static void CheckGlErrors()
+    {
+        var error = _gl.GetError();
+        if (error != GLEnum.NoError)
+        {
+            throw new Exception($"GL error: {error}");
+        }
     }
 
     private struct OpenGlPainter
@@ -134,6 +149,7 @@ public unsafe class Program
 
         public OpenGlPainter(GL gl)
         {
+            CheckGlErrors();
             _gl = gl;
 
             var frag = CompileShader(GLEnum.FragmentShader, File.ReadAllText("fragment.glsl"));
@@ -144,41 +160,55 @@ public unsafe class Program
 
             _vbo = _gl.GenBuffer();
 
+            CheckGlErrors();
+            
             _a_pos_loc = _gl.GetAttribLocation(_program, "a_pos");
             _a_tc_loc = _gl.GetAttribLocation(_program, "a_tc");
             _a_srgba_loc = _gl.GetAttribLocation(_program, "a_srgba");
 
+            CheckGlErrors();
             _vao = _gl.GenVertexArray();
+            CheckGlErrors();
             _gl.BindVertexArray(_vao);
+            _gl.BindBuffer(GLEnum.ArrayBuffer, _vbo);
+            CheckGlErrors();
 
             _gl.EnableVertexAttribArray((uint)_a_pos_loc);
             _gl.VertexAttribPointer((uint)_a_pos_loc, 2, GLEnum.Float, false, (uint)sizeof(Vertex), 0);
+            CheckGlErrors();
             _gl.EnableVertexAttribArray((uint)_a_tc_loc);
-            _gl.VertexAttribPointer((uint)_a_tc_loc, 2, GLEnum.Float, false, (uint)sizeof(Vertex), 2);
+            CheckGlErrors();
+            _gl.VertexAttribPointer((uint)_a_tc_loc, 2, GLEnum.Float, false, (uint)sizeof(Vertex), 2 * 4);
+            CheckGlErrors();
             _gl.EnableVertexAttribArray((uint)_a_srgba_loc);
-            _gl.VertexAttribPointer((uint)_a_srgba_loc, 4, GLEnum.UnsignedByte, false, (uint)sizeof(Vertex), 4);
+            _gl.VertexAttribPointer((uint)_a_srgba_loc, 4, GLEnum.UnsignedByte, false, (uint)sizeof(Vertex), 4 * 4);
 
-            _gl.BindBuffer(GLEnum.ArrayBuffer, _vbo);
+            Console.WriteLine($"ummmanged {sizeof(Vertex)}");
+            CheckGlErrors();
 
             _eao = _gl.GenBuffer();
 
             _textures = new Dictionary<TextureId, uint>();
+            CheckGlErrors();
         }
 
         public readonly void PaintAndUpdateTextures(uint width, uint height, float pixelsPerPoint, ReadOnlyMemory<ClippedPrimitive> clippedPrimitives, TexturesDelta texturesDelta)
         {
-            return;
+            CheckGlErrors();
             foreach (var (id, delta) in texturesDelta.Set)
             {
                 SetTexture(id, delta);
             }
 
+            CheckGlErrors();
             PaintPrimitives(width, height, pixelsPerPoint, clippedPrimitives);
+            CheckGlErrors();
 
             foreach (var id in texturesDelta.Free)
             {
                 FreeTexture(id);
             }
+            CheckGlErrors();
         }
 
         private readonly void PreparePainting(uint width, uint height, float pixelsPerPoint)
@@ -213,7 +243,27 @@ public unsafe class Program
 
             foreach (var primitive in primitives.Span)
             {
-                // todo: set clip rect
+                SetClipRect(width, height, pixelsPerPoint, primitive.ClipRect);
+
+                Mesh mesh = primitive.Primitive._variant0.Value;
+
+                var texture = _textures[mesh.TextureId];
+                _gl.BindBuffer(GLEnum.ArrayBuffer, _vbo);
+
+                fixed (Vertex* vertices = mesh.Vertices.ToArray())
+                {
+                    _gl.BufferData(GLEnum.ArrayBuffer, (nuint)(mesh.Vertices.Count * sizeof(Vertex)), vertices, BufferUsageARB.StreamDraw);
+                }
+
+                _gl.BindBuffer(GLEnum.ElementArrayBuffer, _eao);
+
+                fixed (uint* indices = mesh.Indices.ToArray())
+                {
+                    _gl.BufferData(GLEnum.ElementArrayBuffer, (nuint)(mesh.Indices.Count * sizeof(uint)), indices, BufferUsageARB.StreamDraw);
+                }
+
+                _gl.BindTexture(GLEnum.Texture2D, texture);
+                _gl.DrawElements(GLEnum.Triangles, (uint)mesh.Indices.Count, GLEnum.UnsignedInt, null);
             }
         }
 
@@ -230,16 +280,20 @@ public unsafe class Program
                 _textures[id] = _gl.GenTexture();
             }
 
+            CheckGlErrors();
             _gl.BindTexture(GLEnum.Texture2D, _textures[id]);
+            CheckGlErrors();
 
-            ImageData.Color image = default;
+            ImageData.Color image = delta.Image._variant0;
 
             _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureMagFilter, (int)GlowCode(delta.Options.Magnification, null));
             _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureMinFilter, (int)GlowCode(delta.Options.Minification, delta.Options.MipmapMode));
             _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureWrapS, (int)GlowCode(delta.Options.WrapMode));
             _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureWrapT, (int)GlowCode(delta.Options.WrapMode));
 
+            CheckGlErrors();
             _gl.PixelStore(GLEnum.UnpackAlignment, 1);
+            CheckGlErrors();
 
             fixed (Color32* data = image.Value.Pixels.ToArray())
             {
@@ -254,11 +308,33 @@ public unsafe class Program
                         data);
                 }
             }
+            CheckGlErrors();
 
             if (delta.Options.MipmapMode.HasValue)
             {
                 _gl.GenerateMipmap(GLEnum.Texture2D);
             }
+            CheckGlErrors();
+        }
+
+        private readonly void SetClipRect(uint width, uint height, float pixelsPerPoint, Rect clipRect)
+        {
+            var clipMinXf = pixelsPerPoint * clipRect.Min.X;
+            var clipMinYf = pixelsPerPoint * clipRect.Min.Y;
+            var clipMaxXf = pixelsPerPoint * clipRect.Max.X;
+            var clipMaxYf = pixelsPerPoint * clipRect.Max.Y;
+
+            var clipMinX = (int)MathF.Round(clipMinXf);
+            var clipMinY = (int)MathF.Round(clipMinYf);
+            var clipMaxX = (int)MathF.Round(clipMaxXf);
+            var clipMaxY = (int)MathF.Round(clipMaxYf);
+
+            clipMinX = Math.Clamp(clipMinX, 0, (int)width);
+            clipMinY = Math.Clamp(clipMinY, 0, (int)height);
+            clipMaxX = Math.Clamp(clipMaxX, clipMinX, (int)width);
+            clipMaxY = Math.Clamp(clipMaxY, clipMinY, (int)height);
+
+            _gl.Scissor(clipMinX, (int)height - clipMaxY, (uint)(clipMaxX - clipMinX), (uint)(clipMaxY - clipMinY));
         }
 
         private readonly uint CompileShader(GLEnum shaderType, string text)
@@ -296,7 +372,8 @@ public unsafe class Program
             return result;
         }
 
-        private static GLEnum GlowCode(Egui.TextureWrapMode mode) {
+        private static GLEnum GlowCode(Egui.TextureWrapMode mode)
+        {
             if (mode == Egui.TextureWrapMode.ClampToEdge)
             {
                 return GLEnum.ClampToEdge;
