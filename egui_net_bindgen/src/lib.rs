@@ -3,6 +3,7 @@
 
 use convert_case::*;
 use egui::*;
+use egui::ecolor::*;
 use egui::emath::*;
 use egui::epaint::*;
 use egui::epaint::Primitive;
@@ -79,7 +80,11 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_data_output_WidgetInfo_text_selection_changed",
     "egui_ui_Ui_new_child",
     "egui_ui_Ui_child_ui",
-    "egui_ui_Ui_child_ui_with_id_source"
+    "egui_ui_Ui_child_ui_with_id_source",
+    "ecolor_hsva_Hsva_from_additive_srgb",
+    "ecolor_hsva_Hsva_from_srgba_unmultiplied",
+    "ecolor_hsva_Hsva_from_srgba_premultiplied",
+    "ecolor_hsva_Hsva_from_srgb"
 ];
 
 /// Types to exclude from generation.
@@ -1063,6 +1068,7 @@ impl BindingsGenerator {
         trace_auto_egui_types(&mut tracer);
         trace_auto_emath_types(&mut tracer);
         trace_auto_epaint_types(&mut tracer);
+        trace_auto_ecolor_types(&mut tracer);
 
         let mut result = tracer.registry().expect("Failed to generate serde registry");
 
