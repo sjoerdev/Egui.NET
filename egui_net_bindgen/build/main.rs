@@ -5,6 +5,7 @@ use std::path::*;
 /// Types that should be ignored during generation.
 const EXCLUDE_TYPES: &[&str] = &[
     "History",
+    "OrderedFloat",
     "Options",
     "PointerState",
     "Undoer",

@@ -101,7 +101,10 @@ const BINDING_EXCLUDE_TYPES: &[&str] = &[
     "DragPanButtons",
     "History",
     "Sense",
-    "SubMenuButton"
+    "SubMenuButton",
+
+    // Private types
+    "Tessellator"
 ];
 
 /// Types for which fields/serialization logic should not be generated.
@@ -401,6 +404,23 @@ const IGNORE_FNS: &[&str] = &[
     "egui_sense_Sense_toggle",
     "egui_sense_Sense_union",
 
+    // Tessellator: private type
+    "epaint_tessellator_Tessellator_new",
+    "epaint_tessellator_Tessellator_set_clip_rect",
+    "epaint_tessellator_Tessellator_tessellate_circle",
+    "epaint_tessellator_Tessellator_tessellate_clipped_shape",
+    "epaint_tessellator_Tessellator_tessellate_cubic_bezier",
+    "epaint_tessellator_Tessellator_tessellate_ellipse",
+    "epaint_tessellator_Tessellator_tessellate_line",
+    "epaint_tessellator_Tessellator_tessellate_line_segment",
+    "epaint_tessellator_Tessellator_tessellate_mesh",
+    "epaint_tessellator_Tessellator_tessellate_path",
+    "epaint_tessellator_Tessellator_tessellate_quadratic_bezier",
+    "epaint_tessellator_Tessellator_tessellate_rect",
+    "epaint_tessellator_Tessellator_tessellate_shape",
+    "epaint_tessellator_Tessellator_tessellate_shapes",
+    "epaint_tessellator_Tessellator_tessellate_text",
+
     // UiBuilder: redundant function (same as default)
     "egui_ui_builder_UiBuilder_new",
 
@@ -422,7 +442,9 @@ const IGNORE_FN_NAMES: &[&str] = &[
     "add",
     "add_assign",
     "bitand",
+    "bitand_assign",
     "bitor",
+    "bitor_assign",
     "bits",
     "clone",
     "cmp",
