@@ -11,6 +11,11 @@ namespace Egui;
 public sealed partial class Context : EguiObject
 {
     /// <summary>
+    /// Paint on top of everything else
+    /// </summary>
+    public Painter DebugPainter => new Painter(this, EguiMarshal.Call<EguiHandle>(EguiFn.egui_context_Context_debug_painter, Handle.ptr));
+
+    /// <summary>
     /// A function that modifies a style.
     /// </summary>
     /// <param name="style">The style to modify.</param>
@@ -33,6 +38,11 @@ public sealed partial class Context : EguiObject
         StyleMutOf(Theme.Dark, mutateStyle);
         StyleMutOf(Theme.Light, mutateStyle);
     }
+
+    /// <summary>
+    /// Get a full-screen painter for a new or existing layer
+    /// </summary>
+    public Painter LayerPainter(LayerId layerId) => new Painter(this, EguiMarshal.Call<LayerId, EguiHandle>(EguiFn.egui_context_Context_layer_painter, Handle.ptr, layerId));
 
     /// <summary>
     /// Request to discard the visual output of this pass,
@@ -73,6 +83,60 @@ public sealed partial class Context : EguiObject
     {
         using var callback = new EguiCallback(_ => runUi(this));
         return EguiMarshal.Call<RawInput, EguiCallback, FullOutput>(EguiFn.egui_context_Context_run, Handle.ptr, input, callback);
+    }
+
+    /// <summary>
+    /// Show the state of egui, including its input and output.
+    /// </summary>
+    public void InspectionUi(Ui ui)
+    {
+        ui.AssertInitialized();
+        EguiMarshal.Call(EguiFn.egui_context_Context_inspection_ui, Handle.ptr, ui.Ptr);
+    }
+
+    /// <summary>
+    /// Show stats about different image loaders.
+    /// </summary>
+    public void LoadersUi(Ui ui)
+    {
+        ui.AssertInitialized();
+        EguiMarshal.Call(EguiFn.egui_context_Context_loaders_ui, Handle.ptr, ui.Ptr);
+    }
+
+    /// <summary>
+    /// Shows the contents of <see cref="Memory"/>. 
+    /// </summary>
+    public void MemoryUi(Ui ui)
+    {
+        ui.AssertInitialized();
+        EguiMarshal.Call(EguiFn.egui_context_Context_memory_ui, Handle.ptr, ui.Ptr);
+    }
+
+    /// <summary>
+    /// Show a ui for settings (style and tessellation options).
+    /// </summary>
+    public void SettingsUi(Ui ui)
+    {
+        ui.AssertInitialized();
+        EguiMarshal.Call(EguiFn.egui_context_Context_settings_ui, Handle.ptr, ui.Ptr);
+    }
+
+    /// <summary>
+    /// Edit the <see cref="Style"/>. 
+    /// </summary>
+    public void StyleUi(Ui ui, Theme theme)
+    {
+        ui.AssertInitialized();
+        EguiMarshal.Call(EguiFn.egui_context_Context_style_ui, Handle.ptr, ui.Ptr, theme);
+    }
+
+    /// <summary>
+    /// Show stats about the allocated textures.
+    /// </summary>
+    public void TextureUi(Ui ui)
+    {
+        ui.AssertInitialized();
+        EguiMarshal.Call(EguiFn.egui_context_Context_texture_ui, Handle.ptr, ui.Ptr);
     }
 
     /// <summary>

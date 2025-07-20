@@ -131,6 +131,9 @@ public unsafe class Program
                     Console.WriteLine("im click2");
                 }*/
             });
+
+            var painter = ctx.DebugPainter;
+            painter.CircleFilled(new Pos2(100, 100), 25, Color32.LightGreen);
         });
 
         DrawOutput(in output);

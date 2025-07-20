@@ -29,7 +29,7 @@ use serde_generate::*;
 use serde_generate::csharp::*;
 use serde_reflection::*;
 use std::borrow::*;
-use std::collections::HashMap;
+use std::collections::*;
 use std::path::*;
 
 /// Functions to exclude when automatically generating bindings.
@@ -429,6 +429,9 @@ const IGNORE_FNS: &[&str] = &[
     "egui_menu_MenuState_area_contains",
     "egui_menu_MenuState_new",
 
+    // Painter: bound manually
+    "egui_painter_Painter_ctx",
+
     // Rect: bound manually
     "emath_rect_Rect_bottom",
     "emath_rect_Rect_bottom_mut",
@@ -606,6 +609,8 @@ include!(concat!(env!("OUT_DIR"), "/tracer.rs"));
 
 /// Holds context for use during bindings generation.
 pub struct BindingsGenerator {
+    /// A mapping from item IDs to their declaring types.
+    declaring_tys: HashMap<RdId, RdId>,
     /// Metadata about the crate being generated.
     krate: Crate,
     /// The output path to which data will be written.
@@ -614,6 +619,10 @@ pub struct BindingsGenerator {
     registry: Registry,
     /// Maps from simple names to C# namespaces.
     namespaces: HashMap<String, String>,
+    /// Maps a type name to its ID.
+    name_to_id: HashMap<String, RdId>,
+    /// A list of public fields on every struct type.
+    public_fields: HashSet<(String, String)>
 }
 
 impl BindingsGenerator {
@@ -623,7 +632,10 @@ impl BindingsGenerator {
         Self::merge_crates(&mut krate, &serde_json::from_str::<Crate>(include_str!("emath.json")).expect("Failed to parse emath"));
         Self::merge_crates(&mut krate, &serde_json::from_str::<Crate>(include_str!("epaint.json")).expect("Failed to parse epaint"));
         Self::merge_crates(&mut krate, &serde_json::from_str::<Crate>(include_str!("ecolor.json")).expect("Failed to parse epaint"));
-        
+        let declaring_tys = Self::declaring_types(&krate);
+        let name_to_id = Self::names_to_ids(&krate);
+        let public_fields = Self::public_fields(&krate);
+
         let mut namespaces = Self::find_public_paths(&krate, &["egui", "epaint", "emath", "ecolor"])
             .into_iter().map(|(name, mut path)| {
                 path.pop();
@@ -652,10 +664,13 @@ impl BindingsGenerator {
         //panic!("{namespaces:?}");
 
         BindingsGenerator {
+            declaring_tys,
             krate,
             output_path: path.to_path_buf(),
             registry: Self::trace_serde_types(),
-            namespaces
+            namespaces,
+            name_to_id,
+            public_fields
         }.run()
     }
 
@@ -765,7 +780,7 @@ impl BindingsGenerator {
     fn ty_has_field(&self, ty_name: &str, field: &str) -> bool {
         if let Some(ContainerFormat::Struct(fields)) = self.registry.get(ty_name) {
             if fields.iter().find(|x| x.name == field).is_some() {
-                return !Self::field_is_private(&self.krate, ty_name, field);
+                return !Self::field_is_private(&self.name_to_id, &self.public_fields, ty_name, field);
             }
         }
 
@@ -780,8 +795,10 @@ impl BindingsGenerator {
         result += "using System.Collections.Immutable;\n";
 
         let mut bound_ids = Vec::new();
+        let binding_exclude_fns = BINDING_EXCLUDE_FNS.into_iter().collect::<HashSet<_>>();
+
         for id in self.gather_fns() {
-            if BINDING_EXCLUDE_FNS.contains(&&*self.fn_enum_variant_name(id)) {
+            if binding_exclude_fns.contains(&&*self.fn_enum_variant_name(id)) {
                 continue;
             }
 
@@ -1170,6 +1187,8 @@ impl BindingsGenerator {
 
     /// Gets a list of all functions that should be bound for `egui`.
     fn gather_fns(&self) -> Vec<RdId> {
+        let ignore_fns = IGNORE_FNS.into_iter().collect::<HashSet<_>>();
+
         self.krate.index.iter()
             .filter_map(|(id, item)| (
                 item.crate_id == 0
@@ -1177,7 +1196,7 @@ impl BindingsGenerator {
                 && (self.declaring_type(*id).is_some() || self.krate.paths.contains_key(id))
                 && {
                     let variant_name = self.fn_enum_variant_name(*id);
-                    variant_name.starts_with("e") &&!IGNORE_FNS.contains(&&*variant_name) && !variant_name.contains("___deserialize___")
+                    variant_name.starts_with("e") &&!ignore_fns.contains(&&*variant_name) && !variant_name.contains("___deserialize___")
                 }
                 && item.name.as_deref().map(|x| !IGNORE_FN_NAMES.contains(&x)).unwrap_or(true)
             ).then_some(id.clone()))
@@ -1186,14 +1205,7 @@ impl BindingsGenerator {
 
     /// Gets the ID of the type that declares the given function.
     fn declaring_type(&self, fn_id: RdId) -> Option<RdId> {
-        self.krate.index.values()
-            .filter_map(|item| if let ItemEnum::Impl(Impl { for_: Type::ResolvedPath(p), items, .. }) = &item.inner {
-                items.contains(&fn_id).then_some(p.id)
-            }
-            else {
-                None
-            })
-            .next()
+        self.declaring_tys.get(&fn_id).cloned()
     }
     
     /// Checks if the enum only has primitive variants.
@@ -1214,7 +1226,7 @@ impl BindingsGenerator {
         for (ty_name, item) in &mut self.registry {
             match item {
                 ContainerFormat::Struct(nameds) => for field in nameds {
-                    if Self::field_is_private(&self.krate, &ty_name, &field.name) {
+                    if Self::field_is_private(&self.name_to_id, &self.public_fields, &ty_name, &field.name) {
                         field.name = format!("_{}", field.name.to_case(Case::Camel));
                     }
                     else {
@@ -1244,9 +1256,37 @@ impl BindingsGenerator {
     
     /// Gets the `rustdoc` ID for a type given its name.
     fn get_type_id(&self, name: &str) -> Option<RdId> {
-        self.krate.index.iter()
-            .filter_map(|(id, item)| (matches!(item.inner, ItemEnum::Enum(_) | ItemEnum::Struct(_)) && item.name.as_deref() == Some(name)).then_some(id.clone()))
-            .next()
+        self.name_to_id.get(name).cloned()
+    }
+
+    /// Computes a mapping from IDs to declaring types.
+    fn declaring_types(krate: &Crate) -> HashMap<RdId, RdId> {
+        let mut result = HashMap::new();
+
+        for parent in krate.index.values() {
+            if let ItemEnum::Impl(Impl { for_: Type::ResolvedPath(p), items, .. }) = &parent.inner {
+                for child in items {
+                    result.insert(*child, p.id);
+                }
+            }
+        }
+
+        result
+    }
+
+    /// Computes a mapping from names to type IDs.
+    fn names_to_ids(krate: &Crate) -> HashMap<String, RdId> {
+        let mut result = HashMap::new();
+
+        for (item_id, item) in &krate.index {
+            if matches!(item.inner, ItemEnum::Enum(_) | ItemEnum::Struct(_)) {
+                if let Some(name) = &item.name {
+                    result.insert(name.clone(), *item_id);
+                }
+            }
+        }
+
+        result
     }
 
     /// Performs reflection on `egui` types to determine fields.
@@ -1513,24 +1553,28 @@ impl BindingsGenerator {
     }
 
     /// Determines whether a field is private.
-    fn field_is_private(krate: &Crate, ty_name: &str, field_name: &str) -> bool {
-        for item in krate.index.values() {
-            if item.name.as_deref() == Some(ty_name) {
-                if let ItemEnum::Struct(Struct { kind: StructKind::Plain { fields, .. }, .. }) = &item.inner {
-                    for field_id in fields {
-                        let field = &krate.index[field_id];
-                        if field.name.as_deref() == Some(field_name) {
-                            return false;
-                        }
-                    }
+    fn field_is_private(ty_set: &HashMap<String, RdId>, name_set: &HashSet<(String, String)>, ty_name: &str, field_name: &str) -> bool {
+        ty_set.contains_key(ty_name) && !name_set.contains(&(ty_name.to_string(), field_name.to_string()))
+    }
 
-                    // Private fields are those that do not show up in the fields list
-                    return true;
+    fn public_fields(krate: &Crate) -> HashSet<(String, String)> {
+        let mut result = HashSet::new();
+
+        for item in krate.index.values() {
+            if let ItemEnum::Struct(Struct { kind: StructKind::Plain { fields, .. }, .. }) = &item.inner {
+                let Some(ty_name) = item.name.as_deref() else { continue };
+                
+                for field_id in fields {
+                    let field = &krate.index[field_id];
+                    if let Some(field_name) = &field.name {
+                        result.insert((ty_name.to_string(), field_name.to_string()));
+                    }
                 }
             }
+            
         }
-        
-        false
+
+        result
     }
 }
 
