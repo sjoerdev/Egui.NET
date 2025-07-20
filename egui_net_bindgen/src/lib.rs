@@ -447,6 +447,8 @@ const IGNORE_FN_NAMES: &[&str] = &[
     "bits",
     "clone",
     "cmp",
+    "deref",
+    "deref_mut",
     "deserialize",
     "div",
     "div_assign",
