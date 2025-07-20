@@ -108,7 +108,7 @@ public readonly ref partial struct Ui
     ///
     /// See also <see cref="AddSized"/>  and <see cref="Put"/> .
     /// </summary>
-    public readonly Response Add<T>(T widget) where T : Widget, allows ref struct
+    public readonly Response Add<T>(T widget) where T : IWidget, allows ref struct
     {
         AssertInitialized();
         return widget.Ui(this);
@@ -122,7 +122,7 @@ public readonly ref partial struct Ui
     ///
     /// See also <see cref="AddSized"/>  and <see cref="Put"/> .
     /// </summary>
-    public readonly Response AddSized<T>(Vec2 maxSize, T widget) where T : Widget, allows ref struct
+    public readonly Response AddSized<T>(Vec2 maxSize, T widget) where T : IWidget, allows ref struct
     {
         AssertInitialized();
         var layout = Layout.CenteredAndJustified(Layout.MainDir);

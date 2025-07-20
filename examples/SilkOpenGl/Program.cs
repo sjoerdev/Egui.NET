@@ -18,6 +18,7 @@ using Silk.NET.GLFW;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Numerics;
+using Window = Egui.Containers.Window;
 
 namespace MySilkProgram;
 
@@ -54,7 +55,7 @@ public unsafe class Program
         options.Title = "My first Silk.NET program!";
         options.API = GraphicsAPI.Default;
 
-        _window = Window.Create(options);
+        _window = Silk.NET.Windowing.Window.Create(options);
 
         _window.Load += OnLoad;
         _window.Update += OnUpdate;
@@ -93,6 +94,8 @@ public unsafe class Program
     {
     }
 
+    private static bool openIt = true;
+
     private static void OnRender(double deltaTime)
     {
         var scaleFactor = (float)_window.FramebufferSize.X / _window.Size.X;
@@ -116,6 +119,19 @@ public unsafe class Program
 
         var output = _ctx.Run(_input, ctx =>
         {
+            new Window("bababooey")
+                .Show(ctx, ui =>
+            {
+                if (ui.Label("welcome to the winder").Clicked) { openIt = true; }
+            });
+
+            new Window("ratatooie")
+                .Open(ref openIt)
+                .Show(ctx, ui =>
+            {
+                if (ui.Label("this is another winder").Clicked) { Console.WriteLine("clickit"); }
+            });
+            /*
             new CentralPanel().Show(ctx, ui =>
             {
                 if (ui.Label(new RichText("HELLO from C#!").Strong().Color(Color32.DarkGreen))
@@ -126,14 +142,7 @@ public unsafe class Program
 
                 _widgetGallery.Show(ui);
 
-                /*if (ui.Button("this is an button bro").ClickedBy(PointerButton.Primary))
-                {
-                    Console.WriteLine("im click2");
-                }*/
-            });
-
-            var painter = ctx.DebugPainter;
-            painter.CircleFilled(new Pos2(100, 100), 25, Color32.LightGreen);
+            });*/
         });
 
         DrawOutput(in output);

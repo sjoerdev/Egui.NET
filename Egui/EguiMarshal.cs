@@ -166,7 +166,8 @@ internal static class EguiMarshal
     /// </summary>
     private static Dictionary<Type, (string, string)> SerializerPrototypes = new Dictionary<Type, (string, string)> {
         { typeof(ReadOnlyMemory<>), ("ReadOnlyMemorySerializer", "ReadOnlyMemoryDeserializer") },
-        { typeof(Tuple<,>), ("TupleSerializer", "TupleDeserializer") }
+        { typeof(ValueTuple<,>), ("TupleSerializer", "TupleDeserializer") },
+        { typeof(Nullable<>), ("NullableSerializer", "NullableDeserializer") },
     };
 
     /// <summary>
@@ -366,6 +367,33 @@ internal static class EguiMarshal
     private static (A0, A1) TupleDeserializer<A0, A1>(IDeserializer deserializer)
     {
         return (SerializerCache<A0>.Deserialize(deserializer), SerializerCache<A1>.Deserialize(deserializer));
+    }
+
+    /// <summary>
+    /// Serializes a nullable.
+    /// </summary>
+    private static void NullableSerializer<T>(ISerializer serializer, T? value) where T : struct
+    {
+        serializer.serialize_option_tag(value.HasValue);
+        if (value.HasValue)
+        {
+            SerializerCache<T>.Serialize(serializer, value.Value);
+        }
+    }
+
+    /// <summary>
+    /// Deserializes a nullable.
+    /// </summary>
+    private static T? NullableDeserializer<T>(IDeserializer deserializer) where T : struct
+    {
+        if (deserializer.deserialize_option_tag())
+        {
+            return SerializerCache<T>.Deserialize(deserializer);
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /// <summary>
