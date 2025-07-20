@@ -5,7 +5,7 @@ namespace Egui;
 /// <summary>
 /// What sort of interaction is a widget sensitive to?
 /// </summary>
-public readonly struct Sense
+public readonly partial struct Sense
 {
     /// <summary>
     /// Only hovers detected.
@@ -60,17 +60,6 @@ public readonly struct Sense
     {
         _value = value;
     }
-
-    /// <summary>
-    /// Returns true if we sense either clicks or drags.
-    /// </summary>
-    public bool Interactive => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_interactive, 0, _value);
-
-    public bool SensesClick => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_senses_click, 0, _value);
-
-    public bool SensesDrag => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_senses_drag, 0, _value);
-
-    public bool IsFocusable => EguiMarshal.Call<byte, bool>(EguiFn.egui_sense_Sense_is_focusable, 0, _value);
 
     internal void Serialize(Serde.ISerializer serializer) {
         serializer.increase_container_depth();

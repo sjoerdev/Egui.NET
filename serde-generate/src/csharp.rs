@@ -208,12 +208,14 @@ using System.Numerics;"
             .get(name)
             .cloned()
             .unwrap_or_else(|| format!("{}.{}", self.generator.config.module_name, name));
+        let qname = format!("{}.{}", self.generator.config.module_name, name);
         let mut path = qname.split('.').collect::<Vec<_>>();
         if path.len() <= 1 {
             return qname;
         }
         let name = path.pop().unwrap();
-        if self.current_reserved_names.contains_key(name) {
+        if true {
+        //if self.current_reserved_names.contains_key(name) {
             return qname;
         }
         for (index, element) in path.iter().enumerate() {

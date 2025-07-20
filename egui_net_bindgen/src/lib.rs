@@ -98,11 +98,8 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
 
 /// Types to exclude from generation.
 const BINDING_EXCLUDE_TYPES: &[&str] = &[
-    "DragPanButtons",
     "History",
-    "Sense",
     "SubMenuButton",
-
     // Private types
     "Tessellator"
 ];
@@ -110,7 +107,9 @@ const BINDING_EXCLUDE_TYPES: &[&str] = &[
 /// Types for which fields/serialization logic should not be generated.
 const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
     "Color32",
+    "DragPanButtons",
     "Id",
+    "Sense",
     "UiStack"
 ];
 
