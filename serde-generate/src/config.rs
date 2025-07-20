@@ -14,6 +14,7 @@ pub struct CodeGeneratorConfig {
     pub custom_code: CustomCode,
     pub c_style_enums: bool,
     pub package_manifest: bool,
+    pub namespaces: BTreeMap<String, String>
 }
 
 #[derive(Clone, Copy, Debug, PartialOrd, Ord, PartialEq, Eq)]
@@ -69,11 +70,17 @@ impl CodeGeneratorConfig {
             custom_code: BTreeMap::new(),
             c_style_enums: false,
             package_manifest: true,
+            namespaces: BTreeMap::new()
         }
     }
 
     pub fn module_name(&self) -> &str {
         &self.module_name
+    }
+
+    pub fn with_namespaces(mut self, namespaces: impl IntoIterator<Item = (String, String)>) -> Self {
+        self.namespaces = namespaces.into_iter().collect();
+        self
     }
 
     /// Whether to include serialization methods.

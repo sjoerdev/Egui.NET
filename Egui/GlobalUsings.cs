@@ -1,0 +1,13 @@
+global using global::Egui;
+global using global::Egui.Containers;
+global using global::Egui.Containers.Menu;
+global using global::Egui.Containers.Panel;
+global using global::Egui.Layers;
+global using global::Egui.Load;
+global using global::Egui.Text;
+global using global::Egui.TextSelection;
+global using global::Egui.Viewport;
+global using global::Emath;
+global using global::Epaint;
+global using global::Epaint.Text;
+global using global::Epaint.Text.Cursor;

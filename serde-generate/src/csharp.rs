@@ -126,7 +126,7 @@ impl<'a> CodeGenerator<'a> {
         };
 
         emitter.output_preamble()?;
-        emitter.output_open_namespace()?;
+        emitter.output_open_namespace(name)?;
         emitter.output_container(name, format)?;
         emitter.output_close_namespace()?;
 
@@ -150,7 +150,7 @@ impl<'a> CodeGenerator<'a> {
         };
 
         emitter.output_preamble()?;
-        emitter.output_open_namespace()?;
+        emitter.output_open_namespace("TraitHelpers")?;
         emitter.output_trait_helpers(registry)?;
         emitter.output_close_namespace()?;
 
@@ -177,11 +177,11 @@ using System.Numerics;"
         Ok(())
     }
 
-    fn output_open_namespace(&mut self) -> Result<()> {
+    fn output_open_namespace(&mut self, name: &str) -> Result<()> {
         writeln!(
             self.out,
             "\nnamespace {} {{",
-            self.generator.config.module_name
+            self.namespace_for_item(name)
         )?;
         self.out.indent();
         Ok(())
@@ -191,10 +191,14 @@ using System.Numerics;"
         self.out.unindent();
         writeln!(
             self.out,
-            "\n}} // end of namespace {}",
-            self.generator.config.module_name
+            "\n}}",
         )?;
         Ok(())
+    }
+
+    /// Gets the namespace to use for a particular item.
+    fn namespace_for_item(&self, name: &str) -> String {
+        self.generator.config.namespaces.get(name).cloned().unwrap_or_else(|| self.generator.config.module_name.clone())
     }
 
     /// Compute a safe reference to the registry type `name` in the given context.
@@ -207,8 +211,8 @@ using System.Numerics;"
             .external_qualified_names
             .get(name)
             .cloned()
-            .unwrap_or_else(|| format!("{}.{}", self.generator.config.module_name, name));
-        let qname = format!("{}.{}", self.generator.config.module_name, name);
+            .unwrap_or_else(|| format!("{}.{}", self.namespace_for_item(name), name));
+        let qname = format!("{}.{}", self.namespace_for_item(name), name);
         let mut path = qname.split('.').collect::<Vec<_>>();
         if path.len() <= 1 {
             return qname;
@@ -397,10 +401,9 @@ using System.Numerics;"
         match format {
             TypeName(name) => {
                 if self.cstyle_enum_names.contains(name) {
-                    let extensions_name = format!("{}SerdeExtensions", name.to_camel_case());
                     format!(
-                        "{}.Deserialize(deserializer)",
-                        self.quote_qualified_name(&extensions_name)
+                        "{}SerdeExtensions.Deserialize(deserializer)",
+                        self.quote_qualified_name(name)
                     )
                 } else {
                     format!(
@@ -1076,7 +1079,7 @@ switch (index) {{"#,
         writeln!(self.out, "}}")?;
 
         if self.generator.config.serialization {
-            let ext_name = format!("{}SerdeExtensions", name.to_camel_case());
+            let ext_name = format!("{}SerdeExtensions", name);
             writeln!(self.out, "internal static class {} {{", ext_name)?;
             self.enter_class(&ext_name, &[]);
 

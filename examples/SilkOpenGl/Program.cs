@@ -3,7 +3,12 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Collections.Immutable;
+
 using Egui;
+using Egui.Containers;
+using Egui.Viewport;
+using Epaint;
+
 using Silk.NET.Input;
 using Silk.NET.Maths;
 using Silk.NET.OpenGLES;
@@ -34,6 +39,8 @@ public unsafe class Program
     private static bool alt = false;
     private static bool ctrl = false;
     private static bool focus = false;
+
+    private static WidgetGallery _widgetGallery = new WidgetGallery();
 
     public static void Main(string[] args)
     {
@@ -117,6 +124,8 @@ public unsafe class Program
                     Console.WriteLine("im click");
                 }
 
+                _widgetGallery.Show(ui);
+
                 /*if (ui.Button("this is an button bro").ClickedBy(PointerButton.Primary))
                 {
                     Console.WriteLine("im click2");
@@ -134,6 +143,189 @@ public unsafe class Program
         }//);
 
         _input = new RawInput();
+    }
+    
+    private class WidgetGallery
+    {
+        private bool _enabled = true;
+        private bool _visible = true;
+        private bool _boolean;
+        private float _opacity;
+        private Enum _radio;
+        private float _scalar;
+        private string _string = "";
+        private Color32 _color;
+        private bool _animateProgressBar;
+
+        public void Show(Ui ui)
+        {
+            new Grid("my_grid")
+                .NumColumns(2)
+                .Spacing(new Vec2(40, 4))
+                .Striped(true)
+                .Show(ui, GalleryGridContents);
+                
+            ui.Separator();
+
+            /*
+            ui.Horizontal(ui =>
+            {
+                ui.Checkbox(ref _visible, "Visible")
+                    .OnHoverText("Uncheck to hide all the widgets.");
+
+                if (_visible)
+                {
+                    ui.Checkbox(ref _enabled, "Interactive")
+                        .OnHoverText("Uncheck to inspect how the widgets look when disabled.");
+                }
+            });
+
+            ui.Separator();
+
+            ui.VerticalCentered(ui =>
+            {
+                ui.Hyperlink("https://docs.rs/egui/")
+                    .OnHoverText("The full egui documentation.\nYou can also click the different widgets names in the left column.");
+                ui.Hyperlink(new RichText("Source code of the widget gallery").Small(), "https://github.com/emilk/egui/blob/master/crates/egui_demo_lib/src/demo/widget_gallery.rs");
+            });*/
+        }
+
+        private void GalleryGridContents(Ui ui)
+        {
+            DocLinkLabel(ui, "Label", "label");
+            ui.Label("Welcome to the widget gallery!");
+            ui.EndRow();
+
+            DocLinkLabel(ui, "Hyperlink", "Hyperlink");
+            ui.HyperlinkTo(" egui on GitHub", "https://github.com/emilk/egui");
+            ui.EndRow();
+
+            DocLinkLabel(ui, "TextEdit", "TextEdit");
+            // ui.add(egui::TextEdit::singleline(string).hint_text("Write something here"));
+            ui.EndRow();
+
+            /*
+            DocLinkLabel(ui, "Button", "button");
+            _boolean ^= ui.Button("Click me!").Clicked;
+            ui.EndRow();
+
+            DocLinkLabel(ui, "Link", "link");
+            _boolean ^= ui.Link("Click me!").Clicked;
+            ui.EndRow();
+
+            DocLinkLabel(ui, "Checkbox", "checkbox");
+            ui.Checkbox(ref _boolean, "Checkbox");
+            ui.EndRow();
+
+            DocLinkLabel(ui, "RadioButton", "radio");
+            ui.Horizontal(ui =>
+            {
+                ui.RadioValue(ref _radio, Enum.First, "First");
+                ui.RadioValue(ref _radio, Enum.Second, "Second");
+                ui.RadioValue(ref _radio, Enum.Third, "Third");
+            });
+            ui.EndRow();
+
+            DocLinkLabel(ui, "SelectableLabel", "SelectableLabel");
+            ui.Horizontal(ui =>
+            {
+                ui.SelectableValue(ref _radio, Enum.First, "First");
+                ui.SelectableValue(ref _radio, Enum.Second, "Second");
+                ui.SelectableValue(ref _radio, Enum.Third, "Third");
+            });
+            ui.EndRow();
+
+            DocLinkLabel(ui, "Slider", "Slider");
+            ui.Slider(ref _scalar, new Interval<float>(0.0f, 360.0f), suffix: "°");
+            ui.EndRow();
+
+            DocLinkLabel(ui, "DragValue", "DragValue");
+            ui.DragValue(ref _scalar, speed: 1.0f);
+            ui.EndRow();
+
+            DocLinkLabel(ui, "ProgressBar", "ProgressBar");
+            var progress = _scalar / 360.0f;
+            _animateProgressBar = ui.ProgressBar(progress, animate: _animateProgressBar) // todo: show_percentage
+                .OnHoverText("The progress bar can be animated!")
+                .Hovered;
+            ui.EndRow();
+
+            DocLinkLabel(ui, "Color picker", "color_edit");
+            ui.ColorEditButton(ref _color);
+            ui.EndRow();
+
+            DocLinkLabel(ui, "Separator", "separator");
+            ui.Separator();
+            ui.EndRow();*/
+
+            /*
+             * 
+        ui.add(doc_link_label("CollapsingHeader", "collapsing"));
+        ui.collapsing("Click to see what is hidden!", |ui| {
+            ui.horizontal_wrapped(|ui| {
+                ui.spacing_mut().item_spacing.x = 0.0;
+                ui.label("It's a ");
+                ui.add(doc_link_label("Spinner", "spinner"));
+                ui.add_space(4.0);
+                ui.add(egui::Spinner::new());
+            });
+        });
+        ui.end_row();
+             
+        ui.add(doc_link_label("ComboBox", "ComboBox"));
+
+        egui::ComboBox::from_label("Take your pick")
+            .selected_text(format!("{radio:?}"))
+            .show_ui(ui, |ui| {
+                ui.selectable_value(radio, Enum::First, "First");
+                ui.selectable_value(radio, Enum::Second, "Second");
+                ui.selectable_value(radio, Enum::Third, "Third");
+            });
+        ui.end_row();
+            
+        ui.add(doc_link_label("Color picker", "color_edit"));
+        ui.color_edit_button_srgba(color);
+        ui.end_row();
+            
+        ui.add(doc_link_label("Image", "Image"));
+        let egui_icon = egui::include_image!("../../data/icon.png");
+        ui.add(egui::Image::new(egui_icon.clone()));
+        ui.end_row();
+            
+        ui.add(doc_link_label(
+            "Button with image",
+            "Button::image_and_text",
+        ));
+        if ui
+            .add(egui::Button::image_and_text(egui_icon, "Click me!"))
+            .clicked()
+        {
+            *boolean = !*boolean;
+        }
+        ui.end_row();
+             */
+
+        }
+    }
+
+    private static void DocLinkLabel(Ui ui, string title, string searchTerm)
+    {
+        ui.HyperlinkTo(title, $"https://docs.rs/egui?search={searchTerm}");
+            /*.OnHoverUi(ui =>
+            {
+                ui.HorizontalWrapped(ui =>
+                {
+                    ui.Label("Search egui docs for");
+                    ui.Code(searchTerm);
+                });
+            });*/
+    }
+
+    private enum Enum
+    {
+        First,
+        Second,
+        Third,
     }
 
     public static Egui.Key? MapKeys(Silk.NET.Input.Key key)
@@ -212,7 +404,7 @@ public unsafe class Program
             case Silk.NET.Input.Key.Up: return Egui.Key.ArrowUp;
             case Silk.NET.Input.Key.Down: return Egui.Key.ArrowDown;
         }
-        
+
         return null;
     }
 
