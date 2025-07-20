@@ -19,11 +19,11 @@ namespace Egui;
 ///
 /// The color space is assumed to be <c>sRGB</c>.
 ///
-/// All operations on <see cref="Color32"/>  are done in "gamma space" (see <https://en.wikipedia.org/wiki/SRGB>).
+/// All operations on <see cref="Color32"/>  are done in "gamma space".
 /// This is not physically correct, but it is fast and sometimes more perceptually even than linear space.
 /// If you instead want to perform these operations in linear-space color, use <c>Rgba</c>.
 ///
-/// An <c>alpha=0<c/> means the color is to be treated as an additive color.
+/// An <c>alpha=0</c> means the color is to be treated as an additive color.
 /// </summary>
 public unsafe partial struct Color32 : IEquatable<Color32>
 {

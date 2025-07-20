@@ -6,7 +6,7 @@ using System;
 
 namespace Bincode
 {
-    public class BincodeDeserializer : BinaryDeserializer
+    internal class BincodeDeserializer : BinaryDeserializer
     {
         public BincodeDeserializer(byte[] input) : base(input, long.MaxValue) { }
         public BincodeDeserializer(ArraySegment<byte> input) : base(input, long.MaxValue) { }

@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Serde
 {
-    public abstract class BinarySerializer : ISerializer, IDisposable
+    internal abstract class BinarySerializer : ISerializer, IDisposable
     {
         protected readonly MemoryStream buffer;
         protected readonly BinaryWriter output;

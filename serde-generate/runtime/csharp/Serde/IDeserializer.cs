@@ -6,7 +6,7 @@ using System.Numerics;
 
 namespace Serde
 {
-    public interface IDeserializer
+    internal interface IDeserializer
     {
         string deserialize_str();
 

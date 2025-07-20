@@ -3,10 +3,10 @@
 
 using System;
 
-namespace Serde
+namespace Egui
 {
     ///<summary>
-    /// Analogous to Rust's Unit type `()`.
+    /// Analogous to Rust's unit type.
     ///</summary>
     public readonly struct Unit : IEquatable<Unit>
     {

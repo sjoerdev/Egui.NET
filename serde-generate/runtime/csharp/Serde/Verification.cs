@@ -5,7 +5,7 @@ using System;
 
 namespace Serde
 {
-    public static class Verification
+    internal static class Verification
     {
         /// <summary>
         /// Returns an integer corresponding to the lexicographic ordering of the two input byte strings.

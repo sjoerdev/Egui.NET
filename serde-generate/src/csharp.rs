@@ -269,7 +269,7 @@ using System.Numerics;"
         use Format::*;
         match format {
             TypeName(x) => self.quote_qualified_name(x),
-            Unit => "Serde.Unit".into(),
+            Unit => "Egui.Unit".into(),
             Bool => "bool".into(),
             I8 => "sbyte".into(),
             I16 => "short".into(),

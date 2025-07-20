@@ -7,7 +7,7 @@ using System;
 
 namespace Serde
 {
-    public struct Range : IEquatable<Range>
+    internal struct Range : IEquatable<Range>
     {
         public int Start { get; }
         public int End { get; }
@@ -36,7 +36,7 @@ namespace Serde
         public static bool operator !=(Range range1, Range range2) => !(range1 == range2);
     }
 
-    public static class RangeExtensions
+    internal static class RangeExtensions
     {
         public static Span<T> Slice<T>(this T[] array, Range range) =>
             new Span<T>(array, range.Start, range.Length);

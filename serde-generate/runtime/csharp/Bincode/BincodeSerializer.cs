@@ -6,7 +6,7 @@ using System;
 
 namespace Bincode
 {
-    public class BincodeSerializer : BinarySerializer
+    internal class BincodeSerializer : BinarySerializer
     {
         public BincodeSerializer() : base(long.MaxValue) { }
         public BincodeSerializer(byte[] buffer) : base(buffer, long.MaxValue) { }

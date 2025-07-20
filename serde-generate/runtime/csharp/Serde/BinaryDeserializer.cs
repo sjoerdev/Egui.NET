@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Serde
 {
-    public abstract class BinaryDeserializer : IDeserializer, IDisposable
+    internal abstract class BinaryDeserializer : IDeserializer, IDisposable
     {
         protected readonly ArraySegment<byte> input;
         protected readonly BinaryReader reader;
