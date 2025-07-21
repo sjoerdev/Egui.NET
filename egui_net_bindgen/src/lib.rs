@@ -589,6 +589,11 @@ const IGNORE_FNS: &[&str] = &[
     "epaint_tessellator_Tessellator_tessellate_shape",
     "epaint_tessellator_Tessellator_tessellate_shapes",
     "epaint_tessellator_Tessellator_tessellate_text",
+    "epaint_shapes_path_shape_PathShape",
+    "epaint_tessellator_Tessellator",
+    "egui_load_Result_Ok",
+    "emath_rect_transform_RectTransform",
+    "egui_widget_text_RichText_collect",
 
     // UiBuilder: redundant function (same as default)
     "egui_ui_builder_UiBuilder_new",
@@ -1293,7 +1298,6 @@ impl BindingsGenerator {
                 else {
                     self.krate.paths.contains_key(id)
                 }
-                //&& (self.declaring_type(*id).is_some() || self.krate.paths.contains_key(id))
                 && matches!(item.inner, ItemEnum::Function(_))
                 && {
                     let variant_name = self.fn_enum_variant_name(*id);
