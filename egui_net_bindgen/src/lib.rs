@@ -50,10 +50,6 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_ui_Ui_layout",
     "egui_ui_Ui_visuals",
     "egui_ui_Ui_stack",
-
-    // Rect: bound manually
-    "emath_rect_Rect_center",
-    "emath_rect_Rect_set_center",
     
     "egui_painter_Painter_with_layer_id",
     "egui_painter_Painter_with_clip_rect",
@@ -98,7 +94,14 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "ecolor_hsva_Hsva_from_srgb",
 
     // These functions generate as properties, but should be methods
-    "egui_ui_Ui_separator"
+    "egui_ui_Ui_separator",
+
+    // Popup: bound manually
+    "egui_containers_popup_Popup_open_id",
+
+    // Rect: bound manually
+    "emath_rect_Rect_center",
+    "emath_rect_Rect_set_center",
 ];
 
 /// Types to exclude from generation.
@@ -524,6 +527,44 @@ const IGNORE_FNS: &[&str] = &[
     "epaint_stats_PaintStats_from_shapes",
     "epaint_stats_PaintStats_with_clipped_primitives",
 
+    // Popup: manually bound
+    "egui_containers_popup_PopupCloseBehavior_default",
+    "egui_containers_popup_Popup_align",
+    "egui_containers_popup_Popup_align_alternatives",
+    "egui_containers_popup_Popup_anchor",
+    "egui_containers_popup_Popup_at_pointer",
+    "egui_containers_popup_Popup_at_pointer_fixed",
+    "egui_containers_popup_Popup_at_position",
+    "egui_containers_popup_Popup_close_behavior",
+    "egui_containers_popup_Popup_ctx",
+    "egui_containers_popup_Popup_gap",
+    "egui_containers_popup_Popup_id",
+    "egui_containers_popup_Popup_info",
+    "egui_containers_popup_Popup_open",
+    "egui_containers_popup_Popup_open_bool",
+    "egui_containers_popup_Popup_id",
+    "egui_containers_popup_Popup_kind",
+    "egui_containers_popup_Popup_sense",
+    "egui_containers_popup_Popup_style",
+    "egui_containers_popup_Popup_width",
+    "egui_containers_popup_Popup_open_memory",
+    "egui_containers_popup_Popup_new",
+    "egui_containers_popup_Popup_menu",
+    "egui_containers_popup_Popup_layout",
+    "egui_containers_popup_Popup_is_open",
+    "egui_containers_popup_Popup_frame",
+    "egui_containers_popup_Popup_context_menu",
+    "egui_containers_popup_Popup_default_response_id",
+    "egui_containers_popup_Popup_from_response",
+    "egui_containers_popup_Popup_from_toggle_button_response",
+    "egui_containers_popup_PopupAnchor_rect",
+    "egui_containers_popup_Popup_get_id",
+    "egui_containers_popup_Popup_get_anchor_rect",
+    "egui_containers_popup_Popup_get_popup_rect",
+    "egui_containers_popup_Popup_get_anchor",
+    "egui_containers_popup_Popup_get_best_align",
+    "egui_containers_popup_Popup_get_expected_size",
+
     // Spinner: redundant function (same as default)
     "egui_widgets_spinner_Spinner_new",
 
@@ -606,6 +647,10 @@ const IGNORE_FNS: &[&str] = &[
     "egui_containers_window_Window_scroll_bar_visibility",
     "egui_containers_window_Window_title_bar",
     "egui_containers_window_Window_vscroll",
+
+    // Other functions that cannot be bound to C#
+    "epaint_stroke_PathStroke_new_uv",
+    "epaint_util_hash_with",
     
     "egui___run_test_ctx",
     "egui___run_test_ui",
