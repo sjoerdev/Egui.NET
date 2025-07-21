@@ -71,6 +71,8 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_atomics_atom_kind_AtomKind_text",
     "egui_atomics_atom_kind_AtomKind_image",
 
+    "egui_text_selection_text_cursor_state_is_word_char",
+    "egui_text_selection_text_cursor_state_cursor_rect",
     "egui_widgets_image_Image_texture_options",
     "egui_atomics_atom_layout_AtomLayout_frame",
 
@@ -92,6 +94,9 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "ecolor_hsva_Hsva_from_srgba_unmultiplied",
     "ecolor_hsva_Hsva_from_srgba_premultiplied",
     "ecolor_hsva_Hsva_from_srgb",
+    "ecolor_hsva_rgb_from_hsv",
+    "ecolor_hsva_hsv_from_rgb",
+    "emath_format_with_decimals_in_range",
 
     // These functions generate as properties, but should be methods
     "egui_ui_Ui_separator",
@@ -738,18 +743,6 @@ impl BindingsGenerator {
             }
         }
         
-        let mut namespace_values = namespaces.values().collect::<Vec<_>>();
-        namespace_values.sort();
-        namespace_values.dedup();
-
-        let mut usings = String::new();
-        for using in namespace_values {
-            usings += &format!("global using global::{using};\n");
-        }
-        
-        //panic!("{usings}");
-        //panic!("{namespaces:?}");
-
         BindingsGenerator {
             declaring_tys,
             krate,
@@ -939,6 +932,19 @@ impl BindingsGenerator {
                 }
             }
         }
+        else {
+            let name = self.krate.index[&id].name.as_deref().unwrap_or_default();
+            let namespace = self.namespaces.get(name).cloned().unwrap_or_else(|| "Egui".to_string());
+            let helper_name = format!("{namespace}Helpers");
+
+            let (cs_namespace, cs_class) = namespace.rsplit_once(".").unwrap_or((&namespace, &helper_name));
+            
+            let mut fn_def = String::new();
+            self.emit_cs_fn(&mut std::fmt::Formatter::new(&mut fn_def, Default::default()), None, id, DeclaringType::None)?;
+            
+            writeln!(f, "namespace {cs_namespace} {{ public static partial class {cs_class} {{\n{fn_def}\n}} }}")?;
+            return Ok(());
+        }
 
         Err(std::fmt::Error)
     }
@@ -995,6 +1001,7 @@ impl BindingsGenerator {
                 (true, DeclaringType::Struct) | (true, DeclaringType::Pointer) => ("readonly", FnType::Instance),
                 (true, DeclaringType::Handle) => ("", FnType::Instance),
                 (true, DeclaringType::PrimitiveEnum) => ("static", FnType::Extension),
+                (_, DeclaringType::None) => ("static", FnType::Static),
                 (false, DeclaringType::PrimitiveEnum) => return Err(std::fmt::Error)
             };
             
@@ -1279,8 +1286,15 @@ impl BindingsGenerator {
         self.krate.index.iter()
             .filter_map(|(id, item)| (
                 item.crate_id == 0
+                && item.deprecation.is_none()
+                && if let Some(decl_ty) = self.declaring_type(*id) {
+                    !(item.name.as_deref() == Some("default") && self.is_primitive_enum(decl_ty))
+                }
+                else {
+                    self.krate.paths.contains_key(id)
+                }
+                //&& (self.declaring_type(*id).is_some() || self.krate.paths.contains_key(id))
                 && matches!(item.inner, ItemEnum::Function(_))
-                && (self.declaring_type(*id).is_some() || self.krate.paths.contains_key(id))
                 && {
                     let variant_name = self.fn_enum_variant_name(*id);
                     variant_name.starts_with("e") &&!ignore_fns.contains(&&*variant_name) && !variant_name.contains("___deserialize___")
@@ -1544,23 +1558,7 @@ impl BindingsGenerator {
                         }
                     }
                 },
-                ItemEnum::Union(_)
-                | ItemEnum::Primitive(_)
-                | ItemEnum::ProcMacro(_)
-                | ItemEnum::Macro(_)
-                | ItemEnum::ExternType
-                | ItemEnum::Static(_)
-                | ItemEnum::Constant { .. }
-                | ItemEnum::Trait(_)
-                | ItemEnum::TraitAlias(_)
-                | ItemEnum::Function(_)
-                | ItemEnum::Variant(_)
-                | ItemEnum::Impl(_)
-                | ItemEnum::StructField(_)
-                | ItemEnum::AssocConst { .. }
-                | ItemEnum::ExternCrate { .. }
-                | ItemEnum::AssocType { .. } 
-                | ItemEnum::TypeAlias(_) => {},
+                ItemEnum::Function(_) => { result.insert(item_name.to_string(), vec![item_name.to_string()]); }
                 ItemEnum::Struct(_) | ItemEnum::Enum(_) => { result.insert(item_name.to_string(), vec![item_name.to_string()]); },
                 ItemEnum::Use(use_decl) => if use_decl.is_glob {
                     if let Some(glob_id) = use_decl.id {
@@ -1573,6 +1571,22 @@ impl BindingsGenerator {
                 } else {
                     result.insert(use_decl.name.clone(), vec![use_decl.name.clone()]);
                 },
+                ItemEnum::Union(_)
+                | ItemEnum::Primitive(_)
+                | ItemEnum::ProcMacro(_)
+                | ItemEnum::Macro(_)
+                | ItemEnum::ExternType
+                | ItemEnum::Static(_)
+                | ItemEnum::Constant { .. }
+                | ItemEnum::Trait(_)
+                | ItemEnum::TraitAlias(_)
+                | ItemEnum::Variant(_)
+                | ItemEnum::StructField(_)
+                | ItemEnum::AssocConst { .. }
+                | ItemEnum::ExternCrate { .. }
+                | ItemEnum::AssocType { .. } 
+                | ItemEnum::Impl(_)
+                | ItemEnum::TypeAlias(_) => {},
             }
         }
 
@@ -1675,14 +1689,16 @@ enum DeclaringType {
     /// The type is a garbage-collected `class`.
     Handle,
     /// The type is a `ref struct`.`
-    Pointer
+    Pointer,
+    /// The type will be a static helper class.
+    None
 }
 
 impl DeclaringType {
     /// Whether this type is passed by reference.
     pub fn is_byref(&self) -> bool {
         match self {
-            Self::PrimitiveEnum | Self::Struct => false,
+            Self::None | Self::PrimitiveEnum | Self::Struct => false,
             Self::Handle | Self::Pointer => true,
         }
     }
