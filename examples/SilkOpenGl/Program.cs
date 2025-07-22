@@ -46,6 +46,11 @@ public unsafe class Program
     public static void Main(string[] args)
     {
         _ctx = new Context();
+        _ctx.AllStylesMut((ref Style x) =>
+        {
+            x.Interaction.TooltipDelay = 0.0f;
+            x.Interaction.ShowTooltipsOnlyWhenStill = false;
+        });
 
         new RichText("bababooey from C#!").Strong();
         Console.WriteLine($"CReated a ctx! {_ctx.Os}");
@@ -129,7 +134,8 @@ public unsafe class Program
                 .Open(ref openIt)
                 .Show(ctx, ui =>
             {
-                if (ui.Label("this is another winder").Clicked) { Console.WriteLine("clickit"); }
+                if (ui.Label("this is another winder")
+                    .OnHoverText("Click for a message!").Clicked) { Console.WriteLine("clickit"); }
             });
             /*
             new CentralPanel().Show(ctx, ui =>

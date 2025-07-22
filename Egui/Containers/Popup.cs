@@ -485,6 +485,60 @@ public ref struct Popup
         return this;
     }
 
+    /// <summary>
+    /// Show the popup. Returns None if the popup is not open or anchor is <see cref="PopupAnchor.Pointer"/> and there is no pointer.
+    /// </summary>
+    public readonly InnerResponse? Show(Action<Ui> addContents)
+    {
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var (response, setOpen) = EguiMarshal.Call<SerializablePopup, EguiCallback, (Response?, bool)>(EguiFn.egui_containers_popup_Popup_show, Ctx.Handle.ptr, new SerializablePopup(this), callback);
+
+        if (_openKind == OpenKind.Bool)
+        {
+            _open = setOpen;
+        }
+
+        if (response.HasValue)
+        {
+            return new InnerResponse
+            {
+                Response = response.Value
+            };
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <inheritdoc cref="Show"/>
+    public readonly InnerResponse<R>? Show<R>(Func<Ui, R> addContents)
+    {
+        var ctx = Ctx;
+        R result = default!;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var (response, setOpen) = EguiMarshal.Call<SerializablePopup, EguiCallback, (Response?, bool)>(EguiFn.egui_containers_popup_Popup_show, Ctx.Handle.ptr, new SerializablePopup(this), callback);
+
+        if (_openKind == OpenKind.Bool)
+        {
+            _open = setOpen;
+        }
+
+        if (response.HasValue)
+        {
+            return new InnerResponse<R>
+            {
+                Inner = result,
+                Response = response.Value
+            };
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     private enum StyleMode
     {
         None,
@@ -498,5 +552,110 @@ public ref struct Popup
         Closed,
         Bool,
         Memory
+    }
+
+    /// <summary>
+    /// Helper struct for serializing popups
+    /// </summary>
+    private struct SerializablePopup
+    {
+        public Egui.Id Id;
+        public Egui.Containers.PopupAnchor Anchor;
+        public Egui.RectAlign RectAlign;
+        public ImmutableList<Egui.RectAlign>? AlternativeAligns;
+        public Egui.LayerId LayerId;
+        public Egui.Containers.PopupCloseBehavior CloseBehavior;
+        public Egui.UiStackInfo? Info;
+        public Egui.Containers.PopupKind Kind;
+        public float Gap;
+        public bool WidgetClickedElsewhere;
+        public float? Width;
+        public Egui.Sense Sense;
+        public Egui.Layout Layout;
+        public Egui.Containers.Frame? Frame;
+        public Egui.Style? Style;
+        public bool MenuStyle;
+
+        public SerializablePopup(Popup popup)
+        {
+            Id = popup._id;
+            Anchor = popup._anchor;
+            RectAlign = popup._rectAlign;
+            AlternativeAligns = popup._alternativeAligns;
+            LayerId = popup._layerId;
+            CloseBehavior = popup._closeBehavior;
+            Info = popup._info;
+            Kind = popup._kind;
+            Gap = popup._gap;
+            WidgetClickedElsewhere = popup._widgetClickedElsewhere;
+            Width = popup._width;
+            Sense = popup._sense;
+            Layout = popup._layout;
+            Frame = popup._frame;
+            Style = popup._style;
+            MenuStyle = popup._styleMode == StyleMode.MenuStyle;
+        }
+
+        internal static void Serialize(Serde.ISerializer serializer, SerializablePopup value) => value.Serialize(serializer);
+
+        internal void Serialize(Serde.ISerializer serializer)
+        {
+            serializer.increase_container_depth();
+            Id.Serialize(serializer);
+            Anchor.Serialize(serializer);
+            RectAlign.Serialize(serializer);
+            serialize_option_vector_RectAlign(AlternativeAligns, serializer);
+            LayerId.Serialize(serializer);
+            CloseBehavior.Serialize(serializer);
+            serialize_option_UiStackInfo(Info, serializer);
+            Kind.Serialize(serializer);
+            serializer.serialize_f32(Gap);
+            serializer.serialize_bool(WidgetClickedElsewhere);
+            Egui.TraitHelpers.serialize_option_f32(Width, serializer);
+            Sense.Serialize(serializer);
+            Layout.Serialize(serializer);
+            Egui.TraitHelpers.serialize_option_Frame(Frame, serializer);
+            Egui.TraitHelpers.serialize_option_Style(Style, serializer);
+            serializer.serialize_bool(MenuStyle);
+            serializer.decrease_container_depth();
+        }
+
+        internal static SerializablePopup Deserialize(Serde.IDeserializer deserializer)
+        {
+            throw new NotSupportedException();
+        }
+
+        private static void serialize_option_vector_RectAlign(ImmutableList<Egui.RectAlign>? value, Serde.ISerializer serializer)
+        {
+            if (value is not null)
+            {
+                serializer.serialize_option_tag(true);
+                serialize_vector_RectAlign((value ?? default), serializer);
+            }
+            else
+            {
+                serializer.serialize_option_tag(false);
+            }
+        }
+
+        private static void serialize_option_UiStackInfo(Egui.UiStackInfo? value, Serde.ISerializer serializer)
+        {
+            if (value is not null)
+            {
+                serializer.serialize_option_tag(true);
+                (value ?? default).Serialize(serializer);
+            }
+            else
+            {
+                serializer.serialize_option_tag(false);
+            }
+        }
+        
+        private static void serialize_vector_RectAlign(ImmutableList<Egui.RectAlign> value, Serde.ISerializer serializer) {
+            serializer.serialize_len(value.Count);
+            foreach (var item in value) {
+                item.Serialize(serializer);
+            }
+        }
     }
 }

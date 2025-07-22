@@ -11,9 +11,21 @@ namespace Egui;
 public sealed partial class Context : EguiObject
 {
     /// <summary>
+    /// A list of contexts that have been created.
+    /// This list is used for deserializing the <see cref="Response.Ctx"/>
+    /// field without allocating a new context object.
+    /// </summary>
+    private static readonly Dictionary<nuint, WeakReference<Context>> _contexts = new Dictionary<nuint, WeakReference<Context>>();
+
+    /// <summary>
     /// Paint on top of everything else
     /// </summary>
     public Painter DebugPainter => new Painter(this, EguiMarshal.Call<EguiHandle>(EguiFn.egui_context_Context_debug_painter, Handle.ptr));
+
+    /// <summary>
+    /// A unique ID used for internal tracking.
+    /// </summary>
+    internal readonly nuint Id;
 
     /// <summary>
     /// A function that modifies a style.
@@ -27,7 +39,49 @@ public sealed partial class Context : EguiObject
     /// </summary>
     public Context() : base(EguiMarshal.Call<EguiHandle>(EguiFn.egui_context_Context_default, 0))
     {
+        lock (_contexts)
+        {
+            foreach (var pair in _contexts)
+            {
+                if (!pair.Value.TryGetTarget(out _))
+                {
+                    _contexts.Remove(pair.Key);
+                }
+            }
 
+            Id = EguiMarshal.Call<nuint>(EguiFn.egui_context_Context_ref_id, Handle.ptr);
+            _contexts.Add(Id, new WeakReference<Context>(this));
+        }
+    }
+
+    /// <summary>
+    /// Ensures that the object is not garbage-collected until the context has no other references left.
+    /// </summary>
+    ~Context()
+    {
+        if (1 < EguiMarshal.Call<nuint>(EguiFn.egui_context_Context_ref_count, Handle.ptr))
+        {
+            GC.ReRegisterForFinalize(this);
+        }
+    }
+
+    /// <summary>
+    /// Retrieves an existing context.
+    /// The result of this method is only defined if <see cref="ptr"/>
+    /// is a pointer to a valid context previously created with the constructor.
+    /// </summary>
+    internal static Context FromId(nuint id)
+    {
+        lock (_contexts)
+        {
+            if (_contexts.TryGetValue(id, out var value)
+                && value.TryGetTarget(out var target))
+            {
+                return target;
+            }
+        }
+
+        throw new ArgumentException("Unable to find context with ID", nameof(id));
     }
 
     /// <summary>

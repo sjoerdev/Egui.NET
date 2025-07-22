@@ -255,7 +255,7 @@ internal static class EguiMarshal
             else if (typeof(T) == typeof(nuint))
             {
                 Serialize = (serializer, value) => serializer.serialize_u64((nuint)(object)value!);
-                Deserialize = deserializer => (T)(object)deserializer.deserialize_u64();
+                Deserialize = deserializer => (T)(object)(nuint)deserializer.deserialize_u64();
             }
             else if (typeof(T) == typeof(UInt128))
             {
@@ -285,7 +285,7 @@ internal static class EguiMarshal
             else if (typeof(T) == typeof(nint))
             {
                 Serialize = (serializer, value) => serializer.serialize_i64((nint)(object)value!);
-                Deserialize = deserializer => (T)(object)deserializer.deserialize_i64();
+                Deserialize = deserializer => (T)(object)(nint)deserializer.deserialize_i64();
             }
             else if (typeof(T) == typeof(Int128))
             {

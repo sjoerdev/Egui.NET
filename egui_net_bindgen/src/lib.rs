@@ -122,6 +122,7 @@ const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
     "Color32",
     "DragPanButtons",
     "Id",
+    "Response",
     "Sense",
     "UiStack"
 ];
@@ -130,7 +131,9 @@ const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
 const HANDLE_TYPES: &[&str] = &[
     "Context",
     "Fonts",
-    "Painter"
+    "Painter",
+    "TextureHandle",
+    "TextureManager"
 ];
 
 /// Types that should be converted to `ref struct`s in C# backed by pointers.
@@ -151,6 +154,13 @@ const NAMESPACE_RENAMES: &[(&str, &str)] = &[
 
 /// Customizes the assigned namespace of types.
 const NAMESPACE_OVERRIDES: &[(&str, &str)] = &[
+];
+
+/// Custom function names to define.
+const CUSTOM_FNS: &[&str] = &[
+    "egui_context_Context_ref_decrement",
+    "egui_context_Context_ref_count",
+    "egui_context_Context_ref_id",
 ];
 
 /// A list of fully-qualified function IDs to ignore during generation.
@@ -298,6 +308,9 @@ const IGNORE_FNS: &[&str] = &[
     "core_str_BytesIsNotEmpty",
     "core_str_pattern_MultiCharEqSearcher",
     "core_str_pattern_SearchStep",
+    "epaint_texture_handle_TextureHandle_drop",
+    "epaint_shapes_paint_callback_PaintCallbackInfo_clip_rect_in_pixels",
+    "epaint_shapes_paint_callback_PaintCallbackInfo_viewport_in_pixels",
 
     // FontsImpl: private type
     "epaint_text_fonts_FontsImpl_definitions",
@@ -458,7 +471,13 @@ const IGNORE_FNS: &[&str] = &[
     "emath_rect_Rect_width",
     "emath_rect_Rect_set_width",
 
-    // Sense: bindings are written manually
+    // Response: bound manually
+    "egui_response_Response_on_disabled_hover_ui",
+    "egui_response_Response_on_hover_ui",
+    "egui_response_Response_on_hover_ui_at_pointer",
+    "egui_response_Response_show_tooltip_ui",
+
+    // Sense: bound manually
     "egui_sense_Sense_all",
     "egui_sense_Sense_bitand",
     "egui_sense_Sense_bitand_assign",
@@ -666,7 +685,8 @@ const IGNORE_FNS: &[&str] = &[
     "egui___run_test_ui",
 
     "serde_de_impls_deserialize_NonZeroVisitor",
-    "serde_de_impls_deserialize_in_place_TupleInPlaceVisitor"
+    "serde_de_impls_deserialize_in_place_TupleInPlaceVisitor",
+    "egui_warn_if_debug_build"
 ];
 
 /// Function names to be ignored during generation.
@@ -1228,6 +1248,7 @@ impl BindingsGenerator {
     /// Gets the variant names for an `enum` containing all public `egui` functions.
     fn fn_enum_variant_names(&self) -> Vec<String> {
         let mut result = self.gather_fns().into_iter().map(|id| self.fn_enum_variant_name(id)).collect::<Vec<_>>();
+        result.extend(CUSTOM_FNS.into_iter().map(|x| x.to_string()));
         result.sort();
         result
     }
