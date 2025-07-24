@@ -564,6 +564,8 @@ public ref struct Popup
         public Egui.RectAlign RectAlign;
         public ImmutableList<Egui.RectAlign>? AlternativeAligns;
         public Egui.LayerId LayerId;
+        public byte OpenKind;
+        public SetOpenCommand? OpenCommand;
         public Egui.Containers.PopupCloseBehavior CloseBehavior;
         public Egui.UiStackInfo? Info;
         public Egui.Containers.PopupKind Kind;
@@ -583,6 +585,8 @@ public ref struct Popup
             RectAlign = popup._rectAlign;
             AlternativeAligns = popup._alternativeAligns;
             LayerId = popup._layerId;
+            OpenKind = (byte)popup._openKind;
+            OpenCommand = popup._memoryCommand;
             CloseBehavior = popup._closeBehavior;
             Info = popup._info;
             Kind = popup._kind;
@@ -606,6 +610,8 @@ public ref struct Popup
             RectAlign.Serialize(serializer);
             serialize_option_vector_RectAlign(AlternativeAligns, serializer);
             LayerId.Serialize(serializer);
+            serializer.serialize_u8(OpenKind);
+            serialize_option_SetOpenCommmand(OpenCommand, serializer);
             CloseBehavior.Serialize(serializer);
             serialize_option_UiStackInfo(Info, serializer);
             Kind.Serialize(serializer);
@@ -651,6 +657,19 @@ public ref struct Popup
             }
         }
         
+        private static void serialize_option_SetOpenCommmand(SetOpenCommand? value, Serde.ISerializer serializer)
+        {
+            if (value is not null)
+            {
+                serializer.serialize_option_tag(true);
+                (value ?? default).Serialize(serializer);
+            }
+            else
+            {
+                serializer.serialize_option_tag(false);
+            }
+        }
+
         private static void serialize_vector_RectAlign(ImmutableList<Egui.RectAlign> value, Serde.ISerializer serializer) {
             serializer.serialize_len(value.Count);
             foreach (var item in value) {

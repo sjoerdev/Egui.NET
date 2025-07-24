@@ -44,6 +44,15 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "epaint_shapes_bezier_shape_CubicBezierShape_flatten_closed",
     "egui_style_Style_interact",
     "egui_style_Widgets_style",
+    "egui_widgets_label_Label_text",
+    "egui_text_selection_text_cursor_state_slice_char_range",
+
+    "egui_widgets_image_ImageSource_uri",
+    "egui_text_selection_cursor_range_CCursorRange_slice_str",
+    "egui_widget_text_RichText_text",
+    "egui_widget_text_WidgetText_text",
+    "epaint_text_text_layout_types_Galley_text",
+    "egui_widgets_image_Image_uri",
 
     "egui_ui_Ui_spacing",
     "egui_ui_Ui_style",
@@ -133,7 +142,6 @@ const HANDLE_TYPES: &[&str] = &[
     "Fonts",
     "Painter",
     "TextureHandle",
-    "TextureManager"
 ];
 
 /// Types that should be converted to `ref struct`s in C# backed by pointers.
@@ -311,6 +319,7 @@ const IGNORE_FNS: &[&str] = &[
     "epaint_texture_handle_TextureHandle_drop",
     "epaint_shapes_paint_callback_PaintCallbackInfo_clip_rect_in_pixels",
     "epaint_shapes_paint_callback_PaintCallbackInfo_viewport_in_pixels",
+    "egui_containers_frame_Frame_show_dyn",
 
     // FontsImpl: private type
     "epaint_text_fonts_FontsImpl_definitions",
@@ -472,6 +481,7 @@ const IGNORE_FNS: &[&str] = &[
     "emath_rect_Rect_set_width",
 
     // Response: bound manually
+    "egui_response_Response_context_menu",
     "egui_response_Response_on_disabled_hover_ui",
     "egui_response_Response_on_hover_ui",
     "egui_response_Response_on_hover_ui_at_pointer",
@@ -677,6 +687,30 @@ const IGNORE_FNS: &[&str] = &[
     "egui_containers_window_Window_title_bar",
     "egui_containers_window_Window_vscroll",
 
+    // FramePublisher: not possible to bind to C# due to generics
+    "egui_cache_frame_publisher_FramePublisher_as_any_mut",
+    "egui_cache_frame_publisher_FramePublisher_default",
+    "egui_cache_frame_publisher_FramePublisher_evict_cache",
+    "egui_cache_frame_publisher_FramePublisher_get",
+    "egui_cache_frame_publisher_FramePublisher_len",
+    "egui_cache_frame_publisher_FramePublisher_new",
+    "egui_cache_frame_publisher_FramePublisher_set",
+    "egui_cache_frame_publisher_FramePublisher_update",
+
+    // FrameCache: not possible to bind to C# due to generics
+    "egui_cache_frame_cache_FrameCache_as_any_mut",
+    "egui_cache_frame_cache_FrameCache_default",
+    "egui_cache_frame_cache_FrameCache_evict_cache",
+    "egui_cache_frame_cache_FrameCache_get",
+    "egui_cache_frame_cache_FrameCache_len",
+    "egui_cache_frame_cache_FrameCache_new",
+    "egui_cache_frame_cache_FrameCache_update",
+
+    // StyleModifier: not possible to bind to C# due to callbacks
+    "egui_style_StyleModifier_apply",
+    "egui_style_StyleModifier_default",
+    "egui_style_StyleModifier_new",
+
     // Other functions that cannot be bound to C#
     "epaint_stroke_PathStroke_new_uv",
     "epaint_util_hash_with",
@@ -693,11 +727,13 @@ const IGNORE_FNS: &[&str] = &[
 const IGNORE_FN_NAMES: &[&str] = &[
     "add",
     "add_assign",
+    "as_ref",
     "bitand",
     "bitand_assign",
     "bitor",
     "bitor_assign",
     "bits",
+    "borrow",
     "clone",
     "cmp",
     "deref",
@@ -965,6 +1001,7 @@ impl BindingsGenerator {
             let (cs_namespace, cs_class) = namespace.rsplit_once(".").unwrap_or((&namespace, &helper_name));
             
             let mut fn_def = String::new();
+
             self.emit_cs_fn(&mut std::fmt::Formatter::new(&mut fn_def, Default::default()), None, id, DeclaringType::None)?;
             
             writeln!(f, "namespace {cs_namespace} {{ public static partial class {cs_class} {{\n{fn_def}\n}} }}")?;
@@ -1049,11 +1086,13 @@ impl BindingsGenerator {
         sig: &FunctionSignature,
         returns_this: bool
     ) -> std::fmt::Result {
+        let original_name = &self.krate.index[&id].name.as_deref().expect("Failed to get function name");
+        
         let property = match fn_ty {
             FnType::Instance => sig.inputs.len() == 1 && sig.output.is_some() && !returns_this,
             FnType::Static => sig.inputs.is_empty() && sig.output.is_some(),
             _ => false
-        };
+        } && !original_name.contains("take");
         
         if !property {
             write!(f, "(")?;
@@ -1527,6 +1566,7 @@ impl BindingsGenerator {
         Some(match x {
             "bool" => "bool",
             "char" => "char",
+            "str" => "string",
             "u8" => "byte",
             "u16" => "ushort",
             "u32" => "uint",
