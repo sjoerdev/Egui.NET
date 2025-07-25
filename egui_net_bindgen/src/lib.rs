@@ -21,6 +21,8 @@ use egui::scroll_area::*;
 use egui::style::*;
 use egui::text::*;
 use egui::text_edit::*;
+use egui::text_selection::*;
+use egui::text_selection::visuals::*;
 use egui::util::undoer::*;
 use rustdoc_types::*;
 use rustdoc_types::Id as RdId;
@@ -59,9 +61,6 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_atomics_atom_kind_AtomKind_text",
     "egui_atomics_atom_kind_AtomKind_image",
 
-    "egui_text_selection_text_cursor_state_is_word_char",
-    "egui_text_selection_text_cursor_state_cursor_rect",
-    "egui_widgets_image_Image_texture_options",
     "egui_atomics_atom_layout_AtomLayout_frame",
 
     "egui_style_Style_text_styles",
