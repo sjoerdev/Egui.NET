@@ -35,38 +35,17 @@ use std::path::*;
 /// Functions to exclude when automatically generating bindings.
 const BINDING_EXCLUDE_FNS: &[&str] = &[
     // These functions return references which need to be converted to values
-    "egui_data_input_RawInput_viewport",
-    "egui_style_Style_noninteractive",
-    "egui_input_state_InputState_viewport",
-    "egui_data_output_OutputEvent_widget_info",
-    "egui_widget_rect_WidgetRects_get",
-    "egui_widget_rect_WidgetRects_info",
-    "epaint_shapes_bezier_shape_CubicBezierShape_flatten_closed",
-    "egui_style_Style_interact",
-    "egui_style_Widgets_style",
-    "egui_widgets_label_Label_text",
     "egui_text_selection_text_cursor_state_slice_char_range",
 
-    "egui_widgets_image_ImageSource_uri",
-    "egui_text_selection_cursor_range_CCursorRange_slice_str",
-    "egui_widget_text_RichText_text",
-    "egui_widget_text_WidgetText_text",
-    "epaint_text_text_layout_types_Galley_text",
-    "egui_widgets_image_Image_uri",
-
     "egui_ui_Ui_spacing",
+    "egui_ui_Ui_spacing_mut",
+    "egui_layers_GraphicLayers_entry",
+    "egui_ui_Ui_style_mut",
     "egui_ui_Ui_style",
     "egui_ui_Ui_layout",
     "egui_ui_Ui_visuals",
+    //"egui_ui_Ui_visuals_mut",
     "egui_ui_Ui_stack",
-    
-    "egui_painter_Painter_with_layer_id",
-    "egui_painter_Painter_with_clip_rect",
-    "egui_layers_GraphicLayers_get",
-    "epaint_text_fonts_FontData_as_ref",
-    "epaint_text_fonts_FontData_from_static",
-    "emath_rect_transform_RectTransform_to",
-    "egui_widgets_image_Image_image_options",
 
     // These functions have conflicting names with fields or C#
     "egui_data_input_EventFilter_matches",
@@ -376,6 +355,9 @@ const IGNORE_FNS: &[&str] = &[
     "egui_containers_scene_DragPanButtons_symmetric_difference",
     "egui_containers_scene_DragPanButtons_toggle",
     "egui_containers_scene_DragPanButtons_union",
+
+    // FontData: redundant function
+    "epaint_text_fonts_FontData_from_static",
 
     // History: not possible to bind to C# due to generics
     "emath_history_History_average",
@@ -717,6 +699,7 @@ const IGNORE_FNS: &[&str] = &[
     
     "egui___run_test_ctx",
     "egui___run_test_ui",
+    "egui_debug_text_print",
 
     "serde_de_impls_deserialize_NonZeroVisitor",
     "serde_de_impls_deserialize_in_place_TupleInPlaceVisitor",
@@ -842,9 +825,41 @@ impl BindingsGenerator {
         }
     }
 
-    /// Gets the C# name for a type, or returns [`None`] if the type
+    /// Gets the C# and Rust representations of a type, or returns [`None`] if the type
     /// could not be resolved.
-    fn cs_type_name(&self, self_ty: Option<&str>, ty: &Type) -> Option<String> {
+    fn bound_ty(&self, self_ty: Option<&str>, ty: &Type) -> Option<BoundType> {
+        Some(match ty {
+            Type::BorrowedRef { is_mutable, type_, .. } => {
+                let inner_name = match &**type_ {
+                    Type::Generic(x) if x == "Self" => self_ty,
+                    Type::ResolvedPath(path) => path.path.split("::").last(),
+                    _ => None
+                };
+
+                if let Some(name) = inner_name
+                    && (HANDLE_TYPES.contains(&name) || POINTER_TYPES.contains(&name)) {
+                    BoundType {
+                        kind: BoundTypeKind::Pointer { mutable: *is_mutable },
+                        name: BoundTypeName::cs_rs(name, name)
+                    }
+                }
+                else {
+                    BoundType {
+                        kind: BoundTypeKind::Reference { mutable: *is_mutable },
+                        name: self.bound_ty_name(self_ty, type_)?
+                    }
+                }
+            },
+            _ => BoundType {
+                kind: BoundTypeKind::Value,
+                name: self.bound_ty_name(self_ty, ty)?
+            },
+        })
+    }
+
+    /// Gets the C# and Rust names for a by-value type, or returns [`None`] if the type
+    /// could not be resolved.
+    fn bound_ty_name(&self, self_ty: Option<&str>, ty: &Type) -> Option<BoundTypeName> {
         Some(match ty {
             Type::ResolvedPath(path) => match path.path.as_str() {
                 "Arc" | "Option" | "Vec" => {
@@ -858,40 +873,46 @@ impl BindingsGenerator {
                     let Some(GenericArgs::AngleBracketed { args, .. }) = path.args.as_deref() else { return None };
                     if args.len() == 1 {
                         let GenericArg::Type(arg) = &args[0] else { return None };
-                        builtin_fn(self.cs_type_name(self_ty, arg)?)
+                        let inner = self.bound_ty_name(self_ty, arg)?;
+                        BoundTypeName::cs_rs(builtin_fn(inner.cs_name), format!("{}<{}>", path.path, inner.rs_name))
                     }
                     else {
                         return None
                     }
                 },
-                "String" | "str" => "string".to_string(),
+                "String" | "str" => BoundTypeName::cs_rs("string", "String"),
                 _ => {
                     let name = path.path.split("::").last().expect("Type was empty");
                     if self.registry.contains_key(name) {
-                        name.to_string()
+                        BoundTypeName::cs_rs(name, name)
                     }
                     else {
                         return None
                     }
                 }
             },
-            Type::Generic(x) if x == "Self" => self_ty?.to_string(),
+            Type::Generic(x) if x == "Self" => if HANDLE_TYPES.contains(&self_ty?) || POINTER_TYPES.contains(&self_ty?) {
+                return None
+            }
+            else {
+                BoundTypeName::cs_rs(self_ty?, self_ty?)
+            },
             Type::ImplTrait(x) => if x.len() == 1
                 && let Some(GenericBound::TraitBound { trait_: RdPath { path, args: trait_generics, .. }, .. }) = x.first() {
                     if path == "ToString" {
-                        "string".to_string()
+                        BoundTypeName::cs_rs("string", "String")
                     }
                     else if path == "Into"
                         && let Some(GenericArgs::AngleBracketed { args, .. }) = trait_generics.as_deref()
                         && args.len() == 1
                         && let GenericArg::Type(inner_ty) = &args[0] {
-                        self.cs_type_name(self_ty, inner_ty)?
+                        self.bound_ty_name(self_ty, inner_ty)?
                     }
                     else if path.contains("Hash") {
-                        "Id".to_string()
+                        BoundTypeName::cs_rs("Id", "Id")
                     }
                     else if path.contains("IntoAtoms") {
-                        "Atoms".to_string()
+                        BoundTypeName::cs_rs("Atoms", "Atoms")
                     }
                     else {
                         return None
@@ -900,19 +921,33 @@ impl BindingsGenerator {
                 else {
                     return None
                 }
-            Type::Primitive(x) => Self::cs_primitive_name(&x)?.to_string(),
-            Type::Tuple(items) => format!("ValueTuple<{}>",
-                items.iter().map(|x| self.cs_type_name(self_ty, x)).collect::<Option<Vec<_>>>()?.join(", ")),
-            Type::Slice(type_)
-            | Type::Array { type_, .. } => format!("ImmutableList<{}>", self.cs_type_name(self_ty, &type_)?),
-            Type::BorrowedRef { is_mutable: false, type_, .. } => self.cs_type_name(self_ty, &type_)?,
+            Type::Primitive(x) => BoundTypeName::cs_rs(Self::cs_primitive_name(&x)?, Self::rs_primitive_sized_name(&x)),
+            Type::Tuple(items) => {
+                let inner_tys = items.iter().map(|x| self.bound_ty_name(self_ty, x)).collect::<Option<Vec<_>>>()?;
+
+                BoundTypeName::cs_rs(
+                    format!("ValueTuple<{}>", inner_tys.iter().map(|x| x.cs_name.as_str()).collect::<Vec<_>>().join(", ")),
+                    format!("({})", inner_tys.iter().map(|x| x.rs_name.as_str()).collect::<Vec<_>>().join(", ")))
+            },
+            Type::Slice(type_) => {
+                let inner_ty = self.bound_ty_name(self_ty, type_)?;
+                BoundTypeName::cs_rs(
+                    format!("ImmutableList<{}>", inner_ty.cs_name),
+                    format!("Vec<{}>", inner_ty.rs_name))
+            },
+            Type::Array { type_, len } => {
+                let inner_ty = self.bound_ty_name(self_ty, type_)?;
+                BoundTypeName::cs_rs(
+                    format!("ImmutableList<{}>", inner_ty.cs_name),
+                    format!("[{}; {len}]", inner_ty.rs_name))
+            },
             Type::DynTrait(_)
             | Type::Generic(_)
             | Type::Pat { .. }
             | Type::Infer
             | Type::RawPointer { .. }
             | Type::QualifiedPath { .. }
-            | Type::BorrowedRef { is_mutable: true, .. }
+            | Type::BorrowedRef { .. }
             | Type::FunctionPointer(_) => return None,
         })
     }
@@ -1055,8 +1090,17 @@ impl BindingsGenerator {
             self.emit_cs_fn_def(f, ty_name, id, decl_ty, FnType::Constructor, &func.sig, returns_this)?;
         }
         else {
-            let return_name = func.sig.output.as_ref().and_then(|x| self.cs_type_name(ty_name, x))
-                .unwrap_or("void".to_string());
+            let return_name = if let Some(bound_ty) = func.sig.output.as_ref().and_then(|x| self.bound_ty(ty_name, x)) {
+                if matches!(bound_ty.kind, BoundTypeKind::Pointer { .. }) {
+                    return Err(std::fmt::Error);
+                }
+                else {
+                    bound_ty.name.cs_name
+                }
+            }
+            else {
+                "void".to_string()
+            };
 
             let (qualifiers, fn_type) = match (has_this, decl_ty) {
                 (false, DeclaringType::Handle) | (false, DeclaringType::Struct) | (false, DeclaringType::Pointer) => ("static", FnType::Static),
@@ -1094,6 +1138,12 @@ impl BindingsGenerator {
             _ => false
         } && !original_name.contains("take");
         
+        if sig.output.as_ref()
+            .and_then(|x| Some(!matches!(self.bound_ty(ty_name, x)?.kind, BoundTypeKind::Value | BoundTypeKind::Reference { mutable: false })))
+            .unwrap_or_default() {
+            return Err(std::fmt::Error);
+        }
+
         if !property {
             write!(f, "(")?;
         }
@@ -1105,7 +1155,7 @@ impl BindingsGenerator {
                 continue;
             }
             
-            let param_ty = self.cs_type_name(ty_name, ty).ok_or(std::fmt::Error)?;
+            let param_ty = self.bound_ty(ty_name, ty).ok_or(std::fmt::Error)?.name.cs_name;
             generic_args.push(param_ty.clone());
 
             let cs_name = name.to_case(Case::Camel);
@@ -1140,8 +1190,11 @@ impl BindingsGenerator {
             writeln!(f, "if ({handle_value} == 0) {{ throw new NullReferenceException(\"{} instance was uninitialized\"); }}", ty_name.expect("Failed to get type name"))?;
         }
 
+        // todo: throw NREs for zero'd ptrs
+
         if let Some(return_ty) = &sig.output {
-            generic_args.push(self.cs_type_name(ty_name, return_ty).ok_or(std::fmt::Error)?);
+            generic_args.push(self.bound_ty(ty_name, return_ty).ok_or(std::fmt::Error)?
+                .name.cs_name);
 
             if fn_ty == FnType::Constructor {
                 write!(f, "   this = ")?;
@@ -1183,24 +1236,130 @@ impl BindingsGenerator {
         for id in bound_ids {
             let ty_name = self.declaring_type(*id).and_then(|x| self.krate.index[&x].name.clone());
     
-            let with_fn = if ty_name.as_deref().map(|x| HANDLE_TYPES.contains(&x) || POINTER_TYPES.contains(&x)).unwrap_or_default() {
-                "with_byref"
-            }
-            else {
-                "with"
-            };
-
             let ItemEnum::Function(func) = &self.krate.index[id].inner else { panic!("Expected function items only") };
-            let cast_params = func.sig.inputs.iter().map(|(_, ty)| self.rs_parameter_name(ty_name.as_deref(), ty))
-                .collect::<Vec<_>>().join(", ");
-            let return_ty = if matches!(func.sig.output, Some(Type::BorrowedRef { .. })) { "_" } else { "_" };
+            
+            let param_decls = self.rs_binding_signature(ty_name.as_deref(), func);
+            let args = self.rs_binding_arguments(ty_name.as_deref(), func);
+            let returns = self.rs_binding_returns(ty_name.as_deref(), func);
+
             let enum_name = self.fn_enum_variant_name(*id);
             let path = self.fn_enum_path(*id);
-            writeln!(f, "    .{with_fn}(EguiFn::{enum_name}, {path} as fn({cast_params}) -> {return_ty})")?;
+
+            let clone_return = if func.sig.output.as_ref()
+                .map(|x| matches!(self.bound_ty(ty_name.as_deref(), x).expect("Failed to get return type").kind, BoundTypeKind::Reference { mutable: false })).unwrap_or_default() {
+                ".to_owned()"
+            }
+            else {
+                ""
+            };
+
+            writeln!(f, "    .with(EguiFn::{enum_name}, |{param_decls}| unsafe {{ ({path}({args}){clone_return}, {returns}) }})")?;
         }
         writeln!(f, ";")?;
         Ok(())
     }
+
+    /*
+     - todo: get Pointer params working on C# side
+     - todo: get &mut params working on C# side
+     - todo: run C# code to verify operation
+     - todo: consider whether can bind Fn(&mut Ui) and Fn(&mut Ui) -> R params..?
+     - todo: continue to tackle remaining fns
+    
+     */
+
+    /// Gets the signature to use for an autobound Rust function.
+    fn rs_binding_signature(&self, self_ty: Option<&str>, f: &Function) -> String {
+        f.sig.inputs.iter().map(|(name, ty)| {
+            let bound_ty = self.bound_ty(self_ty, ty).expect("Failed to get binding for type");
+            let ty_name = match bound_ty.kind {
+                BoundTypeKind::Pointer { .. } => format!("EguiPointer<{}>", bound_ty.name.rs_name),
+                BoundTypeKind::Reference { .. } | BoundTypeKind::Value => bound_ty.name.rs_name.to_string(),
+            };
+
+            format!("mut {name}_: {ty_name}")
+        }).collect::<Vec<_>>().join(", ")
+    }
+    
+    /// Gets the arguments list for an autobound Rust function.
+    fn rs_binding_arguments(&self, self_ty: Option<&str>, f: &Function) -> String {
+        f.sig.inputs.iter().map(|(name, ty)| {
+            let bound_ty = self.bound_ty(self_ty, ty).expect("Failed to get binding for type");
+            match bound_ty.kind {
+                BoundTypeKind::Pointer { mutable: false } => format!("{name}_.get()"),
+                BoundTypeKind::Pointer { mutable: true } => format!("{name}_.get_mut()"),
+                BoundTypeKind::Reference { mutable: false } => format!("&{name}_"),
+                BoundTypeKind::Reference { mutable: true } => format!("&mut {name}_"),
+                BoundTypeKind::Value => format!("{name}_"),
+            }
+        }).collect::<Vec<_>>().join(", ")
+    }
+
+    /// Gets a list of return values for an autobound function.
+    fn rs_binding_returns(&self, self_ty: Option<&str>, f: &Function) -> String {
+        f.sig.inputs.iter().filter(|(_, ty)| {
+            let bound_ty = self.bound_ty(self_ty, ty).expect("Failed to get binding for type");
+            matches!(bound_ty.kind, BoundTypeKind::Reference { mutable: true })
+        }).map(|(name, _)| format!("{name}_")).collect::<Vec<_>>().join(", ")
+    }
+
+    /// Gets the signature to use for an autobound C# function.
+    fn cs_binding_signature(&self, self_ty: Option<&str>, has_this: bool, f: &Function) -> Option<String> {
+        Some(f.sig.inputs.iter().skip(if has_this { 1 } else { 0 }).map(|(name, ty)| {
+            let bound_ty = self.bound_ty(self_ty, ty)?;
+            let ty_name = bound_ty.name.cs_name;
+            let is_ref_mut = matches!(bound_ty.kind, BoundTypeKind::Reference { mutable: true });
+            let ref_prefix = if is_ref_mut { "ref " } else { "" };
+            Some(format!("{ref_prefix}{ty_name} {name}"))
+        }).collect::<Option<Vec<_>>>()?.join(", "))
+    }
+
+    /// Gets the call generics to use for an autobound C# function.
+    fn cs_binding_param_generics(&self, self_ty: Option<&str>, f: &Function) -> Option<String> {
+        Some(f.sig.inputs.iter().map(|(name, ty)| {
+            let bound_ty = self.bound_ty(self_ty, ty)?;
+            let ty_name = match bound_ty.kind {
+                BoundTypeKind::Pointer { .. } => "EguiHandle",
+                BoundTypeKind::Reference { .. } | BoundTypeKind::Value => bound_ty.name.cs_name.as_str(),
+            };
+
+            Some(format!("{ty_name}"))
+        }).collect::<Option<Vec<_>>>()?.join(", "))
+    }
+    
+    /// Gets the arguments list for an autobound C# function.
+    fn cs_binding_arguments(&self, self_ty: Option<&str>, f: &Function) -> Option<String> {
+        Some(f.sig.inputs.iter().map(|(name, ty)| {
+            let arg_name = if name == "self" {
+                "this"
+            }
+            else {
+                name.as_str()
+            };
+
+            Some(match self.bound_ty(self_ty, ty)?.kind {
+                BoundTypeKind::Pointer { .. } => format!("{arg_name}.Ptr"),
+                BoundTypeKind::Reference { .. } | BoundTypeKind::Value => format!("{arg_name}"),
+            })
+        }).collect::<Option<Vec<_>>>()?.join(", "))
+    }
+
+    /*
+    /// Gets a list of return values for an C3 function.
+    fn cs_binding_return_generics(&self, self_ty: Option<&str>, f: &Function) -> Option<String> {
+        f.sig.inputs.iter().filter_map(|(_, ty)| {
+            let bound_ty = self.bound_ty(self_ty, ty).expect("Failed to get binding for type");
+            matches!(bound_ty.kind, BoundTypeKind::Reference { mutable: true }).then(|| )
+        }).collect::<Vec<_>>().join(", ")
+    }
+
+    /// Gets a list of return values for an C3 function.
+    fn cs_binding_returns(&self, self_ty: Option<&str>, f: &Function) -> String {
+        f.sig.inputs.iter().filter(|(_, ty)| {
+            let bound_ty = self.bound_ty(self_ty, ty).expect("Failed to get binding for type");
+            matches!(bound_ty.kind, BoundTypeKind::Reference { mutable: true })
+        }).map(|(name, _)| format!("{name}_")).collect::<Vec<_>>().join(", ")
+    } */
 
     /// Emits an `enum` containing the names of all public `egui` functions.
     fn emit_fn_enum(&self, bound_ids: &[RdId]) {
@@ -1225,63 +1384,6 @@ impl BindingsGenerator {
             .expect("Failed to emit function enum bindings");
 
         std::fs::write(self.output_path.join("egui_fn.rs"), result).expect("Failed to write egui function enum");
-    }
-
-    /// Writes the type of a Rust parameter to aid type inference during compilation.
-    fn rs_parameter_name(&self, self_ty: Option<&str>, ty: &Type) -> String {
-        match ty {
-            Type::ResolvedPath(path) => match path.path.as_str() {
-                "Arc" | "Option" | "Vec" => {
-                    let Some(GenericArgs::AngleBracketed { args, .. }) = path.args.as_deref() else { panic!("Unknown generic type") };
-                    if args.len() == 1 {
-                        let GenericArg::Type(arg) = &args[0] else { panic!("Unknown generic type") };
-                        format!("{}<{}>", path.path, self.rs_parameter_name(self_ty, arg))
-                    }
-                    else {
-                        panic!("Unknown generic type")
-                    }
-                },
-                _ => path.path.split("::").last().expect("Type was empty").to_string()
-            },
-            Type::Generic(x) if x == "Self" => self_ty.expect("No self type available").to_string(),
-            Type::ImplTrait(x) => if x.len() == 1
-                && let Some(GenericBound::TraitBound { trait_: RdPath { path, args: trait_generics, .. }, .. }) = x.first() {
-                    if path == "ToString" {
-                        "String".to_string()
-                    }
-                    else if path == "Into"
-                        && let Some(GenericArgs::AngleBracketed { args, .. }) = trait_generics.as_deref()
-                        && args.len() == 1
-                        && let GenericArg::Type(inner_ty) = &args[0] {
-                        self.rs_parameter_name(self_ty, inner_ty)
-                    }
-                    else if path.contains("Hash") {
-                        "Id".to_string()
-                    }
-                    else if path.contains("IntoAtoms") {
-                        "Atoms".to_string()
-                    }
-                    else {
-                        "_".to_string()
-                    }
-                }
-                else {
-                    "_".to_string()
-                }
-            Type::Primitive(x) => x.to_string(),
-            Type::Tuple(items) => format!("({})",
-                items.iter().map(|x| self.rs_parameter_name(self_ty, x)).chain(["".to_string()]).collect::<Vec<_>>().join(", ")),
-            Type::Slice(_) | Type::Array { .. } => "_".to_string(),
-            Type::BorrowedRef { is_mutable: false, type_, .. } => format!("&{}", self.rs_parameter_name(self_ty, &type_)),
-            Type::BorrowedRef { is_mutable: true, type_, .. } => format!("&mut {}", self.rs_parameter_name(self_ty, &type_)),
-            Type::DynTrait(_)
-            | Type::Generic(_)
-            | Type::Pat { .. }
-            | Type::Infer
-            | Type::RawPointer { .. }
-            | Type::QualifiedPath { .. }
-            | Type::FunctionPointer(_) => "_".to_string(),
-        }
     }
 
     /// Gets the variant names for an `enum` containing all public `egui` functions.
@@ -1583,6 +1685,14 @@ impl BindingsGenerator {
         })
     }
 
+    /// Converts the given Rust primitive (porentially unsized) to a sized primitive.
+    fn rs_primitive_sized_name(x: &str) -> &str {
+        match x {
+            "str" => "String",
+            x => x
+        }
+    }
+
     /// Gathers the public paths of all types that are exported from all crates.
     fn find_public_paths(krate: &Crate, crate_names: &[&str]) -> HashMap<String, Vec<String>> {
         let mut result = HashMap::new();
@@ -1819,4 +1929,49 @@ impl CrateIdRemapper {
             x => x,
         }
     }
+}
+
+/// Specifies the name of a type in C# and Rust.
+#[derive(Clone, Debug)]
+struct BoundTypeName {
+    /// The name of the type to use in C#.
+    pub cs_name: String,
+    /// The name of the type to use in Rust.
+    pub rs_name: String
+}
+
+impl BoundTypeName {
+    /// Defines a type name in C# and Rust.
+    pub fn cs_rs(cs_name: impl Into<String>, rs_name: impl Into<String>) -> Self {
+        Self {
+            cs_name: cs_name.into(),
+            rs_name: rs_name.into()
+        }
+    }
+}
+
+/// Describes the type of a parameter or return value from a function.
+#[derive(Clone, Debug)]
+struct BoundType {
+    /// How the type is used.
+    kind: BoundTypeKind,
+    /// The name of the type in C# and Rust.
+    name: BoundTypeName
+}
+
+/// The semantics of passing a bound type between C# and Rust.
+#[derive(Copy, Clone, Debug)]
+enum BoundTypeKind {
+    /// The type should be treated as a pointer, and deserialized as a memory address.
+    Pointer {
+        /// Whether the pointer is mutable.
+        mutable: bool,
+    },
+    /// During function calls, the type should be deserialized and then passed by reference.
+    Reference {
+        /// Whether the reference is mtuable.
+        mutable: bool,
+    },
+    /// During function calls, the type should be deserialized and then passed by value.
+    Value
 }

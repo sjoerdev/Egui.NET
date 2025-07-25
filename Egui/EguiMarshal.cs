@@ -17,67 +17,67 @@ internal static class EguiMarshal
     private static BincodeSerializer? _serializer;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Call(EguiFn func, nuint ptr)
+    public static void Call(EguiFn func)
     {
-        Call<NoArgument>(func, ptr, default);
+        Call<NoArgument>(func, default);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static R Call<R>(EguiFn func, nuint ptr)
+    public static R Call<R>(EguiFn func)
     {
-        return Call<NoArgument, R>(func, ptr, default);
+        return Call<NoArgument, R>(func, default);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Call<A0>(EguiFn func, nuint ptr, A0 arg0)
+    public static void Call<A0>(EguiFn func, A0 arg0)
     {
-        Call<A0, NoArgument>(func, ptr, arg0, default);
+        Call<A0, NoArgument>(func, arg0, default);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static R Call<A0, R>(EguiFn func, nuint ptr, A0 arg0)
+    public static R Call<A0, R>(EguiFn func, A0 arg0)
     {
-        return Call<A0, NoArgument, R>(func, ptr, arg0, default);
+        return Call<A0, NoArgument, R>(func, arg0, default);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Call<A0, A1>(EguiFn func, nuint ptr, A0 arg0, A1 arg1)
+    public static void Call<A0, A1>(EguiFn func, A0 arg0, A1 arg1)
     {
-        Call<A0, A1, NoArgument>(func, ptr, arg0, arg1, default);
+        Call<A0, A1, NoArgument>(func, arg0, arg1, default);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static R Call<A0, A1, R>(EguiFn func, nuint ptr, A0 arg0, A1 arg1)
+    public static R Call<A0, A1, R>(EguiFn func, A0 arg0, A1 arg1)
     {
-        return Call<A0, A1, NoArgument, R>(func, ptr, arg0, arg1, default);
+        return Call<A0, A1, NoArgument, R>(func, arg0, arg1, default);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Call<A0, A1, A2>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2)
+    public static void Call<A0, A1, A2>(EguiFn func, A0 arg0, A1 arg1, A2 arg2)
     {
-        Call<A0, A1, A2, NoArgument>(func, ptr, arg0, arg1, arg2, default);
+        Call<A0, A1, A2, NoArgument>(func, arg0, arg1, arg2, default);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static R Call<A0, A1, A2, R>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2)
+    public static R Call<A0, A1, A2, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2)
     {
-        return Call<A0, A1, A2, NoArgument, R>(func, ptr, arg0, arg1, arg2, default);
+        return Call<A0, A1, A2, NoArgument, R>(func, arg0, arg1, arg2, default);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Call<A0, A1, A2, A3>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
+    public static void Call<A0, A1, A2, A3>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
     {
-        Call<A0, A1, A2, A3, NoArgument>(func, ptr, arg0, arg1, arg2, arg3, default);
+        Call<A0, A1, A2, A3, NoArgument>(func, arg0, arg1, arg2, arg3, default);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static R Call<A0, A1, A2, A3, R>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
+    public static R Call<A0, A1, A2, A3, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3)
     {
-        return Call<A0, A1, A2, A3, NoArgument, R>(func, ptr, arg0, arg1, arg2, arg3, default);
+        return Call<A0, A1, A2, A3, NoArgument, R>(func, arg0, arg1, arg2, arg3, default);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void Call<A0, A1, A2, A3, A4>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
+    public static void Call<A0, A1, A2, A3, A4>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
     {
         unsafe
         {
@@ -90,7 +90,7 @@ internal static class EguiMarshal
             var bytes = serializer.get_bytes();
             fixed (byte* bytePtr = bytes)
             {
-                var result = EguiBindings.egui_invoke(func, ptr, new EguiSliceU8
+                var result = EguiBindings.egui_invoke(func, new EguiSliceU8
                 {
                     ptr = bytePtr,
                     len = (nuint)bytes.Length
@@ -102,7 +102,7 @@ internal static class EguiMarshal
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static R Call<A0, A1, A2, A3, A4, R>(EguiFn func, nuint ptr, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
+    public static R Call<A0, A1, A2, A3, A4, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
     {
         unsafe
         {
@@ -116,7 +116,7 @@ internal static class EguiMarshal
             var bytes = serializer.get_bytes();
             fixed (byte* bytePtr = bytes)
             {
-                var result = EguiBindings.egui_invoke(func, ptr, new EguiSliceU8
+                var result = EguiBindings.egui_invoke(func, new EguiSliceU8
                 {
                     ptr = bytePtr,
                     len = (nuint)bytes.Length
