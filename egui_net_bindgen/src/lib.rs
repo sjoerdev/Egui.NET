@@ -906,7 +906,14 @@ impl BindingsGenerator {
                         && let Some(GenericArgs::AngleBracketed { args, .. }) = trait_generics.as_deref()
                         && args.len() == 1
                         && let GenericArg::Type(inner_ty) = &args[0] {
-                        self.bound_ty_name(self_ty, inner_ty)?
+                        if let Type::ResolvedPath(RdPath { path, args, .. }) = inner_ty
+                            && path == "Cow"
+                            && format!("{args:?}").contains("Primitive(\"str\")") {
+                            BoundTypeName::cs_rs("string", "String")
+                        }
+                        else {
+                            self.bound_ty_name(self_ty, inner_ty)?
+                        }
                     }
                     else if path.contains("Hash") {
                         BoundTypeName::cs_rs("Id", "Id")
