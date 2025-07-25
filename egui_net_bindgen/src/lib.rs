@@ -316,6 +316,11 @@ const IGNORE_FNS: &[&str] = &[
     "epaint_mutex_rw_lock_impl_RwLock_read",
     "epaint_mutex_rw_lock_impl_RwLock_write",
 
+    // CacheStorage: not possible to bind to C# due to generics
+    "egui_cache_cache_storage_CacheStorage_cache",
+    "egui_cache_cache_storage_CacheStorage_default",
+    "egui_cache_cache_storage_CacheStorage_update",
+
     // Context: manually-defined functions
     "egui_context_Context_style_mut",
     "egui_context_Context_style_mut_of",

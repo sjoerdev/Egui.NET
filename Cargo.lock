@@ -692,6 +692,7 @@ dependencies = [
 [[package]]
 name = "ecolor"
 version = "0.32.0"
+source = "git+https://github.com/DouglasDwyer/egui?rev=8c45ee7cbefec884d4dbc6be77b4ae5ff01afec6#8c45ee7cbefec884d4dbc6be77b4ae5ff01afec6"
 dependencies = [
  "emath",
  "serde",
@@ -700,6 +701,7 @@ dependencies = [
 [[package]]
 name = "egui"
 version = "0.32.0"
+source = "git+https://github.com/DouglasDwyer/egui?rev=8c45ee7cbefec884d4dbc6be77b4ae5ff01afec6#8c45ee7cbefec884d4dbc6be77b4ae5ff01afec6"
 dependencies = [
  "accesskit",
  "ahash",
@@ -765,6 +767,7 @@ dependencies = [
 [[package]]
 name = "emath"
 version = "0.32.0"
+source = "git+https://github.com/DouglasDwyer/egui?rev=8c45ee7cbefec884d4dbc6be77b4ae5ff01afec6#8c45ee7cbefec884d4dbc6be77b4ae5ff01afec6"
 dependencies = [
  "serde",
 ]
@@ -783,6 +786,7 @@ dependencies = [
 [[package]]
 name = "epaint"
 version = "0.32.0"
+source = "git+https://github.com/DouglasDwyer/egui?rev=8c45ee7cbefec884d4dbc6be77b4ae5ff01afec6#8c45ee7cbefec884d4dbc6be77b4ae5ff01afec6"
 dependencies = [
  "ab_glyph",
  "ahash",
@@ -798,6 +802,7 @@ dependencies = [
 [[package]]
 name = "epaint_default_fonts"
 version = "0.32.0"
+source = "git+https://github.com/DouglasDwyer/egui?rev=8c45ee7cbefec884d4dbc6be77b4ae5ff01afec6#8c45ee7cbefec884d4dbc6be77b4ae5ff01afec6"
 
 [[package]]
 name = "equivalent"
