@@ -115,6 +115,33 @@ public readonly ref partial struct Ui
     }
 
     /// <summary>
+    /// Add a single <see cref="IWidget"/> that is possibly disabled, i.e. greyed out and non-interactive.
+    ///
+    /// If you call <see cref="AddEnabled"/>  from within an already disabled <see cref="Ui"/> ,
+    /// the widget will always be disabled, even if the <paramref name="enabled"/> argument is true.
+    ///
+    /// See also <see cref="AddEnabledUi"/>  and <see cref="IsEnabled"/> .
+    /// </summary>
+    public unsafe readonly Response AddEnabled<T>(bool enabled, T widget) where T : IWidget, allows ref struct
+    {
+#pragma warning disable CS8500
+        if (IsEnabled && !enabled)
+        {
+            var tp = &widget;
+            return Scope(ui =>
+            {
+                ui.Disable();
+                return ui.Add(*tp);
+            }).Inner;
+        }
+        else
+        {
+            return Add(widget);
+        }         
+#pragma warning restore CS8500
+    }
+
+    /// <summary>
     /// Add a <see cref="Widget"/>  to this <see cref="Ui"/>  at a location dependent on the current <see cref="Layout"/> .
     ///
     /// The returned <see cref="Response"/> can be used to check for interactions,
@@ -122,12 +149,59 @@ public readonly ref partial struct Ui
     ///
     /// See also <see cref="AddSized"/>  and <see cref="Put"/> .
     /// </summary>
-    public readonly Response AddSized<T>(Vec2 maxSize, T widget) where T : IWidget, allows ref struct
+    public unsafe readonly Response AddSized<T>(Vec2 maxSize, T widget) where T : IWidget, allows ref struct
     {
-        AssertInitialized();
+#pragma warning disable CS8500
+        var tp = &widget;
         var layout = Layout.CenteredAndJustified(Layout.MainDir);
-        throw new NotImplementedException();
-        //return AllocateUiWithLayout(maxSize, layout, ui => ui.Add(widget))
+        return AllocateUiWithLayout(maxSize, layout, ui => ui.Add(*tp)).Inner;
+#pragma warning restore CS8500
+    }
+
+    /// <summary>
+    /// Add a Widget to this <see cref="Ui"/> at a specific location (manual layout).<br/>
+    /// See also <see cref="Add"/>  and <see cref="AddSized"/>.
+    /// </summary>
+    public unsafe readonly Response Put<T>(Rect maxRect, T widget) where T : IWidget, allows ref struct
+    {
+#pragma warning disable CS8500
+        var tp = &widget;
+        return ScopeBuilder(
+            new UiBuilder()
+                .WithMaxRect(maxRect)
+                .WithLayout(Layout.CenteredAndJustified(Direction.TopDown)),
+            ui => ui.Add(*tp)
+        ).Inner;
+#pragma warning restore CS8500
+    }
+
+    /// <summary>
+    /// Add a single <see cref="IWidget"/>  that is possibly invisible.
+    ///
+    /// An invisible widget still takes up the same space as if it were visible.
+    ///
+    /// If you call <see cref="AddVisible"/>  from within an already invisible <see cref="Ui"/> ,
+    /// the widget will always be invisible, even if the <paramref name="visible"/> argument is true.
+    ///
+    /// See also <see cref="AddVisibleUi"/> , <see cref="SetVisible"/> and <see cref="IsVisible"/>.
+    /// </summary>
+    public unsafe readonly Response AddVisible<T>(bool visible, T widget) where T : IWidget, allows ref struct
+    {
+#pragma warning disable CS8500
+        if (IsVisible && !visible)
+        {
+            var tp = &widget;
+            return Scope(ui =>
+            {
+                ui.SetInvisible();
+                return ui.Add(*tp);
+            }).Inner;
+        }
+        else
+        {
+            return Add(widget);
+        }
+#pragma warning restore CS8500
     }
 
     /// <summary>
@@ -164,6 +238,78 @@ public readonly ref partial struct Ui
     }
 
     /// <summary>
+    /// Add a section that is possibly disabled, i.e. greyed out and non-interactive.
+    /// </summary>
+    public readonly InnerResponse AddEnabledUi(bool enabled, Action<Ui> addContents)
+    {
+        return Scope(ui =>
+        {
+            if (!enabled)
+            {
+                ui.Disable();
+            }
+            addContents(ui);
+        });
+    }
+
+    /// <inheritdoc cref="AddEnabledUi"/>
+    public readonly InnerResponse<R> AddEnabledUi<R>(bool enabled, Func<Ui, R> addContents)
+    {
+        return Scope(ui =>
+        {
+            if (!enabled)
+            {
+                ui.Disable();
+            }
+            return addContents(ui);
+        });
+    }
+
+    /// <summary>
+    /// Create a scoped child ui.
+    /// </summary>
+    public readonly InnerResponse Scope(Action<Ui> addContents)
+    {
+        return ScopeBuilder(new UiBuilder(), addContents);
+    }
+
+    /// <inheritdoc cref="Scope"/>
+    public readonly InnerResponse<R> Scope<R>(Func<Ui, R> addContents)
+    {
+        return ScopeBuilder(new UiBuilder(), addContents);
+    }
+
+    /// <summary>
+    /// Create a child, add content to it, and then allocate only what was used in the parent <see cref="Ui"/> .
+    /// </summary>
+    public readonly InnerResponse ScopeBuilder(UiBuilder uiBuilder, Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, UiBuilder, EguiCallback, Response>(EguiFn.egui_ui_Ui_scope_builder, Ptr, uiBuilder, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="ScopeBuilder"/>
+    public readonly InnerResponse<R> ScopeBuilder<R>(UiBuilder uiBuilder, Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, UiBuilder, EguiCallback, Response>(EguiFn.egui_ui_Ui_scope_builder, Ptr, uiBuilder, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
     /// Convenience function to get a region to paint on.
     /// Note that egui uses screen coordinates for everything.
     /// </summary>
@@ -172,6 +318,18 @@ public readonly ref partial struct Ui
         AssertInitialized();
         var (response, handle) = EguiMarshal.Call<nuint, Vec2, Sense, (Response, EguiHandle)>(EguiFn.egui_ui_Ui_painter_at, Ptr, desiredSize, sense);
         return (response, new Painter(Ctx, handle));
+    }
+
+    /// <summary>
+    /// Show a checkbox.<br/>
+    /// 
+    /// See also <c>ToggleValue</c>.
+    /// </summary>
+    public Response Checkbox(ref bool isChecked, Atoms atoms)
+    {       
+        var (result, checkedResult) = EguiMarshal.Call<nuint, bool, Atoms, (Response, bool)>(EguiFn.egui_ui_Ui_checkbox, Ptr, isChecked, atoms);
+        isChecked = checkedResult;
+        return result;
     }
 
     /// <summary>

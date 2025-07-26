@@ -61,7 +61,10 @@ public readonly partial struct Sense
         _value = value;
     }
 
-    internal void Serialize(Serde.ISerializer serializer) {
+    internal static void Serialize(Serde.ISerializer serializer, Sense sense) => sense.Serialize(serializer);
+
+    internal void Serialize(Serde.ISerializer serializer)
+    {
         serializer.increase_container_depth();
         serializer.serialize_u8(_value);
         serializer.decrease_container_depth();

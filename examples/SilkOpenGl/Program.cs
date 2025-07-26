@@ -19,6 +19,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Numerics;
 using Window = Egui.Containers.Window;
+using Microsoft.VisualBasic;
 
 namespace MySilkProgram;
 
@@ -46,15 +47,7 @@ public unsafe class Program
     public static void Main(string[] args)
     {
         _ctx = new Context();
-        _ctx.AllStylesMut((ref Style x) =>
-        {
-            x.Interaction.TooltipDelay = 0.0f;
-            x.Interaction.ShowTooltipsOnlyWhenStill = false;
-        });
-
-        new RichText("bababooey from C#!").Strong();
-        Console.WriteLine($"CReated a ctx! {_ctx.Os}");
-
+        
         WindowOptions options = WindowOptions.Default;
         options.Size = new Vector2D<int>(800, 600);
         options.Title = "My first Silk.NET program!";
@@ -130,25 +123,14 @@ public unsafe class Program
                 if (ui.Label("welcome to the winder").Clicked) { openIt = true; }
             });
 
-            new Window("ratatooie")
+            new Window("🗄 Widget Gallery")
                 .Open(ref openIt)
+                .Resizable(new Vec2b(true, false))
+                .DefaultWidth(280)
                 .Show(ctx, ui =>
             {
-                if (ui.Label("this is another winder")
-                    .OnHoverTextAtPointer("Click for a message!").Clicked) { Console.WriteLine("clickit"); }
-            });
-            /*
-            new CentralPanel().Show(ctx, ui =>
-            {
-                if (ui.Label(new RichText("HELLO from C#!").Strong().Color(Color32.DarkGreen))
-                    .Clicked)
-                {
-                    Console.WriteLine("im click");
-                }
-
                 _widgetGallery.Show(ui);
-
-            });*/
+            });
         });
 
         DrawOutput(in output);
@@ -167,16 +149,27 @@ public unsafe class Program
     {
         private bool _enabled = true;
         private bool _visible = true;
-        private bool _boolean;
-        private float _opacity;
-        private Enum _radio;
-        private float _scalar;
+        private bool _boolean = false;
+        private float _opacity = 1.0f;
+        private Enum _radio = Enum.First;
+        private float _scalar = 42.0f;
         private string _string = "";
-        private Color32 _color;
-        private bool _animateProgressBar;
+        private Color32 _color = Color32.LightBlue.LinearMultiply(0.5f);
+        private bool _animateProgressBar = false;
 
         public void Show(Ui ui)
         {
+            UiBuilder uiBuilder = new UiBuilder();
+            if (!_enabled)
+            {
+                uiBuilder = uiBuilder.WithDisabled();
+            }
+
+            if (!_visible)
+            {
+                uiBuilder = uiBuilder.WithInvisible();
+            }
+
             new Grid("my_grid")
                 .NumColumns(2)
                 .Spacing(new Vec2(40, 4))
@@ -222,7 +215,6 @@ public unsafe class Program
             // ui.add(egui::TextEdit::singleline(string).hint_text("Write something here"));
             ui.EndRow();
 
-            /*
             DocLinkLabel(ui, "Button", "button");
             _boolean ^= ui.Button("Click me!").Clicked;
             ui.EndRow();
@@ -235,6 +227,7 @@ public unsafe class Program
             ui.Checkbox(ref _boolean, "Checkbox");
             ui.EndRow();
 
+            /*
             DocLinkLabel(ui, "RadioButton", "radio");
             ui.Horizontal(ui =>
             {
@@ -266,15 +259,20 @@ public unsafe class Program
             _animateProgressBar = ui.ProgressBar(progress, animate: _animateProgressBar) // todo: show_percentage
                 .OnHoverText("The progress bar can be animated!")
                 .Hovered;
-            ui.EndRow();
+            ui.EndRow();*/
 
             DocLinkLabel(ui, "Color picker", "color_edit");
-            ui.ColorEditButton(ref _color);
+            ui.ColorEditButtonSrgba(ref _color);
             ui.EndRow();
 
             DocLinkLabel(ui, "Separator", "separator");
             ui.Separator();
-            ui.EndRow();*/
+            ui.EndRow();
+
+            ui.Hyperlink("Custom widget");
+            ui.Add(new Toggle(ref _boolean))
+                .OnHoverText("It's easy to create your own widgets!\nThis toggle switch is just 15 lines of code.");
+            ui.EndRow();
 
             /*
              * 
@@ -301,10 +299,6 @@ public unsafe class Program
             });
         ui.end_row();
             
-        ui.add(doc_link_label("Color picker", "color_edit"));
-        ui.color_edit_button_srgba(color);
-        ui.end_row();
-            
         ui.add(doc_link_label("Image", "Image"));
         let egui_icon = egui::include_image!("../../data/icon.png");
         ui.add(egui::Image::new(egui_icon.clone()));
@@ -326,17 +320,102 @@ public unsafe class Program
         }
     }
 
+    /// <summary>
+    /// iOS-style toggle switch.
+    /// </summary>
+    private ref struct Toggle : IWidget
+    {
+        /// <summary>
+        /// The value to update.
+        /// </summary>
+        private ref bool _on;
+
+        /// <summary>
+        /// Creates a toggle.
+        /// </summary>
+        /// <param name="on">Whether the toggle should be on.</param>
+        public Toggle(ref bool on)
+        {
+            _on = ref on;
+        }
+
+        Response IWidget.Ui(Ui ui)
+        {
+            // Widget code can be broken up in four steps:
+            //  1. Decide a size for the widget
+            //  2. Allocate space for it
+            //  3. Handle interactions with the widget (if any)
+            //  4. Paint the widget
+
+            // 1. Deciding widget size:
+            // You can query the `ui` how much space is available,
+            // but in this example we have a fixed size widget based on the height of a standard button:
+            //var desiredSize = ui.Spacing.InteractSize.Y * new Vec2(2.0f, 1.0f);
+            var desiredSize = new Vec2(2.0f * ui.Spacing.InteractSize.Y, ui.Spacing.InteractSize.Y);
+
+            // 2. Allocating space:
+            // This is where we get a region of the screen assigned.
+            // We also tell the Ui to sense clicks in the allocated region.
+            var (rect, response) = ui.AllocateExactSize(desiredSize, Sense.Click);
+
+            // 3. Interact: Time to check for clicks!
+            if (response.Clicked) {
+                _on = !_on;
+                response.MarkChanged();
+            }
+
+            // Attach some meta-data to the response which can be used by screen readers:
+            /*response.widget_info(|| {
+                egui::WidgetInfo::selected(egui::WidgetType::Checkbox, ui.is_enabled(), *on, "")
+            });*/
+
+            // 4. Paint!
+            // Make sure we need to paint:
+            if (ui.IsRectVisible(rect)) {
+                // Let's ask for a simple animation from egui.
+                // egui keeps track of changes in the boolean associated with the id and
+                // returns an animated value in the 0-1 range for how much "on" we are.
+                var howOn = ui.Ctx.AnimateBoolResponsive(response.Id, _on);
+                // We will follow the current style by asking
+                // "how should something that is being interacted with be painted?".
+                // This will, for instance, give us different colors when the widget is hovered or clicked.
+                var visuals = ui.Style.InteractSelectable(response, _on);
+                // All coordinates are in absolute screen coordinates so we use `rect` to place the elements.
+                rect = rect.Expand(visuals.Expansion);
+                var radius = 0.5f * rect.Height;
+                ui.Painter.Rect(
+                    rect,
+                    //radius,
+                    CornerRadius.Same((byte)MathF.Round(radius)),
+                    visuals.BgFill,
+                    visuals.BgStroke,
+                    StrokeKind.Inside
+                );
+                // Paint the circle, animating it from left to right with `how_on`:
+                //var circleX = EguiHelpers.Lerp(rect.Left + radius, rect.Right - radius, howOn);
+                var circleX = (1.0f - howOn) * (rect.Left + radius) + howOn * (rect.Right - radius);
+                var center = new Pos2(circleX, rect.Center.Y);
+                ui.Painter
+                    .Circle(center, 0.75f * radius, visuals.BgFill, visuals.FgStroke);
+            }
+
+            // All done! Return the interaction response so the user can check what happened
+            // (hovered, clicked, ...) and maybe show a tooltip:
+            return response;
+        }
+    }
+
     private static void DocLinkLabel(Ui ui, string title, string searchTerm)
     {
         ui.HyperlinkTo(title, $"https://docs.rs/egui?search={searchTerm}");
-            /*.OnHoverUi(ui =>
+        /*.OnHoverUi(ui =>
+        {
+            ui.HorizontalWrapped(ui =>
             {
-                ui.HorizontalWrapped(ui =>
-                {
-                    ui.Label("Search egui docs for");
-                    ui.Code(searchTerm);
-                });
-            });*/
+                ui.Label("Search egui docs for");
+                ui.Code(searchTerm);
+            });
+        });*/
     }
 
     private enum Enum

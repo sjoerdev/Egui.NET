@@ -5,14 +5,22 @@ public partial struct WidgetText
     public string RawText => EguiMarshal.Call<WidgetText, string>(EguiFn.egui_widget_text_WidgetText_text, this);
 
     /// <summary>
-    /// Creates a widget text object for the provided rich text.
+    /// Converts to this type from the input type.
     /// </summary>
-    /// <param name="value">The rich text to convert.</param>
     public static implicit operator WidgetText(Egui.RichText value) => new WidgetText.RichText { Value = value };
+    
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator WidgetText(Egui.Text.LayoutJob value) => new WidgetText.LayoutJob { Value = value };
+    
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator WidgetText(Egui.Galley value) => new WidgetText.Galley { Value = value };
 
     /// <summary>
-    /// Creates a widget text object for the provided string.
+    /// Converts to this type from the input type.
     /// </summary>
-    /// <param name="value">The string to convert.</param>
     public static implicit operator WidgetText(string value) => new WidgetText.RichText { Value = value };
 }

@@ -1,0 +1,167 @@
+using System.Collections;
+
+namespace Egui;
+
+public partial struct Atoms : IEnumerable<Atom>
+{
+    public IEnumerable<AtomKind> Kinds => this.Select(x => x.Kind);
+
+    /// <summary>
+    /// Concatenate and return the text contents.
+    /// </summary>
+    public string? Text => EguiMarshal.Call<Atoms, string?>(EguiFn.egui_atomics_atoms_Atoms_text, this);
+
+    /// <summary>
+    /// Creates a value from an iterator.
+    /// </summary>
+    public Atoms(IEnumerable<Atom> atoms)
+    {
+        var result = new Atoms();
+        foreach (var atom in atoms)
+        {
+            result.PushRight(atom);
+        }
+        this = result;
+    }
+
+    public void MapAtoms(Func<Atom, Atom> f)
+    {
+        this = new Atoms(this.Select(f));
+    }
+
+    public void MapKind(Func<AtomKind, AtomKind> f)
+    {
+        this = new Atoms(this.Select(x =>
+        {
+            x.Kind = f(x.Kind);
+            return x;
+        }));
+    }
+
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms(Atom value) => FromSingle(value);
+
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms(string value) => FromSingle(value);
+
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms(RichText value) => FromSingle(value);
+
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms(WidgetText value) => FromSingle(value);
+
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms(LayoutJob value) => FromSingle(value);
+
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms(Galley value) => FromSingle(value);
+
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms(ImageSource value) => FromSingle(value);
+
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms(Image value) => FromSingle(value);
+
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms((Atom, Atom) value)
+    {
+        var result = new Atoms();
+        result.PushRight(value.Item1);
+        result.PushRight(value.Item2);
+        return result;
+    }
+    
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms((Atom, Atom, Atom) value)
+    {
+        var result = new Atoms();
+        result.PushRight(value.Item1);
+        result.PushRight(value.Item2);
+        result.PushRight(value.Item3);
+        return result;
+    }
+    
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms((Atom, Atom, Atom, Atom) value)
+    {
+        var result = new Atoms();
+        result.PushRight(value.Item1);
+        result.PushRight(value.Item2);
+        result.PushRight(value.Item3);
+        result.PushRight(value.Item4);
+        return result;
+    }
+    
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms((Atom, Atom, Atom, Atom, Atom) value)
+    {
+        var result = new Atoms();
+        result.PushRight(value.Item1);
+        result.PushRight(value.Item2);
+        result.PushRight(value.Item3);
+        result.PushRight(value.Item4);
+        result.PushRight(value.Item5);
+        return result;
+    }
+
+    /// <summary>
+    /// Converts to this type from the input type.
+    /// </summary>
+    public static implicit operator Atoms((Atom, Atom, Atom, Atom, Atom, Atom) value)
+    {
+        var result = new Atoms();
+        result.PushRight(value.Item1);
+        result.PushRight(value.Item2);
+        result.PushRight(value.Item3);
+        result.PushRight(value.Item4);
+        result.PushRight(value.Item5);
+        result.PushRight(value.Item6);
+        return result;
+    }
+
+    /// <summary>
+    /// Creates a set of atoms for the given single atom.
+    /// </summary>
+    private static Atoms FromSingle(Atom atom)
+    {
+        var result = new Atoms();
+        result.PushRight(atom);
+        return result;
+    }
+
+    /// <inheritdoc/>
+    public IEnumerator<Atom> GetEnumerator()
+    {
+        return Value.GetEnumerator();
+    }
+
+    /// <inheritdoc/>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+}

@@ -65,8 +65,6 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_widget_text_WidgetText_text",
     "epaint_shapes_shape_Shape_text",
 
-    "egui_atomics_atom_layout_AtomLayout_frame",
-
     "egui_style_Style_text_styles",
     "egui_style_Visuals_noninteractive",
     "egui_text_selection_cursor_range_CursorRange_on_event",
@@ -91,6 +89,9 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
 
     // These functions generate as properties, but should be methods
     "egui_ui_Ui_separator",
+
+    // Grid: bound manually
+    "egui_grid_Grid_striped",
 
     // Popup: bound manually
     "egui_containers_popup_Popup_open_id",
@@ -154,6 +155,7 @@ const CUSTOM_FNS: &[&str] = &[
     "egui_context_Context_ref_decrement",
     "egui_context_Context_ref_count",
     "egui_context_Context_ref_id",
+    "egui_ui_Ui_set_enabled"
 ];
 
 /// A list of fully-qualified function IDs to ignore during generation.
@@ -305,6 +307,20 @@ const IGNORE_FNS: &[&str] = &[
     "epaint_shapes_paint_callback_PaintCallbackInfo_clip_rect_in_pixels",
     "epaint_shapes_paint_callback_PaintCallbackInfo_viewport_in_pixels",
     "egui_containers_frame_Frame_show_dyn",
+
+    // AllocatedAtomLayout: bound manually
+    "egui_atomics_atom_layout_AllocatedAtomLayout_iter_kinds",
+    "egui_atomics_atom_layout_AllocatedAtomLayout_iter_kinds_mut",
+    "egui_atomics_atom_layout_AllocatedAtomLayout_map_kind",
+
+    // Atoms: bound manually
+    "egui_atomics_atoms_Atoms_from_iter",
+    "egui_atomics_atoms_Atoms_into_iter",
+    "egui_atomics_atoms_Atoms_iter_kinds",
+    "egui_atomics_atoms_Atoms_iter_kinds_mut",
+    "egui_atomics_atoms_Atoms_map_kind",
+    "egui_atomics_atoms_Atoms_map_atoms",
+    "egui_atomics_atoms_Atoms_text",
 
     // FontsImpl: private type
     "epaint_text_fonts_FontsImpl_definitions",
@@ -704,6 +720,15 @@ const IGNORE_FNS: &[&str] = &[
     "egui_style_StyleModifier_default",
     "egui_style_StyleModifier_new",
 
+    // Ui: manually bound
+    "egui_ui_Ui_add_sized",
+    "egui_ui_Ui_put",
+    "egui_ui_Ui_add_enabled",
+    "egui_ui_Ui_add_enabled_ui",
+    "egui_ui_Ui_scope_dyn",
+    "egui_ui_Ui_scope",
+    "egui_ui_Ui_add_visible",
+
     // Other functions that cannot be bound to C#
     "epaint_stroke_PathStroke_new_uv",
     "epaint_util_hash_with",
@@ -908,6 +933,7 @@ impl BindingsGenerator {
             else {
                 BoundTypeName::cs_rs(self_ty?, self_ty?)
             },
+            Type::Generic(x) if x == "IdSource" => BoundTypeName::cs_rs("Id", "Id"),
             Type::ImplTrait(x) => if x.len() == 1
                 && let Some(GenericBound::TraitBound { trait_: RdPath { path, args: trait_generics, .. }, .. }) = x.first() {
                     if path == "ToString" {
@@ -926,7 +952,7 @@ impl BindingsGenerator {
                             self.bound_ty_name(self_ty, inner_ty)?
                         }
                     }
-                    else if path.contains("Hash") {
+                    else if path.contains("Hash") || path.contains("IdSource") {
                         BoundTypeName::cs_rs("Id", "Id")
                     }
                     else if path.contains("IntoAtoms") {
@@ -1035,7 +1061,12 @@ impl BindingsGenerator {
                             writeln!(f, "namespace {namespace} {{ public static partial class {ty_name}Extensions {{\n{fn_def}\n}} }}")?;
                         }
                         else {
-                            writeln!(f, "namespace {namespace} {{ public partial struct {ty_name} {{\n{fn_def}\n}} }}")?;
+                            if Self::is_ui_fn(&self.krate.index[&id]) {
+                                writeln!(f, "namespace {namespace} {{ public partial struct {ty_name} : IWidget {{\n{fn_def}\n}} }}")?;
+                            }
+                            else {
+                                writeln!(f, "namespace {namespace} {{ public partial struct {ty_name} {{\n{fn_def}\n}} }}")?;   
+                            }
                         }
                     }
                     else {
@@ -1128,12 +1159,28 @@ impl BindingsGenerator {
                 (false, DeclaringType::PrimitiveEnum) => return Err(std::fmt::Error)
             };
             
-            write!(f, "public {qualifiers} {return_name} {cs_name}")?;
+            if Self::is_ui_fn(item) {
+                write!(f, "Response IWidget.Ui")?;
+            }
+            else {
+                write!(f, "public {qualifiers} {return_name} {cs_name}")?;
+            }
 
             self.emit_cs_fn_def(f, ty_name, id, fn_type, &func, returns_this)?;
         }
 
         Ok(())
+    }
+
+    /// Whether this is the [`Ui`] interface function.
+    fn is_ui_fn(item: &Item) -> bool {
+        if item.name.as_deref() == Some("ui")
+            && let ItemEnum::Function(func) = &item.inner {
+            func.sig.inputs.len() == 2 && func.sig.output.as_ref().map(|x| format!("{x:?}").contains("Response")).unwrap_or_default()
+        }
+        else {
+            false
+        }
     }
 
     /// Emits the body of a C# function (excluding the name and return type).
@@ -1168,17 +1215,8 @@ impl BindingsGenerator {
             writeln!(f, "({}) {{", self.cs_binding_signature(ty_name, fn_ty, func).ok_or(std::fmt::Error)?)?;
         }
 
-        /*let handle_value = match decl_ty {
-            DeclaringType::Handle => "Handle.ptr".to_string(),
-            DeclaringType::Pointer => "Ptr".to_string(),
-            _ => "0".to_string()
-        };
-
-        if decl_ty == DeclaringType::Pointer {
-            writeln!(f, "if ({handle_value} == 0) {{ throw new NullReferenceException(\"{} instance was uninitialized\"); }}", ty_name.expect("Failed to get type name"))?;
-        }*/
-
-        // todo: throw NREs for zero'd ptrs
+        let pointer_checks = self.cs_binding_ptr_checks(ty_name, fn_ty, func);
+        writeln!(f, "    {pointer_checks}")?;
 
         let binding_generics = self.cs_binding_generics(ty_name, func).ok_or(std::fmt::Error)?;
         if fn_ty == FnType::Constructor {
@@ -1246,13 +1284,6 @@ impl BindingsGenerator {
         Ok(())
     }
 
-    /*
-     - todo: add Pointer params checks on C# side
-     - todo: consider whether can bind Fn(&mut Ui) and Fn(&mut Ui) -> R params..?
-     - todo: continue to tackle remaining fns
-    
-     */
-
     /// Gets the signature to use for an autobound Rust function.
     fn rs_binding_signature(&self, self_ty: Option<&str>, f: &Function) -> String {
         f.sig.inputs.iter().map(|(name, ty)| {
@@ -1299,6 +1330,22 @@ impl BindingsGenerator {
         }).collect::<Option<Vec<_>>>()?.join(", "))
     }
 
+    /// Gets the name to use for a parameter in C#.
+    fn cs_param_name(fn_ty: FnType, rs_name: &str) -> String {
+        if rs_name == "self" && fn_ty == FnType::Instance { "this".to_string() } else { rs_name.to_case(Case::Camel) }
+    }
+
+    /// Gets the signature to use for an autobound C# function.
+    fn cs_binding_ptr_checks(&self, self_ty: Option<&str>, fn_ty: FnType, f: &Function) -> String {
+        f.sig.inputs.iter().skip(if fn_ty == FnType::Instance { 1 } else { 0 })
+            .filter(|(_, ty)| matches!(self.bound_ty(self_ty, ty).expect("Failed to get parameter type").kind, BoundTypeKind::Pointer { .. }))
+            .map(|(name, _)| {
+                let cs_name = Self::cs_param_name(fn_ty, &name);
+                format!("if({cs_name}.Ptr == 0) {{ throw new NullReferenceException(\"{cs_name} was null\"); }}")
+            })
+            .collect::<Vec<_>>().join("\n    ")
+    }
+
     /// Gets the call generics to use for an autobound C# function.
     fn cs_binding_generics(&self, self_ty: Option<&str>, f: &Function) -> Option<String> {
         let mut outputs = Vec::new();
@@ -1338,16 +1385,11 @@ impl BindingsGenerator {
     /// Gets the arguments list for an autobound C# function.
     fn cs_binding_arguments(&self, self_ty: Option<&str>, fn_ty: FnType, f: &Function) -> Option<Vec<String>> {
         f.sig.inputs.iter().map(|(name, ty)| {
-            let arg_name = if name == "self" && fn_ty != FnType::Extension {
-                "this".to_string()
-            }
-            else {
-                name.to_case(Case::Camel)
-            };
+            let cs_name = Self::cs_param_name(fn_ty, &name);
 
             Some(match self.bound_ty(self_ty, ty)?.kind {
-                BoundTypeKind::Pointer { .. } => format!("{arg_name}.Ptr"),
-                BoundTypeKind::Reference { .. } | BoundTypeKind::Value => format!("{arg_name}"),
+                BoundTypeKind::Pointer { .. } => format!("{cs_name}.Ptr"),
+                BoundTypeKind::Reference { .. } | BoundTypeKind::Value => format!("{cs_name}"),
             })
         }).collect::<Option<Vec<_>>>()
     }
@@ -1376,7 +1418,7 @@ impl BindingsGenerator {
     fn cs_binding_result_assignments(&self, self_ty: Option<&str>, fn_ty: FnType, f: &Function) -> String {
         f.sig.inputs.iter().filter_map(|(name, ty)|
             matches!(self.bound_ty(self_ty, ty).expect("Failed to resolve result declaration").kind, BoundTypeKind::Reference { mutable: true })
-                .then(|| format!("{} = {};", if name == "self" && fn_ty == FnType::Instance { "this".to_string() } else { name.to_case(Case::Camel) },
+                .then(|| format!("{} = {};", Self::cs_param_name(fn_ty, &name),
                     format!("{name}_result").to_case(Case::Camel))))
             .collect::<Vec<String>>().join("\n    ")
     }
