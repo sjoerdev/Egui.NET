@@ -116,25 +116,6 @@ public partial struct Response : IEquatable<Response>
         return this;
     }
 
-    /// <summary>
-    /// Report the data shown by this widget changed.<br/>
-    /// This must be called by widgets that represent some mutable data, e.g. checkboxes, sliders etc.<br/>
-    /// This should be called when the content changes, but not when the view does. So we call this when the text of a <see cref="TextEdit"/>, but not when the cursor changes.
-    /// </summary>
-    public void MarkChanged()
-    {
-        this = EguiMarshal.Call<Response, Response>(EguiFn.egui_response_Response_mark_changed, 0, this);
-    }
-
-    /// <summary>
-    /// Set the <see cref="Flags.Close"/>  flag.
-    /// Can be used to signal that a container should be closed.
-    /// </summary>
-    public void SetClose()
-    {
-        this = EguiMarshal.Call<Response, Response>(EguiFn.egui_response_Response_set_close, 0, this);
-    }
-
     internal static void Serialize(Serde.ISerializer serializer, Response value) => value.Serialize(serializer);
 
     internal void Serialize(Serde.ISerializer serializer)
@@ -157,7 +138,7 @@ public partial struct Response : IEquatable<Response>
         deserializer.increase_container_depth();
         Response obj = default;
         obj.Ctx = Context.FromId((nuint)deserializer.deserialize_u64());
-        EguiMarshal.Call(EguiFn.egui_context_Context_ref_decrement, obj.Ctx.Handle.ptr);
+        EguiMarshal.Call(EguiFn.egui_context_Context_ref_decrement, obj.Ctx.Ptr);
         obj.LayerId = Egui.LayerId.Deserialize(deserializer);
         obj.Id = Egui.Id.Deserialize(deserializer);
         obj.Rect = Egui.Rect.Deserialize(deserializer);

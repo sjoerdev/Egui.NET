@@ -6,7 +6,7 @@ public partial struct Grid
     {
         var ctx = ui.Ctx;
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<Grid, EguiCallback, Response>(EguiFn.egui_grid_Grid_show, ui.Ptr, this, callback);
+        var response = EguiMarshal.Call<nuint, Grid, EguiCallback, Response>(EguiFn.egui_grid_Grid_show, ui.Ptr, this, callback);
         return new InnerResponse
         {
             Response = response
@@ -18,7 +18,7 @@ public partial struct Grid
         R result = default!;
         var ctx = ui.Ctx;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<Grid, EguiCallback, Response>(EguiFn.egui_grid_Grid_show, ui.Ptr, this, callback);
+        var response = EguiMarshal.Call<nuint, Grid, EguiCallback, Response>(EguiFn.egui_grid_Grid_show, ui.Ptr, this, callback);
         return new InnerResponse<R>
         {
             Inner = result,

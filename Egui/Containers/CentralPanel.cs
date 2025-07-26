@@ -5,7 +5,7 @@ public partial struct CentralPanel
     public readonly InnerResponse Show(Context ctx, Action<Ui> addContents)
     {
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<CentralPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_CentralPanel_show, ctx.Handle.ptr, this, callback);
+        var response = EguiMarshal.Call<nuint, CentralPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_CentralPanel_show, ctx.Ptr, this, callback);
         return new InnerResponse
         {
             Response = response
@@ -16,7 +16,7 @@ public partial struct CentralPanel
     {
         R result = default!;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<CentralPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_CentralPanel_show, ctx.Handle.ptr, this, callback);
+        var response = EguiMarshal.Call<nuint, CentralPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_CentralPanel_show, ctx.Ptr, this, callback);
         return new InnerResponse<R>
         {
             Inner = result,
@@ -28,7 +28,7 @@ public partial struct CentralPanel
     {
         var ctx = ui.Ctx;
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<CentralPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_CentralPanel_show_inside, ui.Ptr, this, callback);
+        var response = EguiMarshal.Call<nuint, CentralPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_CentralPanel_show_inside, ui.Ptr, this, callback);
         return new InnerResponse
         {
             Response = response
@@ -40,7 +40,7 @@ public partial struct CentralPanel
         var ctx = ui.Ctx;
         R result = default!;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<CentralPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_CentralPanel_show_inside, ui.Ptr, this, callback);
+        var response = EguiMarshal.Call<nuint, CentralPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_CentralPanel_show_inside, ui.Ptr, this, callback);
         return new InnerResponse<R>
         {
             Inner = result,

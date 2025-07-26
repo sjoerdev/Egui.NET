@@ -48,7 +48,7 @@ public partial struct Id : IEquatable<Id>
     /// Generate a new <see cref="Id"/>  by hashing some source.
     public Id(string source)
     {
-        this = EguiMarshal.Call<string, Id>(EguiFn.egui_id_Id_new, 0, source);
+        this = EguiMarshal.Call<string, Id>(EguiFn.egui_id_Id_new, source);
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public partial struct Id : IEquatable<Id>
     /// </summary>
     public readonly Id With(string child)
     {
-        return EguiMarshal.Call<Id, string, Id>(EguiFn.egui_id_Id_with, 0, this, child);
+        return EguiMarshal.Call<Id, string, Id>(EguiFn.egui_id_Id_with, this, child);
     }
 
     /// <summary>

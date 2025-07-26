@@ -36,8 +36,8 @@ public partial struct Rect
 
     public Pos2 Center
     {
-        readonly get => EguiMarshal.Call<Rect, Pos2>(EguiFn.emath_rect_Rect_center, 0, this);
-        set => this = EguiMarshal.Call<Rect, Pos2, Rect>(EguiFn.emath_rect_Rect_center, 0, this, value);
+        readonly get => EguiMarshal.Call<Rect, Pos2>(EguiFn.emath_rect_Rect_center, this);
+        set => this = EguiMarshal.Call<Rect, Pos2, Rect>(EguiFn.emath_rect_Rect_center, this, value);
     }
 
     /// <summary>
@@ -83,26 +83,5 @@ public partial struct Rect
     {
         readonly get => Min.Y;
         set => Min.Y = value;
-    }
-
-    public void ExtendWith(Pos2 p)
-    {
-        this = EguiMarshal.Call<Rect, Pos2, Rect>(EguiFn.emath_rect_Rect_extend_with, 0, this, p);
-    }
-
-    /// <summary>
-    /// Expand to include the given x coordinate
-    /// </summary>
-    public void ExtendWithX(float x)
-    {
-        this = EguiMarshal.Call<Rect, float, Rect>(EguiFn.emath_rect_Rect_extend_with_x, 0, this, x);
-    }
-
-    /// <summary>
-    /// Expand to include the given y coordinate
-    /// </summary>    
-    public void ExtendWithY(float y)
-    {
-        this = EguiMarshal.Call<Rect, float, Rect>(EguiFn.emath_rect_Rect_extend_with_y, 0, this, y);
     }
 }

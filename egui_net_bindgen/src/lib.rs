@@ -60,6 +60,10 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_ui_Ui_selectable_label",
     "egui_atomics_atom_kind_AtomKind_text",
     "egui_atomics_atom_kind_AtomKind_image",
+    "egui_text_selection_cursor_range_CCursorRange_on_event",
+    "egui_ui_Ui_checkbox",
+    "egui_widget_text_WidgetText_text",
+    "epaint_shapes_shape_Shape_text",
 
     "egui_atomics_atom_layout_AtomLayout_frame",
 
@@ -134,7 +138,10 @@ const NAMESPACE_RENAMES: &[(&str, &str)] = &[
     ("Egui.Os", "Egui"),
     ("Egui.Response", "Egui"),
     ("Egui.Style", "Egui"),
+    ("Egui.TextSelection.TextCursorState", "Egui.TextSelection"),
+    ("Egui.TextSelection.Visuals", "Egui.TextSelection"),
     ("Egui.Widgets", "Egui"),
+    ("Egui.Widgets.ColorPicker", "Egui"),
     ("Egui.Widgets.TextEdit", "Egui")
 ];
 
@@ -1042,15 +1049,14 @@ impl BindingsGenerator {
         else {
             let name = self.krate.index[&id].name.as_deref().unwrap_or_default();
             let namespace = self.namespaces.get(name).cloned().unwrap_or_else(|| "Egui".to_string());
-            let helper_name = format!("{namespace}Helpers");
-
-            let (cs_namespace, cs_class) = namespace.rsplit_once(".").unwrap_or((&namespace, &helper_name));
+            
+            let short_namespace = namespace.rsplit_once(".").unwrap_or((&namespace, "")).1;
             
             let mut fn_def = String::new();
 
             self.emit_cs_fn(&mut std::fmt::Formatter::new(&mut fn_def, Default::default()), None, id, DeclaringType::None)?;
             
-            writeln!(f, "namespace {cs_namespace} {{ public static partial class {cs_class} {{\n{fn_def}\n}} }}")?;
+            writeln!(f, "namespace {namespace} {{ public static partial class {short_namespace}Helpers {{\n{fn_def}\n}} }}")?;
             return Ok(());
         }
 
@@ -1062,7 +1068,7 @@ impl BindingsGenerator {
         let item = &self.krate.index[&id];
         let ItemEnum::Function(func) = &item.inner else { panic!("Expected id to refer to a function") };
 
-        let has_this = func.sig.inputs.first().map(|(name, ty)| name == "self" && (decl_ty.is_byref() || !matches!(ty, Type::BorrowedRef { is_mutable: true, .. }))).unwrap_or_default();
+        let has_this = func.sig.inputs.first().map(|(name, _)| name == "self").unwrap_or_default();
         let returns_this = func.sig.output.as_ref().map(|x| x == &Type::Generic("Self".to_string()) || (if let Type::ResolvedPath(p) = x {
             Some(p.path.as_str()) == ty_name 
         } else { false })).unwrap_or_default();
@@ -1098,7 +1104,7 @@ impl BindingsGenerator {
             }
 
             write!(f, "public {}", ty_name.expect("Expected type to be provided"))?;
-            self.emit_cs_fn_def(f, ty_name, id, decl_ty, FnType::Constructor, &func.sig, returns_this)?;
+            self.emit_cs_fn_def(f, ty_name, id, FnType::Constructor, &func, returns_this)?;
         }
         else {
             let return_name = if let Some(bound_ty) = func.sig.output.as_ref().and_then(|x| self.bound_ty(ty_name, x)) {
@@ -1115,7 +1121,7 @@ impl BindingsGenerator {
 
             let (qualifiers, fn_type) = match (has_this, decl_ty) {
                 (false, DeclaringType::Handle) | (false, DeclaringType::Struct) | (false, DeclaringType::Pointer) => ("static", FnType::Static),
-                (true, DeclaringType::Struct) | (true, DeclaringType::Pointer) => ("readonly", FnType::Instance),
+                (true, DeclaringType::Struct) | (true, DeclaringType::Pointer) => ("", FnType::Instance),
                 (true, DeclaringType::Handle) => ("", FnType::Instance),
                 (true, DeclaringType::PrimitiveEnum) => ("static", FnType::Extension),
                 (_, DeclaringType::None) => ("static", FnType::Static),
@@ -1124,7 +1130,7 @@ impl BindingsGenerator {
             
             write!(f, "public {qualifiers} {return_name} {cs_name}")?;
 
-            self.emit_cs_fn_def(f, ty_name, id, decl_ty, fn_type, &func.sig, returns_this)?;
+            self.emit_cs_fn_def(f, ty_name, id, fn_type, &func, returns_this)?;
         }
 
         Ok(())
@@ -1136,13 +1142,13 @@ impl BindingsGenerator {
         f: &mut std::fmt::Formatter,
         ty_name: Option<&str>,
         id: RdId,
-        decl_ty: DeclaringType,
         fn_ty: FnType,
-        sig: &FunctionSignature,
+        func: &Function,
         returns_this: bool
     ) -> std::fmt::Result {
         let original_name = &self.krate.index[&id].name.as_deref().expect("Failed to get function name");
-        
+        let sig = &func.sig;
+
         let property = match fn_ty {
             FnType::Instance => sig.inputs.len() == 1 && sig.output.is_some() && !returns_this,
             FnType::Static => sig.inputs.is_empty() && sig.output.is_some(),
@@ -1155,43 +1161,14 @@ impl BindingsGenerator {
             return Err(std::fmt::Error);
         }
 
-        if !property {
-            write!(f, "(")?;
-        }
-
-        let mut generic_args = Vec::new();
-        
-        for (i, (name, ty)) in sig.inputs.iter().enumerate() {
-            if fn_ty == FnType::Instance && i == 0 && decl_ty.is_byref() {
-                continue;
-            }
-            
-            let param_ty = self.bound_ty(ty_name, ty).ok_or(std::fmt::Error)?.name.cs_name;
-            generic_args.push(param_ty.clone());
-
-            let cs_name = name.to_case(Case::Camel);
-
-            if !property && !(i == 0 && fn_ty == FnType::Instance) {
-                if i == 0 && fn_ty == FnType::Extension {
-                    write!(f, "this ")?;
-                }
-
-                write!(f, "{param_ty} {cs_name}")?;
-
-                if i != sig.inputs.len() - 1 {
-                    write!(f, ", ")?;
-                }
-            }
-        }
-        
         if property {
             writeln!(f, "{{ get {{")?;
         }
         else {
-            writeln!(f, ") {{")?;
+            writeln!(f, "({}) {{", self.cs_binding_signature(ty_name, fn_ty, func).ok_or(std::fmt::Error)?)?;
         }
 
-        let handle_value = match decl_ty {
+        /*let handle_value = match decl_ty {
             DeclaringType::Handle => "Handle.ptr".to_string(),
             DeclaringType::Pointer => "Ptr".to_string(),
             _ => "0".to_string()
@@ -1199,38 +1176,37 @@ impl BindingsGenerator {
 
         if decl_ty == DeclaringType::Pointer {
             writeln!(f, "if ({handle_value} == 0) {{ throw new NullReferenceException(\"{} instance was uninitialized\"); }}", ty_name.expect("Failed to get type name"))?;
-        }
+        }*/
 
         // todo: throw NREs for zero'd ptrs
 
-        if let Some(return_ty) = &sig.output {
-            generic_args.push(self.bound_ty(ty_name, return_ty).ok_or(std::fmt::Error)?
-                .name.cs_name);
-
-            if fn_ty == FnType::Constructor {
-                write!(f, "   this = ")?;
-            }
-            else {
-                write!(f, "   return ")?;
-            }
+        let binding_generics = self.cs_binding_generics(ty_name, func).ok_or(std::fmt::Error)?;
+        if fn_ty == FnType::Constructor {
+            write!(f, "    this = ")?;
         }
         else {
-            write!(f, "    ")?;
+            write!(f, "{}", self.cs_binding_result_decls(ty_name, func))?;
+
         }
 
-        if generic_args.is_empty() {
+        if binding_generics.is_empty() {
             writeln!(f, "EguiMarshal.Call(")?;
         }
         else {
-            writeln!(f, "EguiMarshal.Call<{}>(", generic_args.join(", "))?;
+            writeln!(f, "EguiMarshal.Call<{}>(", binding_generics)?;
         }
 
         let enum_name = format!("EguiFn.{}", self.fn_enum_variant_name(id));
 
-        write!(f, "{}", [enum_name, handle_value].into_iter().chain(sig.inputs.iter().skip(decl_ty.is_byref() as usize)
-            .map(|(name, _)| if name == "self" && fn_ty != FnType::Extension { "this".to_string() } else { name.to_case(Case::Camel) }))
+        write!(f, "{}", [enum_name].into_iter().chain(self.cs_binding_arguments(ty_name, fn_ty, func).ok_or(std::fmt::Error)?)
             .collect::<Vec<_>>().join(", "))?;
         writeln!(f, ");")?;
+
+        writeln!(f, "{}", self.cs_binding_result_assignments(ty_name, fn_ty, func))?;
+
+        if sig.output.is_some() && fn_ty != FnType::Constructor {
+            writeln!(f, "    return result;")?;
+        }
 
         if property {
             writeln!(f, "}}")?;
@@ -1271,9 +1247,7 @@ impl BindingsGenerator {
     }
 
     /*
-     - todo: get Pointer params working on C# side
-     - todo: get &mut params working on C# side
-     - todo: run C# code to verify operation
+     - todo: add Pointer params checks on C# side
      - todo: consider whether can bind Fn(&mut Ui) and Fn(&mut Ui) -> R params..?
      - todo: continue to tackle remaining fns
     
@@ -1315,62 +1289,97 @@ impl BindingsGenerator {
     }
 
     /// Gets the signature to use for an autobound C# function.
-    fn cs_binding_signature(&self, self_ty: Option<&str>, has_this: bool, f: &Function) -> Option<String> {
-        Some(f.sig.inputs.iter().skip(if has_this { 1 } else { 0 }).map(|(name, ty)| {
+    fn cs_binding_signature(&self, self_ty: Option<&str>, fn_ty: FnType, f: &Function) -> Option<String> {
+        Some(f.sig.inputs.iter().skip(if fn_ty == FnType::Instance { 1 } else { 0 }).map(|(name, ty)| {
             let bound_ty = self.bound_ty(self_ty, ty)?;
             let ty_name = bound_ty.name.cs_name;
             let is_ref_mut = matches!(bound_ty.kind, BoundTypeKind::Reference { mutable: true });
             let ref_prefix = if is_ref_mut { "ref " } else { "" };
-            Some(format!("{ref_prefix}{ty_name} {name}"))
+            Some(format!("{ref_prefix}{ty_name} {}", name.to_case(Case::Camel)))
         }).collect::<Option<Vec<_>>>()?.join(", "))
     }
 
     /// Gets the call generics to use for an autobound C# function.
-    fn cs_binding_param_generics(&self, self_ty: Option<&str>, f: &Function) -> Option<String> {
-        Some(f.sig.inputs.iter().map(|(name, ty)| {
+    fn cs_binding_generics(&self, self_ty: Option<&str>, f: &Function) -> Option<String> {
+        let mut outputs = Vec::new();
+
+        if let Some(x) = &f.sig.output {
+            let bound_ty = self.bound_ty(self_ty, x)?;
+            if matches!(bound_ty.kind, BoundTypeKind::Reference { mutable: true } | BoundTypeKind::Pointer { .. }) {
+                return None;
+            }
+
+            outputs.push(bound_ty.name.cs_name);
+        }
+
+        let mut generics = f.sig.inputs.iter().map(|(_, ty)| {
             let bound_ty = self.bound_ty(self_ty, ty)?;
             let ty_name = match bound_ty.kind {
-                BoundTypeKind::Pointer { .. } => "EguiHandle",
+                BoundTypeKind::Pointer { .. } => "nuint",
                 BoundTypeKind::Reference { .. } | BoundTypeKind::Value => bound_ty.name.cs_name.as_str(),
             };
 
+            if matches!(bound_ty.kind, BoundTypeKind::Reference { mutable: true }) {
+                outputs.push(bound_ty.name.cs_name.clone());
+            }
+
             Some(format!("{ty_name}"))
-        }).collect::<Option<Vec<_>>>()?.join(", "))
+        }).collect::<Option<Vec<_>>>()?;
+
+        match outputs.len() {
+            0 => {},
+            1 => generics.push(outputs[0].clone()),
+            _ => generics.push(format!("({})", outputs.join(",")))
+        }
+        
+        Some(generics.join(", "))
     }
     
     /// Gets the arguments list for an autobound C# function.
-    fn cs_binding_arguments(&self, self_ty: Option<&str>, f: &Function) -> Option<String> {
-        Some(f.sig.inputs.iter().map(|(name, ty)| {
-            let arg_name = if name == "self" {
-                "this"
+    fn cs_binding_arguments(&self, self_ty: Option<&str>, fn_ty: FnType, f: &Function) -> Option<Vec<String>> {
+        f.sig.inputs.iter().map(|(name, ty)| {
+            let arg_name = if name == "self" && fn_ty != FnType::Extension {
+                "this".to_string()
             }
             else {
-                name.as_str()
+                name.to_case(Case::Camel)
             };
 
             Some(match self.bound_ty(self_ty, ty)?.kind {
                 BoundTypeKind::Pointer { .. } => format!("{arg_name}.Ptr"),
                 BoundTypeKind::Reference { .. } | BoundTypeKind::Value => format!("{arg_name}"),
             })
-        }).collect::<Option<Vec<_>>>()?.join(", "))
+        }).collect::<Option<Vec<_>>>()
     }
+    
+    /// Gets the result declarations list for an autobound C# function.
+    fn cs_binding_result_decls(&self, self_ty: Option<&str>, f: &Function) -> String {
+        let mut vars = Vec::new();
 
-    /*
-    /// Gets a list of return values for an C3 function.
-    fn cs_binding_return_generics(&self, self_ty: Option<&str>, f: &Function) -> Option<String> {
-        f.sig.inputs.iter().filter_map(|(_, ty)| {
-            let bound_ty = self.bound_ty(self_ty, ty).expect("Failed to get binding for type");
-            matches!(bound_ty.kind, BoundTypeKind::Reference { mutable: true }).then(|| )
-        }).collect::<Vec<_>>().join(", ")
+        if f.sig.output.is_some() {
+            vars.push("result".to_string());
+        }
+
+        vars.extend(f.sig.inputs.iter().filter_map(|(name, ty)|
+            matches!(self.bound_ty(self_ty, ty).expect("Failed to resolve result declaration").kind, BoundTypeKind::Reference { mutable: true })
+                .then(|| format!("{name}_result").to_case(Case::Camel)))
+            .collect::<Vec<String>>());
+
+        match vars.len() {
+            0 => String::new(),
+            1 => format!("var {} = ", vars[0]),
+            _ => format!("var ({}) =", vars.join(", "))
+        }
     }
-
-    /// Gets a list of return values for an C3 function.
-    fn cs_binding_returns(&self, self_ty: Option<&str>, f: &Function) -> String {
-        f.sig.inputs.iter().filter(|(_, ty)| {
-            let bound_ty = self.bound_ty(self_ty, ty).expect("Failed to get binding for type");
-            matches!(bound_ty.kind, BoundTypeKind::Reference { mutable: true })
-        }).map(|(name, _)| format!("{name}_")).collect::<Vec<_>>().join(", ")
-    } */
+    
+    /// Gets the result declarations list for an autobound C# function.
+    fn cs_binding_result_assignments(&self, self_ty: Option<&str>, fn_ty: FnType, f: &Function) -> String {
+        f.sig.inputs.iter().filter_map(|(name, ty)|
+            matches!(self.bound_ty(self_ty, ty).expect("Failed to resolve result declaration").kind, BoundTypeKind::Reference { mutable: true })
+                .then(|| format!("{} = {};", if name == "self" && fn_ty == FnType::Instance { "this".to_string() } else { name.to_case(Case::Camel) },
+                    format!("{name}_result").to_case(Case::Camel))))
+            .collect::<Vec<String>>().join("\n    ")
+    }
 
     /// Emits an `enum` containing the names of all public `egui` functions.
     fn emit_fn_enum(&self, bound_ids: &[RdId]) {
@@ -1878,16 +1887,6 @@ enum DeclaringType {
     Pointer,
     /// The type will be a static helper class.
     None
-}
-
-impl DeclaringType {
-    /// Whether this type is passed by reference.
-    pub fn is_byref(&self) -> bool {
-        match self {
-            Self::None | Self::PrimitiveEnum | Self::Struct => false,
-            Self::Handle | Self::Pointer => true,
-        }
-    }
 }
 
 /// How to emit a particular function.

@@ -2,7 +2,7 @@ namespace Egui;
 
 public partial struct WidgetText
 {
-    public string RawText => EguiMarshal.Call<WidgetText, string>(EguiFn.egui_widget_text_WidgetText_text, 0, this);
+    public string RawText => EguiMarshal.Call<WidgetText, string>(EguiFn.egui_widget_text_WidgetText_text, this);
 
     /// <summary>
     /// Creates a widget text object for the provided rich text.

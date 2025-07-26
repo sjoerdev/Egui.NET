@@ -71,7 +71,7 @@ public ref struct Window
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
 
         bool? isOpen = _hasOpen ? _open : null;
-        var (response, setOpen) = EguiMarshal.Call<WindowInner, bool?, EguiCallback, (Response?, bool)>(EguiFn.egui_containers_window_Window_show, ctx.Handle.ptr, new WindowInner(this), isOpen, callback);
+        var (response, setOpen) = EguiMarshal.Call<nuint, WindowInner, bool?, EguiCallback, (Response?, bool)>(EguiFn.egui_containers_window_Window_show, ctx.Ptr, new WindowInner(this), isOpen, callback);
 
         if (_hasOpen)
         {
@@ -98,7 +98,7 @@ public ref struct Window
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
 
         bool? isOpen = _hasOpen ? _open : null;
-        var (response, setOpen) = EguiMarshal.Call<WindowInner, bool?, EguiCallback, (Response?, bool)>(EguiFn.egui_containers_window_Window_show, ctx.Handle.ptr, new WindowInner(this), isOpen, callback);
+        var (response, setOpen) = EguiMarshal.Call<nuint, WindowInner, bool?, EguiCallback, (Response?, bool)>(EguiFn.egui_containers_window_Window_show, ctx.Ptr, new WindowInner(this), isOpen, callback);
 
         if (_hasOpen)
         {

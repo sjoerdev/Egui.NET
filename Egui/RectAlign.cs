@@ -140,7 +140,7 @@ public partial struct RectAlign
     /// </summary>
     public static RectAlign? FindBestAlign(IEnumerable<RectAlign> valuesToTry, Rect screenRect, Rect parentRect, float gap, Vec2 expectedSize)
     {
-        return EguiMarshal.Call<ImmutableList<RectAlign>, Rect, Rect, float, Vec2, RectAlign?>(EguiFn.emath_rect_align_RectAlign_find_best_align, 0,
+        return EguiMarshal.Call<ImmutableList<RectAlign>, Rect, Rect, float, Vec2, RectAlign?>(EguiFn.emath_rect_align_RectAlign_find_best_align,
             valuesToTry.ToImmutableList(), screenRect, parentRect, gap, expectedSize);
     }
 }

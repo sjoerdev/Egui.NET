@@ -135,7 +135,7 @@ public unsafe class Program
                 .Show(ctx, ui =>
             {
                 if (ui.Label("this is another winder")
-                    .OnHoverText("Click for a message!").Clicked) { Console.WriteLine("clickit"); }
+                    .OnHoverTextAtPointer("Click for a message!").Clicked) { Console.WriteLine("clickit"); }
             });
             /*
             new CentralPanel().Show(ctx, ui =>

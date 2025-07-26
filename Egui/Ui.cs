@@ -14,7 +14,7 @@ public readonly ref partial struct Ui
         get
         {
             AssertInitialized();
-            return new Painter(Ctx, EguiMarshal.Call<EguiHandle>(EguiFn.egui_ui_Ui_painter, Ptr));
+            return new Painter(Ctx, EguiMarshal.Call<nuint, EguiHandle>(EguiFn.egui_ui_Ui_painter, Ptr));
         }
     }
 
@@ -26,7 +26,7 @@ public readonly ref partial struct Ui
         get
         {
             AssertInitialized();
-            return EguiMarshal.Call<Layout>(EguiFn.egui_ui_Ui_layout, Ptr);
+            return EguiMarshal.Call<nuint, Layout>(EguiFn.egui_ui_Ui_layout, Ptr);
         }
     }
 
@@ -38,7 +38,7 @@ public readonly ref partial struct Ui
         get
         {
             AssertInitialized();
-            return EguiMarshal.Call<Spacing>(EguiFn.egui_ui_Ui_spacing, Ptr);
+            return EguiMarshal.Call<nuint, Spacing>(EguiFn.egui_ui_Ui_spacing, Ptr);
         }
     }
 
@@ -50,7 +50,7 @@ public readonly ref partial struct Ui
         get
         {
             AssertInitialized();
-            return EguiMarshal.Call<UiStack>(EguiFn.egui_ui_Ui_stack, Ptr);
+            return EguiMarshal.Call<nuint, UiStack>(EguiFn.egui_ui_Ui_stack, Ptr);
         }
     }
 
@@ -63,7 +63,7 @@ public readonly ref partial struct Ui
         get
         {
             AssertInitialized();
-            return EguiMarshal.Call<Style>(EguiFn.egui_ui_Ui_style, Ptr);
+            return EguiMarshal.Call<nuint, Style>(EguiFn.egui_ui_Ui_style, Ptr);
         }
     }
 
@@ -75,7 +75,7 @@ public readonly ref partial struct Ui
         get
         {
             AssertInitialized();
-            return EguiMarshal.Call<Visuals>(EguiFn.egui_ui_Ui_visuals, Ptr);
+            return EguiMarshal.Call<nuint, Visuals>(EguiFn.egui_ui_Ui_visuals, Ptr);
         }
     }
 
@@ -141,7 +141,7 @@ public readonly ref partial struct Ui
         AssertInitialized();
         var ctx = Ctx;
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<Vec2, Layout, EguiCallback, Response>(EguiFn.egui_ui_Ui_allocate_ui_with_layout, Ptr, desiredSize, layout, callback);
+        var response = EguiMarshal.Call<nuint, Vec2, Layout, EguiCallback, Response>(EguiFn.egui_ui_Ui_allocate_ui_with_layout, Ptr, desiredSize, layout, callback);
         return new InnerResponse
         {
             Response = response
@@ -155,7 +155,7 @@ public readonly ref partial struct Ui
         R result = default!;
         var ctx = Ctx;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<Vec2, Layout, EguiCallback, Response>(EguiFn.egui_ui_Ui_allocate_ui_with_layout, Ptr, desiredSize, layout, callback);
+        var response = EguiMarshal.Call<nuint, Vec2, Layout, EguiCallback, Response>(EguiFn.egui_ui_Ui_allocate_ui_with_layout, Ptr, desiredSize, layout, callback);
         return new InnerResponse<R>
         {
             Inner = result,
@@ -170,7 +170,7 @@ public readonly ref partial struct Ui
     public readonly (Response, Painter) AllocatePainter(Vec2 desiredSize, Sense sense)
     {
         AssertInitialized();
-        var (response, handle) = EguiMarshal.Call<Vec2, Sense, (Response, EguiHandle)>(EguiFn.egui_ui_Ui_painter_at, Ptr, desiredSize, sense);
+        var (response, handle) = EguiMarshal.Call<nuint, Vec2, Sense, (Response, EguiHandle)>(EguiFn.egui_ui_Ui_painter_at, Ptr, desiredSize, sense);
         return (response, new Painter(Ctx, handle));
     }
 
@@ -181,18 +181,18 @@ public readonly ref partial struct Ui
     public readonly Painter PainterAt(Rect rect)
     {
         AssertInitialized();
-        return new Painter(Ctx, EguiMarshal.Call<Rect, EguiHandle>(EguiFn.egui_ui_Ui_painter_at, Ptr, rect));
+        return new Painter(Ctx, EguiMarshal.Call<nuint, Rect, EguiHandle>(EguiFn.egui_ui_Ui_painter_at, Ptr, rect));
     }
 
     /// <summary>
-    /// Shortcut for <c>Default())</c><br/>
+    /// Shortcut for <c>Default()</c><br/>
     /// 
     /// See also <c>Separator</c>.
     /// </summary>
     public readonly Response Separator()
     {
         AssertInitialized();
-        return EguiMarshal.Call<Response>(EguiFn.egui_ui_Ui_separator, Ptr);
+        return EguiMarshal.Call<nuint, Response>(EguiFn.egui_ui_Ui_separator, Ptr);
     }
 
     /// <summary>

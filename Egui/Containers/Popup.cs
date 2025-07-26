@@ -225,7 +225,7 @@ public ref struct Popup
     /// </summary>
     public static void CloseAll(Context ctx)
     {
-        EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_close_all, ctx.Handle.ptr);
+        EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_close_all, ctx.Ptr);
     }
 
     /// <summary>
@@ -235,7 +235,7 @@ public ref struct Popup
     /// </summary>
     public static void CloseId(Context ctx, Id id)
     {
-        EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_close_id, ctx.Handle.ptr, id);
+        EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_close_id, ctx.Ptr, id);
     }
 
     /// <summary>
@@ -246,7 +246,7 @@ public ref struct Popup
     /// </summary>
     public static void OpenId(Context ctx, Id id)
     {
-        EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_open_id, ctx.Handle.ptr, id);
+        EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_open_id, ctx.Ptr, id);
     }
 
     /// <summary>
@@ -255,7 +255,7 @@ public ref struct Popup
     /// </summary>
     public static void ToggleId(Context ctx, Id id)
     {
-        EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_toggle_id, ctx.Handle.ptr, id);
+        EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_toggle_id, ctx.Ptr, id);
     }
 
     /// <summary>
@@ -263,7 +263,7 @@ public ref struct Popup
     /// </summary>
     public static Pos2? PositionOfId(Context ctx, Id id)
     {
-        return EguiMarshal.Call<Id, Pos2?>(EguiFn.egui_containers_popup_Popup_position_of_id, ctx.Handle.ptr, id);
+        return EguiMarshal.Call<nuint, Id, Pos2?>(EguiFn.egui_containers_popup_Popup_position_of_id, ctx.Ptr, id);
     }
 
     /// <summary>
@@ -271,7 +271,7 @@ public ref struct Popup
     /// </summary>
     public static bool IsIdOpen(Context ctx, Id id)
     {
-        return EguiMarshal.Call<Id, bool>(EguiFn.egui_containers_popup_Popup_is_id_open, ctx.Handle.ptr, id);
+        return EguiMarshal.Call<nuint, Id, bool>(EguiFn.egui_containers_popup_Popup_is_id_open, ctx.Ptr, id);
     }
 
     /// <summary>
@@ -279,7 +279,7 @@ public ref struct Popup
     /// </summary>
     public static bool IsAnyOpen(Context ctx)
     {
-        return EguiMarshal.Call<bool>(EguiFn.egui_containers_popup_Popup_is_any_open, ctx.Handle.ptr);
+        return EguiMarshal.Call<nuint, bool>(EguiFn.egui_containers_popup_Popup_is_any_open, ctx.Ptr);
     }
 
     /// <summary>
@@ -492,7 +492,7 @@ public ref struct Popup
     {
         var ctx = Ctx;
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var (response, setOpen) = EguiMarshal.Call<SerializablePopup, EguiCallback, (Response?, bool)>(EguiFn.egui_containers_popup_Popup_show, Ctx.Handle.ptr, new SerializablePopup(this), callback);
+        var (response, setOpen) = EguiMarshal.Call<nuint, SerializablePopup, EguiCallback, (Response?, bool)>(EguiFn.egui_containers_popup_Popup_show, Ctx.Ptr, new SerializablePopup(this), callback);
 
         if (_openKind == OpenKind.Bool)
         {
@@ -518,7 +518,7 @@ public ref struct Popup
         var ctx = Ctx;
         R result = default!;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
-        var (response, setOpen) = EguiMarshal.Call<SerializablePopup, EguiCallback, (Response?, bool)>(EguiFn.egui_containers_popup_Popup_show, Ctx.Handle.ptr, new SerializablePopup(this), callback);
+        var (response, setOpen) = EguiMarshal.Call<nuint, SerializablePopup, EguiCallback, (Response?, bool)>(EguiFn.egui_containers_popup_Popup_show, Ctx.Ptr, new SerializablePopup(this), callback);
 
         if (_openKind == OpenKind.Bool)
         {

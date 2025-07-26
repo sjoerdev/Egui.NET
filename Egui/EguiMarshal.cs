@@ -79,6 +79,18 @@ internal static class EguiMarshal
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Call<A0, A1, A2, A3, A4>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
     {
+        Call<A0, A1, A2, A3, A4, NoArgument>(func, arg0, arg1, arg2, arg3, arg4, default);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static R Call<A0, A1, A2, A3, A4, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
+    {
+        return Call<A0, A1, A2, A3, A4, NoArgument, R>(func, arg0, arg1, arg2, arg3, arg4, default);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Call<A0, A1, A2, A3, A4, A5>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4, A5 arg5)
+    {
         unsafe
         {
             var serializer = GetSerializer();
@@ -86,6 +98,8 @@ internal static class EguiMarshal
             SerializerCache<A1>.Serialize(serializer, arg1);
             SerializerCache<A2>.Serialize(serializer, arg2);
             SerializerCache<A3>.Serialize(serializer, arg3);
+            SerializerCache<A4>.Serialize(serializer, arg4);
+            SerializerCache<A5>.Serialize(serializer, arg5);
 
             var bytes = serializer.get_bytes();
             fixed (byte* bytePtr = bytes)
@@ -102,7 +116,7 @@ internal static class EguiMarshal
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static R Call<A0, A1, A2, A3, A4, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4)
+    public static R Call<A0, A1, A2, A3, A4, A5, R>(EguiFn func, A0 arg0, A1 arg1, A2 arg2, A3 arg3, A4 arg4, A5 arg5)
     {
         unsafe
         {
@@ -112,6 +126,7 @@ internal static class EguiMarshal
             SerializerCache<A2>.Serialize(serializer, arg2);
             SerializerCache<A3>.Serialize(serializer, arg3);
             SerializerCache<A4>.Serialize(serializer, arg4);
+            SerializerCache<A5>.Serialize(serializer, arg5);
 
             var bytes = serializer.get_bytes();
             fixed (byte* bytePtr = bytes)
