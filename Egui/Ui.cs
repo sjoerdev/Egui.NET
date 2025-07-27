@@ -585,6 +585,21 @@ public readonly ref partial struct Ui
     }
 
     /// <summary>
+    /// A <see cref="CollapsingHeader"/> that starts out collapsed.<br/>
+    /// The name must be unique within the current parent, or you need to use <see cref="CollapsingHeader.IdSalt"/>.
+    /// </summary>
+    public readonly CollapsingResponse Collapsing(WidgetText heading, Action<Ui> addContents)
+    {
+        return new CollapsingHeader(heading).Show(this, addContents);
+    }
+
+    /// <inheritdoc cref="Collapsing"/>
+    public readonly CollapsingResponse<R> Collapsing<R>(WidgetText heading, Func<Ui, R> addContents)
+    {
+        return new CollapsingHeader(heading).Show(this, addContents);
+    }
+
+    /// <summary>
     /// Create a scoped child ui.
     /// </summary>
     public readonly InnerResponse Scope(Action<Ui> addContents)
@@ -640,18 +655,6 @@ public readonly ref partial struct Ui
     }
 
     /// <summary>
-    /// Show a checkbox.<br/>
-    /// 
-    /// See also <c>ToggleValue</c>.
-    /// </summary>
-    public Response Checkbox(ref bool isChecked, Atoms atoms)
-    {       
-        var (result, checkedResult) = EguiMarshal.Call<nuint, bool, Atoms, (Response, bool)>(EguiFn.egui_ui_Ui_checkbox, Ptr, isChecked, atoms);
-        isChecked = checkedResult;
-        return result;
-    }
-
-    /// <summary>
     /// Create a painter for a sub-region of this <see cref="Ui"/>.
     /// The clip-rect of the returned <see cref="Painter"/>  will be the intersection of the given rectangle and the <see cref="ClipRect"/> of this <see cref="Ui"/>.
     /// </summary>
@@ -670,6 +673,36 @@ public readonly ref partial struct Ui
     {
         AssertInitialized();
         return EguiMarshal.Call<nuint, Response>(EguiFn.egui_ui_Ui_separator, Ptr);
+    }
+
+    /// <summary>
+    /// Show a <see cref="RadioButton"/>. It is selected if <c>current_value == selected_value</c>.
+    /// If clicked, <paramref name="alternative"/> is assigned to <paramref name="currentValue"/>.
+    public readonly Response RadioValue<V>(ref V currentValue, V alternative, Atoms atoms)
+    {
+        var equal = EqualityComparer<V>.Default.Equals(currentValue, alternative);
+        var response = Radio(equal, atoms);
+        if (response.Clicked && !equal)
+        {
+            currentValue = alternative;
+            response.MarkChanged();
+        }
+        return response;
+    }
+
+    /// <summary>
+    /// Show selectable text. It is selected if <c>current_value == selected_value</c>.
+    /// If clicked, <paramref name="alternative"/> is assigned to <paramref name="currentValue"/>.
+    public readonly Response SelectableValue<V>(ref V currentValue, V alternative, Atoms atoms)
+    {
+        var equal = EqualityComparer<V>.Default.Equals(currentValue, alternative);
+        var response = SelectableLabel(equal, atoms);
+        if (response.Clicked && !equal)
+        {
+            currentValue = alternative;
+            response.MarkChanged();
+        }
+        return response;
     }
 
     /// <summary>

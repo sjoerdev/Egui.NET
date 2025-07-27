@@ -234,7 +234,6 @@ public unsafe class Program
             ui.Checkbox(ref _boolean, "Checkbox");
             ui.EndRow();
 
-            /*
             DocLinkLabel(ui, "RadioButton", "radio");
             ui.Horizontal(ui =>
             {
@@ -253,6 +252,18 @@ public unsafe class Program
             });
             ui.EndRow();
 
+            DocLinkLabel(ui, "ComboBox", "ComboBox");
+            ComboBox.FromLabel("Take your pick")
+                .SelectedText($"{_radio}")
+                .ShowUi(ui, ui =>
+                {
+                    ui.SelectableValue(ref _radio, Enum.First, "First");
+                    ui.SelectableValue(ref _radio, Enum.Second, "Second");
+                    ui.SelectableValue(ref _radio, Enum.Third, "Third");
+                });
+            ui.EndRow();
+
+            /*
             DocLinkLabel(ui, "Slider", "Slider");
             ui.Slider(ref _scalar, new Interval<float>(0.0f, 360.0f), suffix: "°");
             ui.EndRow();
@@ -281,30 +292,20 @@ public unsafe class Program
                 .OnHoverText("It's easy to create your own widgets!\nThis toggle switch is just 15 lines of code.");
             ui.EndRow();
 
-            /*
-             * 
-        ui.add(doc_link_label("CollapsingHeader", "collapsing"));
-        ui.collapsing("Click to see what is hidden!", |ui| {
-            ui.horizontal_wrapped(|ui| {
-                ui.spacing_mut().item_spacing.x = 0.0;
-                ui.label("It's a ");
-                ui.add(doc_link_label("Spinner", "spinner"));
-                ui.add_space(4.0);
-                ui.add(egui::Spinner::new());
+            DocLinkLabel(ui, "CollapsingHeader", "collapsing");
+            ui.Collapsing("Click to see what is hidden!", ui =>
+            {
+                ui.HorizontalWrapped(ui =>
+                {
+                    // ui.spacing_mut().item_spacing.x = 0.0;
+                    ui.Label("It's a ");
+                    DocLinkLabel(ui, "Spinner", "spinner");
+                    ui.AddSpace(4.0f);
+                    ui.Add(new Spinner());
+                });
             });
-        });
-        ui.end_row();
-             
-        ui.add(doc_link_label("ComboBox", "ComboBox"));
-
-        egui::ComboBox::from_label("Take your pick")
-            .selected_text(format!("{radio:?}"))
-            .show_ui(ui, |ui| {
-                ui.selectable_value(radio, Enum::First, "First");
-                ui.selectable_value(radio, Enum::Second, "Second");
-                ui.selectable_value(radio, Enum::Third, "Third");
-            });
-        ui.end_row();
+            ui.EndRow();
+             /*
             
         ui.add(doc_link_label("Image", "Image"));
         let egui_icon = egui::include_image!("../../data/icon.png");

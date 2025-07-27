@@ -1,11 +1,11 @@
 namespace Egui.Containers;
 
-public partial struct TopBottomPanel
+public partial struct SidePanel
 {
     /// <summary>
     /// Show either a collapsed or a expanded panel, with a nice animation between.
     /// </summary>
-    public unsafe static InnerResponse? ShowAnimatedBetween(Context ctx, bool isExpanded, TopBottomPanel collapsedPanel, TopBottomPanel expandedPanel, Action<Ui, float> addContents)
+    public unsafe static InnerResponse? ShowAnimatedBetween(Context ctx, bool isExpanded, SidePanel collapsedPanel, SidePanel expandedPanel, Action<Ui, float> addContents)
     {
         using var callback = new EguiCallback(data =>
         {
@@ -13,7 +13,7 @@ public partial struct TopBottomPanel
             addContents(new Ui(ctx, animatedUi.ui), animatedUi.t);
         });
 
-        var response = EguiMarshal.Call<nuint, bool, TopBottomPanel, TopBottomPanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_TopBottomPanel_show_animated_between, ctx.Ptr, isExpanded, collapsedPanel, expandedPanel, callback);
+        var response = EguiMarshal.Call<nuint, bool, SidePanel, SidePanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_SidePanel_show_animated_between, ctx.Ptr, isExpanded, collapsedPanel, expandedPanel, callback);
 
         if (response.HasValue)
         {
@@ -29,7 +29,7 @@ public partial struct TopBottomPanel
     }
     
     /// <inheritdoc cref="ShowAnimatedBetween"/>
-    public unsafe static InnerResponse<R>? ShowAnimatedBetween<R>(Context ctx, bool isExpanded, TopBottomPanel collapsedPanel, TopBottomPanel expandedPanel, Func<Ui, float, R> addContents)
+    public unsafe static InnerResponse<R>? ShowAnimatedBetween<R>(Context ctx, bool isExpanded, SidePanel collapsedPanel, SidePanel expandedPanel, Func<Ui, float, R> addContents)
     {
         R result = default!;
         using var callback = new EguiCallback(data =>
@@ -38,7 +38,7 @@ public partial struct TopBottomPanel
             result = addContents(new Ui(ctx, animatedUi.ui), animatedUi.t);
         });
 
-        var response = EguiMarshal.Call<nuint, bool, TopBottomPanel, TopBottomPanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_TopBottomPanel_show_animated_between, ctx.Ptr, isExpanded, collapsedPanel, expandedPanel, callback);
+        var response = EguiMarshal.Call<nuint, bool, SidePanel, SidePanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_SidePanel_show_animated_between, ctx.Ptr, isExpanded, collapsedPanel, expandedPanel, callback);
 
         if (response.HasValue)
         {
@@ -57,7 +57,7 @@ public partial struct TopBottomPanel
     /// <summary>
     /// Show either a collapsed or a expanded panel, with a nice animation between.
     /// </summary>
-    public unsafe static InnerResponse? ShowAnimatedBetweenInside(Ui ui, bool isExpanded, TopBottomPanel collapsedPanel, TopBottomPanel expandedPanel, Action<Ui, float> addContents)
+    public unsafe static InnerResponse? ShowAnimatedBetweenInside(Ui ui, bool isExpanded, SidePanel collapsedPanel, SidePanel expandedPanel, Action<Ui, float> addContents)
     {
         ui.AssertInitialized();
         var ctx = ui.Ctx;
@@ -68,7 +68,7 @@ public partial struct TopBottomPanel
             addContents(new Ui(ctx, animatedUi.ui), animatedUi.t);
         });
 
-        var response = EguiMarshal.Call<nuint, bool, TopBottomPanel, TopBottomPanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_TopBottomPanel_show_animated_between_inside, ui.Ptr, isExpanded, collapsedPanel, expandedPanel, callback);
+        var response = EguiMarshal.Call<nuint, bool, SidePanel, SidePanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_SidePanel_show_animated_between_inside, ui.Ptr, isExpanded, collapsedPanel, expandedPanel, callback);
 
         if (response.HasValue)
         {
@@ -84,7 +84,7 @@ public partial struct TopBottomPanel
     }
     
     /// <inheritdoc cref="ShowAnimatedBetweenInside"/>
-    public unsafe static InnerResponse<R>? ShowAnimatedBetweenInside<R>(Ui ui, bool isExpanded, TopBottomPanel collapsedPanel, TopBottomPanel expandedPanel, Func<Ui, float, R> addContents)
+    public unsafe static InnerResponse<R>? ShowAnimatedBetweenInside<R>(Ui ui, bool isExpanded, SidePanel collapsedPanel, SidePanel expandedPanel, Func<Ui, float, R> addContents)
     {
         ui.AssertInitialized();
         var ctx = ui.Ctx;
@@ -95,7 +95,7 @@ public partial struct TopBottomPanel
             result = addContents(new Ui(ctx, animatedUi.ui), animatedUi.t);
         });
 
-        var response = EguiMarshal.Call<nuint, bool, TopBottomPanel, TopBottomPanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_TopBottomPanel_show_animated_between_inside, ui.Ptr, isExpanded, collapsedPanel, expandedPanel, callback);
+        var response = EguiMarshal.Call<nuint, bool, SidePanel, SidePanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_SidePanel_show_animated_between_inside, ui.Ptr, isExpanded, collapsedPanel, expandedPanel, callback);
 
         if (response.HasValue)
         {
@@ -117,7 +117,7 @@ public partial struct TopBottomPanel
     public readonly InnerResponse Show(Context ctx, Action<Ui> addContents)
     {
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<nuint, TopBottomPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_TopBottomPanel_show, ctx.Ptr, this, callback);
+        var response = EguiMarshal.Call<nuint, SidePanel, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show, ctx.Ptr, this, callback);
         return new InnerResponse
         {
             Response = response
@@ -129,7 +129,7 @@ public partial struct TopBottomPanel
     {
         R result = default!;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<nuint, TopBottomPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_TopBottomPanel_show, ctx.Ptr, this, callback);
+        var response = EguiMarshal.Call<nuint, SidePanel, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show, ctx.Ptr, this, callback);
         return new InnerResponse<R>
         {
             Inner = result,
@@ -144,7 +144,7 @@ public partial struct TopBottomPanel
     public readonly InnerResponse? ShowAnimated(Context ctx, bool isExpanded, Action<Ui> addContents)
     {
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<nuint, bool, TopBottomPanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_TopBottomPanel_show_animated, ctx.Ptr, isExpanded, this, callback);
+        var response = EguiMarshal.Call<nuint, bool, SidePanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_SidePanel_show_animated, ctx.Ptr, isExpanded, this, callback);
 
         if (response.HasValue)
         {
@@ -164,7 +164,7 @@ public partial struct TopBottomPanel
     {
         R result = default!;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<nuint, bool, TopBottomPanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_TopBottomPanel_show_animated, ctx.Ptr, isExpanded, this, callback);
+        var response = EguiMarshal.Call<nuint, bool, SidePanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_SidePanel_show_animated, ctx.Ptr, isExpanded, this, callback);
 
         if (response.HasValue)
         {
@@ -188,7 +188,7 @@ public partial struct TopBottomPanel
         ui.AssertInitialized();
         var ctx = ui.Ctx;
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<nuint, TopBottomPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_TopBottomPanel_show_inside, ui.Ptr, this, callback);
+        var response = EguiMarshal.Call<nuint, SidePanel, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_inside, ui.Ptr, this, callback);
         return new InnerResponse
         {
             Response = response
@@ -202,7 +202,7 @@ public partial struct TopBottomPanel
         var ctx = ui.Ctx;
         R result = default!;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<nuint, TopBottomPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_TopBottomPanel_show_inside, ui.Ptr, this, callback);
+        var response = EguiMarshal.Call<nuint, SidePanel, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_inside, ui.Ptr, this, callback);
         return new InnerResponse<R>
         {
             Inner = result,
@@ -220,7 +220,7 @@ public partial struct TopBottomPanel
         ui.AssertInitialized();
         var ctx = ui.Ctx;
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<nuint, bool, TopBottomPanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_TopBottomPanel_show_animated_inside, ui.Ptr, isExpanded, this, callback);
+        var response = EguiMarshal.Call<nuint, bool, SidePanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_SidePanel_show_animated_inside, ui.Ptr, isExpanded, this, callback);
 
         if (response.HasValue)
         {
@@ -242,7 +242,7 @@ public partial struct TopBottomPanel
         var ctx = ui.Ctx;
         R result = default!;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<nuint, bool, TopBottomPanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_TopBottomPanel_show_animated_inside, ui.Ptr, isExpanded, this, callback);
+        var response = EguiMarshal.Call<nuint, bool, SidePanel, EguiCallback, Response?>(EguiFn.egui_containers_panel_SidePanel_show_animated_inside, ui.Ptr, isExpanded, this, callback);
 
         if (response.HasValue)
         {

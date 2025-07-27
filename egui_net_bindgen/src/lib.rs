@@ -50,18 +50,10 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_ui_Ui_stack",
 
     // These functions have conflicting names with fields or C#
-    "egui_data_input_EventFilter_matches",
-    "egui_viewport_ViewportIdPair_from_self_and_parent",
-    "egui_input_state_InputState_begin_pass",
     "epaint_image_AlphaFromCoverage_alpha_from_coverage",
-    "egui_response_Response_output_event",
     "epaint_shapes_shape_Shape_mesh",
-    "egui_widgets_radio_button_RadioButton_new",
-    "egui_ui_Ui_selectable_label",
     "egui_atomics_atom_kind_AtomKind_text",
     "egui_atomics_atom_kind_AtomKind_image",
-    "egui_text_selection_cursor_range_CCursorRange_on_event",
-    "egui_ui_Ui_checkbox",
     "egui_widget_text_WidgetText_text",
     "epaint_shapes_shape_Shape_text",
 
@@ -632,6 +624,12 @@ const IGNORE_FNS: &[&str] = &[
     "emath_rect_transform_RectTransform",
     "egui_widget_text_RichText_collect",
 
+    // Prepared: omitted due to safety conflicts (Ui cannot be owned in the current C# API)
+    "egui_containers_frame_Frame_begin",
+    "egui_containers_frame_Prepared_allocate_space",
+    "egui_containers_frame_Prepared_end",
+    "egui_containers_frame_Prepared_paint",
+
     // UiBuilder: redundant function (same as default)
     "egui_ui_builder_UiBuilder_new",
 
@@ -694,6 +692,7 @@ const IGNORE_FNS: &[&str] = &[
     "egui_containers_window_Window_scroll_bar_visibility",
     "egui_containers_window_Window_title_bar",
     "egui_containers_window_Window_vscroll",
+    "egui_containers_window_Window_mutate",
 
     // FramePublisher: not possible to bind to C# due to generics
     "egui_cache_frame_publisher_FramePublisher_as_any_mut",
@@ -729,6 +728,9 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_Ui_scope_dyn",
     "egui_ui_Ui_scope",
     "egui_ui_Ui_add_visible",
+    "egui_ui_Ui_collapsing",
+    "egui_ui_Ui_radio_value",
+    "egui_ui_Ui_selectable_value",
 
     // Other functions that cannot be bound to C#
     "epaint_stroke_PathStroke_new_uv",
@@ -1327,13 +1329,21 @@ impl BindingsGenerator {
             let ty_name = bound_ty.name.cs_name;
             let is_ref_mut = matches!(bound_ty.kind, BoundTypeKind::Reference { mutable: true });
             let ref_prefix = if is_ref_mut { "ref " } else { "" };
-            Some(format!("{ref_prefix}{ty_name} {}", name.to_case(Case::Camel)))
+            Some(format!("{ref_prefix}{ty_name} {}", Self::cs_param_name(fn_ty, &name)))
         }).collect::<Option<Vec<_>>>()?.join(", "))
     }
 
     /// Gets the name to use for a parameter in C#.
     fn cs_param_name(fn_ty: FnType, rs_name: &str) -> String {
-        if rs_name == "self" && fn_ty == FnType::Instance { "this".to_string() } else { rs_name.to_case(Case::Camel) }
+        if rs_name == "self" && fn_ty == FnType::Instance { "this".to_string() } else {
+            match rs_name {
+                "checked" => "isChecked".to_string(),
+                "event" => "eventArg".to_string(),
+                "new" => "newArg".to_string(),
+                "this" => "thisArg".to_string(),
+                _ => rs_name.to_case(Case::Camel)
+            }
+        }
     }
 
     /// Gets the signature to use for an autobound C# function.

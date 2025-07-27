@@ -181,7 +181,8 @@ internal static class EguiMarshal
     /// </summary>
     private static Dictionary<Type, (string, string)> SerializerPrototypes = new Dictionary<Type, (string, string)> {
         { typeof(ReadOnlyMemory<>), ("ReadOnlyMemorySerializer", "ReadOnlyMemoryDeserializer") },
-        { typeof(ValueTuple<,>), ("TupleSerializer", "TupleDeserializer") },
+        { typeof(ValueTuple<,>), ("Tuple2Serializer", "Tuple2Deserializer") },
+        { typeof(ValueTuple<,,>), ("Tuple3Serializer", "Tuple3Deserializer") },
         { typeof(Nullable<>), ("NullableSerializer", "NullableDeserializer") },
     };
 
@@ -370,7 +371,7 @@ internal static class EguiMarshal
     /// <summary>
     /// Serializes a tuple.
     /// </summary>
-    private static void TupleSerializer<A0, A1>(ISerializer serializer, (A0, A1) value)
+    private static void Tuple2Serializer<A0, A1>(ISerializer serializer, (A0, A1) value)
     {
         SerializerCache<A0>.Serialize(serializer, value.Item1);
         SerializerCache<A1>.Serialize(serializer, value.Item2);
@@ -379,9 +380,31 @@ internal static class EguiMarshal
     /// <summary>
     /// Deserializes a tuple.
     /// </summary>
-    private static (A0, A1) TupleDeserializer<A0, A1>(IDeserializer deserializer)
+    private static (A0, A1) Tuple2Deserializer<A0, A1>(IDeserializer deserializer)
     {
         return (SerializerCache<A0>.Deserialize(deserializer), SerializerCache<A1>.Deserialize(deserializer));
+    }
+
+    /// <summary>
+    /// Serializes a tuple.
+    /// </summary>
+    private static void Tuple3Serializer<A0, A1, A2>(ISerializer serializer, (A0, A1, A2) value)
+    {
+        SerializerCache<A0>.Serialize(serializer, value.Item1);
+        SerializerCache<A1>.Serialize(serializer, value.Item2);
+        SerializerCache<A2>.Serialize(serializer, value.Item3);
+    }
+
+    /// <summary>
+    /// Deserializes a tuple.
+    /// </summary>
+    private static (A0, A1, A2) Tuple3Deserializer<A0, A1, A2>(IDeserializer deserializer)
+    {
+        return (
+            SerializerCache<A0>.Deserialize(deserializer),
+            SerializerCache<A1>.Deserialize(deserializer),
+            SerializerCache<A2>.Deserialize(deserializer)
+        );
     }
 
     /// <summary>
