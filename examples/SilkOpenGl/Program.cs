@@ -189,12 +189,10 @@ public unsafe class Program
                 {
                     ui.Checkbox(ref _enabled, "Interactive")
                         .OnHoverText("Uncheck to inspect how the widgets look when disabled.");
-                        /*(ui.add(
-                    egui::DragValue::new(&mut self.opacity)
-                        .speed(0.01)
-                        .range(0.0..=1.0),
-                ) | ui.label("Opacity"))
-                .on_hover_text("Reduce this value to make widgets semi-transparent");*/
+                    ui.Add(new DragValue<float>(ref _opacity)
+                        .Speed(0.01f)
+                        .Range(0.0f, 1.0f))// | ui.Label("Opacity")
+                        .OnHoverText("Reduce this value to make widgets semi-transparent");
                 }
             });
 

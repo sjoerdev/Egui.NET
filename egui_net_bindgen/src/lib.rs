@@ -313,6 +313,25 @@ const IGNORE_FNS: &[&str] = &[
     "egui_atomics_atoms_Atoms_map_kind",
     "egui_atomics_atoms_Atoms_map_atoms",
 
+    // DragValue: bound manually
+    "egui_widgets_drag_value_DragValue_binary",
+    "egui_widgets_drag_value_DragValue_clamp_existing_to_range",
+    "egui_widgets_drag_value_DragValue_custom_formatter",
+    "egui_widgets_drag_value_DragValue_custom_parser",
+    "egui_widgets_drag_value_DragValue_fixed_decimals",
+    "egui_widgets_drag_value_DragValue_from_get_set",
+    "egui_widgets_drag_value_DragValue_hexadecimal",
+    "egui_widgets_drag_value_DragValue_max_decimals",
+    "egui_widgets_drag_value_DragValue_max_decimals_opt",
+    "egui_widgets_drag_value_DragValue_min_decimals",
+    "egui_widgets_drag_value_DragValue_new",
+    "egui_widgets_drag_value_DragValue_octal",
+    "egui_widgets_drag_value_DragValue_prefix",
+    "egui_widgets_drag_value_DragValue_range",
+    "egui_widgets_drag_value_DragValue_speed",
+    "egui_widgets_drag_value_DragValue_suffix",
+    "egui_widgets_drag_value_DragValue_update_while_editing",
+
     // FontsImpl: private type
     "epaint_text_fonts_FontsImpl_definitions",
     "epaint_text_fonts_FontsImpl_font",
@@ -731,14 +750,24 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_Ui_collapsing",
     "egui_ui_Ui_radio_value",
     "egui_ui_Ui_selectable_value",
+    "egui_ui_Ui_new",
+    "egui_ui_Ui_new_child",
 
     // Other functions that cannot be bound to C#
     "epaint_stroke_PathStroke_new_uv",
     "epaint_util_hash_with",
+    "emath_interpolation_factor",
+    "emath_inverse_lerp",
+    "emath_lerp",
+    "emath_remap",
+    "emath_remap_clamp",
     
     "egui___run_test_ctx",
     "egui___run_test_ui",
     "egui_debug_text_print",
+
+    "egui_widgets_reset_button",
+    "egui_widgets_reset_button_with",
 
     "serde_de_impls_deserialize_NonZeroVisitor",
     "serde_de_impls_deserialize_in_place_TupleInPlaceVisitor",
@@ -771,8 +800,10 @@ const IGNORE_FN_NAMES: &[&str] = &[
     "from_bits_retain",
     "index",
     "index_mut",
+    "into_inner",
     "mul",
     "mul_assign",
+    "not",
     "partial_cmp",
     "serialize",
     "sub",
@@ -1084,7 +1115,7 @@ impl BindingsGenerator {
             let name = self.krate.index[&id].name.as_deref().unwrap_or_default();
             let namespace = self.namespaces.get(name).cloned().unwrap_or_else(|| "Egui".to_string());
             
-            let short_namespace = namespace.rsplit_once(".").unwrap_or((&namespace, "")).1;
+            let short_namespace = namespace.rsplit_once(".").unwrap_or(("", &namespace)).1;
             
             let mut fn_def = String::new();
 
