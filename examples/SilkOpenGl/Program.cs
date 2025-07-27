@@ -170,15 +170,18 @@ public unsafe class Program
                 uiBuilder = uiBuilder.WithInvisible();
             }
 
-            new Grid("my_grid")
-                .NumColumns(2)
-                .Spacing(new Vec2(40, 4))
-                .Striped(true)
-                .Show(ui, GalleryGridContents);
+            ui.ScopeBuilder(uiBuilder, ui =>
+            {
+                ui.MultiplyOpacity(_opacity);
+                new Grid("my_grid")
+                    .NumColumns(2)
+                    .Spacing(new Vec2(40, 4))
+                    .Striped(true)
+                    .Show(ui, GalleryGridContents);
+            });
                 
             ui.Separator();
 
-            /*
             ui.Horizontal(ui =>
             {
                 ui.Checkbox(ref _visible, "Visible")
@@ -188,6 +191,12 @@ public unsafe class Program
                 {
                     ui.Checkbox(ref _enabled, "Interactive")
                         .OnHoverText("Uncheck to inspect how the widgets look when disabled.");
+                        /*(ui.add(
+                    egui::DragValue::new(&mut self.opacity)
+                        .speed(0.01)
+                        .range(0.0..=1.0),
+                ) | ui.label("Opacity"))
+                .on_hover_text("Reduce this value to make widgets semi-transparent");*/
                 }
             });
 
@@ -197,8 +206,8 @@ public unsafe class Program
             {
                 ui.Hyperlink("https://docs.rs/egui/")
                     .OnHoverText("The full egui documentation.\nYou can also click the different widgets names in the left column.");
-                ui.Hyperlink(new RichText("Source code of the widget gallery").Small(), "https://github.com/emilk/egui/blob/master/crates/egui_demo_lib/src/demo/widget_gallery.rs");
-            });*/
+                ui.HyperlinkTo(new RichText("Source code of the widget gallery").Small(), "https://github.com/emilk/egui/blob/master/crates/egui_demo_lib/src/demo/widget_gallery.rs");
+            });
         }
 
         private void GalleryGridContents(Ui ui)

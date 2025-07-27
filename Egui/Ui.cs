@@ -210,6 +210,23 @@ public readonly ref partial struct Ui
     /// When finished, the amount of space actually used (<c>min_rect</c>) will be allocated.
     /// So you can request a lot of space and then use less.
     /// </summary>
+    public readonly InnerResponse AllocateUi(Vec2 desiredSize, Action<Ui> addContents)
+    {
+        return AllocateUiWithLayout(desiredSize, Layout, addContents);
+    }
+
+    /// <inheritdoc cref="AllocateUi"/>
+    public readonly InnerResponse<R> AllocateUi<R>(Vec2 desiredSize, Func<Ui, R> addContents)
+    {
+        return AllocateUiWithLayout(desiredSize, Layout, addContents);
+    }
+
+    /// <summary>
+    /// Allocated the given space and then adds content to that space.
+    /// If the contents overflow, more space will be allocated.
+    /// When finished, the amount of space actually used (<c>min_rect</c>) will be allocated.
+    /// So you can request a lot of space and then use less.
+    /// </summary>
     public readonly InnerResponse AllocateUiWithLayout(Vec2 desiredSize, Layout layout, Action<Ui> addContents)
     {
         AssertInitialized();
@@ -230,6 +247,278 @@ public readonly ref partial struct Ui
         var ctx = Ctx;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
         var response = EguiMarshal.Call<nuint, Vec2, Layout, EguiCallback, Response>(EguiFn.egui_ui_Ui_allocate_ui_with_layout, Ptr, desiredSize, layout, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// This will make the next added widget centered and justified in the available space.<br/>
+    ///
+    /// Only one widget may be added to the inner <c>Ui</c>!
+    /// </summary>
+    public readonly InnerResponse CenteredAndJustified(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_centered_and_justified, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="CenteredAndJustified"/>
+    public readonly InnerResponse<R> CenteredAndJustified<R>(Func<Ui, R> addContents)       
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui))); 
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_centered_and_justified, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Start a ui with horizontal layout.
+    /// After you have called this, the function registers the contents as any other widget.<br/>
+    ///
+    /// Elements will be centered on the Y axis, i.e.
+    /// adjusted up and down to lie in the center of the horizontal layout.
+    /// The initial height is <c>Style.spacing.interactSize.y</c>.
+    /// Centering is almost always what you want if you are
+    /// planning to mix widgets or use different types of text.<br/>
+    ///
+    /// If you don't want the contents to be centered, use <c>HorizontalTop</c> instead.<br/>
+    ///
+    /// The returned <c>Response</c> will only have checked for mouse hover
+    /// but can be used for tooltips (<c>OnHoverText</c>).
+    /// It also contains the <c>Rect</c> used by the horizontal layout.See also <c>WithLayout</c> for more options.
+    /// </summary>
+    public readonly InnerResponse Horizontal(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_horizontal, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="Horizontal"/>
+    public readonly InnerResponse<R> Horizontal<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_horizontal, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Like <c>Horizontal</c>, but allocates the full vertical height and then centers elements vertically.
+    /// </summary>
+    public readonly InnerResponse HorizontalCentered(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_horizontal_centered, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="HorizontalCentered"/>
+    public readonly InnerResponse<R> HorizontalCentered<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_horizontal_centered, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Like <c>Horizontal</c>, but aligns content with top.
+    /// </summary>
+    public readonly InnerResponse HorizontalTop(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_horizontal_top, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="HorizontalTop"/>
+    public readonly InnerResponse<R> HorizontalTop<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_horizontal_top, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Start a ui with horizontal layout that wraps to a new row
+    /// when it reaches the right edge of the <c>MaxSize</c>.
+    /// After you have called this, the function registers the contents as any other widget.<br/>
+    ///
+    /// Elements will be centered on the Y axis, i.e.
+    /// adjusted up and down to lie in the center of the horizontal layout.
+    /// The initial height is <c>Style.spacing.interactSize.y</c>.
+    /// Centering is almost always what you want if you are
+    /// planning to mix widgets or use different types of text.<br/>
+    ///
+    /// The returned <c>Response</c> will only have checked for mouse hover
+    /// but can be used for tooltips (<c>OnHoverText</c>).
+    /// It also contains the <c>Rect</c> used by the horizontal layout.<br/>
+    ///
+    /// See also <c>WithLayout</c> for more options.
+    /// </summary>
+    public readonly InnerResponse HorizontalWrapped(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_horizontal_wrapped, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="HorizontalWrapped"/>
+    public readonly InnerResponse<R> HorizontalWrapped<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_horizontal_wrapped, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Start a ui with vertical layout.
+    /// Widgets will be left-justified.See also <c>WithLayout</c> for more options.
+    /// </summary>
+    public readonly InnerResponse Vertical(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_vertical, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="Vertical"/>
+    public readonly InnerResponse<R> Vertical<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_vertical, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Start a ui with vertical layout.
+    /// Widgets will be horizontally centered.
+    /// </summary>
+    public readonly InnerResponse VerticalCentered(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_vertical_centered, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="VerticalCentered"/>
+    public readonly InnerResponse<R> VerticalCentered<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_vertical_centered, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Start a ui with vertical layout.
+    /// Widgets will be horizontally centered and justified (fill full width).
+    /// </summary>
+    public readonly InnerResponse VerticalCenteredJustified(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_vertical_centered_justified, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="VerticalCenteredJustified"/>
+    public readonly InnerResponse<R> VerticalCenteredJustified<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_vertical_centered_justified, Ptr, callback);
         return new InnerResponse<R>
         {
             Inner = result,

@@ -320,7 +320,6 @@ const IGNORE_FNS: &[&str] = &[
     "egui_atomics_atoms_Atoms_iter_kinds_mut",
     "egui_atomics_atoms_Atoms_map_kind",
     "egui_atomics_atoms_Atoms_map_atoms",
-    "egui_atomics_atoms_Atoms_text",
 
     // FontsImpl: private type
     "epaint_text_fonts_FontsImpl_definitions",
@@ -721,6 +720,8 @@ const IGNORE_FNS: &[&str] = &[
     "egui_style_StyleModifier_new",
 
     // Ui: manually bound
+    "egui_ui_Ui_allocate_ui",
+    "egui_ui_Ui_columns_const",
     "egui_ui_Ui_add_sized",
     "egui_ui_Ui_put",
     "egui_ui_Ui_add_enabled",

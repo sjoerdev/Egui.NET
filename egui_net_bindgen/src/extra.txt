@@ -1,0 +1,211 @@
+    /// <summary>
+    /// Show the modal.
+    /// </summary>
+    public readonly InnerResponse Show(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_modal_Modal_show, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="Show"/>
+    public readonly InnerResponse<R> Show<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_modal_Modal_show, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Show the panel at the top level.
+    /// </summary>
+    public readonly InnerResponse Show(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="Show"/>
+    public readonly InnerResponse<R> Show<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Show the panel if <c>IsExpanded</c> is <c>True</c>,
+    /// otherwise don't show it, but with a nice animation between collapsed and expanded.
+    /// </summary>
+    public readonly InnerResponse ShowAnimated(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_animated, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="ShowAnimated"/>
+    public readonly InnerResponse<R> ShowAnimated<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_animated, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Show either a collapsed or a expanded panel, with a nice animation between.
+    /// </summary>
+    public readonly InnerResponse ShowAnimatedBetween(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_animated_between, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="ShowAnimatedBetween"/>
+    public readonly InnerResponse<R> ShowAnimatedBetween<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_animated_between, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Show either a collapsed or a expanded panel, with a nice animation between.
+    /// </summary>
+    public readonly InnerResponse ShowAnimatedBetweenInside(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_animated_between_inside, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="ShowAnimatedBetweenInside"/>
+    public readonly InnerResponse<R> ShowAnimatedBetweenInside<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_animated_between_inside, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Show the panel if <c>IsExpanded</c> is <c>True</c>,
+    /// otherwise don't show it, but with a nice animation between collapsed and expanded.
+    /// </summary>
+    public readonly InnerResponse ShowAnimatedInside(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_animated_inside, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="ShowAnimatedInside"/>
+    public readonly InnerResponse<R> ShowAnimatedInside<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_animated_inside, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Show the panel inside a <c>Ui</c>.
+    /// </summary>
+    public readonly InnerResponse ShowInside(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_inside, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="ShowInside"/>
+    public readonly InnerResponse<R> ShowInside<R>(Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_containers_panel_SidePanel_show_inside, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
