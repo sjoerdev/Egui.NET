@@ -982,6 +982,9 @@ impl BindingsGenerator {
                             && format!("{args:?}").contains("Primitive(\"str\")") {
                             BoundTypeName::cs_rs("string", "String")
                         }
+                        else if format!("{inner_ty:?}").contains("StyleModifier") {
+                            BoundTypeName::cs_rs("Style", "Style")
+                        }
                         else {
                             self.bound_ty_name(self_ty, inner_ty)?
                         }
