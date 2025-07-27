@@ -1,10 +1,17 @@
 using System.Collections;
+using System.Collections.Immutable;
 
 namespace Egui;
 
 public partial struct Atoms : IEnumerable<Atom>
 {
     public IEnumerable<AtomKind> Kinds => this.Select(x => x.Kind);
+
+    public IEnumerable<Image> Images => _value.Where(x => x.Kind.Inner is AtomKind.Image)
+        .Select(x => ((AtomKind.Image)x.Kind.Inner).Value);
+
+    public IEnumerable<WidgetText> Texts => _value.Where(x => x.Kind.Inner is AtomKind.Text)
+        .Select(x => ((AtomKind.Text)x.Kind.Inner).Value);
 
     /// <summary>
     /// Concatenate and return the text contents.
@@ -36,6 +43,30 @@ public partial struct Atoms : IEnumerable<Atom>
             x.Kind = f(x.Kind);
             return x;
         }));
+    }
+
+    public void MapImages(Func<Image, Image> f)
+    {
+        _value = _value.Select(x =>
+        {
+            if (x.Kind.Inner is AtomKind.Image image)
+            {
+                x.Kind = new AtomKind.Image(f(image.Value));
+            }
+            return x;
+        }).ToImmutableList();
+    }
+
+    public void MapTexts(Func<WidgetText, WidgetText> f)
+    {
+        _value = _value.Select(x =>
+        {
+            if (x.Kind.Inner is AtomKind.Text text)
+            {
+                x.Kind = new AtomKind.Text(f(text.Value));
+            }
+            return x;
+        }).ToImmutableList();
     }
 
     /// <summary>

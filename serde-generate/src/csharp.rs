@@ -655,7 +655,7 @@ return obj.ToImmutableList();
                 .iter()
                 .enumerate()
                 .map(|(i, f)| Named {
-                    name: format!("field{}", i),
+                    name: format!("Item{}", i + 1),
                     value: f.clone(),
                 })
                 .collect(),
@@ -1209,7 +1209,7 @@ internal static {0} {1}Deserialize(ArraySegment<byte> input) {{
                 .iter()
                 .enumerate()
                 .map(|(i, f)| Named {
-                    name: format!("field{}", i),
+                    name: format!("Item{}", i + 1),
                     value: f.clone(),
                 })
                 .collect::<Vec<_>>(),
