@@ -556,10 +556,10 @@ public unsafe class Program
         {
             _input.Events = _input.Events.Add(new Event.Key
             {
-                key = mapped.Value,
-                physical_key = mapped.Value,
-                pressed = true,
-                modifiers = new() { 
+                LogicalKey = mapped.Value,
+                PhysicalKey = mapped.Value,
+                Pressed = true,
+                Modifiers = new() { 
                     Alt = alt,
                     Ctrl = ctrl,
                     Shift = shift
@@ -592,10 +592,10 @@ public unsafe class Program
         {
             _input.Events = _input.Events.Add(new Event.Key
             {
-                key = mapped.Value,
-                physical_key = mapped.Value,
-                pressed = false,
-                modifiers = new()
+                LogicalKey = mapped.Value,
+                PhysicalKey = mapped.Value,
+                Pressed = false,
+                Modifiers = new()
                 {
                     Alt = alt,
                     Ctrl = ctrl,
@@ -617,10 +617,10 @@ public unsafe class Program
     {
         _input.Events = _input.Events.Add(new Event.PointerButton
         {
-            button = (Egui.PointerButton)button,
-            pressed = true,
-            pos = new Pos2(mouse.Position.X, mouse.Position.Y),
-            modifiers = new()
+            Button = (Egui.PointerButton)button,
+            Pressed = true,
+            Pos = new Pos2(mouse.Position.X, mouse.Position.Y),
+            Modifiers = new()
             {
                 Alt = alt,
                 Ctrl = ctrl,
@@ -633,10 +633,10 @@ public unsafe class Program
     {
         _input.Events = _input.Events.Add(new Event.PointerButton
         {
-            button = (Egui.PointerButton)button,
-            pressed = false,
-            pos = new Pos2(mouse.Position.X, mouse.Position.Y),
-            modifiers = new()
+            Button = (Egui.PointerButton)button,
+            Pressed = false,
+            Pos = new Pos2(mouse.Position.X, mouse.Position.Y),
+            Modifiers = new()
             {
                 Alt = alt,
                 Ctrl = ctrl,
@@ -785,27 +785,34 @@ public unsafe class Program
 
             foreach (var primitive in primitives.Span)
             {
-                SetClipRect(width, height, pixelsPerPoint, primitive.ClipRect);
-
-                Mesh mesh = primitive.Primitive._variant0.Value;
-
-                var texture = _textures[mesh.TextureId];
-                _gl.BindBuffer(GLEnum.ArrayBuffer, _vbo);
-
-                fixed (Vertex* vertices = mesh.Vertices.ToArray())
+                switch (primitive.Primitive.Inner)
                 {
-                    _gl.BufferData(GLEnum.ArrayBuffer, (nuint)(mesh.Vertices.Count * sizeof(Vertex)), vertices, BufferUsageARB.StreamDraw);
+                    case Primitive.Mesh meshPrimitive:
+                    {
+                        Mesh mesh = meshPrimitive.Value;
+
+                        SetClipRect(width, height, pixelsPerPoint, primitive.ClipRect);
+
+                        var texture = _textures[mesh.TextureId];
+                        _gl.BindBuffer(GLEnum.ArrayBuffer, _vbo);
+
+                        fixed (Vertex* vertices = mesh.Vertices.ToArray())
+                        {
+                            _gl.BufferData(GLEnum.ArrayBuffer, (nuint)(mesh.Vertices.Count * sizeof(Vertex)), vertices, BufferUsageARB.StreamDraw);
+                        }
+
+                        _gl.BindBuffer(GLEnum.ElementArrayBuffer, _eao);
+
+                        fixed (uint* indices = mesh.Indices.ToArray())
+                        {
+                            _gl.BufferData(GLEnum.ElementArrayBuffer, (nuint)(mesh.Indices.Count * sizeof(uint)), indices, BufferUsageARB.StreamDraw);
+                        }
+
+                        _gl.BindTexture(GLEnum.Texture2D, texture);
+                        _gl.DrawElements(GLEnum.Triangles, (uint)mesh.Indices.Count, GLEnum.UnsignedInt, null);
+                        break;
+                    }
                 }
-
-                _gl.BindBuffer(GLEnum.ElementArrayBuffer, _eao);
-
-                fixed (uint* indices = mesh.Indices.ToArray())
-                {
-                    _gl.BufferData(GLEnum.ElementArrayBuffer, (nuint)(mesh.Indices.Count * sizeof(uint)), indices, BufferUsageARB.StreamDraw);
-                }
-
-                _gl.BindTexture(GLEnum.Texture2D, texture);
-                _gl.DrawElements(GLEnum.Triangles, (uint)mesh.Indices.Count, GLEnum.UnsignedInt, null);
             }
         }
 
@@ -826,37 +833,42 @@ public unsafe class Program
             _gl.BindTexture(GLEnum.Texture2D, _textures[id]);
             CheckGlErrors();
 
-            ImageData.Color image = delta.Image._variant0;
-
-            _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureMagFilter, (int)GlowCode(delta.Options.Magnification, null));
-            _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureMinFilter, (int)GlowCode(delta.Options.Minification, delta.Options.MipmapMode));
-            _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureWrapS, (int)GlowCode(delta.Options.WrapMode));
-            _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureWrapT, (int)GlowCode(delta.Options.WrapMode));
-
-            CheckGlErrors();
-            _gl.PixelStore(GLEnum.UnpackAlignment, 1);
-            CheckGlErrors();
-
-            fixed (Color32* data = image.Value.Pixels.ToArray())
+            switch (delta.Image.Inner)
             {
-                if (delta.Pos is null)
+                case ImageData.Color image:
                 {
-                    _gl.TexImage2D(GLEnum.Texture2D, 0, (int)GLEnum.Rgba8, (uint)image.Value.Size[0], (uint)image.Value.Size[1], 0, GLEnum.Rgba, GLEnum.UnsignedByte,
-                        data);
-                }
-                else
-                {
-                    _gl.TexSubImage2D(GLEnum.Texture2D, 0, (int)delta.Pos[0], (int)delta.Pos[1], (uint)image.Value.Size[0], (uint)image.Value.Size[1], GLEnum.Rgba, GLEnum.UnsignedByte,
-                        data);
+                    _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureMagFilter, (int)GlowCode(delta.Options.Magnification, null));
+                    _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureMinFilter, (int)GlowCode(delta.Options.Minification, delta.Options.MipmapMode));
+                    _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureWrapS, (int)GlowCode(delta.Options.WrapMode));
+                    _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureWrapT, (int)GlowCode(delta.Options.WrapMode));
+
+                    CheckGlErrors();
+                    _gl.PixelStore(GLEnum.UnpackAlignment, 1);
+                    CheckGlErrors();
+
+                    fixed (Color32* data = image.Value.Pixels.ToArray())
+                    {
+                        if (delta.Pos is null)
+                        {
+                            _gl.TexImage2D(GLEnum.Texture2D, 0, (int)GLEnum.Rgba8, (uint)image.Value.Size[0], (uint)image.Value.Size[1], 0, GLEnum.Rgba, GLEnum.UnsignedByte,
+                                data);
+                        }
+                        else
+                        {
+                            _gl.TexSubImage2D(GLEnum.Texture2D, 0, (int)delta.Pos[0], (int)delta.Pos[1], (uint)image.Value.Size[0], (uint)image.Value.Size[1], GLEnum.Rgba, GLEnum.UnsignedByte,
+                                data);
+                        }
+                    }
+                    CheckGlErrors();
+
+                    if (delta.Options.MipmapMode.HasValue)
+                    {
+                        _gl.GenerateMipmap(GLEnum.Texture2D);
+                    }
+                    CheckGlErrors();
+                    break;
                 }
             }
-            CheckGlErrors();
-
-            if (delta.Options.MipmapMode.HasValue)
-            {
-                _gl.GenerateMipmap(GLEnum.Texture2D);
-            }
-            CheckGlErrors();
         }
 
         private readonly void SetClipRect(uint width, uint height, float pixelsPerPoint, Rect clipRect)

@@ -1609,6 +1609,11 @@ impl BindingsGenerator {
                 },
                 ContainerFormat::Enum(variants) => for variant in variants.values_mut() {
                     variant.name = variant.name.to_case(Case::Pascal);
+                    if let VariantFormat::Struct(nameds) = &mut variant.value {
+                        for named in nameds {
+                            named.name = named.name.to_case(Case::Pascal);
+                        }
+                    }
                 },
                 _ => {},
             }
@@ -1691,6 +1696,18 @@ impl BindingsGenerator {
         trace_auto_ecolor_types(&mut tracer);
 
         let mut result = tracer.registry().expect("Failed to generate serde registry");
+
+        let Some(ContainerFormat::Enum(variants)) = result.get_mut("Event") else { panic!("Could not get Event in registry") };
+        for variant in variants.values_mut() {
+            if variant.name == "Key" {
+                let VariantFormat::Struct(fields) = &mut variant.value else { panic!("Event::Key did not have correct format") };
+                for field in fields {
+                    if field.name == "key" {
+                        field.name = "logical_key".to_string();
+                    }
+                }
+            }
+        }
 
         for ty in BINDING_EXCLUDE_TYPES {
             let _ = result.remove(*ty);

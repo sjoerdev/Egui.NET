@@ -17,6 +17,6 @@ public partial struct Align2
     /// </summary>
     public Align2(Align horizontal, Align vertical)
     {
-        Value = [horizontal, vertical];
+        _value = [horizontal, vertical];
     }
 }

@@ -156,7 +156,7 @@ public partial struct Atoms : IEnumerable<Atom>
     /// <inheritdoc/>
     public IEnumerator<Atom> GetEnumerator()
     {
-        return Value.GetEnumerator();
+        return _value.GetEnumerator();
     }
 
     /// <inheritdoc/>

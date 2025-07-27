@@ -258,7 +258,7 @@ using System.Numerics;"
     fn is_nullable(&self, format: &Format) -> bool {
         use Format::*;
         match format {
-            TypeName(name) => !self.cstyle_enum_names.contains(name),
+            TypeName(_) => false,
             Str | Seq(_) | Map { .. } | TupleArray { .. } => true,
             Variable(_) => panic!("unexpected value"),
             _ => false,
@@ -662,7 +662,13 @@ return obj.ToImmutableList();
             Struct(fields) => fields.clone(),
             Variable(_) => panic!("incorrect value"),
         };
-        self.output_struct_or_variant_container(Some(base), Some(index), name, &fields)
+
+        let output_constructor = match variant {
+            NewType(_) | Tuple(_) => true,
+            _ => false
+        };
+
+        self.output_struct_or_variant_container(Some(base), Some(index), name, &fields, output_constructor)
     }
 
     fn output_variants(
@@ -682,6 +688,7 @@ return obj.ToImmutableList();
         variant_index: Option<u32>,
         name: &str,
         fields: &[Named<Format>],
+        output_constructor: bool
     ) -> Result<()> {
         // Beginning of class
         writeln!(self.out)?;
@@ -720,31 +727,32 @@ return obj.ToImmutableList();
             writeln!(self.out)?;
         }
 
-        /*
         // Constructor.
-        writeln!(
-            self.out,
-            "public {}({}) {{",
-            name,
-            fields
-                .iter()
-                .map(|f| format!("{} _{}", self.quote_type(&f.value), &f.name))
-                .collect::<Vec<_>>()
-                .join(", ")
-        )?;
-        self.out.indent();
-        for field in fields {
-            if self.is_nullable(&field.value) {
-                writeln!(
-                    self.out,
-                    "if (_{0} == null) throw new ArgumentNullException(nameof(_{0}));",
-                    &field.name
-                )?;
+        if output_constructor {
+            writeln!(
+                self.out,
+                "public {}({}) {{",
+                name,
+                fields
+                    .iter()
+                    .map(|f| format!("{} _{}", self.quote_type(&f.value), &f.name))
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            )?;
+            self.out.indent();
+            for field in fields {
+                if self.is_nullable(&field.value) {
+                    writeln!(
+                        self.out,
+                        "if (_{0} == null) throw new ArgumentNullException(nameof(_{0}));",
+                        &field.name
+                    )?;
+                }
+                writeln!(self.out, "{0} = _{0};", &field.name)?;
             }
-            writeln!(self.out, "{0} = _{0};", &field.name)?;
+            self.out.unindent();
+            writeln!(self.out, "}}")?;
         }
-        self.out.unindent();
-        writeln!(self.out, "}}")?; */
 
         // Serialize
         if self.generator.config.serialization {
@@ -909,10 +917,26 @@ return obj.ToImmutableList();
             .collect::<Vec<_>>();
         self.enter_class(name, &reserved_names);
 
+        // Inner
+        writeln!(self.out, "/// <summary>Gets the inner variant object. This can be used in switch cases to destructure the enum.</summary>")?;
+        writeln!(self.out, "public object Inner {{ get {{")?;
+        self.out.indent();
+        writeln!(self.out, "switch (_variantId.GetValueOrDefault(-1)) {{")?;
+        for (id, _) in variants {
+            writeln!(self.out, "case {id}: return _variant{id};")?;
+        }
+        writeln!(
+            self.out,
+            r#"default: throw new InvalidOperationException("Unknown variant type");"#
+        )?;
+        writeln!(self.out, "}}")?;
+        self.out.unindent();
+        writeln!(self.out, "}} }}")?;
+
         writeln!(self.out, "private int? _variantId;")?;
 
         for (id, variant) in variants {
-            writeln!(self.out, "\npublic {} _variant{id};", variant.name)?;
+            writeln!(self.out, "\nprivate {} _variant{id};", variant.name)?;
         }
 
         for (id, variant) in variants {
@@ -1178,7 +1202,7 @@ internal static {0} {1}Deserialize(ArraySegment<byte> input) {{
         let fields = match format {
             UnitStruct => Vec::new(),
             NewTypeStruct(format) => vec![Named {
-                name: "Value".to_string(),
+                name: "_value".to_string(),
                 value: format.as_ref().clone(),
             }],
             TupleStruct(formats) => formats
@@ -1203,7 +1227,13 @@ internal static {0} {1}Deserialize(ArraySegment<byte> input) {{
                 return Ok(());
             }
         };
-        self.output_struct_or_variant_container(None, None, name, &fields)
+        
+        let output_constructor = match format {
+            ContainerFormat::NewTypeStruct(_) | ContainerFormat::TupleStruct(_) => true,
+            _ => false
+        };
+
+        self.output_struct_or_variant_container(None, None, name, &fields, false)
     }
 }
 
