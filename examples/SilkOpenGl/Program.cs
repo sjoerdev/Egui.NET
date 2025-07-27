@@ -65,8 +65,6 @@ public unsafe class Program
 
     private static void OnLoad()
     {
-        Console.WriteLine("Load!");
-
         _gl = _window.CreateOpenGLES();
 
         _glPainter = new OpenGlPainter(_gl);

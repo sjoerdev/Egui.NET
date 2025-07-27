@@ -1,4 +1,4 @@
-1599 / 2016 (79%) bound
+1600 / 2016 (79%) bound
 ecolor_color32_Color32_from_hex
 ecolor_hex_color_runtime_HexColor_from_str
 ecolor_hex_color_runtime_HexColor_from_str_without_hash
@@ -231,7 +231,6 @@ egui_ui_Ui_data_mut
 egui_ui_Ui_dnd_drag_source
 egui_ui_Ui_dnd_drop_zone
 egui_ui_Ui_fonts
-egui_ui_Ui_group
 egui_ui_Ui_indent
 egui_ui_Ui_input
 egui_ui_Ui_input_mut

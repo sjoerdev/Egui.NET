@@ -9,6 +9,7 @@ crate-type = [ "cdylib" ]
 [dependencies]
 bincode.workspace = true
 egui.workspace = true
+mimalloc.workspace = true
 serde.workspace = true
 
 [build-dependencies]

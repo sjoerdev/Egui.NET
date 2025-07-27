@@ -255,6 +255,36 @@ public readonly ref partial struct Ui
     }
 
     /// <summary>
+    /// Put into a <see cref="Frame.Group"/> , visually grouping the contents together
+    /// </summary>
+    public readonly InnerResponse Group(Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_group, Ptr, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="Group"/>
+    public readonly InnerResponse<R> Group<R>(Func<Ui, R> addContents)       
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui))); 
+        var response = EguiMarshal.Call<nuint, EguiCallback, Response>(EguiFn.egui_ui_Ui_group, Ptr, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
     /// This will make the next added widget centered and justified in the available space.<br/>
     ///
     /// Only one widget may be added to the inner <c>Ui</c>!
