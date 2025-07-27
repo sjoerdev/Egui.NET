@@ -74,6 +74,7 @@ public unsafe class Program
         for (int i = 0; i < input.Keyboards.Count; i++)
         {
             input.Keyboards[i].KeyDown += KeyDown;
+            input.Keyboards[i].KeyChar += KeyChar;
             input.Keyboards[i].KeyUp += KeyUp;
         }
         for (int i = 0; i < input.Mice.Count; i++)
@@ -217,7 +218,7 @@ public unsafe class Program
             ui.EndRow();
 
             DocLinkLabel(ui, "TextEdit", "TextEdit");
-            // ui.add(egui::TextEdit::singleline(string).hint_text("Write something here"));
+            ui.Add(TextEdit.Singleline(ref _string).HintText("Write something here"));
             ui.EndRow();
 
             DocLinkLabel(ui, "Button", "button");
@@ -567,6 +568,11 @@ public unsafe class Program
 
             });
         }
+    }
+    
+    private static void KeyChar(IKeyboard keyboard, char data)
+    {
+        _input.Events = _input.Events.Add(new Event.Text(data.ToString()));
     }
 
     private static void KeyUp(IKeyboard keyboard, Silk.NET.Input.Key key, int keyCode)

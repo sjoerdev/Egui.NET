@@ -706,6 +706,58 @@ public readonly ref partial struct Ui
     }
 
     /// <summary>
+    /// A <c>TextEdit</c> for multiple lines. Pressing enter key will create a new line.<br/>
+    /// 
+    /// See also <c>TextEdit</c>.
+    /// </summary>
+    public readonly Response TextEditSingleline(string text)
+    {
+        return Add(TextEdit.Singleline(text));
+    }
+
+    /// <inheritdoc cref="TextEditSingleline"/>
+    public readonly Response TextEditSingleline(ref string text)
+    {
+        return Add(TextEdit.Singleline(ref text));
+    }
+
+    /// <summary>
+    /// A <c>TextEdit</c> for code editing.<br/>
+    /// 
+    /// This will be multiline, monospace, and will insert tabs instead of moving focus.<br/>
+    /// 
+    /// See also <c>CodeEditor</c>.
+    /// </summary>
+    public readonly Response TextEditMultiline(string text)
+    {
+        return Add(TextEdit.Singleline(text));
+    }
+
+    /// <inheritdoc cref="TextEditMultiline"/>
+    public readonly Response TextEditMultiline(ref string text)
+    {
+        return Add(TextEdit.Singleline(ref text));
+    }
+
+    /// <summary>
+    /// A <c>TextEdit</c> for code editing.<br/>
+    /// 
+    /// This will be multiline, monospace, and will insert tabs instead of moving focus.<br/>
+    /// 
+    /// See also <c>CodeEditor</c>.
+    /// </summary>
+    public readonly Response CodeEditor(string text)
+    {
+        return Add(TextEdit.Singleline(text));
+    }
+
+    /// <inheritdoc cref="CodeEditor"/>
+    public readonly Response CodeEditor(ref string text)
+    {
+        return Add(TextEdit.Singleline(ref text));
+    }
+
+    /// <summary>
     /// Throws an exception if this is a null object.
     /// </summary>
     internal readonly void AssertInitialized()
