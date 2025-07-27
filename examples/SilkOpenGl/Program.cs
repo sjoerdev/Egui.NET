@@ -264,18 +264,21 @@ public unsafe class Program
             /*
             DocLinkLabel(ui, "Slider", "Slider");
             ui.Slider(ref _scalar, new Interval<float>(0.0f, 360.0f), suffix: "°");
-            ui.EndRow();
+            ui.EndRow();*/
 
             DocLinkLabel(ui, "DragValue", "DragValue");
-            ui.DragValue(ref _scalar, speed: 1.0f);
+            ui.Add(new DragValue<float>(ref _scalar).Speed(1));
             ui.EndRow();
 
             DocLinkLabel(ui, "ProgressBar", "ProgressBar");
             var progress = _scalar / 360.0f;
-            _animateProgressBar = ui.ProgressBar(progress, animate: _animateProgressBar) // todo: show_percentage
+            var progressBar = new ProgressBar(progress)
+                .ShowPercentage()
+                .Animate(_animateProgressBar);
+            _animateProgressBar = ui.Add(progressBar)
                 .OnHoverText("The progress bar can be animated!")
                 .Hovered;
-            ui.EndRow();*/
+            ui.EndRow();
 
             DocLinkLabel(ui, "Color picker", "color_edit");
             ui.ColorEditButtonSrgba(ref _color);
