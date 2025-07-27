@@ -29,9 +29,9 @@ public partial struct UiStack : IEquatable<UiStack> {
     public ReadOnlyBox<UiStack>? Parent;
 
 
-    internal static void Serialize(Serde.ISerializer serializer, UiStack value) => value.Serialize(serializer);
+    internal static void Serialize(BincodeSerializer serializer, UiStack value) => value.Serialize(serializer);
 
-    internal void Serialize(Serde.ISerializer serializer) {
+    internal void Serialize(BincodeSerializer serializer) {
         serializer.increase_container_depth();
         Id.Serialize(serializer);
         Info.Serialize(serializer);
@@ -42,7 +42,7 @@ public partial struct UiStack : IEquatable<UiStack> {
         serializer.decrease_container_depth();
     }
 
-    internal static UiStack Deserialize(Serde.IDeserializer deserializer) {
+    internal static UiStack Deserialize(BincodeDeserializer deserializer) {
         deserializer.increase_container_depth();
         UiStack obj = default;
             obj.Id = Id.Deserialize(deserializer);

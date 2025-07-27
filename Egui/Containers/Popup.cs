@@ -600,9 +600,9 @@ public ref struct Popup
             MenuStyle = popup._styleMode == StyleMode.MenuStyle;
         }
 
-        internal static void Serialize(Serde.ISerializer serializer, SerializablePopup value) => value.Serialize(serializer);
+        internal static void Serialize(BincodeSerializer serializer, SerializablePopup value) => value.Serialize(serializer);
 
-        internal void Serialize(Serde.ISerializer serializer)
+        internal void Serialize(BincodeSerializer serializer)
         {
             serializer.increase_container_depth();
             Id.Serialize(serializer);
@@ -626,12 +626,12 @@ public ref struct Popup
             serializer.decrease_container_depth();
         }
 
-        internal static SerializablePopup Deserialize(Serde.IDeserializer deserializer)
+        internal static SerializablePopup Deserialize(BincodeDeserializer deserializer)
         {
             throw new NotSupportedException();
         }
 
-        private static void serialize_option_vector_RectAlign(ImmutableList<Egui.RectAlign>? value, Serde.ISerializer serializer)
+        private static void serialize_option_vector_RectAlign(ImmutableList<Egui.RectAlign>? value, BincodeSerializer serializer)
         {
             if (value is not null)
             {
@@ -644,7 +644,7 @@ public ref struct Popup
             }
         }
 
-        private static void serialize_option_UiStackInfo(Egui.UiStackInfo? value, Serde.ISerializer serializer)
+        private static void serialize_option_UiStackInfo(Egui.UiStackInfo? value, BincodeSerializer serializer)
         {
             if (value is not null)
             {
@@ -657,7 +657,7 @@ public ref struct Popup
             }
         }
         
-        private static void serialize_option_SetOpenCommmand(SetOpenCommand? value, Serde.ISerializer serializer)
+        private static void serialize_option_SetOpenCommmand(SetOpenCommand? value, BincodeSerializer serializer)
         {
             if (value is not null)
             {
@@ -670,7 +670,7 @@ public ref struct Popup
             }
         }
 
-        private static void serialize_vector_RectAlign(ImmutableList<Egui.RectAlign> value, Serde.ISerializer serializer) {
+        private static void serialize_vector_RectAlign(ImmutableList<Egui.RectAlign> value, BincodeSerializer serializer) {
             serializer.serialize_len(value.Count);
             foreach (var item in value) {
                 item.Serialize(serializer);

@@ -5,7 +5,7 @@ namespace Egui;
 /// </summary>
 static partial class TraitHelpers
 {
-    public static void serialize_option_UiStack(UiStack? value, Serde.ISerializer serializer) {
+    public static void serialize_option_UiStack(UiStack? value, BincodeSerializer serializer) {
         if (value is not null) {
             serializer.serialize_option_tag(true);
             (value ?? default).Serialize(serializer);
@@ -14,7 +14,7 @@ static partial class TraitHelpers
         }
     }
 
-    public static UiStack? deserialize_option_UiStack(Serde.IDeserializer deserializer) {
+    public static UiStack? deserialize_option_UiStack(BincodeDeserializer deserializer) {
         bool tag = deserializer.deserialize_option_tag();
         if (!tag) {
             return null;

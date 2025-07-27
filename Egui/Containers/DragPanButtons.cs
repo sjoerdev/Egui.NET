@@ -56,13 +56,13 @@ public readonly struct DragPanButtons
         _value = value;
     }
 
-    internal void Serialize(Serde.ISerializer serializer) {
+    internal void Serialize(BincodeSerializer serializer) {
         serializer.increase_container_depth();
         serializer.serialize_variant_index(_value);
         serializer.decrease_container_depth();
     }
 
-    internal static DragPanButtons Deserialize(Serde.IDeserializer deserializer) {
+    internal static DragPanButtons Deserialize(BincodeDeserializer deserializer) {
         deserializer.increase_container_depth();
         int index = deserializer.deserialize_variant_index();
         if (!Enum.IsDefined(typeof(DragPanButtons), index))

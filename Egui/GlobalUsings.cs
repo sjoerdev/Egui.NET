@@ -1,3 +1,4 @@
+global using global::Bincode;
 global using global::Egui;
 global using global::Egui.Containers;
 global using global::Egui.Containers.Menu;

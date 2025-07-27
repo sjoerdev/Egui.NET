@@ -8,8 +8,7 @@ namespace Bincode
 {
     internal class BincodeDeserializer : BinaryDeserializer
     {
-        public BincodeDeserializer(byte[] input) : base(input, long.MaxValue) { }
-        public BincodeDeserializer(ArraySegment<byte> input) : base(input, long.MaxValue) { }
+        public BincodeDeserializer(Stream input) : base(input, long.MaxValue) { }
 
         public override long deserialize_len()
         {

@@ -116,9 +116,9 @@ public partial struct Response : IEquatable<Response>
         return this;
     }
 
-    internal static void Serialize(Serde.ISerializer serializer, Response value) => value.Serialize(serializer);
+    internal static void Serialize(BincodeSerializer serializer, Response value) => value.Serialize(serializer);
 
-    internal void Serialize(Serde.ISerializer serializer)
+    internal void Serialize(BincodeSerializer serializer)
     {
         serializer.increase_container_depth();
         serializer.serialize_u64(Ctx.Id);
@@ -133,7 +133,7 @@ public partial struct Response : IEquatable<Response>
         serializer.decrease_container_depth();
     }
 
-    internal static Response Deserialize(Serde.IDeserializer deserializer)
+    internal static Response Deserialize(BincodeDeserializer deserializer)
     {
         deserializer.increase_container_depth();
         Response obj = default;

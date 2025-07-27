@@ -13,18 +13,13 @@ namespace Serde
 {
     internal abstract class BinaryDeserializer : IDeserializer, IDisposable
     {
-        protected readonly ArraySegment<byte> input;
         protected readonly BinaryReader reader;
         protected static readonly Encoding utf8 = Encoding.GetEncoding("utf-8", new EncoderExceptionFallback(), new DecoderExceptionFallback());
         private long containerDepthBudget;
 
-        // todo: use non-copy
-        public BinaryDeserializer(byte[] _input, long maxContainerDepth) : this(new ArraySegment<byte>(_input), maxContainerDepth) { }
-
-        public BinaryDeserializer(ArraySegment<byte> _input, long maxContainerDepth)
+        public BinaryDeserializer(Stream stream, long maxContainerDepth)
         {
-            input = _input;
-            reader = new BinaryReader(new MemoryStream(input.Array, input.Offset, input.Count), utf8);
+            reader = new BinaryReader(stream, utf8);
             containerDepthBudget = maxContainerDepth;
         }
 

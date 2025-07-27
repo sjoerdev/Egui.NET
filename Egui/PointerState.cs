@@ -13,14 +13,14 @@ namespace Egui.Util
     /// </summary>
     public struct History
     {
-        internal static void Serialize(Serde.ISerializer serializer, History value) => value.Serialize(serializer);
+        internal static void Serialize(BincodeSerializer serializer, History value) => value.Serialize(serializer);
 
-        internal void Serialize(Serde.ISerializer serializer)
+        internal void Serialize(BincodeSerializer serializer)
         {
             throw new NotImplementedException();
         }
 
-        internal static History Deserialize(Serde.IDeserializer deserializer)
+        internal static History Deserialize(BincodeDeserializer deserializer)
         {
             throw new NotImplementedException();
         }
@@ -51,14 +51,14 @@ namespace Egui.History
     /// </summary>
     public struct History
     {
-        internal static void Serialize(Serde.ISerializer serializer, History value) => value.Serialize(serializer);
+        internal static void Serialize(BincodeSerializer serializer, History value) => value.Serialize(serializer);
 
-        internal void Serialize(Serde.ISerializer serializer)
+        internal void Serialize(BincodeSerializer serializer)
         {
             throw new NotImplementedException();
         }
 
-        internal static History Deserialize(Serde.IDeserializer deserializer)
+        internal static History Deserialize(BincodeDeserializer deserializer)
         {
             throw new NotImplementedException();
         }

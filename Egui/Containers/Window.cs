@@ -579,9 +579,9 @@ public ref struct Window
         }
 
 
-        internal static void Serialize(Serde.ISerializer serializer, WindowInner value) => value.Serialize(serializer);
+        internal static void Serialize(BincodeSerializer serializer, WindowInner value) => value.Serialize(serializer);
 
-        internal void Serialize(Serde.ISerializer serializer)
+        internal void Serialize(BincodeSerializer serializer)
         {
             serializer.increase_container_depth();
             _title.Serialize(serializer);
@@ -596,7 +596,7 @@ public ref struct Window
             serializer.decrease_container_depth();
         }
 
-        internal static WindowInner Deserialize(Serde.IDeserializer deserializer)
+        internal static WindowInner Deserialize(BincodeDeserializer deserializer)
         {
             deserializer.increase_container_depth();
             WindowInner obj = default;

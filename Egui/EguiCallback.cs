@@ -61,7 +61,7 @@ internal unsafe partial struct EguiCallback : IDisposable
     /// Serializes an instance of this value.
     /// </summary>
     /// <param name="serializer">The serializer to use.</param>
-    internal static void Serialize(Serde.ISerializer serializer, EguiCallback obj)
+    internal static void Serialize(BincodeSerializer serializer, EguiCallback obj)
     {
         serializer.increase_container_depth();
         serializer.serialize_u64((ulong)obj.func);
@@ -74,7 +74,7 @@ internal unsafe partial struct EguiCallback : IDisposable
     /// </summary>
     /// <param name="deserializer">The deserializer to use.</param>
     /// <returns>The object that was deserialized.</returns>
-    internal static EguiCallback Deserialize(Serde.IDeserializer deserializer)
+    internal static EguiCallback Deserialize(BincodeDeserializer deserializer)
     {
         deserializer.increase_container_depth();
         EguiCallback obj = default;

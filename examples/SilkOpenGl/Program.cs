@@ -189,10 +189,10 @@ public unsafe class Program
                 {
                     ui.Checkbox(ref _enabled, "Interactive")
                         .OnHoverText("Uncheck to inspect how the widgets look when disabled.");
-                    ui.Add(new DragValue<float>(ref _opacity)
-                        .Speed(0.01f)
-                        .Range(0.0f, 1.0f))// | ui.Label("Opacity")
-                        .OnHoverText("Reduce this value to make widgets semi-transparent");
+                    //ui.Add(new DragValue<float>(ref _opacity)
+                    //    .Speed(0.01f)
+                    //    .Range(0.0f, 1.0f))// | ui.Label("Opacity")
+                    //    .OnHoverText("Reduce this value to make widgets semi-transparent");
                 }
             });
 
@@ -266,9 +266,9 @@ public unsafe class Program
             ui.Slider(ref _scalar, new Interval<float>(0.0f, 360.0f), suffix: "°");
             ui.EndRow();*/
 
-            DocLinkLabel(ui, "DragValue", "DragValue");
-            ui.Add(new DragValue<float>(ref _scalar).Speed(1));
-            ui.EndRow();
+            //DocLinkLabel(ui, "DragValue", "DragValue");
+            //ui.Add(new DragValue<float>(ref _scalar).Speed(1));
+            //ui.EndRow();
 
             DocLinkLabel(ui, "ProgressBar", "ProgressBar");
             var progress = _scalar / 360.0f;

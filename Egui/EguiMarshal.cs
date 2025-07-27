@@ -16,6 +16,18 @@ internal static class EguiMarshal
     [ThreadStatic]
     private static BincodeSerializer? _serializer;
 
+    /// <summary>
+    /// The deserializer to use for temporary operations.
+    /// </summary>
+    [ThreadStatic]
+    private static BincodeDeserializer? _deserializer;
+
+    /// <summary>
+    /// The stream to provide to the deserializer.
+    /// </summary>
+    [ThreadStatic]
+    private static EguiResultStream? _deserializerStream;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Call(EguiFn func)
     {
@@ -146,7 +158,7 @@ internal static class EguiMarshal
     private unsafe static R DeserializeResult<R>(EguiInvokeResult result)
     {
         AssertSuccess(result);
-        var deserializer = new BincodeDeserializer(new ReadOnlySpan<byte>(result.return_value.ptr, (int)result.return_value.len).ToArray());
+        var deserializer = GetDeserializer(result.return_value);
         return SerializerCache<R>.Deserialize(deserializer);
     }
 
@@ -177,6 +189,25 @@ internal static class EguiMarshal
     }
 
     /// <summary>
+    /// Obtains a deserializer to use for the given result data.
+    /// </summary>
+    /// <remarks>Safety: the deserializer can only be safely used while the <paramref name="resultData"/> buffer is valid,
+    /// and until this function is called again (because the underlying buffer is reused).</remarks>
+    /// <param name="resultData">The result that was returned.</param>
+    /// <returns>The deserializer.</returns>
+    private unsafe static BincodeDeserializer GetDeserializer(EguiSliceU8 resultData)
+    {
+        if (_deserializer is null)
+        {
+            _deserializerStream = new EguiResultStream();
+            _deserializer = new BincodeDeserializer(_deserializerStream);
+        }
+
+        _deserializerStream!.Initialize(resultData);
+        return _deserializer;
+    }
+
+    /// <summary>
     /// Serializers for generic types.
     /// </summary>
     private static Dictionary<Type, (string, string)> SerializerPrototypes = new Dictionary<Type, (string, string)> {
@@ -195,12 +226,12 @@ internal static class EguiMarshal
         /// <summary>
         /// The serialization function to use.
         /// </summary>
-        public static readonly Action<ISerializer, T> Serialize;
+        public static readonly Action<BincodeSerializer, T> Serialize;
 
         /// <summary>
         /// The deserialization function to use.
         /// </summary>
-        public static readonly Func<IDeserializer, T> Deserialize;
+        public static readonly Func<BincodeDeserializer, T> Deserialize;
 
         /// <summary>
         /// Initializes the serialization methods.
@@ -324,8 +355,8 @@ internal static class EguiMarshal
                 var serializer = typeof(EguiMarshal).GetMethod(methods.Item1, BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(genericArgs);
                 var deserializer = typeof(EguiMarshal).GetMethod(methods.Item2, BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(genericArgs);
 
-                Serialize = (Action<ISerializer, T>)Delegate.CreateDelegate(typeof(Action<ISerializer, T>), serializer);
-                Deserialize = (Func<IDeserializer, T>)Delegate.CreateDelegate(typeof(Func<IDeserializer, T>), deserializer);
+                Serialize = (Action<BincodeSerializer, T>)Delegate.CreateDelegate(typeof(Action<BincodeSerializer, T>), serializer);
+                Deserialize = (Func<BincodeDeserializer, T>)Delegate.CreateDelegate(typeof(Func<BincodeDeserializer, T>), deserializer);
             }
             else
             {
@@ -336,8 +367,8 @@ internal static class EguiMarshal
                 {
                     throw new Exception($"Missing serializers for {typeof(T)}");
                 }
-                Serialize = (Action<ISerializer, T>)Delegate.CreateDelegate(typeof(Action<ISerializer, T>), serializer);
-                Deserialize = (Func<IDeserializer, T>)Delegate.CreateDelegate(typeof(Func<IDeserializer, T>), deserializer);
+                Serialize = (Action<BincodeSerializer, T>)Delegate.CreateDelegate(typeof(Action<BincodeSerializer, T>), serializer);
+                Deserialize = (Func<BincodeDeserializer, T>)Delegate.CreateDelegate(typeof(Func<BincodeDeserializer, T>), deserializer);
             }
         }
     }
@@ -345,7 +376,7 @@ internal static class EguiMarshal
     /// <summary>
     /// Serializes read-only memory.
     /// </summary>
-    private static void ReadOnlyMemorySerializer<T>(ISerializer serializer, ReadOnlyMemory<T> value)
+    private static void ReadOnlyMemorySerializer<T>(BincodeSerializer serializer, ReadOnlyMemory<T> value)
     {
         serializer.serialize_len(value.Length);
         foreach (var item in value.Span)
@@ -357,7 +388,7 @@ internal static class EguiMarshal
     /// <summary>
     /// Deserializes read-only memory.
     /// </summary>
-    private static ReadOnlyMemory<T> ReadOnlyMemoryDeserializer<T>(IDeserializer deserializer)
+    private static ReadOnlyMemory<T> ReadOnlyMemoryDeserializer<T>(BincodeDeserializer deserializer)
     {
         var length = deserializer.deserialize_len();
         T[] obj = new T[length];
@@ -371,7 +402,7 @@ internal static class EguiMarshal
     /// <summary>
     /// Serializes a tuple.
     /// </summary>
-    private static void Tuple2Serializer<A0, A1>(ISerializer serializer, (A0, A1) value)
+    private static void Tuple2Serializer<A0, A1>(BincodeSerializer serializer, (A0, A1) value)
     {
         SerializerCache<A0>.Serialize(serializer, value.Item1);
         SerializerCache<A1>.Serialize(serializer, value.Item2);
@@ -380,7 +411,7 @@ internal static class EguiMarshal
     /// <summary>
     /// Deserializes a tuple.
     /// </summary>
-    private static (A0, A1) Tuple2Deserializer<A0, A1>(IDeserializer deserializer)
+    private static (A0, A1) Tuple2Deserializer<A0, A1>(BincodeDeserializer deserializer)
     {
         return (SerializerCache<A0>.Deserialize(deserializer), SerializerCache<A1>.Deserialize(deserializer));
     }
@@ -388,7 +419,7 @@ internal static class EguiMarshal
     /// <summary>
     /// Serializes a tuple.
     /// </summary>
-    private static void Tuple3Serializer<A0, A1, A2>(ISerializer serializer, (A0, A1, A2) value)
+    private static void Tuple3Serializer<A0, A1, A2>(BincodeSerializer serializer, (A0, A1, A2) value)
     {
         SerializerCache<A0>.Serialize(serializer, value.Item1);
         SerializerCache<A1>.Serialize(serializer, value.Item2);
@@ -398,7 +429,7 @@ internal static class EguiMarshal
     /// <summary>
     /// Deserializes a tuple.
     /// </summary>
-    private static (A0, A1, A2) Tuple3Deserializer<A0, A1, A2>(IDeserializer deserializer)
+    private static (A0, A1, A2) Tuple3Deserializer<A0, A1, A2>(BincodeDeserializer deserializer)
     {
         return (
             SerializerCache<A0>.Deserialize(deserializer),
@@ -410,7 +441,7 @@ internal static class EguiMarshal
     /// <summary>
     /// Serializes a nullable.
     /// </summary>
-    private static void NullableSerializer<T>(ISerializer serializer, T? value) where T : struct
+    private static void NullableSerializer<T>(BincodeSerializer serializer, T? value) where T : struct
     {
         serializer.serialize_option_tag(value.HasValue);
         if (value.HasValue)
@@ -422,7 +453,7 @@ internal static class EguiMarshal
     /// <summary>
     /// Deserializes a nullable.
     /// </summary>
-    private static T? NullableDeserializer<T>(IDeserializer deserializer) where T : struct
+    private static T? NullableDeserializer<T>(BincodeDeserializer deserializer) where T : struct
     {
         if (deserializer.deserialize_option_tag())
         {
@@ -440,5 +471,37 @@ internal static class EguiMarshal
     private struct NoArgument
     {
 
+    }
+
+    /// <summary>
+    /// Allows for reading <c>egui</c> result data from unmanaged memory.
+    /// </summary>
+    private unsafe sealed class EguiResultStream : UnmanagedMemoryStream
+    {
+        /// <summary>
+        /// Returns true if the stream can be read; otherwise returns false.
+        /// </summary>
+        public override bool CanRead => true;
+
+        /// <summary>
+        /// Returns true if the stream can seek; otherwise returns false.
+        /// </summary>
+        public override bool CanSeek => true;
+        
+        /// <summary>
+        /// Creates a new, uninitialized stream.
+        /// </summary>
+        public EguiResultStream() { }
+
+        /// <summary>
+        /// Sets the buffer referenced by the stream.
+        /// </summary>
+        /// <param name="slice">The buffer to use.</param>
+        public void Initialize(EguiSliceU8 slice)
+        {
+            Dispose(true);
+            Initialize(slice.ptr, (long)slice.len, (long)slice.len, FileAccess.Read);
+            Position = 0;
+        }
     }
 }

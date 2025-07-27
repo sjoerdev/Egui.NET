@@ -61,16 +61,16 @@ public readonly partial struct Sense
         _value = value;
     }
 
-    internal static void Serialize(Serde.ISerializer serializer, Sense sense) => sense.Serialize(serializer);
+    internal static void Serialize(BincodeSerializer serializer, Sense sense) => sense.Serialize(serializer);
 
-    internal void Serialize(Serde.ISerializer serializer)
+    internal void Serialize(BincodeSerializer serializer)
     {
         serializer.increase_container_depth();
         serializer.serialize_u8(_value);
         serializer.decrease_container_depth();
     }
 
-    internal static Sense Deserialize(Serde.IDeserializer deserializer) {
+    internal static Sense Deserialize(BincodeDeserializer deserializer) {
         deserializer.increase_container_depth();
         Sense value = (Sense)deserializer.deserialize_u8();
         deserializer.decrease_container_depth();

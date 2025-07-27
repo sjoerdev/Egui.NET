@@ -80,12 +80,12 @@ public unsafe partial struct Color32 : IEquatable<Color32>
     /// <summary>
     /// Serializes an instance of this type.
     /// </summary>
-    internal static void Serialize(Serde.ISerializer serializer, Color32 value) => value.Serialize(serializer);
+    internal static void Serialize(BincodeSerializer serializer, Color32 value) => value.Serialize(serializer);
 
     /// <summary>
     /// Serializes this object.
     /// </summary>
-    internal void Serialize(Serde.ISerializer serializer)
+    internal void Serialize(BincodeSerializer serializer)
     {
         serializer.increase_container_depth();
         serializer.serialize_u32(_value);
@@ -95,7 +95,7 @@ public unsafe partial struct Color32 : IEquatable<Color32>
     /// <summary>
     /// Deserializes an instance of this type.
     /// </summary>
-    internal static Color32 Deserialize(Serde.IDeserializer deserializer)
+    internal static Color32 Deserialize(BincodeDeserializer deserializer)
     {
         deserializer.increase_container_depth();
         Color32 obj = default;

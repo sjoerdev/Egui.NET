@@ -65,16 +65,16 @@ public partial struct Id : IEquatable<Id>
     /// <param name="source">The source to use.</param>
     public static implicit operator Id(string source) => new Id(source);
 
-    internal static void Serialize(Serde.ISerializer serializer, Id value) => value.Serialize(serializer);
+    internal static void Serialize(BincodeSerializer serializer, Id value) => value.Serialize(serializer);
 
-    internal void Serialize(Serde.ISerializer serializer)
+    internal void Serialize(BincodeSerializer serializer)
     {
         serializer.increase_container_depth();
         serializer.serialize_u64(_value);
         serializer.decrease_container_depth();
     }
 
-    internal static Id Deserialize(Serde.IDeserializer deserializer)
+    internal static Id Deserialize(BincodeDeserializer deserializer)
     {
         deserializer.increase_container_depth();
         Id obj = default;

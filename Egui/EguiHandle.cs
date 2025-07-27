@@ -6,7 +6,7 @@ internal partial struct EguiHandle
     /// Serializes an instance of this value.
     /// </summary>
     /// <param name="serializer">The serializer to use.</param>
-    internal static void Serialize(Serde.ISerializer serializer, EguiHandle obj)
+    internal static void Serialize(BincodeSerializer serializer, EguiHandle obj)
     {
         serializer.increase_container_depth();
         serializer.serialize_u64(obj.ptr);
@@ -19,7 +19,7 @@ internal partial struct EguiHandle
     /// </summary>
     /// <param name="deserializer">The deserializer to use.</param>
     /// <returns>The object that was deserialized.</returns>
-    internal static EguiHandle Deserialize(Serde.IDeserializer deserializer)
+    internal static EguiHandle Deserialize(BincodeDeserializer deserializer)
     {
         deserializer.increase_container_depth();
         EguiHandle obj = default;

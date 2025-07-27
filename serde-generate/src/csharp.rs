@@ -442,7 +442,7 @@ using System.Numerics;"
 
         write!(
             self.out,
-            "public static void serialize_{}({} value, Serde.ISerializer serializer) {{",
+            "public static void serialize_{}({} value, Bincode.BincodeSerializer serializer) {{",
             name,
             self.quote_type(format0)
         )?;
@@ -532,7 +532,7 @@ foreach (var item in value) {{
 
         write!(
             self.out,
-            "public static {} deserialize_{}(Serde.IDeserializer deserializer) {{",
+            "public static {} deserialize_{}(Bincode.BincodeDeserializer deserializer) {{",
             self.quote_type(format0),
             name,
         )?;
@@ -748,11 +748,11 @@ return obj.ToImmutableList();
 
         // Serialize
         if self.generator.config.serialization {
-            writeln!(self.out, "\ninternal static void Serialize(Serde.ISerializer serializer, {name} value) => value.Serialize(serializer);");
+            writeln!(self.out, "\ninternal static void Serialize(Bincode.BincodeSerializer serializer, {name} value) => value.Serialize(serializer);");
 
             writeln!(
                 self.out,
-                "\ninternal {}void Serialize(Serde.ISerializer serializer) {{",
+                "\ninternal {}void Serialize(Bincode.BincodeSerializer serializer) {{",
                 fn_mods
             )?;
             self.out.indent();
@@ -783,13 +783,13 @@ return obj.ToImmutableList();
             if variant_index.is_none() {
                 writeln!(
                     self.out,
-                    "\ninternal static {}{} Deserialize(Serde.IDeserializer deserializer) {{",
+                    "\ninternal static {}{} Deserialize(Bincode.BincodeDeserializer deserializer) {{",
                     fn_mods, name,
                 )?;
             } else {
                 writeln!(
                     self.out,
-                    "\ninternal static {} Load(Serde.IDeserializer deserializer) {{",
+                    "\ninternal static {} Load(Bincode.BincodeDeserializer deserializer) {{",
                     name,
                 )?;
             }
@@ -926,11 +926,11 @@ return obj.ToImmutableList();
 
         // Serialize/Deserialize
         if self.generator.config.serialization {
-            writeln!(self.out, "\ninternal static void Serialize(Serde.ISerializer serializer, {name} value) => value.Serialize(serializer);");
+            writeln!(self.out, "\ninternal static void Serialize(Bincode.BincodeSerializer serializer, {name} value) => value.Serialize(serializer);");
 
             write!(
                 self.out,
-                "\ninternal void Serialize(Serde.ISerializer serializer) {{"
+                "\ninternal void Serialize(Bincode.BincodeSerializer serializer) {{"
             )?;
             self.out.indent();
             writeln!(
@@ -957,7 +957,7 @@ switch (_variantId.GetValueOrDefault(-1)) {{"#,
             
             write!(
                 self.out,
-                "\ninternal static {} Deserialize(Serde.IDeserializer deserializer) {{",
+                "\ninternal static {} Deserialize(Bincode.BincodeDeserializer deserializer) {{",
                 name
             )?;
             self.out.indent();
@@ -1086,13 +1086,13 @@ switch (index) {{"#,
             writeln!(
                 self.out,
                 r#"
-internal static void Serialize(this {0} value, Serde.ISerializer serializer) {{
+internal static void Serialize(this {0} value, Bincode.BincodeSerializer serializer) {{
     serializer.increase_container_depth();
     serializer.serialize_variant_index((int)value);
     serializer.decrease_container_depth();
 }}
 
-internal static {0} Deserialize(Serde.IDeserializer deserializer) {{
+internal static {0} Deserialize(Bincode.BincodeDeserializer deserializer) {{
     deserializer.increase_container_depth();
     int index = deserializer.deserialize_variant_index();
     if (!Enum.IsDefined(typeof({0}), index))
@@ -1109,7 +1109,7 @@ internal static {0} Deserialize(Serde.IDeserializer deserializer) {{
                     self.out,
                     r#"
 internal static byte[] {0}Serialize(this {1} value)  {{
-    Serde.ISerializer serializer = new {0}.{0}Serializer();
+    Bincode.BincodeSerializer serializer = new {0}.{0}Serializer();
     Serialize(value, serializer);
     return serializer.get_bytes();
 }}"#,
@@ -1133,13 +1133,13 @@ internal static byte[] {0}Serialize(this {1} value)  {{
 internal int {0}Serialize(byte[] outputBuffer) => {0}Serialize(new ArraySegment<byte>(outputBuffer));
 
 internal int {0}Serialize(ArraySegment<byte> outputBuffer) {{
-    Serde.ISerializer serializer = new {0}.{0}Serializer(outputBuffer);
+    Bincode.BincodeSerializer serializer = new {0}.{0}Serializer(outputBuffer);
     Serialize(serializer);
     return serializer.get_buffer_offset();
 }}
 
 internal byte[] {0}Serialize()  {{
-    Serde.ISerializer serializer = new {0}.{0}Serializer();
+    Bincode.BincodeSerializer serializer = new {0}.{0}Serializer();
     Serialize(serializer);
     return serializer.get_bytes();
 }}"#,
@@ -1161,7 +1161,7 @@ internal static {0} {1}Deserialize(ArraySegment<byte> input) {{
     if (input == null) {{
          throw new Serde.DeserializationException("Cannot deserialize null array");
     }}
-    Serde.IDeserializer deserializer = new {1}.{1}Deserializer(input);
+    Bincode.BincodeDeserializer deserializer = new {1}.{1}Deserializer(input);
     {0} value = Deserialize(deserializer);
     if (deserializer.get_buffer_offset() < input.Length) {{
          throw new Serde.DeserializationException("Some input bytes were not read");
