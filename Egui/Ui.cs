@@ -255,6 +255,28 @@ public readonly ref partial struct Ui
     }
 
     /// <summary>
+    /// Temporarily split a <see cref="Ui"/>  into several columns.
+    /// </summary>
+    public unsafe readonly void Columns(nuint numColumns, Action<UiArray> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(uiArray => addContents(new UiArray(ctx, (nuint*)uiArray, (int)numColumns)));
+        EguiMarshal.Call(EguiFn.egui_ui_Ui_columns, Ptr, numColumns, callback);
+    }
+
+    /// <inheritdoc cref="Columns"/>
+    public unsafe readonly R Columns<R>(nuint numColumns, Func<UiArray, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(uiArray => result = addContents(new UiArray(ctx, (nuint*)uiArray, (int)numColumns)));
+        EguiMarshal.Call(EguiFn.egui_ui_Ui_columns, Ptr, numColumns, callback);
+        return result;
+    }
+
+    /// <summary>
     /// Put into a <see cref="Frame.Group"/> , visually grouping the contents together
     /// </summary>
     public readonly InnerResponse Group(Action<Ui> addContents)
