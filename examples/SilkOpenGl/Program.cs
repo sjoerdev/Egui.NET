@@ -417,15 +417,15 @@ public unsafe class Program
 
     private static void DocLinkLabel(Ui ui, string title, string searchTerm)
     {
-        ui.HyperlinkTo(title, $"https://docs.rs/egui?search={searchTerm}");
-        /*.OnHoverUi(ui =>
+        ui.HyperlinkTo(title, $"https://docs.rs/egui?search={searchTerm}")
+        .OnHoverUi(ui =>
         {
             ui.HorizontalWrapped(ui =>
             {
                 ui.Label("Search egui docs for");
                 ui.Code(searchTerm);
             });
-        });*/
+        });
     }
 
     private enum Enum

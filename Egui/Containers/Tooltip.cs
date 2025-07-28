@@ -135,13 +135,6 @@ public ref partial struct Tooltip
     /// <inheritdoc cref="Show"/>
     public readonly InnerResponse<R>? Show<R>(Func<Ui, R> content)
     {
-        if (!Popup.IsOpen)
-        {
-            return null;
-        }
-
-        var anchorRect = Popup.AnchorRect;
-        
-        throw new NotImplementedException();
+        return Popup.ShowTooltip(_parentLayer, _parentWidget, content);
     }
 }

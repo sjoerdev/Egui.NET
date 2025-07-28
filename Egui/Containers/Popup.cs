@@ -498,6 +498,35 @@ public ref partial struct Popup
         }
     }
 
+    /// <summary>
+    /// Display a tooltip popup
+    /// </summary>
+    internal readonly InnerResponse<R>? ShowTooltip<R>(LayerId parentLayer, Id parentId, Func<Ui, R> addContents)
+    {
+        var ctx = Ctx;
+        R result = default!;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var (response, setOpen) = EguiMarshal.Call<nuint, SerializablePopup, LayerId, Id, EguiCallback, (Response?, bool)>(EguiFn.egui_containers_tooltip_Tooltip_show, Ctx.Ptr, new SerializablePopup(this), parentLayer, parentId, callback);
+
+        if (_openKind == OpenKind.Bool)
+        {
+            _open = setOpen;
+        }
+
+        if (response.HasValue)
+        {
+            return new InnerResponse<R>
+            {
+                Inner = result,
+                Response = response.Value
+            };
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     private enum StyleMode
     {
         None,

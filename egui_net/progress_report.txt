@@ -1,4 +1,4 @@
-1639 / 1928 (85%) bound
+1639 / 1926 (85%) bound
 ecolor_color32_Color32_from_hex
 ecolor_hex_color_runtime_HexColor_from_str
 ecolor_hex_color_runtime_HexColor_from_str_without_hash
@@ -264,9 +264,7 @@ epaint_shapes_bezier_shape_QuadraticBezierShape_for_each_flattened_with_t
 epaint_shapes_shape_Shape_line_segment
 epaint_shapes_shape_Shape_mesh
 epaint_shapes_shape_Shape_text
-epaint_text_cursor_LayoutCursor
 epaint_text_fonts_FontDefinitions_builtin_font_names
-epaint_text_fonts_FontPriority
 epaint_text_fonts_Fonts_new
 epaint_text_fonts_Fonts_texture_atlas
 epaint_text_text_layout_layout

@@ -94,7 +94,7 @@ public partial struct Response : IEquatable<Response>
     /// </summary>
     public readonly Response OnHoverUi(Action<Ui> addContents)
     {
-        // todo: tooltip
+        Tooltip.ForEnabled(this).Show(addContents);
         return this;
     }
 
@@ -103,7 +103,10 @@ public partial struct Response : IEquatable<Response>
     /// </summary>
     public readonly Response OnHoverUiAtPointer(Action<Ui> addContents)
     {
-        // todo: tooltip
+        Tooltip.ForEnabled(this)
+            .AtPointer()
+            .Gap(12.0f)
+            .Show(addContents);
         return this;
     }
 
@@ -112,7 +115,7 @@ public partial struct Response : IEquatable<Response>
     /// </summary>
     public readonly Response OnDisabledHoverUi(Action<Ui> addContents)
     {
-        // todo: tooltip
+        Tooltip.ForDisabled(this).Show(addContents);
         return this;
     }
 
