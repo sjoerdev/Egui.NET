@@ -579,6 +579,10 @@ const IGNORE_FNS: &[&str] = &[
     "epaint_stats_AllocInfo_num_elements",
     "epaint_stats_AllocInfo_sum",
 
+    // NumberFormatter: not possible to bind to C# due to generics
+    "egui_style_NumberFormatter_format",
+    "egui_style_NumberFormatter_new",
+
     // Path: private type
     "epaint_tessellator_Path_add_circle",
     "epaint_tessellator_Path_add_line_loop",
