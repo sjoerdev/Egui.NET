@@ -139,7 +139,7 @@ public ref partial struct Popup
     /// </summary>
     public static Popup FromResponse(Response response)
     {
-        var result = new Popup(DefaultResponseId(response), null!, response, response.LayerId);
+        var result = new Popup(DefaultResponseId(response), response.Ctx, response, response.LayerId);
         result._widgetClickedElsewhere = response.ClickedElsewhere;
         return result;
     }

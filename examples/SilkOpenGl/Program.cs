@@ -143,7 +143,7 @@ public unsafe class Program
 
         _input = new RawInput();
     }
-    
+
     private class WidgetGallery
     {
         private bool _enabled = true;
@@ -178,7 +178,7 @@ public unsafe class Program
                     .Striped(true)
                     .Show(ui, GalleryGridContents);
             });
-                
+
             ui.Separator();
 
             ui.Horizontal(ui =>
@@ -209,31 +209,31 @@ public unsafe class Program
 
         private void GalleryGridContents(Ui ui)
         {
-            DocLinkLabel(ui, "Label", "label");
+            ui.Add(DocLinkLabel("Label", "label"));
             ui.Label("Welcome to the widget gallery!");
             ui.EndRow();
 
-            DocLinkLabel(ui, "Hyperlink", "Hyperlink");
+            ui.Add(DocLinkLabel("Hyperlink", "Hyperlink"));
             ui.HyperlinkTo(" egui on GitHub", "https://github.com/emilk/egui");
             ui.EndRow();
 
-            DocLinkLabel(ui, "TextEdit", "TextEdit");
+            ui.Add(DocLinkLabel("TextEdit", "TextEdit"));
             ui.Add(TextEdit.Singleline(ref _string).HintText("Write something here"));
             ui.EndRow();
 
-            DocLinkLabel(ui, "Button", "button");
+            ui.Add(DocLinkLabel("Button", "button"));
             _boolean ^= ui.Button("Click me!").Clicked;
             ui.EndRow();
 
-            DocLinkLabel(ui, "Link", "link");
+            ui.Add(DocLinkLabel("Link", "link"));
             _boolean ^= ui.Link("Click me!").Clicked;
             ui.EndRow();
 
-            DocLinkLabel(ui, "Checkbox", "checkbox");
+            ui.Add(DocLinkLabel("Checkbox", "checkbox"));
             ui.Checkbox(ref _boolean, "Checkbox");
             ui.EndRow();
 
-            DocLinkLabel(ui, "RadioButton", "radio");
+            ui.Add(DocLinkLabel("RadioButton", "radio"));
             ui.Horizontal(ui =>
             {
                 ui.RadioValue(ref _radio, Enum.First, "First");
@@ -242,7 +242,7 @@ public unsafe class Program
             });
             ui.EndRow();
 
-            DocLinkLabel(ui, "SelectableLabel", "SelectableLabel");
+            ui.Add(DocLinkLabel("SelectableLabel", "SelectableLabel"));
             ui.Horizontal(ui =>
             {
                 ui.SelectableValue(ref _radio, Enum.First, "First");
@@ -251,7 +251,7 @@ public unsafe class Program
             });
             ui.EndRow();
 
-            DocLinkLabel(ui, "ComboBox", "ComboBox");
+            ui.Add(DocLinkLabel("ComboBox", "ComboBox"));
             ComboBox.FromLabel("Take your pick")
                 .SelectedText($"{_radio}")
                 .ShowUi(ui, ui =>
@@ -262,16 +262,15 @@ public unsafe class Program
                 });
             ui.EndRow();
 
-            /*
-            DocLinkLabel(ui, "Slider", "Slider");
-            ui.Slider(ref _scalar, new Interval<float>(0.0f, 360.0f), suffix: "°");
-            ui.EndRow();*/
+            ui.Add(DocLinkLabel("Slider", "Slider"));
+            ui.Add(new Slider<float>(ref _scalar, 0.0f, 360.0f).Suffix("°"));
+            ui.EndRow();
 
-            DocLinkLabel(ui, "DragValue", "DragValue");
+            ui.Add(DocLinkLabel("DragValue", "DragValue"));
             ui.Add(new DragValue<float>(ref _scalar).Speed(1));
             ui.EndRow();
 
-            DocLinkLabel(ui, "ProgressBar", "ProgressBar");
+            ui.Add(DocLinkLabel("ProgressBar", "ProgressBar"));
             var progress = _scalar / 360.0f;
             var progressBar = new ProgressBar(progress)
                 .ShowPercentage()
@@ -281,52 +280,81 @@ public unsafe class Program
                 .Hovered;
             ui.EndRow();
 
-            DocLinkLabel(ui, "Color picker", "color_edit");
+            ui.Add(DocLinkLabel("Color picker", "color_edit"));
             ui.ColorEditButtonSrgba(ref _color);
             ui.EndRow();
 
-            DocLinkLabel(ui, "Separator", "separator");
+            ui.Add(DocLinkLabel("Separator", "separator"));
             ui.Separator();
             ui.EndRow();
 
-            ui.Hyperlink("Custom widget");
-            ui.Add(new Toggle(ref _boolean))
-                .OnHoverText("It's easy to create your own widgets!\nThis toggle switch is just 15 lines of code.");
-            ui.EndRow();
-
-            DocLinkLabel(ui, "CollapsingHeader", "collapsing");
+            ui.Add(DocLinkLabel("CollapsingHeader", "collapsing"));
             ui.Collapsing("Click to see what is hidden!", ui =>
             {
                 ui.HorizontalWrapped(ui =>
                 {
                     // ui.spacing_mut().item_spacing.x = 0.0;
                     ui.Label("It's a ");
-                    DocLinkLabel(ui, "Spinner", "spinner");
+                    ui.Add(DocLinkLabel("Spinner", "spinner"));
                     ui.AddSpace(4.0f);
                     ui.Add(new Spinner());
                 });
             });
             ui.EndRow();
-             /*
-            
-        ui.add(doc_link_label("Image", "Image"));
-        let egui_icon = egui::include_image!("../../data/icon.png");
-        ui.add(egui::Image::new(egui_icon.clone()));
-        ui.end_row();
-            
-        ui.add(doc_link_label(
-            "Button with image",
-            "Button::image_and_text",
-        ));
-        if ui
-            .add(egui::Button::image_and_text(egui_icon, "Click me!"))
-            .clicked()
-        {
-            *boolean = !*boolean;
-        }
-        ui.end_row();
-             */
 
+            ui.Hyperlink("Custom widget");
+            ui.Add(new Toggle(ref _boolean))
+                .OnHoverText("It's easy to create your own widgets!\nThis toggle switch is just 15 lines of code.");
+            ui.EndRow();
+            /*
+
+      ui.add(doc_link_label("Image", "Image"));
+      let egui_icon = egui::include_image!("../../data/icon.png");
+      ui.add(egui::Image::new(egui_icon.clone()));
+      ui.end_row();
+
+      ui.add(doc_link_label(
+          "Button with image",
+          "Button::image_and_text",
+      ));
+      if ui
+          .add(egui::Button::image_and_text(egui_icon, "Click me!"))
+          .clicked()
+      {
+          *boolean = !*boolean;
+      }
+      ui.end_row();
+           */
+
+        }
+
+        private static DocLinkLabelWidget DocLinkLabel(string title, string searchTerm)
+        {
+            return new DocLinkLabelWidget
+            {
+                Title = title,
+                SearchTerm = searchTerm
+            };
+        }
+
+        private struct DocLinkLabelWidget : IWidget
+        {
+            public required string Title;
+            public required string SearchTerm;
+
+            Response IWidget.Ui(Ui ui)
+            {
+                var searchTerm = SearchTerm;
+                return ui.HyperlinkTo(Title, $"https://docs.rs/egui?search={searchTerm}")
+                .OnHoverUi(ui =>
+                {
+                    ui.HorizontalWrapped(ui =>
+                    {
+                        ui.Label("Search egui docs for");
+                        ui.Code(searchTerm);
+                    });
+                });
+            }
         }
     }
 
@@ -413,19 +441,6 @@ public unsafe class Program
             // (hovered, clicked, ...) and maybe show a tooltip:
             return response;
         }
-    }
-
-    private static void DocLinkLabel(Ui ui, string title, string searchTerm)
-    {
-        ui.HyperlinkTo(title, $"https://docs.rs/egui?search={searchTerm}")
-        .OnHoverUi(ui =>
-        {
-            ui.HorizontalWrapped(ui =>
-            {
-                ui.Label("Search egui docs for");
-                ui.Code(searchTerm);
-            });
-        });
     }
 
     private enum Enum

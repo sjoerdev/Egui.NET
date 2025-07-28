@@ -13,7 +13,7 @@ namespace Egui;
 public interface IWidget
 {
     /// <summary>
-    /// Allocate space, interact, paint, and return a <see cref="Response"/> .
+    /// Allocate space, interact, paint, and return a <see cref="Response"/>.
     /// </summary>
     public Response Ui(Ui ui);
 }
