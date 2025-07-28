@@ -4,7 +4,7 @@ namespace Egui;
 /// A text region that the user can edit the contents of.<br/>
 /// See also <see cref="Ui.TextEditSingleline"/> and <see cref="Ui.TextEditMultiline"/>. 
 /// </summary>
-public ref struct TextEdit : IWidget
+public ref partial struct TextEdit : IWidget
 {
     private string? _textImmutable;
     private ref string _textMutable;

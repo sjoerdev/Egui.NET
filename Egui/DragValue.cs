@@ -8,35 +8,26 @@ namespace Egui;
 public ref struct DragValue<T> : IWidget where T : INumber<T>
 {
     private ref T _value;
-    private double _speed;
-    private string _prefix;
-    private string _suffix;
-    private (double, double) _range;
-    private bool _clampExistingToRange;
-    private nuint _minDecimals;
-    private nuint? _maxDecimals;
-    private bool _updateWhileEditing;
-
-    private nuint _minWidth;
-    private bool _twosComplement;
-    private Parser _parser;
+    private DragValueInner _inner;
 
     public DragValue(ref T value)
     {
         _value = ref value;
-        _prefix = "";
-        _suffix = "";
-        _speed = 1.0f;
-        _range = (double.NegativeInfinity, double.PositiveInfinity);
-        _clampExistingToRange = true;
-        _minDecimals = 0;
-        _maxDecimals = null;
-        _updateWhileEditing = true;
+        _inner.Prefix = "";
+        _inner.Suffix = "";
+        _inner.Speed = 1.0f;
+        _inner.Start = double.NegativeInfinity;
+        _inner.End = double.PositiveInfinity;
+        _inner.ClampExistingToRange = true;
+        _inner.MinDecimals = 0;
+        _inner.MaxDecimals = null;
+        _inner.UpdateWhileEditing = true;
 
         if (typeof(T) != typeof(float) && typeof(T) != typeof(double))
         {
-            _maxDecimals = 0;
-            this = Range(T.CreateSaturating(double.MinValue), T.CreateSaturating(double.MaxValue));
+            this = MaxDecimals(0)
+                .Range(T.CreateSaturating(double.MinValue), T.CreateSaturating(double.MaxValue))
+                .Speed(0.25);
         }
     }
 
@@ -48,7 +39,7 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     public readonly DragValue<T> Speed(double speed)
     {
         var result = this;
-        result._speed = speed;
+        result._inner.Speed = speed;
         return result;
     }
 
@@ -61,7 +52,8 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     public readonly DragValue<T> Range(T start, T end)
     {
         var result = this;
-        result._range = (double.CreateSaturating(start), double.CreateSaturating(end));
+        result._inner.Start = double.CreateSaturating(start);
+        result._inner.End = double.CreateSaturating(end);
         return result;
     }
 
@@ -75,7 +67,7 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     public readonly DragValue<T> ClampExistingToRange(bool clampExistingToRange)
     {
         var result = this;
-        result._clampExistingToRange = clampExistingToRange;
+        result._inner.ClampExistingToRange = clampExistingToRange;
         return result;
     }
     /// <summary>
@@ -84,7 +76,7 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     public readonly DragValue<T> Prefix(string prefix)
     {
         var result = this;
-        result._prefix = prefix;
+        result._inner.Prefix = prefix;
         return result;
     }
 
@@ -96,7 +88,7 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     public readonly DragValue<T> Suffix(string suffix)
     {
         var result = this;
-        result._suffix = suffix;
+        result._inner.Suffix = suffix;
         return result;
     }
 
@@ -108,7 +100,7 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     public readonly DragValue<T> MinDecimals(nuint minDecimals)
     {
         var result = this;
-        result._minDecimals = minDecimals;
+        result._inner.MinDecimals = minDecimals;
         return result;
     }
 
@@ -129,7 +121,7 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     public readonly DragValue<T> MaxDecimals(nuint maxDecimals)
     {
         var result = this;
-        result._maxDecimals = maxDecimals;
+        result._inner.MaxDecimals = maxDecimals;
         return result;
     }
 
@@ -142,8 +134,8 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     public readonly DragValue<T> FixedDecimals(nuint numDecimals)
     {
         var result = this;
-        result._minDecimals = numDecimals;
-        result._maxDecimals = numDecimals;
+        result._inner.MinDecimals = numDecimals;
+        result._inner.MaxDecimals = numDecimals;
         return result;
     }
 
@@ -164,9 +156,9 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     public readonly DragValue<T> Binary(nuint minWidth, bool twosComplement)
     {
         var result = this;
-        result._minWidth = minWidth;
-        result._twosComplement = twosComplement;
-        result._parser = Parser.Binary;
+        result._inner.MinWidth = minWidth;
+        result._inner.TwosComplement = twosComplement;
+        result._inner.Parser = Parser.Binary;
         return result;
     }
 
@@ -187,9 +179,9 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     public readonly DragValue<T> Octal(nuint minWidth, bool twosComplement)
     {
         var result = this;
-        result._minWidth = minWidth;
-        result._twosComplement = twosComplement;
-        result._parser = Parser.Octal;
+        result._inner.MinWidth = minWidth;
+        result._inner.TwosComplement = twosComplement;
+        result._inner.Parser = Parser.Octal;
         return result;
     }
 
@@ -207,12 +199,13 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     ///
     /// Panics if <c>MinWidth</c> is 0.
     /// </summary>
-    public readonly DragValue<T> Hexadecimal(nuint minWidth, bool twosComplement)
+    public readonly DragValue<T> Hexadecimal(nuint minWidth, bool twosComplement, bool upper)
     {
         var result = this;
-        result._minWidth = minWidth;
-        result._twosComplement = twosComplement;
-        result._parser = Parser.Hexadecimal;
+        result._inner.MinWidth = minWidth;
+        result._inner.TwosComplement = twosComplement;
+        result._inner.Upper = upper;
+        result._inner.Parser = Parser.Hexadecimal;
         return result;
     }
 
@@ -225,21 +218,63 @@ public ref struct DragValue<T> : IWidget where T : INumber<T>
     public readonly DragValue<T> UpdateWhileEditing(bool update)
     {
         var result = this;
-        result._updateWhileEditing = update;
+        result._inner.UpdateWhileEditing = update;
         return result;
     }
 
     /// <inheritdoc/>
     Response IWidget.Ui(Ui ui)
     {
-        throw new NotImplementedException();
+        ui.AssertInitialized();
+        var value = double.CreateSaturating(_value);
+        var (response, newValue) = EguiMarshal.Call<nuint, DragValueInner, double, (Response, double)>(EguiFn.egui_widgets_drag_value_DragValue_ui, ui.Ptr, _inner, value);
+        _value = T.CreateSaturating(newValue);
+        return response;
     }
 
-    private enum Parser
+    private partial struct DragValueInner {
+        public double Speed;
+        public string Prefix;
+        public string Suffix;
+        public double Start;
+        public double End;
+        public bool ClampExistingToRange;
+        public ulong MinDecimals;
+        public ulong? MaxDecimals;
+        public bool UpdateWhileEditing;
+        public nuint MinWidth;
+        public bool TwosComplement;
+        public bool Upper;
+        public Parser Parser;
+
+        internal static void Serialize(Bincode.BincodeSerializer serializer, DragValueInner value) => value.Serialize(serializer);
+
+        internal void Serialize(Bincode.BincodeSerializer serializer) {
+            serializer.increase_container_depth();
+            serializer.serialize_f64(Speed);
+            serializer.serialize_str(Prefix);
+            serializer.serialize_str(Suffix);
+            serializer.serialize_f64(Start);
+            serializer.serialize_f64(End);
+            serializer.serialize_bool(ClampExistingToRange);
+            serializer.serialize_u64(MinDecimals);
+            Egui.TraitHelpers.serialize_option_u64(MaxDecimals, serializer);
+            serializer.serialize_bool(UpdateWhileEditing);
+            serializer.serialize_u64((ulong)MinWidth);
+            serializer.serialize_bool(TwosComplement);
+            serializer.serialize_bool(Upper);
+            serializer.serialize_u8((byte)Parser);
+            serializer.decrease_container_depth();
+        }
+
+        internal static DragValueInner Deserialize(Bincode.BincodeDeserializer deserializer) => throw new NotImplementedException();
+    }
+
+    private enum Parser : byte
     {
-        Default,
-        Binary,
-        Octal,
-        Hexadecimal
+        Default = 0,
+        Binary = 2,
+        Octal = 8,
+        Hexadecimal = 16
     }
 }

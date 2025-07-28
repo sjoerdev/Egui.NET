@@ -5,7 +5,7 @@ namespace Egui.Containers;
 /// <summary>
 /// A popup container.
 /// </summary>
-public ref struct Popup
+public ref partial struct Popup
 {
     /// <summary>
     /// Return the anchor rect of the popup.
@@ -221,24 +221,6 @@ public ref struct Popup
     }
 
     /// <summary>
-    /// Close all currently open popups.
-    /// </summary>
-    public static void CloseAll(Context ctx)
-    {
-        EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_close_all, ctx.Ptr);
-    }
-
-    /// <summary>
-    /// Close the given popup, if it is open.
-    /// 
-    /// See also <see cref="CloseAll"/> if you want to close any/all currently open popups.
-    /// </summary>
-    public static void CloseId(Context ctx, Id id)
-    {
-        EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_close_id, ctx.Ptr, id);
-    }
-
-    /// <summary>
     /// Open the given popup and close all others.
     /// 
     /// If you are NOT using <see cref="Show"/>, you must also call
@@ -247,39 +229,6 @@ public ref struct Popup
     public static void OpenId(Context ctx, Id id)
     {
         EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_open_id, ctx.Ptr, id);
-    }
-
-    /// <summary>
-    /// Toggle the given popup between closed and open.
-    /// Note: At most, only one popup can be open at a time.
-    /// </summary>
-    public static void ToggleId(Context ctx, Id id)
-    {
-        EguiMarshal.Call(EguiFn.egui_containers_popup_Popup_toggle_id, ctx.Ptr, id);
-    }
-
-    /// <summary>
-    /// Get the position for this popup, if it is open.
-    /// </summary>
-    public static Pos2? PositionOfId(Context ctx, Id id)
-    {
-        return EguiMarshal.Call<nuint, Id, Pos2?>(EguiFn.egui_containers_popup_Popup_position_of_id, ctx.Ptr, id);
-    }
-
-    /// <summary>
-    /// Is the given popup open?
-    /// </summary>
-    public static bool IsIdOpen(Context ctx, Id id)
-    {
-        return EguiMarshal.Call<nuint, Id, bool>(EguiFn.egui_containers_popup_Popup_is_id_open, ctx.Ptr, id);
-    }
-
-    /// <summary>
-    /// Is the given popup open?
-    /// </summary>
-    public static bool IsAnyOpen(Context ctx)
-    {
-        return EguiMarshal.Call<nuint, bool>(EguiFn.egui_containers_popup_Popup_is_any_open, ctx.Ptr);
     }
 
     /// <summary>
@@ -343,9 +292,19 @@ public ref struct Popup
     }
 
     /// <summary>
-    /// Set whether the popup is open or closed.
+    /// Force the popup to be open or closed.
     /// </summary>
-    public readonly Popup Open(ref bool open)
+    public readonly Popup Open(bool open)
+    {
+        var result = this;
+        result._openKind = open ? OpenKind.Open : OpenKind.Closed;
+        return result;
+    }
+
+    /// <summary>
+    /// Store the open state via a mutable bool.
+    /// </summary>
+    public readonly Popup OpenBool(ref bool open)
     {
         return new Popup(this, ref open);
     }

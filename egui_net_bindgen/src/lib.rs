@@ -78,6 +78,7 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "ecolor_hsva_rgb_from_hsv",
     "ecolor_hsva_hsv_from_rgb",
     "emath_format_with_decimals_in_range",
+    "egui_drag_and_drop_DragAndDrop_has_payload_of_type",
 
     // These functions generate as properties, but should be methods
     "egui_ui_Ui_separator",
@@ -304,6 +305,11 @@ const IGNORE_FNS: &[&str] = &[
     "egui_atomics_atom_layout_AllocatedAtomLayout_iter_kinds",
     "egui_atomics_atom_layout_AllocatedAtomLayout_iter_kinds_mut",
     "egui_atomics_atom_layout_AllocatedAtomLayout_map_kind",
+    "egui_atomics_atom_layout_AllocatedAtomLayout_iter_images",
+    "egui_atomics_atom_layout_AllocatedAtomLayout_iter_images_mut",
+    "egui_atomics_atom_layout_AllocatedAtomLayout_iter_texts",
+    "egui_atomics_atom_layout_AllocatedAtomLayout_iter_texts_mut",
+    "egui_atomics_atom_layout_AllocatedAtomLayout_map_images",
 
     // Atoms: bound manually
     "egui_atomics_atoms_Atoms_from_iter",
@@ -312,6 +318,12 @@ const IGNORE_FNS: &[&str] = &[
     "egui_atomics_atoms_Atoms_iter_kinds_mut",
     "egui_atomics_atoms_Atoms_map_kind",
     "egui_atomics_atoms_Atoms_map_atoms",
+    "egui_atomics_atoms_Atoms_iter_images",
+    "egui_atomics_atoms_Atoms_iter_images_mut",
+    "egui_atomics_atoms_Atoms_iter_texts",
+    "egui_atomics_atoms_Atoms_iter_texts_mut",
+    "egui_atomics_atoms_Atoms_map_images",
+    "egui_atomics_atoms_Atoms_map_texts",
 
     // DragValue: bound manually
     "egui_widgets_drag_value_DragValue_binary",
@@ -545,6 +557,16 @@ const IGNORE_FNS: &[&str] = &[
     "egui_sense_Sense_toggle",
     "egui_sense_Sense_union",
 
+    // Tooltip: bound manually
+    "egui_containers_tooltip_Tooltip_always_open",
+    "egui_containers_tooltip_Tooltip_at_pointer",
+    "egui_containers_tooltip_Tooltip_for_disabled",
+    "egui_containers_tooltip_Tooltip_for_enabled",
+    "egui_containers_tooltip_Tooltip_for_widget",
+    "egui_containers_tooltip_Tooltip_gap",
+    "egui_containers_tooltip_Tooltip_layout",
+    "egui_containers_tooltip_Tooltip_width",
+
     // AllocInfo: private type
     "epaint_stats_AllocInfo_default",
     "epaint_stats_AllocInfo_format",
@@ -737,6 +759,37 @@ const IGNORE_FNS: &[&str] = &[
     "egui_style_StyleModifier_default",
     "egui_style_StyleModifier_new",
 
+    // TextEdit: manually bound
+    "egui_widgets_text_edit_builder_TextEdit_background_color",
+    "egui_widgets_text_edit_builder_TextEdit_char_limit",
+    "egui_widgets_text_edit_builder_TextEdit_clip_text",
+    "egui_widgets_text_edit_builder_TextEdit_code_editor",
+    "egui_widgets_text_edit_builder_TextEdit_cursor_at_end",
+    "egui_widgets_text_edit_builder_TextEdit_desired_rows",
+    "egui_widgets_text_edit_builder_TextEdit_desired_width",
+    "egui_widgets_text_edit_builder_TextEdit_font",
+    "egui_widgets_text_edit_builder_TextEdit_frame",
+    "egui_widgets_text_edit_builder_TextEdit_hint_text",
+    "egui_widgets_text_edit_builder_TextEdit_hint_text_font",
+    "egui_widgets_text_edit_builder_TextEdit_horizontal_align",
+    "egui_widgets_text_edit_builder_TextEdit_id",
+    "egui_widgets_text_edit_builder_TextEdit_id_salt",
+    "egui_widgets_text_edit_builder_TextEdit_id_source",
+    "egui_widgets_text_edit_builder_TextEdit_interactive",
+    "egui_widgets_text_edit_builder_TextEdit_layouter",
+    "egui_widgets_text_edit_builder_TextEdit_lock_focus",
+    "egui_widgets_text_edit_builder_TextEdit_margin",
+    "egui_widgets_text_edit_builder_TextEdit_min_size",
+    "egui_widgets_text_edit_builder_TextEdit_multiline",
+    "egui_widgets_text_edit_builder_TextEdit_password",
+    "egui_widgets_text_edit_builder_TextEdit_return_key",
+    "egui_widgets_text_edit_builder_TextEdit_show",
+    "egui_widgets_text_edit_builder_TextEdit_singleline",
+    "egui_widgets_text_edit_builder_TextEdit_store_state",
+    "egui_widgets_text_edit_builder_TextEdit_text_color",
+    "egui_widgets_text_edit_builder_TextEdit_text_color_opt",
+    "egui_widgets_text_edit_builder_TextEdit_vertical_align",
+
     // Ui: manually bound
     "egui_ui_Ui_allocate_ui",
     "egui_ui_Ui_columns_const",
@@ -752,6 +805,9 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_Ui_selectable_value",
     "egui_ui_Ui_new",
     "egui_ui_Ui_new_child",
+    "egui_ui_Ui_code_editor",
+    "egui_ui_Ui_text_edit_multiline",
+    "egui_ui_Ui_text_edit_singleline",
 
     // Other functions that cannot be bound to C#
     "epaint_stroke_PathStroke_new_uv",
@@ -961,11 +1017,11 @@ impl BindingsGenerator {
                     }
                 }
             },
-            Type::Generic(x) if x == "Self" => if HANDLE_TYPES.contains(&self_ty?) || POINTER_TYPES.contains(&self_ty?) {
-                return None
+            Type::Generic(x) if x == "Self" => if self.registry.contains_key(self_ty?) {
+                BoundTypeName::cs_rs(self_ty?, self_ty?)
             }
             else {
-                BoundTypeName::cs_rs(self_ty?, self_ty?)
+                return None
             },
             Type::Generic(x) if x == "IdSource" => BoundTypeName::cs_rs("Id", "Id"),
             Type::ImplTrait(x) => if x.len() == 1
@@ -1050,6 +1106,7 @@ impl BindingsGenerator {
 
         result += "#pragma warning disable\n";
         result += "using System.Collections.Immutable;\n";
+        result += "using System.Runtime.CompilerServices;\n";
 
         let mut bound_ids = Vec::new();
         let binding_exclude_fns = BINDING_EXCLUDE_FNS.into_iter().collect::<HashSet<_>>();
@@ -1088,7 +1145,7 @@ impl BindingsGenerator {
                         
                         writeln!(f, "namespace {namespace} {{ public ref partial struct {ty_name} {{\n{fn_def}\n}} }}")?;
                     }
-                    else if self.registry.contains_key(ty_name) {
+                    else {
                         let mut fn_def = String::new();
                         let primitive_enum = self.is_primitive_enum(impl_ty.id);
                         let decl_ty = if primitive_enum { DeclaringType::PrimitiveEnum } else { DeclaringType::Struct };
@@ -1105,9 +1162,6 @@ impl BindingsGenerator {
                                 writeln!(f, "namespace {namespace} {{ public partial struct {ty_name} {{\n{fn_def}\n}} }}")?;   
                             }
                         }
-                    }
-                    else {
-                        return Err(std::fmt::Error);
                     }
 
                     return Ok(());
@@ -1196,6 +1250,7 @@ impl BindingsGenerator {
                 (false, DeclaringType::PrimitiveEnum) => return Err(std::fmt::Error)
             };
             
+            //writeln!(f, "[MethodImpl(MethodImplOptions.AggressiveInlining)]")?;
             if Self::is_ui_fn(item) {
                 write!(f, "Response IWidget.Ui")?;
             }
