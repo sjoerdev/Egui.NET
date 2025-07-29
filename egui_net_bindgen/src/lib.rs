@@ -3,6 +3,7 @@
 
 use convert_case::*;
 use egui::*;
+use egui::color_picker::*;
 use egui::ecolor::*;
 use egui::emath::*;
 use egui::epaint::*;
@@ -49,28 +50,10 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     //"egui_ui_Ui_visuals_mut",
     "egui_ui_Ui_stack",
 
-    // These functions have conflicting names with fields or C#
-    "epaint_image_AlphaFromCoverage_alpha_from_coverage",
-    "epaint_shapes_shape_Shape_mesh",
-    "egui_atomics_atom_kind_AtomKind_text",
-    "egui_atomics_atom_kind_AtomKind_image",
-    "egui_widget_text_WidgetText_text",
-    "epaint_shapes_shape_Shape_text",
-
-    "egui_style_Style_text_styles",
-    "egui_style_Visuals_noninteractive",
-    "egui_text_selection_cursor_range_CursorRange_on_event",
-
-    "egui_ui_stack_UiStack_frame",
-
     // These functions have weird parameter types or generics
     "epaint_image_ColorImage_region_by_pixels",
     "epaint_shapes_bezier_shape_CubicBezierShape_split_range",
-    "epaint_shapes_shape_Shape_line_segment",
     "egui_data_output_WidgetInfo_text_selection_changed",
-    "egui_ui_Ui_new_child",
-    "egui_ui_Ui_child_ui",
-    "egui_ui_Ui_child_ui_with_id_source",
     "ecolor_hsva_Hsva_from_additive_srgb",
     "ecolor_hsva_Hsva_from_srgba_unmultiplied",
     "ecolor_hsva_Hsva_from_srgba_premultiplied",
@@ -324,6 +307,11 @@ const IGNORE_FNS: &[&str] = &[
     "egui_atomics_atoms_Atoms_iter_texts_mut",
     "egui_atomics_atoms_Atoms_map_images",
     "egui_atomics_atoms_Atoms_map_texts",
+
+    // ClosableTag: private type
+    "egui_containers_close_tag_ClosableTag_default",
+    "egui_containers_close_tag_ClosableTag_set_close",
+    "egui_containers_close_tag_ClosableTag_should_close",
 
     // DragValue: bound manually
     "egui_widgets_drag_value_DragValue_binary",
@@ -1234,7 +1222,20 @@ impl BindingsGenerator {
             format!("with_{original_name}").to_case(Case::Pascal)
         }
         else {
-            original_name.to_case(Case::Pascal)
+            let new_name = original_name.to_case(Case::Pascal);
+            if new_name == "New" || new_name == "Default" {
+                new_name
+            }
+            else if ty_name == Some(new_name.as_str()) {
+                format!("Get{new_name}")
+            }
+            else if let Some(ContainerFormat::Enum(variants)) = self.registry.get(ty_name.unwrap_or_default())
+                && variants.values().find(|x| x.name == new_name).is_some() {
+                format!("From{new_name}")
+            }
+            else {
+                new_name
+            }
         };
 
         let constructor = !has_this && returns_this && (cs_name == "New" || cs_name == "Default");

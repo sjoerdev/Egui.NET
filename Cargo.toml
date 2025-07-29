@@ -23,7 +23,7 @@ bincode = { version = "1.3.3", default-features = false }
 convert_case = { version = "0.7.1", default-features = false }
 csbindgen = { version = "1.9.3", default-features = false }
 #egui = { path = "../egui/crates/egui", default-features = false, features = [ "default_fonts", "serde" ] }
-egui = { git = "https://github.com/DouglasDwyer/egui", rev = "0f7dc107db1336414ee7b8f64dc367d89b7302c3", default-features = false, features = [ "default_fonts", "serde" ] }
+egui = { git = "https://github.com/DouglasDwyer/egui", rev = "5f5976dd9c3ba43307d6218c3d80612c9b620ec7", default-features = false, features = [ "default_fonts", "serde" ] }
 mimalloc = { version = "0.1.47", default-features = false }
 rustdoc-types = { version = "0.39.0", default-features = false }
 serde = { version = "1.0.219", default-features = false, features = [ "derive" ] }
