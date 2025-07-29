@@ -98,13 +98,13 @@ const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
 /// Types that should be converted to `class`es in C# backed by opaque handles.
 const HANDLE_TYPES: &[&str] = &[
     "Context",
-    "Fonts",
     "Painter",
     "TextureHandle",
 ];
 
 /// Types that should be converted to `ref struct`s in C# backed by pointers.
 const POINTER_TYPES: &[&str] = &[
+    "Fonts",
     "Ui"
 ];
 
@@ -480,6 +480,7 @@ const IGNORE_FNS: &[&str] = &[
 
     // Painter: bound manually
     "egui_painter_Painter_ctx",
+    "egui_painter_Painter_fonts",
 
     // Rect: bound manually
     "emath_rect_Rect_bottom",
@@ -831,6 +832,12 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_Ui_code_editor",
     "egui_ui_Ui_text_edit_multiline",
     "egui_ui_Ui_text_edit_singleline",
+    "egui_ui_Ui_fonts",
+    "egui_ui_Ui_input",
+    "egui_ui_Ui_input_mut",
+    "egui_ui_Ui_output",
+    "egui_ui_Ui_output_mut",
+    "egui_ui_Ui_push_id",
 
     // Other functions that cannot be bound to C#
     "epaint_stroke_PathStroke_new_uv",

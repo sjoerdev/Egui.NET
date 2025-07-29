@@ -28,12 +28,6 @@ public sealed partial class Context : EguiObject
     internal readonly nuint Id;
 
     /// <summary>
-    /// A function that modifies a style.
-    /// </summary>
-    /// <param name="style">The style to modify.</param>
-    public delegate void MutateStyle(ref Style style);
-
-    /// <summary>
     /// Returns the "default value" for a type.
     /// Default values are often some kind of initial value, identity value, or anything else that may make sense as a default.
     /// </summary>
@@ -87,7 +81,7 @@ public sealed partial class Context : EguiObject
     /// <summary>
     /// Mutate the <see cref="Style"/>s used by all subsequent windows, panels etc. in both dark and light mode.
     /// </summary>
-    public void AllStylesMut(MutateStyle mutateStyle)
+    public void AllStylesMut(MutateDelegate<Style> mutateStyle)
     {
         StyleMutOf(Theme.Dark, mutateStyle);
         StyleMutOf(Theme.Light, mutateStyle);
@@ -109,25 +103,149 @@ public sealed partial class Context : EguiObject
         using var callback = new EguiCallback(_ => runUi(this));
         return EguiMarshal.Call<nuint, RawInput, EguiCallback, FullOutput>(EguiFn.egui_context_Context_run, Ptr, input, callback);
     }
-    
+
     /// <summary>
     /// Mutate the currently active <see cref="Egui.Style"/> used by all subsequent windows, panels etc. Use <see cref="AllStylesMut"/> to mutate both dark and light mode styles.
     /// </summary>
     /// <param name="mutateStyle"></param>
-    public void StyleMut(MutateStyle mutateStyle)
+    public void StyleMut(MutateDelegate<Style> mutateStyle)
     {
         var style = Style;
-        mutateStyle(ref style);
-        SetStyle(style);
+        try
+        {
+            mutateStyle(ref style);
+        }
+        finally
+        {
+            SetStyle(style);
+        }
     }
 
     /// <summary>
     /// Mutate the <see cref="Style"/>  used by all subsequent windows, panels etc.
     /// </summary>
-    public void StyleMutOf(Theme theme, MutateStyle mutateStyle)
+    public void StyleMutOf(Theme theme, MutateDelegate<Style> mutateStyle)
     {
         var style = StyleOf(theme);
-        mutateStyle(ref style);
-        SetStyleOf(theme, style);
+        try
+        {
+            mutateStyle(ref style);
+        }
+        finally
+        { 
+            SetStyleOf(theme, style);
+        }
+    }
+
+    /// <summary>
+    /// Read-only access to Fonts.<br/>
+    /// Not valid until first call to <see cref="Run"/>. That’s because since we don’t know the proper <c>PixelsPerPoint</c> until then.
+    /// </summary>
+    public void Fonts(Action<Fonts> reader)
+    {
+        Fonts(f =>
+        {
+            reader(f);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="Fonts"/>
+    public R Fonts<R>(Func<Fonts, R> reader)
+    {
+        R result = default!;
+        using var callback = new EguiCallback(f => result = reader(new Fonts(f)));
+        EguiMarshal.Call(EguiFn.egui_context_Context_fonts, Ptr, callback);
+        return result;
+    }
+
+    /// <summary>
+    /// Read-only access to <see cref="InputState"/>. 
+    /// </summary>
+    public void Input(Action<InputState> reader)
+    {
+        Input(i =>
+        {
+            reader(i);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="Input"/>
+    public R Input<R>(Func<InputState, R> reader)
+    {
+        var input = EguiMarshal.Call<nuint, InputState>(EguiFn.egui_context_Context_input, Ptr);
+        return reader(input);
+    }
+
+    /// <summary>
+    /// Read-write access to <see cref="InputState"/>. 
+    /// </summary>
+    public void InputMut(MutateDelegate<InputState> writer)
+    {
+        InputMut((ref InputState input) =>
+        {
+            writer(ref input);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="InputMut"/>
+    public R InputMut<R>(MutateDelegate<InputState, R> writer)
+    {
+        var input = Input(x => x);
+        try
+        {
+            return writer(ref input);
+        }
+        finally
+        {
+            EguiMarshal.Call(EguiFn.egui_context_Context_input_mut, Ptr, input);
+        }
+    }
+
+    /// <summary>
+    /// Read-only access to <see cref="PlatformOutput"/>. 
+    /// </summary>
+    public void Output(Action<PlatformOutput> reader)
+    {
+        Output(i =>
+        {
+            reader(i);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="Input"/>
+    public R Output<R>(Func<PlatformOutput, R> reader)
+    {
+        var input = EguiMarshal.Call<nuint, PlatformOutput>(EguiFn.egui_context_Context_output, Ptr);
+        return reader(input);
+    }
+
+    /// <summary>
+    /// Read-write access to <see cref="PlatformOutput"/>. 
+    /// </summary>
+    public void OutputMut(MutateDelegate<PlatformOutput> writer)
+    {
+        OutputMut((ref PlatformOutput output) =>
+        {
+            writer(ref output);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="OutputMut"/>
+    public R OutputMut<R>(MutateDelegate<PlatformOutput, R> writer)
+    {
+        var input = Output(x => x);
+        try
+        {
+            return writer(ref input);
+        }
+        finally
+        {
+            EguiMarshal.Call(EguiFn.egui_context_Context_output_mut, Ptr, input);
+        }
     }
 }

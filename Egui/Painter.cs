@@ -20,4 +20,11 @@ public sealed partial class Painter : EguiObject
     {
         Ctx = ctx;
     }
+
+    /// <inheritdoc cref="Context.Fonts"/>
+    public void Fonts(Action<Fonts> reader) => Ctx.Fonts(reader);
+
+    /// <inheritdoc cref="Context.Fonts"/>
+    public R Fonts<R>(Func<Fonts, R> reader) => Ctx.Fonts(reader);
+
 }

@@ -100,6 +100,36 @@ public readonly ref partial struct Ui
         Ptr = ptr;
     }
 
+    /// <inheritdoc cref="Context.Fonts"/>
+    public void Fonts(Action<Fonts> reader) => Ctx.Fonts(reader);
+
+    /// <inheritdoc cref="Context.Fonts"/>
+    public R Fonts<R>(Func<Fonts, R> reader) => Ctx.Fonts(reader);
+
+    /// <inheritdoc cref="Context.Input"/>
+    public void Input(Action<InputState> reader) => Ctx.Input(reader);
+
+    /// <inheritdoc cref="Context.Input"/>
+    public R Input<R>(Func<InputState, R> reader) => Ctx.Input(reader);
+
+    /// <inheritdoc cref="Context.InputMut"/>
+    public void InputMut(MutateDelegate<InputState> writer) => Ctx.InputMut(writer);
+
+    /// <inheritdoc cref="Context.InputMut"/>
+    public R InputMut<R>(MutateDelegate<InputState, R> writer) => Ctx.InputMut(writer);
+
+    /// <inheritdoc cref="Context.Output"/>
+    public void Output(Action<PlatformOutput> reader) => Ctx.Output(reader);
+
+    /// <inheritdoc cref="Context.Output"/>
+    public R Output<R>(Func<PlatformOutput, R> reader) => Ctx.Output(reader);
+
+    /// <inheritdoc cref="Context.OutputMut"/>
+    public void OutputMut(MutateDelegate<PlatformOutput> writer) => Ctx.OutputMut(writer);
+
+    /// <inheritdoc cref="Context.OutputMut"/>
+    public R OutputMut<R>(MutateDelegate<PlatformOutput, R> writer) => Ctx.OutputMut(writer);
+
     /// <summary>
     /// Add a <see cref="Widget"/>  to this <see cref="Ui"/>  at a location dependent on the current <see cref="Layout"/> .
     ///
@@ -633,6 +663,37 @@ public readonly ref partial struct Ui
     public readonly InnerResponse<R> Scope<R>(Func<Ui, R> addContents)
     {
         return ScopeBuilder(new UiBuilder(), addContents);
+    }
+
+    /// <summary>
+    /// Create a child Ui with an explicit <see cref="Id"/>.
+    /// </summary>
+    public readonly InnerResponse PushId(Id idSalt, Action<Ui> addContents)
+    {
+        return ScopeBuilder(new UiBuilder().WithIdSalt(idSalt), addContents);
+    }
+
+    /// <inheritdoc cref="PushId"/>
+    public readonly InnerResponse<R> PushId<R>(Id idSalt, Func<Ui, R> addContents)
+    {
+        return ScopeBuilder(new UiBuilder().WithIdSalt(idSalt), addContents);
+    }
+
+    /// <summary>
+    /// The new layout will take up all available space.<br/>
+    /// If you don't want to use up all available space, use <see cref="AllocateUiWithLayout"/> .<br/>
+    ///
+    /// See also the helpers <see cref="Horizontal"/>, <see cref="Vertical"/>, etc.
+    /// </summary>
+    public readonly InnerResponse WithLayout(Layout layout, Action<Ui> addContents)
+    {
+        return ScopeBuilder(new UiBuilder().WithLayout(layout), addContents);
+    }
+
+    /// <inheritdoc cref="PushId"/>
+    public readonly InnerResponse<R> WithLayout<R>(Layout layout, Func<Ui, R> addContents)
+    {
+        return ScopeBuilder(new UiBuilder().WithLayout(layout), addContents);
     }
 
     /// <summary>
