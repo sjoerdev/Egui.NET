@@ -105,6 +105,7 @@ const HANDLE_TYPES: &[&str] = &[
 /// Types that should be converted to `ref struct`s in C# backed by pointers.
 const POINTER_TYPES: &[&str] = &[
     "Fonts",
+    "Memory",
     "Ui"
 ];
 
@@ -357,6 +358,7 @@ const IGNORE_FNS: &[&str] = &[
     // Context: manually-defined functions
     "egui_context_Context_style_mut",
     "egui_context_Context_style_mut_of",
+    "egui_context_Context_all_styles_mut",
 
     // Frame: redudant function (same as NONE)
     "egui_containers_frame_Frame_new",
@@ -838,6 +840,8 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_Ui_output",
     "egui_ui_Ui_output_mut",
     "egui_ui_Ui_push_id",
+    "egui_ui_Ui_memory",
+    "egui_ui_Ui_memory_mut",
 
     // Other functions that cannot be bound to C#
     "epaint_stroke_PathStroke_new_uv",

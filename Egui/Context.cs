@@ -205,6 +205,52 @@ public sealed partial class Context : EguiObject
     }
 
     /// <summary>
+    /// Read-only access to <see cref="Memory"/>. 
+    /// </summary>
+    public void Memory(Action<Memory> writer)
+    {
+        Memory(m =>
+        {
+            writer(m);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="Memory"/>
+    public R Memory<R>(Func<Memory, R> writer)
+    {
+        R result = default!;
+        using var callback = new EguiCallback(m => result = writer(new Memory(m)));
+        EguiMarshal.Call(EguiFn.egui_context_Context_memory_mut, Ptr, callback);
+        return result;
+    }
+
+    /// <summary>
+    /// Read-write access to <see cref="Memory"/>. 
+    /// </summary>
+    public void MemoryMut(MutateDelegate<Memory> writer)
+    {
+        MemoryMut((ref Memory m) =>
+        {
+            writer(ref m);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="MemoryMut"/>
+    public R MemoryMut<R>(MutateDelegate<Memory, R> writer)
+    {
+        R result = default!;
+        using var callback = new EguiCallback(m =>
+        {
+            var mem = new Memory(m);
+            result = writer(ref mem);
+        });
+        EguiMarshal.Call(EguiFn.egui_context_Context_memory_mut, Ptr, callback);
+        return result;
+    }
+
+    /// <summary>
     /// Read-only access to <see cref="PlatformOutput"/>. 
     /// </summary>
     public void Output(Action<PlatformOutput> reader)
@@ -216,7 +262,7 @@ public sealed partial class Context : EguiObject
         });
     }
 
-    /// <inheritdoc cref="Input"/>
+    /// <inheritdoc cref="Output"/>
     public R Output<R>(Func<PlatformOutput, R> reader)
     {
         var input = EguiMarshal.Call<nuint, PlatformOutput>(EguiFn.egui_context_Context_output, Ptr);
