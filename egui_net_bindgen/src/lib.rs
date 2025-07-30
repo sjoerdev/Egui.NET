@@ -295,7 +295,7 @@ const IGNORE_FNS: &[&str] = &[
     "egui_atomics_atom_layout_AllocatedAtomLayout_iter_texts_mut",
     "egui_atomics_atom_layout_AllocatedAtomLayout_map_images",
 
-    // Atoms: bound manually
+    // Atoms: manually bound
     "egui_atomics_atoms_Atoms_from_iter",
     "egui_atomics_atoms_Atoms_into_iter",
     "egui_atomics_atoms_Atoms_iter_kinds",
@@ -308,6 +308,11 @@ const IGNORE_FNS: &[&str] = &[
     "egui_atomics_atoms_Atoms_iter_texts_mut",
     "egui_atomics_atoms_Atoms_map_images",
     "egui_atomics_atoms_Atoms_map_texts",
+
+    // Checkbox: manually bound
+    "egui_widgets_checkbox_Checkbox_indeterminate",
+    "egui_widgets_checkbox_Checkbox_new",
+    "egui_widgets_checkbox_Checkbox_without_text",
 
     // ClosableTag: private type
     "egui_containers_close_tag_ClosableTag_default",
@@ -601,6 +606,9 @@ const IGNORE_FNS: &[&str] = &[
     "epaint_stats_AllocInfo_num_elements",
     "epaint_stats_AllocInfo_sum",
 
+    // InnerResponse: not possible to bind to C# due to generics
+    "egui_response_InnerResponse_new",
+
     // NumberFormatter: not possible to bind to C# due to generics
     "egui_style_NumberFormatter_format",
     "egui_style_NumberFormatter_new",
@@ -842,6 +850,7 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_Ui_push_id",
     "egui_ui_Ui_memory",
     "egui_ui_Ui_memory_mut",
+    "egui_ui_Ui_with_layout",
 
     // Other functions that cannot be bound to C#
     "epaint_stroke_PathStroke_new_uv",
@@ -1292,9 +1301,9 @@ impl BindingsGenerator {
                 (false, DeclaringType::Handle) | (false, DeclaringType::Struct) | (false, DeclaringType::Pointer) => ("static", FnType::Static),
                 (true, DeclaringType::Struct) | (true, DeclaringType::Pointer) => ("", FnType::Instance),
                 (true, DeclaringType::Handle) => ("", FnType::Instance),
+                (false, DeclaringType::PrimitiveEnum) => ("static", FnType::Static),
                 (true, DeclaringType::PrimitiveEnum) => ("static", FnType::Extension),
                 (_, DeclaringType::None) => ("static", FnType::Static),
-                (false, DeclaringType::PrimitiveEnum) => return Err(std::fmt::Error)
             };
             
             //writeln!(f, "[MethodImpl(MethodImplOptions.AggressiveInlining)]")?;

@@ -709,7 +709,7 @@ public readonly ref partial struct Ui
     }
 
     /// <summary>
-    /// Create a child, add content to it, and then allocate only what was used in the parent <see cref="Ui"/> .
+    /// Create a child, add content to it, and then allocate only what was used in the parent <see cref="Ui"/>.
     /// </summary>
     public readonly InnerResponse ScopeBuilder(UiBuilder uiBuilder, Action<Ui> addContents)
     {
@@ -731,6 +731,73 @@ public readonly ref partial struct Ui
         var ctx = Ctx;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
         var response = EguiMarshal.Call<nuint, UiBuilder, EguiCallback, Response>(EguiFn.egui_ui_Ui_scope_builder, Ptr, uiBuilder, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Create a new Scope and transform its contents via a <see cref="TSTransform"/> .<br/>
+    /// This only affects visuals, inputs will not be transformed. So this is mostly useful
+    /// to create visual effects on interactions, e.g. scaling a button on hover / click.<br/>
+    ///
+    /// Check out <see cref="Context.SetTransformLayer"/> for a persistent transform that also affects
+    /// inputs.
+    /// </summary>
+    public readonly InnerResponse WithVisualTransform(TSTransform transform, Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, TSTransform, EguiCallback, Response>(EguiFn.egui_ui_Ui_with_visual_transform, Ptr, transform, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="WithVisualTransform"/>
+    public readonly InnerResponse<R> WithVisualTransform<R>(TSTransform transform, Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, TSTransform, EguiCallback, Response>(EguiFn.egui_ui_Ui_with_visual_transform, Ptr, transform, callback);
+        return new InnerResponse<R>
+        {
+            Inner = result,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Create a child ui which is indented to the right.<br/>
+    ///
+    /// The <paramref name="idSalt"/> here be anything at all.
+    /// </summary>
+    public readonly InnerResponse Indent(Id idSalt, Action<Ui> addContents)
+    {
+        AssertInitialized();
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, Id, EguiCallback, Response>(EguiFn.egui_ui_Ui_indent, Ptr, idSalt, callback);
+        return new InnerResponse
+        {
+            Response = response
+        };
+    }
+
+    /// <inheritdoc cref="Indent"/>
+    public readonly InnerResponse<R> Indent<R>(Id idSalt, Func<Ui, R> addContents)
+    {
+        AssertInitialized();
+        R result = default!;
+        var ctx = Ctx;
+        using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
+        var response = EguiMarshal.Call<nuint, Id, EguiCallback, Response>(EguiFn.egui_ui_Ui_indent, Ptr, idSalt, callback);
         return new InnerResponse<R>
         {
             Inner = result,
