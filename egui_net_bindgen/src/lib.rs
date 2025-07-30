@@ -132,6 +132,7 @@ const CUSTOM_FNS: &[&str] = &[
     "egui_context_Context_ref_decrement",
     "egui_context_Context_ref_count",
     "egui_context_Context_ref_id",
+    "egui_painter_Painter_add",
     "egui_ui_Ui_set_enabled"
 ];
 
@@ -498,6 +499,7 @@ const IGNORE_FNS: &[&str] = &[
     // Painter: bound manually
     "egui_painter_Painter_ctx",
     "egui_painter_Painter_fonts",
+    "egui_painter_Painter_extend",
 
     // Rect: bound manually
     "emath_rect_Rect_bottom",
@@ -1084,7 +1086,7 @@ impl BindingsGenerator {
             Type::Generic(x) if x == "IdSource" => BoundTypeName::cs_rs("Id", "Id"),
             Type::ImplTrait(x) => if x.len() == 1
                 && let Some(GenericBound::TraitBound { trait_: RdPath { path, args: trait_generics, .. }, .. }) = x.first() {
-                    if path == "ToString" {
+                    if path.contains("ToString") || path.contains("Display") {
                         BoundTypeName::cs_rs("string", "String")
                     }
                     else if path == "Into"

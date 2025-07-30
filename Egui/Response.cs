@@ -119,6 +119,19 @@ public partial struct Response : IEquatable<Response>
         return this;
     }
 
+    /// <summary>
+    /// For accessibility.
+    ///
+    /// Call after interacting and potential calls to <see cref="MarkChanged"/>.
+    /// </summary>
+    public void WidgetInfo(Func<WidgetInfo> makeInfo)
+    {
+        if (Clicked || DoubleClicked || TripleClicked || GainedFocus || Changed)
+        {
+            EguiMarshal.Call(EguiFn.egui_response_Response_widget_info, this, makeInfo());
+        }
+    }
+
     internal static void Serialize(BincodeSerializer serializer, Response value) => value.Serialize(serializer);
 
     internal void Serialize(BincodeSerializer serializer)
