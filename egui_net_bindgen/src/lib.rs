@@ -368,6 +368,13 @@ const IGNORE_FNS: &[&str] = &[
     // Frame: redudant function (same as NONE)
     "egui_containers_frame_Frame_new",
 
+    // DragAndDrop: not possible to bind to C# due to generics
+    "egui_drag_and_drop_DragAndDrop_default",
+    "egui_drag_and_drop_DragAndDrop_has_payload_of_type",
+    "egui_drag_and_drop_DragAndDrop_payload",
+    "egui_drag_and_drop_DragAndDrop_set_payload",
+    "egui_drag_and_drop_DragAndDrop_take_payload",
+
     // DragPanButtons: bindings are written manually 
     "egui_containers_scene_DragPanButtons_all",
     "egui_containers_scene_DragPanButtons_bitand",
@@ -402,6 +409,9 @@ const IGNORE_FNS: &[&str] = &[
 
     // FontData: redundant function
     "epaint_text_fonts_FontData_from_static",
+
+    // Fonts: pointer-only class
+    "epaint_text_fonts_Fonts_new",
 
     // History: not possible to bind to C# due to generics
     "emath_history_History_average",
@@ -513,6 +523,9 @@ const IGNORE_FNS: &[&str] = &[
     "egui_response_Response_on_hover_ui",
     "egui_response_Response_on_hover_ui_at_pointer",
     "egui_response_Response_show_tooltip_ui",
+    "egui_response_Response_dnd_hover_payload",
+    "egui_response_Response_dnd_release_payload",
+    "egui_response_Response_dnd_set_drag_payload",
 
     // Sense: bound manually
     "egui_sense_Sense_all",
@@ -851,6 +864,8 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_Ui_memory",
     "egui_ui_Ui_memory_mut",
     "egui_ui_Ui_with_layout",
+    "egui_ui_Ui_dnd_drag_source",
+    "egui_ui_Ui_dnd_drop_zone",
 
     // Other functions that cannot be bound to C#
     "epaint_stroke_PathStroke_new_uv",
