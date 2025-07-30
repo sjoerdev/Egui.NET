@@ -66,9 +66,6 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     // These functions generate as properties, but should be methods
     "egui_ui_Ui_separator",
 
-    // Grid: bound manually
-    "egui_grid_Grid_striped",
-
     // Popup: bound manually
     "egui_containers_popup_Popup_open_id",
 
@@ -346,6 +343,10 @@ const IGNORE_FNS: &[&str] = &[
     "epaint_text_fonts_FontsImpl_has_glyphs",
     "epaint_text_fonts_FontsImpl_new",
     "epaint_text_fonts_FontsImpl_pixels_per_point",
+
+    // Grid: bound manually
+    "egui_grid_Grid_striped",
+    "egui_grid_Grid_with_row_color",
 
     // Mutex: private type
     "epaint_mutex_mutex_impl_Mutex_default",
@@ -1689,6 +1690,7 @@ impl BindingsGenerator {
             .filter_map(|(id, item)| (
                 item.crate_id == 0
                 && item.deprecation.is_none()
+                && item.name.is_some()
                 && if let Some(decl_ty) = self.declaring_type(*id) {
                     !(item.name.as_deref() == Some("default") && self.is_primitive_enum(decl_ty))
                 }

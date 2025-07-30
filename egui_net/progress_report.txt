@@ -1,4 +1,4 @@
-1697 / 1868 (90%) bound
+1697 / 1866 (90%) bound
 ecolor_color32_Color32_from_hex
 ecolor_hex_color_runtime_HexColor_from_str
 ecolor_hex_color_runtime_HexColor_from_str_without_hash
@@ -76,8 +76,6 @@ egui_data_input_ModifierNames_format
 egui_data_output_WidgetInfo_text_selection_changed
 egui_data_user_data_UserData_default
 egui_data_user_data_UserData_new
-egui_grid_Grid_striped
-egui_grid_Grid_with_row_color
 egui_layers_GraphicLayers_drain
 egui_layers_GraphicLayers_entry
 egui_layers_GraphicLayers_get
