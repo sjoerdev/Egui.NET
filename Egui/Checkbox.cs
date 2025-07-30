@@ -1,4 +1,4 @@
-namespace Egui;
+namespace Egui.Widgets;
 
 /// <summary>
 /// Boolean on/off control with text label.<br/>

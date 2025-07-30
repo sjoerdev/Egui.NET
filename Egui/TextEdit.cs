@@ -1,4 +1,4 @@
-namespace Egui;
+namespace Egui.Widgets;
 
 /// <summary>
 /// A text region that the user can edit the contents of.<br/>

@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Egui;
+namespace Egui.Widgets;
 
 /// <summary>
 /// Control a number with a slider.<br/>
@@ -420,10 +420,10 @@ public ref struct Slider<T> : IWidget where T : INumber<T>
         public double Start;
         public double End;
         public SliderSpec Spec;
-        public Egui.SliderClamping Clamping;
+        public SliderClamping Clamping;
         public bool SmartAim;
         public bool ShowValue;
-        public Egui.SliderOrientation Orientation;
+        public SliderOrientation Orientation;
         public string Prefix;
         public string Suffix;
         public Egui.WidgetText Text;

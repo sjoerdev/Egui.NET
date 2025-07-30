@@ -1,4 +1,4 @@
-namespace Egui;
+namespace Egui.Widgets;
 
 public partial struct Image
 {
