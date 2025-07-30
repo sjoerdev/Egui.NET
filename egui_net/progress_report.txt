@@ -1,4 +1,4 @@
-1697 / 1866 (90%) bound
+1697 / 1864 (91%) bound
 ecolor_color32_Color32_from_hex
 ecolor_hex_color_runtime_HexColor_from_str
 ecolor_hex_color_runtime_HexColor_from_str_without_hash
@@ -42,8 +42,6 @@ egui_containers_sides_Sides_show
 egui_context_Context_add_bytes_loader
 egui_context_Context_add_image_loader
 egui_context_Context_add_texture_loader
-egui_context_Context_animate_bool_with_easing
-egui_context_Context_animate_bool_with_time_and_easing
 egui_context_Context_data
 egui_context_Context_data_mut
 egui_context_Context_graphics

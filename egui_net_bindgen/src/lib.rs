@@ -366,6 +366,8 @@ const IGNORE_FNS: &[&str] = &[
     "egui_context_Context_style_mut",
     "egui_context_Context_style_mut_of",
     "egui_context_Context_all_styles_mut",
+    "egui_context_Context_animate_bool_with_easing",
+    "egui_context_Context_animate_bool_with_time_and_easing",
 
     // Frame: redudant function (same as NONE)
     "egui_containers_frame_Frame_new",

@@ -88,6 +88,36 @@ public sealed partial class Context : EguiObject
     }
 
     /// <summary>
+    /// Like <see cref="AnimateBool"/> but allows you to control the easing function.
+    /// </summary>
+    public float AnimateBoolWithEasing(Id id, bool value, Func<float, float> easing)
+    {
+        return AnimateBoolWithTimeAndEasing(id, value, Style.AnimationTime, easing);
+    }
+
+    /// <summary>
+    /// Like <see cref="AnimateBool"/> but allows you to control the animation time and easing function.<br/>
+    ///
+    /// Use e.g. <see cref="Emath.Easing.EasingHelpers.QuadraticOut"/>
+    /// for a responsive start and a slow end.<br/>
+    ///
+    /// The easing function flips when <paramref name="targetValue"/> is <c>false</c>,
+    /// so that when going back towards 0.0, we get
+    /// </summary>
+    public float AnimateBoolWithTimeAndEasing(Id id, bool targetValue, float animationTime, Func<float, float> easing)
+    {
+        var animatedValue = AnimateBoolWithTime(id, targetValue, Style.AnimationTime);
+        if (targetValue)
+        {
+            return easing(animatedValue);
+        }
+        else
+        {
+            return 1.0f - easing(1.0f - animatedValue);
+        }
+    }
+
+    /// <summary>
     /// Get a full-screen painter for a new or existing layer
     /// </summary>
     public Painter LayerPainter(LayerId layerId) => new Painter(this, EguiMarshal.Call<nuint, LayerId, EguiHandle>(EguiFn.egui_context_Context_layer_painter, Ptr, layerId));
