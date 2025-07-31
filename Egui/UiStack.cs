@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Numerics;
+using System.Collections;
 
 namespace Egui;
 
@@ -20,14 +21,13 @@ namespace Egui;
 /// that stack. Most of its methods are about the specific node, but some methods walk up the
 /// hierarchy to provide information about the entire stack.
 /// </summary>
-public partial struct UiStack : IEquatable<UiStack> {
+public partial struct UiStack : IEquatable<UiStack>, IEnumerable<UiStack> {
     public Id Id;
     public UiStackInfo Info;
     public Direction LayoutDirection;
     public Rect MinRect;
     public Rect MaxRect;
     public ReadOnlyBox<UiStack>? Parent;
-
 
     internal static void Serialize(BincodeSerializer serializer, UiStack value) => value.Serialize(serializer);
 
@@ -86,4 +86,25 @@ public partial struct UiStack : IEquatable<UiStack> {
         }
     }
 
+    /// <inheritdoc/>
+    public IEnumerator<UiStack> GetEnumerator()
+    {
+        var result = new List<UiStack>();
+        var current = this;
+        while (true)
+        {
+            result.Add(current);
+            if (current.Parent is not null)
+            {
+                current = current.Parent.Value;
+            }
+        }
+        return result.GetEnumerator();
+    }
+
+    /// <inheritdoc/>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }

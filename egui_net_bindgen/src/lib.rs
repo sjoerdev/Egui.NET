@@ -96,7 +96,7 @@ const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
 const HANDLE_TYPES: &[&str] = &[
     "Context",
     "Painter",
-    "TextureHandle",
+    "TextureHandle"
 ];
 
 /// Types that should be converted to `ref struct`s in C# backed by pointers.
@@ -286,6 +286,7 @@ const IGNORE_FNS: &[&str] = &[
     "epaint_shapes_paint_callback_PaintCallbackInfo_clip_rect_in_pixels",
     "epaint_shapes_paint_callback_PaintCallbackInfo_viewport_in_pixels",
     "egui_containers_frame_Frame_show_dyn",
+    "epaint_text_fonts_GalleyCache",
 
     // AllocatedAtomLayout: bound manually
     "egui_atomics_atom_layout_AllocatedAtomLayout_iter_kinds",
@@ -417,6 +418,24 @@ const IGNORE_FNS: &[&str] = &[
 
     // FontData: redundant function
     "epaint_text_fonts_FontData_from_static",
+
+    // Loaders: implementation detail type
+    "egui_load_Loaders_default",
+    "egui_load_Loaders_end_pass",
+    "egui_load_bytes_loader_DefaultBytesLoader_byte_size",
+    "egui_load_bytes_loader_DefaultBytesLoader_default",
+    "egui_load_bytes_loader_DefaultBytesLoader_forget",
+    "egui_load_bytes_loader_DefaultBytesLoader_forget_all",
+    "egui_load_bytes_loader_DefaultBytesLoader_id",
+    "egui_load_bytes_loader_DefaultBytesLoader_insert",
+    "egui_load_bytes_loader_DefaultBytesLoader_load",
+    "egui_load_texture_loader_DefaultTextureLoader_byte_size",
+    "egui_load_texture_loader_DefaultTextureLoader_default",
+    "egui_load_texture_loader_DefaultTextureLoader_end_pass",
+    "egui_load_texture_loader_DefaultTextureLoader_forget",
+    "egui_load_texture_loader_DefaultTextureLoader_forget_all",
+    "egui_load_texture_loader_DefaultTextureLoader_id",
+    "egui_load_texture_loader_DefaultTextureLoader_load",
 
     // Fonts: pointer-only class
     "epaint_text_fonts_Fonts_new",
@@ -846,6 +865,10 @@ const IGNORE_FNS: &[&str] = &[
     "egui_widgets_text_edit_builder_TextEdit_text_color_opt",
     "egui_widgets_text_edit_builder_TextEdit_vertical_align",
 
+    // TextEditState: not bindable to C# due to generics
+    "egui_widgets_text_edit_state_TextEditState_set_undoer",
+    "egui_widgets_text_edit_state_TextEditState_undoer",
+
     // Ui: manually bound
     "egui_ui_Ui_allocate_ui",
     "egui_ui_Ui_columns_const",
@@ -875,6 +898,40 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_Ui_with_layout",
     "egui_ui_Ui_dnd_drag_source",
     "egui_ui_Ui_dnd_drop_zone",
+
+    // UiStack: impossible to bind to C# due to generics
+    "egui_ui_stack_UiStackIterator_next",
+    "egui_ui_stack_UiStack_iter",
+    "egui_ui_stack_UiStack_tags",
+
+    // UiTags: impossible to bind to C# due to generics
+    "egui_ui_stack_UiTags_contains",
+    "egui_ui_stack_UiTags_default",
+    "egui_ui_stack_UiTags_get_any",
+    "egui_ui_stack_UiTags_get_downcast",
+    "egui_ui_stack_UiTags_insert",
+
+    // Textures: not yet implemented (but function already exposed through Context)
+    "epaint_text_fonts_Fonts_texture_atlas",
+    "egui_context_Context_tex_manager",
+    "epaint_texture_atlas_TextureAtlas_allocate",
+    "epaint_texture_atlas_TextureAtlas_fill_ratio",
+    "epaint_texture_atlas_TextureAtlas_image",
+    "epaint_texture_atlas_TextureAtlas_new",
+    "epaint_texture_atlas_TextureAtlas_prepared_discs",
+    "epaint_texture_atlas_TextureAtlas_size",
+    "epaint_texture_atlas_TextureAtlas_take_delta",
+    "epaint_texture_handle_TextureHandle_new",
+    "epaint_textures_TextureManager_alloc",
+    "epaint_textures_TextureManager_allocated",
+    "epaint_textures_TextureManager_default",
+    "epaint_textures_TextureManager_free",
+    "epaint_textures_TextureManager_meta",
+    "epaint_textures_TextureManager_num_allocated",
+    "epaint_textures_TextureManager_retain",
+    "epaint_textures_TextureManager_set",
+    "epaint_textures_TextureManager_take_delta",
+    "epaint_textures_TextureMeta_bytes_used",
 
     // Other functions that cannot be bound to C#
     "epaint_stroke_PathStroke_new_uv",
@@ -1364,8 +1421,16 @@ impl BindingsGenerator {
                 (true, DeclaringType::PrimitiveEnum) => ("static", FnType::Extension),
                 (_, DeclaringType::None) => ("static", FnType::Static),
             };
+
+            if !self.is_property(id, fn_type, returns_this, func) {
+                if let Some(name) = ty_name && HANDLE_TYPES.contains(&name) && name != "Context" {
+                    writeln!(f, "[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.Synchronized)]")?;
+                }
+                else {
+                    writeln!(f, "[MethodImpl(MethodImplOptions.AggressiveInlining)]")?;
+                }
+            }
             
-            //writeln!(f, "[MethodImpl(MethodImplOptions.AggressiveInlining)]")?;
             if Self::is_ui_fn(item) {
                 write!(f, "Response IWidget.Ui")?;
             }
@@ -1373,7 +1438,7 @@ impl BindingsGenerator {
                 write!(f, "public {qualifiers} {return_name} {cs_name}")?;
             }
 
-            self.emit_cs_fn_def(f, ty_name, id, fn_type, &func, returns_this)?;
+            self.emit_cs_fn_def(f, ty_name, id, fn_type, func, returns_this)?;
         }
 
         Ok(())
@@ -1390,6 +1455,18 @@ impl BindingsGenerator {
         }
     }
 
+    /// Whether the given type should be treated as a property.
+    fn is_property(&self, id: RdId, fn_ty: FnType, returns_this: bool, func: &Function) -> bool {
+        let original_name = &self.krate.index[&id].name.as_deref().expect("Failed to get function name");
+        let sig = &func.sig;
+
+        (match fn_ty {
+            FnType::Instance => sig.inputs.len() == 1 && sig.output.is_some() && !returns_this,
+            FnType::Static => sig.inputs.is_empty() && sig.output.is_some(),
+            _ => false
+        }) && !original_name.contains("take")
+    }
+
     /// Emits the body of a C# function (excluding the name and return type).
     fn emit_cs_fn_def(
         &self,
@@ -1400,14 +1477,8 @@ impl BindingsGenerator {
         func: &Function,
         returns_this: bool
     ) -> std::fmt::Result {
-        let original_name = &self.krate.index[&id].name.as_deref().expect("Failed to get function name");
         let sig = &func.sig;
-
-        let property = match fn_ty {
-            FnType::Instance => sig.inputs.len() == 1 && sig.output.is_some() && !returns_this,
-            FnType::Static => sig.inputs.is_empty() && sig.output.is_some(),
-            _ => false
-        } && !original_name.contains("take");
+        let property = self.is_property(id, fn_ty, returns_this, func);
         
         if sig.output.as_ref()
             .and_then(|x| Some(!matches!(self.bound_ty(ty_name, x)?.kind, BoundTypeKind::Value | BoundTypeKind::Reference { mutable: false })))
@@ -1416,7 +1487,12 @@ impl BindingsGenerator {
         }
 
         if property {
-            writeln!(f, "{{ get {{")?;
+            if let Some(name) = ty_name && HANDLE_TYPES.contains(&name) && name != "Context" {
+                writeln!(f, "{{ [MethodImpl(MethodImplOptions.Synchronized)]\n get {{")?;
+            }
+            else {
+                writeln!(f, "{{ get {{")?;
+            }
         }
         else {
             writeln!(f, "({}) {{", self.cs_binding_signature(ty_name, fn_ty, func).ok_or(std::fmt::Error)?)?;
