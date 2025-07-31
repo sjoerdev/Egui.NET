@@ -904,6 +904,9 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_stack_UiStack_iter",
     "egui_ui_stack_UiStack_tags",
 
+    // UiStackInfo: impossible to bind to C# due to generics
+    "egui_ui_stack_UiStackInfo_with_tag_value",
+
     // UiTags: impossible to bind to C# due to generics
     "egui_ui_stack_UiTags_contains",
     "egui_ui_stack_UiTags_default",
