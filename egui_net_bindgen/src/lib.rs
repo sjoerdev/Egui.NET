@@ -134,7 +134,9 @@ const CUSTOM_FNS: &[&str] = &[
     "egui_context_Context_ref_count",
     "egui_context_Context_ref_id",
     "egui_painter_Painter_add",
-    "egui_ui_Ui_set_enabled"
+    "egui_ui_Ui_set_enabled",
+    "egui_load_BytesLoaderData_uri",
+    "egui_load_BytesLoaderData_set_result",
 ];
 
 /// A list of fully-qualified function IDs to ignore during generation.

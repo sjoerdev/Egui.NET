@@ -78,6 +78,24 @@ public unsafe partial struct Color32 : IEquatable<Color32>
     private uint _value;
 
     /// <summary>
+    /// Parses a color from a hex string.<br/>
+    /// Supports the 3, 4, 6, and 8-digit formats, according to the specification in https://drafts.csswg.org/css-color-4/#hex-color
+    /// </summary>
+    /// <exception cref="ArgumentException">Returns an error if the length of the string does not correspond to one of the standard formats (3, 4, 6, or 8), or if it contains non-hex characters.</exception>
+    public static Color32 FromHex(string hex)
+    {
+        var result = EguiMarshal.Call<string, Color32?>(EguiFn.ecolor_color32_Color32_from_hex, hex);
+        if (result.HasValue)
+        {
+            return result.Value;
+        }
+        else
+        {
+            throw new ArgumentException($"Failed to parse '{hex}' as hex string", nameof(hex));
+        }
+    }
+
+    /// <summary>
     /// Serializes an instance of this type.
     /// </summary>
     internal static void Serialize(BincodeSerializer serializer, Color32 value) => value.Serialize(serializer);
