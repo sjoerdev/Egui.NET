@@ -6,9 +6,9 @@ using System.Collections.Immutable;
 
 using Egui;
 using Egui.Containers;
+using Egui.Epaint;
 using Egui.Viewport;
 using Egui.Widgets;
-using Epaint;
 
 using Silk.NET.Input;
 using Silk.NET.Maths;

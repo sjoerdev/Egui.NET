@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Emath;
+namespace Egui.Emath;
 
 public static partial class EmathHelpers
 {

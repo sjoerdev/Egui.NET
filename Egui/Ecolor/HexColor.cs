@@ -1,4 +1,4 @@
-namespace Ecolor;
+namespace Egui.Ecolor;
 
 public partial struct HexColor
 {

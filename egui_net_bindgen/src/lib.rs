@@ -2081,8 +2081,12 @@ impl BindingsGenerator {
             for (item_id, item) in &krate.index {
                 if let ItemEnum::Module(module) = &item.inner {
                     if module.is_crate && item.name.as_deref() == Some(crate_name) {
+                        let initial_path = if *crate_name == "egui" { vec![crate_name.to_string()] } else { vec!["egui".to_string(), crate_name.to_string()] };
                         for (name, mut path) in Self::find_public_paths_for_module(krate, *item_id) {
-                            path.insert(0, crate_name.to_string());
+                            for (i, segment) in initial_path.iter().enumerate() {
+                                path.insert(i, segment.to_string());
+                            }
+                            
                             if !result.contains_key(&name) {
                                 result.insert(name, path);
                             }

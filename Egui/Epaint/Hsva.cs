@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace Epaint;
+namespace Egui.Epaint;
 
 public partial struct Hsva
 {

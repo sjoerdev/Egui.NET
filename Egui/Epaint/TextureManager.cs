@@ -1,4 +1,4 @@
-namespace Epaint;
+namespace Egui.Epaint;
 
 /// <summary>
 /// Low-level manager for allocating textures.<br/>
