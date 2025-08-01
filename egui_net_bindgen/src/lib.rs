@@ -946,7 +946,9 @@ const IGNORE_FNS: &[&str] = &[
     "emath_lerp",
     "emath_remap",
     "emath_remap_clamp",
-    
+    "epaint_text_text_layout_layout",
+    "epaint_texture_atlas_TextureAtlas",
+
     "egui___run_test_ctx",
     "egui___run_test_ui",
     "egui_debug_text_print",

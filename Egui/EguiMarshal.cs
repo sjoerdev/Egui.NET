@@ -214,6 +214,7 @@ internal static class EguiMarshal
         { typeof(ReadOnlyMemory<>), ("ReadOnlyMemorySerializer", "ReadOnlyMemoryDeserializer") },
         { typeof(ValueTuple<,>), ("Tuple2Serializer", "Tuple2Deserializer") },
         { typeof(ValueTuple<,,>), ("Tuple3Serializer", "Tuple3Deserializer") },
+        { typeof(ValueTuple<,,,>), ("Tuple4Serializer", "Tuple4Deserializer") },
         { typeof(Nullable<>), ("NullableSerializer", "NullableDeserializer") },
     };
 
@@ -435,6 +436,30 @@ internal static class EguiMarshal
             SerializerCache<A0>.Deserialize(deserializer),
             SerializerCache<A1>.Deserialize(deserializer),
             SerializerCache<A2>.Deserialize(deserializer)
+        );
+    }
+
+    /// <summary>
+    /// Serializes a tuple.
+    /// </summary>
+    private static void Tuple4Serializer<A0, A1, A2, A3>(BincodeSerializer serializer, (A0, A1, A2, A3) value)
+    {
+        SerializerCache<A0>.Serialize(serializer, value.Item1);
+        SerializerCache<A1>.Serialize(serializer, value.Item2);
+        SerializerCache<A2>.Serialize(serializer, value.Item3);
+        SerializerCache<A3>.Serialize(serializer, value.Item4);
+    }
+
+    /// <summary>
+    /// Deserializes a tuple.
+    /// </summary>
+    private static (A0, A1, A2, A3) TupleDeserializer<A0, A1, A2, A3>(BincodeDeserializer deserializer)
+    {
+        return (
+            SerializerCache<A0>.Deserialize(deserializer),
+            SerializerCache<A1>.Deserialize(deserializer),
+            SerializerCache<A2>.Deserialize(deserializer),
+            SerializerCache<A3>.Deserialize(deserializer)
         );
     }
 

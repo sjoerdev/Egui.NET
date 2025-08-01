@@ -1,3 +1,6 @@
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
 namespace Egui;
 
 /// <summary>
@@ -28,11 +31,18 @@ public sealed partial class Context : EguiObject
     internal readonly nuint Id;
 
     /// <summary>
+    /// The registered list of bytes loaders to use.
+    /// </summary>
+    private readonly List<IBytesLoader> _bytesLoaders;
+
+    /// <summary>
     /// Returns the "default value" for a type.
     /// Default values are often some kind of initial value, identity value, or anything else that may make sense as a default.
     /// </summary>
     public Context() : base(EguiMarshal.Call<EguiHandle>(EguiFn.egui_context_Context_default))
     {
+        _bytesLoaders = new List<IBytesLoader>();
+
         lock (_contexts)
         {
             foreach (var pair in _contexts)
@@ -76,6 +86,17 @@ public sealed partial class Context : EguiObject
         }
 
         throw new ArgumentException("Unable to find context with ID", nameof(id));
+    }
+
+    public void AddBytesLoader(IBytesLoader loader)
+    {
+        /*
+        lock (_bytesLoaders)
+        {
+            var loaderIndex = (nuint)_bytesLoaders.Count;
+            _bytesLoaders.Add(loader);
+            EguiMarshal.Call(EguiFn.egui_context_Context_add_bytes_loader, Ptr, Id, loaderIndex, loader.Id, new EguiByte)
+        }*/
     }
 
     /// <summary>
@@ -162,7 +183,7 @@ public sealed partial class Context : EguiObject
             mutateStyle(ref style);
         }
         finally
-        { 
+        {
             SetStyleOf(theme, style);
         }
     }
@@ -178,6 +199,65 @@ public sealed partial class Context : EguiObject
             reader(f);
             return false;
         });
+    }
+
+    /// <summary>
+    /// Allocate a texture.<br/>
+    /// This is for advanced users. Most users should use <see cref="Ui.Image"/> or <see cref="TryLoadTexture"/> instead.<br/>
+    /// In order to display an image you must convert it to a texture using this function. The function will hand over the image data to the egui backend, which will upload it to the GPU.<br/>
+    /// ⚠️ Make sure to only call this ONCE for each image, i.e. NOT in your main GUI code. The call is NOT immediate safe.<br/>
+    /// The given name can be useful for later debugging, and will be visible if you call <see cref="TextureUi"/>.<br/>
+    /// For how to load an image, see <see cref="ImageData"/> and <see cref="ColorImage.FromRgbaUnmultiplied"/>.
+    /// See also <see cref="ImageData"/>, <see cref="Ui.Image"/> and <see cref="Image"/>.
+    /// </summary>
+    public TextureHandle LoadTexture(string name, ImageData image, TextureOptions options)
+    {
+        return new TextureHandle(EguiMarshal.Call<nuint, string, ImageData, TextureOptions, EguiHandle>(EguiFn.egui_context_Context_load_texture, Ptr, name, image, options));
+    }
+
+    /// <summary>
+    /// Read-only access to <see cref="GraphicLayers"/>, where painted <see cref="Shape"/>s are written to.
+    /// </summary>
+    public void Graphics(Action<GraphicLayers> reader)
+    {
+        Graphics(i =>
+        {
+            reader(i);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="Graphics"/>
+    public R Graphics<R>(Func<GraphicLayers, R> reader)
+    {
+        var input = EguiMarshal.Call<nuint, GraphicLayers>(EguiFn.egui_context_Context_graphics, Ptr);
+        return reader(input);
+    }
+
+    /// <summary>
+    /// Read-write access to <see cref="GraphicLayers"/>, where painted <see cref="Shape"/>s are written to.
+    /// </summary>
+    public void GraphicsMut(MutateDelegate<GraphicLayers> writer)
+    {
+        GraphicsMut((ref GraphicLayers input) =>
+        {
+            writer(ref input);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="GraphicsMut"/>
+    public R GraphicsMut<R>(MutateDelegate<GraphicLayers, R> writer)
+    {
+        var graphics = Graphics(x => x);
+        try
+        {
+            return writer(ref graphics);
+        }
+        finally
+        {
+            EguiMarshal.Call(EguiFn.egui_context_Context_graphics_mut, Ptr, graphics);
+        }
     }
 
     /// <inheritdoc cref="Fonts"/>
@@ -231,6 +311,51 @@ public sealed partial class Context : EguiObject
         finally
         {
             EguiMarshal.Call(EguiFn.egui_context_Context_input_mut, Ptr, input);
+        }
+    }
+
+    /// <summary>
+    /// This will create a <see cref="InputState"/> if there is no input state for that viewport
+    /// </summary>
+    public void InputFor(ViewportId id, Action<InputState> reader)
+    {
+        InputFor(id, i =>
+        {
+            reader(i);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="InputFor"/>
+    public R InputFor<R>(ViewportId id, Func<InputState, R> reader)
+    {
+        var input = EguiMarshal.Call<nuint, ViewportId, InputState>(EguiFn.egui_context_Context_input_for, Ptr, id);
+        return reader(input);
+    }
+
+    /// <summary>
+    /// This will create a <see cref="InputState"/> if there is no input state for that viewport
+    /// </summary>
+    public void InputMutFor(ViewportId id, MutateDelegate<InputState> writer)
+    {
+        InputMutFor(id, (ref InputState input) =>
+        {
+            writer(ref input);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="InputMutFor"/>
+    public R InputMutFor<R>(ViewportId id, MutateDelegate<InputState, R> writer)
+    {
+        var input = InputFor(id, x => x);
+        try
+        {
+            return writer(ref input);
+        }
+        finally
+        {
+            EguiMarshal.Call(EguiFn.egui_context_Context_input_mut_for, Ptr, id, input);
         }
     }
 
@@ -322,6 +447,89 @@ public sealed partial class Context : EguiObject
         finally
         {
             EguiMarshal.Call(EguiFn.egui_context_Context_output_mut, Ptr, input);
+        }
+    }
+
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+    private unsafe static bool BytesLoaderLoad(nuint id, nuint loaderIndex, nuint data)
+    {
+        try
+        {
+            var ctx = FromId(id);
+            var loader = ctx._bytesLoaders[(int)loaderIndex];
+            var uri = EguiMarshal.Call<nuint, string>(EguiFn.egui_load_BytesLoaderData_uri, data);
+            var result = loader.Load(ctx, uri);
+            EguiMarshal.Call(EguiFn.egui_load_BytesLoaderData_set_result, data, result);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+    private unsafe static bool BytesLoaderForget(nuint id, nuint loaderIndex, nuint data)
+    {
+        try
+        {
+            var ctx = FromId(id);
+            var loader = ctx._bytesLoaders[(int)loaderIndex];
+            var uri = EguiMarshal.Call<nuint, string>(EguiFn.egui_load_BytesLoaderData_uri, data);
+            loader.Forget(uri);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+    private unsafe static bool BytesLoaderForgetAll(nuint id, nuint loaderIndex, nuint _)
+    {
+        try
+        {
+            var ctx = FromId(id);
+            var loader = ctx._bytesLoaders[(int)loaderIndex];
+            loader.ForgetAll();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+    private unsafe static bool BytesLoaderEndPass(nuint id, nuint loaderIndex, nuint passIndex)
+    {
+        try
+        {
+            var ctx = FromId(id);
+            var loader = ctx._bytesLoaders[(int)loaderIndex];
+            loader.EndPass(passIndex);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+    private unsafe static bool BytesLoaderHasPending(nuint id, nuint loaderIndex, nuint passIndex)
+    {
+        try
+        {
+            var ctx = FromId(id);
+            var loader = ctx._bytesLoaders[(int)loaderIndex];
+            loader.EndPass(passIndex);
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
 }
