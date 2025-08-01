@@ -315,6 +315,51 @@ public sealed partial class Context : EguiObject
     }
 
     /// <summary>
+    /// Read-only access to <see cref="Egui.Epaint.TessellationOptions"/>. 
+    /// </summary>
+    public void TessellationOptions(Action<TessellationOptions> reader)
+    {
+        TessellationOptions(i =>
+        {
+            reader(i);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="TessellationOptions"/>
+    public R TessellationOptions<R>(Func<TessellationOptions, R> reader)
+    {
+        var opts = EguiMarshal.Call<nuint, TessellationOptions>(EguiFn.egui_context_Context_tessellation_options, Ptr);
+        return reader(opts);
+    }
+
+    /// <summary>
+    /// Read-write access to <see cref="Egui.Epaint.TessellationOptions"/>. 
+    /// </summary>
+    public void TessellationOptionsMut(MutateDelegate<TessellationOptions> writer)
+    {
+        TessellationOptionsMut((ref TessellationOptions opts) =>
+        {
+            writer(ref opts);
+            return false;
+        });
+    }
+
+    /// <inheritdoc cref="TessellationOptionsMut"/>
+    public R TessellationOptionsMut<R>(MutateDelegate<TessellationOptions, R> writer)
+    {
+        var opts = TessellationOptions(x => x);
+        try
+        {
+            return writer(ref opts);
+        }
+        finally
+        {
+            EguiMarshal.Call(EguiFn.egui_context_Context_tessellation_options_mut, Ptr, opts);
+        }
+    }
+
+    /// <summary>
     /// This will create a <see cref="InputState"/> if there is no input state for that viewport
     /// </summary>
     public void InputFor(ViewportId id, Action<InputState> reader)

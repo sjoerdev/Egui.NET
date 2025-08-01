@@ -1,4 +1,4 @@
-1722 / 1820 (94%) bound
+1724 / 1820 (94%) bound
 egui_atomics_atom_layout_AtomLayoutResponse_custom_rects
 egui_containers_collapsing_header_CollapsingHeader_icon
 egui_containers_collapsing_header_CollapsingResponse_fully_closed
@@ -40,8 +40,6 @@ egui_context_Context_set_immediate_viewport_renderer
 egui_context_Context_set_request_repaint_callback
 egui_context_Context_show_viewport_deferred
 egui_context_Context_show_viewport_immediate
-egui_context_Context_tessellation_options
-egui_context_Context_tessellation_options_mut
 egui_context_Context_try_load_bytes
 egui_context_Context_try_load_image
 egui_context_Context_try_load_texture
