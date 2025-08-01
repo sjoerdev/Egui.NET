@@ -22,8 +22,8 @@ serde-generate = { path = "serde-generate", default-features = false, features =
 bincode = { version = "1.3.3", default-features = false }
 convert_case = { version = "0.7.1", default-features = false }
 csbindgen = { version = "1.9.3", default-features = false }
-egui = { path = "../egui/crates/egui", default-features = false, features = [ "default_fonts", "serde" ] }
-#egui = { git = "https://github.com/DouglasDwyer/egui", rev = "d015f7bd442d6421aad99bbc28f98cbbfda9de05", default-features = false, features = [ "default_fonts", "serde" ] }
+#egui = { path = "../egui/crates/egui", default-features = false, features = [ "default_fonts", "serde" ] }
+egui = { git = "https://github.com/DouglasDwyer/egui", rev = "c90246f82a9972b62242c924aaea68c5330b1a89", default-features = false, features = [ "default_fonts", "serde" ] }
 mimalloc = { version = "0.1.47", default-features = false }
 rustdoc-types = { version = "0.39.0", default-features = false }
 serde = { version = "1.0.219", default-features = false, features = [ "derive" ] }
