@@ -1,3 +1,5 @@
+using Egui.Util;
+
 namespace Egui;
 
 /// <summary>
@@ -40,6 +42,11 @@ public readonly ref partial struct Ui
             AssertInitialized();
             return EguiMarshal.Call<nuint, Spacing>(EguiFn.egui_ui_Ui_spacing, Ptr);
         }
+        set
+        {
+            AssertInitialized();
+            EguiMarshal.Call(EguiFn.egui_ui_Ui_spacing_mut, Ptr, value);
+        }
     }
 
     /// <summary>
@@ -65,6 +72,11 @@ public readonly ref partial struct Ui
             AssertInitialized();
             return EguiMarshal.Call<nuint, Style>(EguiFn.egui_ui_Ui_style, Ptr);
         }
+        set
+        {
+            AssertInitialized();
+            EguiMarshal.Call(EguiFn.egui_ui_Ui_style_mut, Ptr, value);
+        }
     }
 
     /// <summary>
@@ -76,6 +88,11 @@ public readonly ref partial struct Ui
         {
             AssertInitialized();
             return EguiMarshal.Call<nuint, Visuals>(EguiFn.egui_ui_Ui_visuals, Ptr);
+        }
+        set
+        {
+            AssertInitialized();
+            EguiMarshal.Call(EguiFn.egui_ui_Ui_visuals_mut, Ptr, value);
         }
     }
 
@@ -130,17 +147,17 @@ public readonly ref partial struct Ui
     /// <inheritdoc cref="Context.OutputMut"/>
     public R OutputMut<R>(MutateDelegate<PlatformOutput, R> writer) => Ctx.OutputMut(writer);
 
-    /// <inheritdoc cref="Context.Memory"/>
-    public void Memory(Action<Memory> reader) => Ctx.Memory(reader);
-
-    /// <inheritdoc cref="Context.Memory"/>
-    public R Memory<R>(Func<Memory, R> reader) => Ctx.Memory(reader);
+    /// <inheritdoc cref="Context.MemoryMut"/>
+    public void MemoryMut(Action<Memory> writer) => Ctx.MemoryMut(writer);
 
     /// <inheritdoc cref="Context.MemoryMut"/>
-    public void MemoryMut(MutateDelegate<Memory> writer) => Ctx.MemoryMut(writer);
+    public R MemoryMut<R>(Func<Memory, R> writer) => Ctx.MemoryMut(writer);
 
-    /// <inheritdoc cref="Context.MemoryMut"/>
-    public R MemoryMut<R>(MutateDelegate<Memory, R> writer) => Ctx.MemoryMut(writer);
+    /// <inheritdoc cref="Context.DataMut"/>
+    public void DataMut(Action<IdTypeMap> writer) => Ctx.DataMut(writer);
+
+    /// <inheritdoc cref="Context.DataMut"/>
+    public R DataMut<R>(Func<IdTypeMap, R> writer) => Ctx.DataMut(writer);
 
     /// <summary>
     /// Add a <see cref="Widget"/>  to this <see cref="Ui"/>  at a location dependent on the current <see cref="Layout"/> .

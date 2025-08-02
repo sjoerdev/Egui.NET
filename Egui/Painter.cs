@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 
 namespace Egui;
@@ -56,6 +57,18 @@ public sealed partial class Painter : EguiObject
     }
 
     /// <summary>
+    /// Access all shapes added this frame.
+    /// </summary>
+    public void ForEachShape(Action<ClippedShape> reader)
+    {
+        var shapes = EguiMarshal.Call<nuint, ImmutableList<ClippedShape>>(EguiFn.egui_painter_Painter_for_each_shape, Ptr);
+        foreach (var shape in shapes)
+        {
+            reader(shape);
+        }
+    }
+
+    /// <summary>
     /// Redirect where you are painting.
     /// </summary>
     [MethodImpl(MethodImplOptions.Synchronized)]
@@ -79,5 +92,4 @@ public sealed partial class Painter : EguiObject
 
     /// <inheritdoc cref="Context.Fonts"/>
     public R Fonts<R>(Func<Fonts, R> reader) => Ctx.Fonts(reader);
-
 }

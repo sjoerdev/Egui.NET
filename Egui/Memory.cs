@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+
 namespace Egui;
 
 /// <summary>
@@ -8,6 +10,35 @@ namespace Egui;
 /// </summary>
 public ref partial struct Memory
 {
+    /// <summary>
+    /// Global egui options.
+    /// </summary>
+    public Options Options
+    {
+        get
+        {
+            AssertInitialized();
+            return EguiMarshal.Call<nuint, Options>(EguiFn.egui_memory_Memory_options, Ptr);
+        }
+        set
+        {
+            AssertInitialized();
+            EguiMarshal.Call(EguiFn.egui_memory_Memory_set_options, Ptr, value);
+        }
+    }
+
+    /// <summary>
+    /// An iterator over all layers. Back-to-front, top is last.
+    /// </summary>
+    public IEnumerable<LayerId> LayerIds
+    {
+        get
+        {
+            AssertInitialized();
+            return EguiMarshal.Call<nuint, ImmutableList<LayerId>>(EguiFn.egui_memory_Memory_layer_ids, Ptr);
+        }
+    }
+
     /// <summary>
     /// A pointer to the underlying UI object.
     /// </summary>
@@ -20,5 +51,13 @@ public ref partial struct Memory
     internal Memory(nuint ptr)
     {
         Ptr = ptr;
+    }
+
+    /// <summary>
+    /// Throws an exception if this is a null object.
+    /// </summary>
+    internal readonly void AssertInitialized()
+    {
+        if (Ptr == 0) { throw new NullReferenceException("Memory instance was uninitialized"); }
     }
 }

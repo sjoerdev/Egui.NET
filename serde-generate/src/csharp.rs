@@ -211,8 +211,24 @@ using System.Numerics;"
             .external_qualified_names
             .get(name)
             .cloned()
-            .unwrap_or_else(|| format!("{}.{}", self.namespace_for_item(name), name));
-        let qname = format!("{}.{}", self.namespace_for_item(name), name);
+            .unwrap_or_else(|| {
+                let np = self.namespace_for_item(name);
+                if np.is_empty() {
+                    name.to_string()
+                }
+                else {
+                    format!("{np}.{name}")
+                }
+            });
+        let qname = {
+            let np = self.namespace_for_item(name);
+            if np.is_empty() {
+                name.to_string()
+            }
+            else {
+                format!("{np}.{name}")
+            }
+        };
         let mut path = qname.split('.').collect::<Vec<_>>();
         if path.len() <= 1 {
             return qname;
@@ -403,6 +419,12 @@ using System.Numerics;"
                 if self.cstyle_enum_names.contains(name) {
                     format!(
                         "{}SerdeExtensions.Deserialize(deserializer)",
+                        self.quote_qualified_name(name)
+                    )
+                }
+                else if name == "Duration" {
+                    format!(
+                        "EguiHelpers.Deserialize{}(deserializer)",
                         self.quote_qualified_name(name)
                     )
                 } else {

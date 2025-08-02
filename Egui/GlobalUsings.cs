@@ -13,3 +13,5 @@ global using global::Egui.Emath;
 global using global::Egui.Epaint;
 global using global::Egui.Epaint.Text;
 global using global::Egui.Epaint.Text.Cursor;
+
+global using Duration = System.TimeSpan;

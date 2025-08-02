@@ -25,7 +25,7 @@ public static partial class EguiHelpers
             throw new FileNotFoundException($"Could not load resource {resourceName} from {assembly}");
         }
 
-        using(var memoryStream = new MemoryStream())
+        using (var memoryStream = new MemoryStream())
         {
             stream.CopyTo(memoryStream);
             var span = MemoryMarshal.ToEnumerable(new ReadOnlyMemory<byte>(memoryStream.GetBuffer(), 0, (int)memoryStream.Length));
@@ -55,5 +55,24 @@ public static partial class EguiHelpers
         {
             value = resetValue;
         }
+    }
+
+    internal static void Serialize(this TimeSpan value, Bincode.BincodeSerializer serializer) {
+        var totalNanos = TimeSpan.NanosecondsPerTick * value.Ticks;
+        var secs = totalNanos / 1_000_000_000;
+        var nanos = totalNanos % 1_000_000_000;
+        serializer.increase_container_depth();
+        serializer.serialize_u64((ulong)secs);
+        serializer.serialize_u32((uint)nanos);
+        serializer.decrease_container_depth();
+    }
+
+    internal static Duration DeserializeDuration(Bincode.BincodeDeserializer deserializer)
+    {
+        deserializer.increase_container_depth();
+        var secs = deserializer.deserialize_u64();
+        var nanos = deserializer.deserialize_u32();
+        deserializer.decrease_container_depth();
+        return Duration.FromTicks((long)(1_000_000_000 * secs + nanos) / TimeSpan.NanosecondsPerTick);
     }
 }

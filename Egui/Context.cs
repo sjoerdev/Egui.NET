@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Egui.Util;
 
 namespace Egui;
 
@@ -19,6 +20,16 @@ public sealed partial class Context : EguiObject
     /// field without allocating a new context object.
     /// </summary>
     private static readonly Dictionary<nuint, WeakReference<Context>> _contexts = new Dictionary<nuint, WeakReference<Context>>();
+
+    /// <summary>
+    /// Holds temporary data for widgets between frames.
+    /// </summary>
+    private readonly Dictionary<(Id, Type), object> _data = new Dictionary<(Id, Type), object>();
+
+    /// <summary>
+    /// Used to guard access to <see cref="_data"/>. 
+    /// </summary>
+    private readonly object _dataLocker = new object();
 
     /// <summary>
     /// Paint on top of everything else
@@ -135,6 +146,26 @@ public sealed partial class Context : EguiObject
         else
         {
             return 1.0f - easing(1.0f - animatedValue);
+        }
+    }
+
+    /// <summary>
+    /// Read-write access to <see cref="IdTypeMap"/>, which stores superficial widget state.
+    /// </summary>
+    public void DataMut(Action<IdTypeMap> writer)
+    {
+        lock (_dataLocker)
+        {
+            writer(new IdTypeMap(_data));
+        }
+    }
+
+    /// <inheritdoc cref="DataMut"/>
+    public R DataMut<R>(Func<IdTypeMap, R> writer)
+    {
+        lock (_dataLocker)
+        {
+            return writer(new IdTypeMap(_data));
         }
     }
 
@@ -315,6 +346,45 @@ public sealed partial class Context : EguiObject
     }
 
     /// <summary>
+    /// Read-only access to <see cref="InputState"/>. 
+    /// </summary>
+    public void Options(Action<Options> reader)
+    {
+        Memory(m => reader(m.Options));
+    }
+
+    /// <inheritdoc cref="Options"/>
+    public R Options<R>(Func<Options, R> reader)
+    {
+        return Memory(m => reader(m.Options));
+    }
+
+    /// <summary>
+    /// Read-write access to <see cref="Options"/>. 
+    /// </summary>
+    public void OptionsMut(MutateDelegate<Options> writer)
+    {
+        MemoryMut(m =>
+        {
+            var opts = m.Options;
+            writer(ref opts);
+            m.Options = opts;
+        });
+    }
+
+    /// <inheritdoc cref="OptionsMut"/>
+    public R OptionsMut<R>(MutateDelegate<Options, R> writer)
+    {
+        return MemoryMut(m =>
+        {
+            var opts = m.Options;
+            var result = writer(ref opts);
+            m.Options = opts;
+            return result;
+        });
+    }
+    
+    /// <summary>
     /// Read-only access to <see cref="Egui.Epaint.TessellationOptions"/>. 
     /// </summary>
     public void TessellationOptions(Action<TessellationOptions> reader)
@@ -407,7 +477,7 @@ public sealed partial class Context : EguiObject
     /// <summary>
     /// Read-only access to <see cref="Memory"/>. 
     /// </summary>
-    public void Memory(Action<Memory> writer)
+    private void Memory(Action<Memory> writer)
     {
         Memory(m =>
         {
@@ -417,7 +487,7 @@ public sealed partial class Context : EguiObject
     }
 
     /// <inheritdoc cref="Memory"/>
-    public R Memory<R>(Func<Memory, R> writer)
+    private R Memory<R>(Func<Memory, R> writer)
     {
         R result = default!;
         using var callback = new EguiCallback(m => result = writer(new Memory(m)));
@@ -428,24 +498,20 @@ public sealed partial class Context : EguiObject
     /// <summary>
     /// Read-write access to <see cref="Memory"/>. 
     /// </summary>
-    public void MemoryMut(MutateDelegate<Memory> writer)
+    public void MemoryMut(Action<Memory> writer)
     {
-        MemoryMut((ref Memory m) =>
+        MemoryMut(m =>
         {
-            writer(ref m);
+            writer(m);
             return false;
         });
     }
 
     /// <inheritdoc cref="MemoryMut"/>
-    public R MemoryMut<R>(MutateDelegate<Memory, R> writer)
+    public R MemoryMut<R>(Func<Memory, R> writer)
     {
         R result = default!;
-        using var callback = new EguiCallback(m =>
-        {
-            var mem = new Memory(m);
-            result = writer(ref mem);
-        });
+        using var callback = new EguiCallback(m => result = writer(new Memory(m)));
         EguiMarshal.Call(EguiFn.egui_context_Context_memory_mut, Ptr, callback);
         return result;
     }
@@ -493,6 +559,19 @@ public sealed partial class Context : EguiObject
         {
             EguiMarshal.Call(EguiFn.egui_context_Context_output_mut, Ptr, input);
         }
+    }
+
+    /// <summary>
+    /// This is called by <see cref="Response.WidgetInfo"/>, but can also be called directly.
+    /// With some debug flags it will store the widget info in <see cref="WidgetRects"/> for later display.
+    /// </summary>
+    public void RegisterWidgetInfo(Id id, Func<WidgetInfo> makeInfo)
+    {
+#if DEBUG
+        EguiMarshal.Call(EguiFn.egui_context_Context_register_widget_info, Ptr, id, makeInfo());
+#else
+        _ = (id, makeInfo);
+#endif
     }
 
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]

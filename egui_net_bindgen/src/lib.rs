@@ -86,6 +86,7 @@ const BINDING_EXCLUDE_TYPES: &[&str] = &[
 const BINDING_EXCLUDE_TYPE_DEFINITIONS: &[&str] = &[
     "Color32",
     "DragPanButtons",
+    "Duration",
     "Id",
     "Response",
     "Sense",
@@ -137,6 +138,8 @@ const CUSTOM_FNS: &[&str] = &[
     "egui_ui_Ui_set_enabled",
     "egui_load_BytesLoaderData_uri",
     "egui_load_BytesLoaderData_set_result",
+    "egui_memory_Memory_options",
+    "egui_memory_Memory_set_options",
 ];
 
 /// A list of fully-qualified function IDs to ignore during generation.
@@ -378,6 +381,17 @@ const IGNORE_FNS: &[&str] = &[
     "egui_context_Context_all_styles_mut",
     "egui_context_Context_animate_bool_with_easing",
     "egui_context_Context_animate_bool_with_time_and_easing",
+    "egui_context_Context_options",
+    "egui_context_Context_options_mut",
+    "egui_context_Context_data",
+    "egui_context_Context_data_mut",
+
+    // Context: not yet implemented
+    "egui_context_Context_set_immediate_viewport_renderer",
+    "egui_context_Context_set_request_repaint_callback",
+    "egui_context_Context_show_viewport_deferred",
+    "egui_context_Context_show_viewport_immediate",
+    "egui_context_Context_loaders",
 
     // Frame: redudant function (same as NONE)
     "egui_containers_frame_Frame_new",
@@ -912,6 +926,8 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_Ui_with_layout",
     "egui_ui_Ui_dnd_drag_source",
     "egui_ui_Ui_dnd_drop_zone",
+    "egui_ui_Ui_data",
+    "egui_ui_Ui_data_mut",
 
     // UiStack: impossible to bind to C# due to generics
     "egui_ui_stack_UiStackIterator_next",
@@ -927,6 +943,10 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_stack_UiTags_get_any",
     "egui_ui_stack_UiTags_get_downcast",
     "egui_ui_stack_UiTags_insert",
+
+    // UserData: impossible to bind to C# due to generics
+    "egui_data_user_data_UserData_default",
+    "egui_data_user_data_UserData_new",
 
     // Textures: not yet implemented (but function already exposed through Context)
     "epaint_text_fonts_Fonts_texture_atlas",
@@ -1055,6 +1075,8 @@ impl BindingsGenerator {
                 *value = new_name.to_string();
             }
         }
+
+        namespaces.insert("Duration".to_string(), "".to_string());
         
         BindingsGenerator {
             declaring_tys,
