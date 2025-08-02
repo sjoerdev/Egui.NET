@@ -369,6 +369,9 @@ const IGNORE_FNS: &[&str] = &[
     "egui_cache_cache_storage_CacheStorage_default",
     "egui_cache_cache_storage_CacheStorage_update",
 
+    // ColorImage: bound manually
+    "epaint_image_ColorImage_from_gray_iter",
+
     // Context: manually-defined functions
     "egui_context_Context_style_mut",
     "egui_context_Context_style_mut_of",
@@ -420,6 +423,9 @@ const IGNORE_FNS: &[&str] = &[
 
     // FontData: redundant function
     "epaint_text_fonts_FontData_from_static",
+
+    // Image: bound manually
+    "egui_widgets_image_Image_uri",
 
     // Loaders: implementation detail type
     "egui_load_Loaders_default",
@@ -523,6 +529,9 @@ const IGNORE_FNS: &[&str] = &[
     // MenuState: deprecated functions (old type definition)
     "egui_menu_MenuState_area_contains",
     "egui_menu_MenuState_new",
+
+    // Mesh: bound manually
+    "epaint_mesh_Mesh_triangles",
 
     // Painter: bound manually
     "egui_painter_Painter_ctx",
@@ -651,6 +660,9 @@ const IGNORE_FNS: &[&str] = &[
 
     // InnerResponse: not possible to bind to C# due to generics
     "egui_response_InnerResponse_new",
+
+    // Memory: pointer-only type
+    "egui_memory_Memory_default",
 
     // NumberFormatter: not possible to bind to C# due to generics
     "egui_style_NumberFormatter_format",

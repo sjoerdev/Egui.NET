@@ -1,4 +1,4 @@
-namespace Egui;
+namespace Egui.Widgets;
 
 /// <summary>
 /// Anything implementing Widget can be added to a <see cref="Ui"/> with <see cref="Ui.Add"/>.<br/>
