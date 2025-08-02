@@ -1952,7 +1952,7 @@ impl BindingsGenerator {
     /// Gets the C# doc-comment to use for an item given its ID.
     fn get_doc_comment(&self, id: RdId) -> Option<String> {
         let docs = self.krate.index[&id].docs.clone().unwrap_or_default();
-        let converted_docs = Self::inline_code_to_cs(&Self::strip_links(&Self::strip_code_comments(docs.trim_end())))
+        let converted_docs = self.inline_code_to_cs(&Self::strip_links(&Self::strip_code_comments(docs.trim_end())))
             .replace("\n\n", "<br/>\n\n");
         if converted_docs.is_empty() {
             None
@@ -2096,16 +2096,24 @@ impl BindingsGenerator {
     }
 
     /// Converts all inline code snippets to their C# equivalent.
-    fn inline_code_to_cs(docs: &str) -> String {
+    fn inline_code_to_cs(&self, docs: &str) -> String {
         let mut result = Cow::Borrowed(docs);
         while let Some(index) = result.find("`") {
             let base_offset = index + "`".len();
             if let Some(remaining) = result[base_offset..].find("`") {
                 let end_offset = base_offset + remaining + "`".len();
 
-                result = Cow::Owned(result[..index].to_owned()
-                    + "<c>" + &Self::strip_prefix_with_ending(&result[base_offset..base_offset + remaining], "::").to_case(Case::Pascal) + "</c>"
-                    + &result[end_offset..]);
+                let inner = Self::strip_prefix_with_ending(&result[base_offset..base_offset + remaining], "::").to_case(Case::Pascal);
+                if self.registry.contains_key(&inner) {
+                    result = Cow::Owned(result[..index].to_owned()
+                        + "<see cref=\"" + &inner + "\"/>"
+                        + &result[end_offset..]);
+                }
+                else {
+                    result = Cow::Owned(result[..index].to_owned()
+                        + "<c>" + &inner + "</c>"
+                        + &result[end_offset..]);
+                }
             }
             else {
                 break;
