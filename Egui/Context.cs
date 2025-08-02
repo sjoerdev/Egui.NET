@@ -42,18 +42,11 @@ public sealed partial class Context : EguiObject
     internal readonly nuint Id;
 
     /// <summary>
-    /// The registered list of bytes loaders to use.
-    /// </summary>
-    private readonly List<IBytesLoader> _bytesLoaders;
-
-    /// <summary>
     /// Returns the "default value" for a type.
     /// Default values are often some kind of initial value, identity value, or anything else that may make sense as a default.
     /// </summary>
     public Context() : base(EguiMarshal.Call<EguiHandle>(EguiFn.egui_context_Context_default))
     {
-        _bytesLoaders = new List<IBytesLoader>();
-
         lock (_contexts)
         {
             foreach (var pair in _contexts)
@@ -97,17 +90,6 @@ public sealed partial class Context : EguiObject
         }
 
         throw new ArgumentException("Unable to find context with ID", nameof(id));
-    }
-
-    public void AddBytesLoader(IBytesLoader loader)
-    {
-        /*
-        lock (_bytesLoaders)
-        {
-            var loaderIndex = (nuint)_bytesLoaders.Count;
-            _bytesLoaders.Add(loader);
-            EguiMarshal.Call(EguiFn.egui_context_Context_add_bytes_loader, Ptr, Id, loaderIndex, loader.Id, new EguiByte)
-        }*/
     }
 
     /// <summary>
@@ -572,88 +554,5 @@ public sealed partial class Context : EguiObject
 #else
         _ = (id, makeInfo);
 #endif
-    }
-
-    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
-    private unsafe static bool BytesLoaderLoad(nuint id, nuint loaderIndex, nuint data)
-    {
-        try
-        {
-            var ctx = FromId(id);
-            var loader = ctx._bytesLoaders[(int)loaderIndex];
-            var uri = EguiMarshal.Call<nuint, string>(EguiFn.egui_load_BytesLoaderData_uri, data);
-            var result = loader.Load(ctx, uri);
-            EguiMarshal.Call(EguiFn.egui_load_BytesLoaderData_set_result, data, result);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-    
-    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
-    private unsafe static bool BytesLoaderForget(nuint id, nuint loaderIndex, nuint data)
-    {
-        try
-        {
-            var ctx = FromId(id);
-            var loader = ctx._bytesLoaders[(int)loaderIndex];
-            var uri = EguiMarshal.Call<nuint, string>(EguiFn.egui_load_BytesLoaderData_uri, data);
-            loader.Forget(uri);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-    
-    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
-    private unsafe static bool BytesLoaderForgetAll(nuint id, nuint loaderIndex, nuint _)
-    {
-        try
-        {
-            var ctx = FromId(id);
-            var loader = ctx._bytesLoaders[(int)loaderIndex];
-            loader.ForgetAll();
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-    
-    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
-    private unsafe static bool BytesLoaderEndPass(nuint id, nuint loaderIndex, nuint passIndex)
-    {
-        try
-        {
-            var ctx = FromId(id);
-            var loader = ctx._bytesLoaders[(int)loaderIndex];
-            loader.EndPass(passIndex);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-    
-    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
-    private unsafe static bool BytesLoaderHasPending(nuint id, nuint loaderIndex, nuint passIndex)
-    {
-        try
-        {
-            var ctx = FromId(id);
-            var loader = ctx._bytesLoaders[(int)loaderIndex];
-            loader.EndPass(passIndex);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
     }
 }
