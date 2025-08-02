@@ -392,6 +392,8 @@ const IGNORE_FNS: &[&str] = &[
     "egui_context_Context_show_viewport_deferred",
     "egui_context_Context_show_viewport_immediate",
     "egui_context_Context_loaders",
+    "egui_context_Context_on_begin_pass",
+    "egui_context_Context_on_end_pass",
 
     // Frame: redudant function (same as NONE)
     "egui_containers_frame_Frame_new",
