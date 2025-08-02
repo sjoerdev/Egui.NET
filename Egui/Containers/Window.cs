@@ -162,7 +162,7 @@ public ref struct Window
     {
         var result = this;
         result._area = result._area.Interactable(interactable);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -172,7 +172,7 @@ public ref struct Window
     {
         var result = this;
         result._area = result._area.Movable(movable);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -182,7 +182,7 @@ public ref struct Window
     {
         var result = this;
         result._area = result._area.Order(order);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ public ref struct Window
     {
         var result = this;
         result._area = result._area.FadeIn(fadeIn);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -208,7 +208,7 @@ public ref struct Window
     {
         var result = this;
         result._fadeOut = fadeOut;
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -218,7 +218,7 @@ public ref struct Window
     {
         var result = this;
         result._resize = mutate(_resize);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -228,7 +228,7 @@ public ref struct Window
     {
         var result = this;
         result._frame = frame;
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -238,7 +238,7 @@ public ref struct Window
     {
         var result = this;
         result._resize = result._resize.MinWidth(minWidth);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -248,7 +248,7 @@ public ref struct Window
     {
         var result = this;
         result._resize = result._resize.MinHeight(minHeight);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -258,7 +258,7 @@ public ref struct Window
     {
         var result = this;
         result._resize = result._resize.MinSize(minSize);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -268,7 +268,7 @@ public ref struct Window
     {
         var result = this;
         result._resize = result._resize.MaxWidth(maxWidth);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -278,7 +278,7 @@ public ref struct Window
     {
         var result = this;
         result._resize = result._resize.MaxHeight(maxHeight);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -288,7 +288,7 @@ public ref struct Window
     {
         var result = this;
         result._resize = result._resize.MaxSize(maxSize);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -299,7 +299,7 @@ public ref struct Window
     {
         var result = this;
         result._area = result._area.CurrentPos(currentPos);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -309,7 +309,7 @@ public ref struct Window
     {
         var result = this;
         result._area = result._area.DefaultPos(defaultPos);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -319,7 +319,7 @@ public ref struct Window
     {
         var result = this;
         result._area = result._area.FixedPos(pos);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -333,7 +333,7 @@ public ref struct Window
     {
         var result = this;
         result._area = result._area.Constrain(constrain);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -345,7 +345,7 @@ public ref struct Window
     {
         var result = this;
         result._area = result._area.ConstrainTo(constrainRect);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -361,7 +361,7 @@ public ref struct Window
     {
         var result = this;
         result._area = result._area.Pivot(pivot);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -381,7 +381,7 @@ public ref struct Window
     {
         var result = this;
         result._area = result._area.Anchor(align, offset);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -391,7 +391,7 @@ public ref struct Window
     {
         var result = this;
         result._defaultOpen = defaultOpen;
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -402,7 +402,7 @@ public ref struct Window
         var result = this;
         result._resize = result._resize.DefaultSize(defaultSize);
         result._area = result._area.DefaultSize(defaultSize);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -413,7 +413,7 @@ public ref struct Window
         var result = this;
         result._resize = result._resize.DefaultWidth(defaultWidth);
         result._area = result._area.DefaultWidth(defaultWidth);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -424,7 +424,7 @@ public ref struct Window
         var result = this;
         result._resize = result._resize.DefaultHeight(defaultHeight);
         result._area = result._area.DefaultHeight(defaultHeight);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -434,7 +434,7 @@ public ref struct Window
     {
         var result = this;
         result._resize = result._resize.FixedSize(size);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -462,7 +462,7 @@ public ref struct Window
     {
         var result = this;
         result._resize = result._resize.Resizable(resizable);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -472,7 +472,7 @@ public ref struct Window
     {
         var result = this;
         result._collapsible = collapsible;
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -482,7 +482,7 @@ public ref struct Window
     {
         var result = this;
         result._withTitleBar = titleBar;
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -493,7 +493,7 @@ public ref struct Window
         var result = this;
         result._resize = result._resize.AutoSized();
         result._scroll = ScrollArea.Neither;
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -503,7 +503,7 @@ public ref struct Window
     {
         var result = this;
         result._scroll = result._scroll.Scroll(scroll);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -513,7 +513,7 @@ public ref struct Window
     {
         var result = this;
         result._scroll = result._scroll.Hscroll(hscroll);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -523,7 +523,7 @@ public ref struct Window
     {
         var result = this;
         result._scroll = result._scroll.Vscroll(vscroll);
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -537,7 +537,7 @@ public ref struct Window
             Drag = dragToScroll,
             // Other properties can be set here as needed
         });
-        return this;
+        return result;
     }
 
     /// <summary>
@@ -547,7 +547,7 @@ public ref struct Window
     {
         var result = this;
         result._scroll = result._scroll.ScrollBarVisibility(visibility);
-        return this;
+        return result;
     }
 
     /// <summary>

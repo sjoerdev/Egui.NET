@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-      <EmbeddedResource Include="Resources\**" />
+      <EmbeddedResource Include="Resources\**">
+        <LogicalName>$([System.String]::new('%(RelativeDir)').Replace('\','.').Replace('/','.').Substring(10))%(FileName)%(Extension)</LogicalName>
+      </EmbeddedResource>
   </ItemGroup>
 
   <PropertyGroup>

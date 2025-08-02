@@ -95,7 +95,8 @@ public unsafe class Program
     {
     }
 
-    private static bool openIt = true;
+    private static string name = "";
+    private static int age;
 
     private static void OnRender(double deltaTime)
     {
@@ -120,20 +121,35 @@ public unsafe class Program
 
         var output = _ctx.Run(_input, ctx =>
         {
-            new Window("bababooey")
+            new Window("README Example")
+                .FixedSize(new Vec2(160, 160))
                 .Show(ctx, ui =>
             {
-                if (ui.Label("welcome to the winder").Clicked) { openIt = true; }
+                ui.Heading("My egui Application");
+                ui.Horizontal(ui =>
+                {
+                    ui.Label("Your name:");
+                    ui.TextEditSingleline(ref name);
+                });
+                ui.Add(new Slider<int>(ref age, 0, 120).Text("age"));
+                if (ui.Button("Increment").Clicked)
+                {
+                    age += 1;
+                }
+                ui.Label($"Hello '{name}', age {age}");
+                ui.Image(EguiHelpers.IncludeImageResource("ferris.png"));
             });
 
             new Window("🗄 Widget Gallery")
-                .Open(ref openIt)
                 .Resizable(new Vec2b(true, false))
                 .DefaultWidth(280)
                 .Show(ctx, ui =>
             {
                 _widgetGallery.Show(ui);
             });
+
+            new Window("Settings")
+                .Show(ctx, ui => ctx.SettingsUi(ui));
         });
 
         DrawOutput(in output);
@@ -289,7 +305,7 @@ public unsafe class Program
             ui.EndRow();
 
             ui.Add(DocLinkLabel("Image", "Image"));
-            var eguiIcon = EguiHelpers.IncludeImageResource("SilkOpenGl.Resources.icon.png");
+            var eguiIcon = EguiHelpers.IncludeImageResource("icon.png");
             ui.Add(new Image(eguiIcon));
             ui.EndRow();
 
