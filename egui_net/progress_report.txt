@@ -1,5 +1,4 @@
-1724 / 1820 (94%) bound
-egui_atomics_atom_layout_AtomLayoutResponse_custom_rects
+1724 / 1818 (94%) bound
 egui_containers_collapsing_header_CollapsingHeader_icon
 egui_containers_collapsing_header_CollapsingResponse_fully_closed
 egui_containers_collapsing_header_CollapsingResponse_fully_open
@@ -88,7 +87,6 @@ egui_widgets_image_ImageSource_uri
 egui_widgets_image_Image_load_for_size
 egui_widgets_image_Image_uri
 egui_widgets_image_decode_animated_image_uri
-emath_gui_rounding_GuiRounding_round_ui
 epaint_image_ColorImage_from_gray_iter
 epaint_image_ColorImage_region_by_pixels
 epaint_mesh_Mesh_triangles

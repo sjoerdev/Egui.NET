@@ -1870,6 +1870,9 @@ impl BindingsGenerator {
                     if let VariantFormat::Struct(nameds) = &mut variant.value {
                         for named in nameds {
                             named.name = named.name.to_case(Case::Pascal);
+                            if named.name == variant.name {
+                                named.name = "Inner".to_string();
+                            }
                         }
                     }
                 },

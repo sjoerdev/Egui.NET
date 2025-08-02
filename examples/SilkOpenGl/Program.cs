@@ -9,6 +9,8 @@ using Egui.Containers;
 using Egui.Epaint;
 using Egui.Viewport;
 using Egui.Widgets;
+using Button = Egui.Widgets.Button;
+using Image = Egui.Widgets.Image;
 
 using Silk.NET.Input;
 using Silk.NET.Maths;
@@ -21,6 +23,7 @@ using System.Runtime.CompilerServices;
 using System.Numerics;
 using Window = Egui.Containers.Window;
 using Microsoft.VisualBasic;
+using System.Reflection;
 
 namespace MySilkProgram;
 
@@ -283,6 +286,18 @@ public unsafe class Program
 
             ui.Add(DocLinkLabel("Color picker", "color_edit"));
             ui.ColorEditButtonSrgba(ref _color);
+            ui.EndRow();
+
+            ui.Add(DocLinkLabel("Image", "Image"));
+            var eguiIcon = EguiHelpers.IncludeImageResource("SilkOpenGl.Resources.icon.png");
+            ui.Add(new Image(eguiIcon));
+            ui.EndRow();
+
+            ui.Add(DocLinkLabel("Button with image", "Button::image_and_text"));
+            if (ui.Add(Button.ImageAndText(eguiIcon, "Click me!")).Clicked)
+            {
+                _boolean = !_boolean;
+            }
             ui.EndRow();
 
             ui.Add(DocLinkLabel("Separator", "separator"));

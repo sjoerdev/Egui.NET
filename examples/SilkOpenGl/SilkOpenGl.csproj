@@ -18,6 +18,10 @@
   </Content>
   </ItemGroup>
 
+  <ItemGroup>
+      <EmbeddedResource Include="Resources\**" />
+  </ItemGroup>
+
   <PropertyGroup>
   	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputType>Exe</OutputType>
