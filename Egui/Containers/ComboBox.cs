@@ -32,4 +32,33 @@ public partial struct ComboBox
             Response = response
         };
     }
+
+    /// <summary>
+    /// Show a list of items with the given selected index.
+    /// </summary>
+    public Response ShowIndex(Ui ui, ref nuint selected, nuint length, Func<nuint, WidgetText> get)
+    {
+        var slf = SelectedText(get(selected));
+        var changed = false;
+        var selectedIndex = selected;
+        var response = slf.ShowUi(ui, ui =>
+        {
+            for (nuint i = 0; i < length; i++)
+            {
+                if (ui.SelectableLabel(i == selectedIndex, get(i)).Clicked)
+                {
+                    selectedIndex = i;
+                    changed = true;
+                }
+            }
+        }).Response;
+
+        if (changed)
+        {
+            response.MarkChanged();
+        }
+
+        selected = selectedIndex;
+        return response;
+    }
 }

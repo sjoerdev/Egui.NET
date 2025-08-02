@@ -22,10 +22,10 @@ serde-generate = { path = "serde-generate", default-features = false, features =
 bincode = { version = "1.3.3", default-features = false }
 convert_case = { version = "0.7.1", default-features = false }
 csbindgen = { version = "1.9.3", default-features = false }
-#egui = { path = "../egui/crates/egui", default-features = false, features = [ "default_fonts", "serde" ] }
-egui = { git = "https://github.com/DouglasDwyer/egui", rev = "c5d6ca453c1b18bda9008400aa85ad459e66642a", default-features = false, features = [ "default_fonts", "serde" ] }
-#egui_extras = { path = "../egui/crates/egui_extras", default-features = false, features = [ "image", "svg", "svg_text" ] }
-egui_extras = { git = "https://github.com/DouglasDwyer/egui", rev = "c5d6ca453c1b18bda9008400aa85ad459e66642a", default-features = false, features = [ "image", "svg", "svg_text" ] }
+egui = { path = "../egui/crates/egui", default-features = false, features = [ "default_fonts", "serde" ] }
+#egui = { git = "https://github.com/DouglasDwyer/egui", rev = "c5d6ca453c1b18bda9008400aa85ad459e66642a", default-features = false, features = [ "default_fonts", "serde" ] }
+egui_extras = { path = "../egui/crates/egui_extras", default-features = false, features = [ "image", "svg", "svg_text" ] }
+#egui_extras = { git = "https://github.com/DouglasDwyer/egui", rev = "c5d6ca453c1b18bda9008400aa85ad459e66642a", default-features = false, features = [ "image", "svg", "svg_text" ] }
 image = { version = "0.25.6", default-features = false, features = [ "default-formats" ] }
 mimalloc = { version = "0.1.47", default-features = false }
 rustdoc-types = { version = "0.39.0", default-features = false }

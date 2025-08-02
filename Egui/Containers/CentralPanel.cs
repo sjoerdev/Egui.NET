@@ -26,13 +26,13 @@ public partial struct CentralPanel
 
     public readonly InnerResponse ShowInside(Ui ui, Action<Ui> addContents)
     {
-        ui.AssertInitialized();
-        var ctx = ui.Ctx;
-        using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<nuint, CentralPanel, EguiCallback, Response>(EguiFn.egui_containers_panel_CentralPanel_show_inside, ui.Ptr, this, callback);
         return new InnerResponse
         {
-            Response = response
+            Response = ShowInside(ui, ui =>
+            {
+                addContents(ui);
+                return false;
+            }).Response
         };
     }
 

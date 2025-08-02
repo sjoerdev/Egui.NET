@@ -77,7 +77,7 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
 /// Types to exclude from generation.
 const BINDING_EXCLUDE_TYPES: &[&str] = &[
     "History",
-    "SubMenuButton",
+    "",
     // Private types
     "Tessellator"
 ];
@@ -140,6 +140,7 @@ const CUSTOM_FNS: &[&str] = &[
     "egui_load_BytesLoaderData_set_result",
     "egui_memory_Memory_options",
     "egui_memory_Memory_set_options",
+    "egui_containers_collapsing_header_EguiCollapsingStateShowToggleButtonParams_unpack"
 ];
 
 /// A list of fully-qualified function IDs to ignore during generation.
@@ -327,6 +328,10 @@ const IGNORE_FNS: &[&str] = &[
     "egui_containers_close_tag_ClosableTag_set_close",
     "egui_containers_close_tag_ClosableTag_should_close",
 
+    // ComboBox: bound manually
+    "egui_containers_combo_box_ComboBox_icon",
+    "egui_containers_combo_box_ComboBox_show_index",
+
     // DragValue: bound manually
     "egui_widgets_drag_value_DragValue_binary",
     "egui_widgets_drag_value_DragValue_clamp_existing_to_range",
@@ -358,6 +363,13 @@ const IGNORE_FNS: &[&str] = &[
     "egui_grid_Grid_striped",
     "egui_grid_Grid_with_row_color",
 
+    // HeaderResponse: bound manually
+    "egui_containers_collapsing_header_HeaderResponse_body",
+    "egui_containers_collapsing_header_HeaderResponse_body_unindented",
+    "egui_containers_collapsing_header_HeaderResponse_is_open",
+    "egui_containers_collapsing_header_HeaderResponse_set_open",
+    "egui_containers_collapsing_header_HeaderResponse_toggle",
+
     // Mutex: private type
     "epaint_mutex_mutex_impl_Mutex_default",
     "epaint_mutex_mutex_impl_Mutex_lock",
@@ -371,6 +383,13 @@ const IGNORE_FNS: &[&str] = &[
     "egui_cache_cache_storage_CacheStorage_cache",
     "egui_cache_cache_storage_CacheStorage_default",
     "egui_cache_cache_storage_CacheStorage_update",
+
+    // CollapsingHeader: not yet implemented
+    "egui_containers_collapsing_header_CollapsingHeader_icon",
+
+    // CollapsingResponse: bound manually
+    "egui_containers_collapsing_header_CollapsingResponse_fully_closed",
+    "egui_containers_collapsing_header_CollapsingResponse_fully_open",
 
     // ColorImage: bound manually
     "epaint_image_ColorImage_from_gray_iter",
@@ -523,6 +542,9 @@ const IGNORE_FNS: &[&str] = &[
 
     // MenuConfig: redundant function (same as default)
     "egui_containers_menu_MenuConfig_new",
+
+    // MenuState: bound manually
+    "egui_containers_menu_MenuState_from_ui",
 
     // old_popup: deprecated
     "egui_containers_old_popup_popup_above_or_below_widget",
@@ -930,6 +952,9 @@ const IGNORE_FNS: &[&str] = &[
     "egui_ui_Ui_dnd_drop_zone",
     "egui_ui_Ui_data",
     "egui_ui_Ui_data_mut",
+    "egui_ui_Ui_menu_button",
+    "egui_ui_Ui_menu_image_button",
+    "egui_ui_Ui_menu_image_text_button",
 
     // UiStack: impossible to bind to C# due to generics
     "egui_ui_stack_UiStackIterator_next",

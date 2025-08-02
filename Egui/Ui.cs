@@ -937,6 +937,105 @@ public readonly ref partial struct Ui
     }
 
     /// <summary>
+    /// Create a menu button that when clicked will show the given menu.<br/>
+    ///
+    /// If called from within a menu this will instead create a button for a sub-menu.<br/>
+    /// 
+    /// See also <see cref="Close"/> and <see cref="Response.ContextMenu"/>. 
+    /// </summary>
+    public InnerResponse MenuButton(Atoms atoms, Action<Ui> addContents)
+    {
+        return new InnerResponse
+        {
+            Response = MenuButton(atoms, ui =>
+            {
+                addContents(ui);
+                return false;
+            }).Response
+        };
+    }
+
+    /// <inheritdoc cref="MenuButton"/>
+    public InnerResponse<R?> MenuButton<R>(Atoms atoms, Func<Ui, R> addContents)
+    {
+        var (response, inner) = MenuHelpers.IsInMenu(this) ?
+            new SubMenuButton(atoms).Ui(this, addContents) :
+            new MenuButton(atoms).Ui(this, addContents);
+
+        return new InnerResponse<R?>
+        {
+            Inner = inner.HasValue ? inner.Value.Inner : default,
+            Response = response
+        };
+    }
+
+    /// <summary>
+    /// Create a menu button with an image that when clicked will show the given menu.<br/>
+    ///
+    /// If called from within a menu this will instead create a button for a sub-menu.<br/>
+    /// 
+    /// See also <see cref="Close"/> and <see cref="Response.ContextMenu"/>. 
+    /// </summary>
+    public InnerResponse MenuImageButton(Atoms atoms, Image image, Action<Ui> addContents)
+    {
+        return new InnerResponse
+        {
+            Response = MenuImageButton(atoms, image, ui =>
+            {
+                addContents(ui);
+                return false;
+            }).Response
+        };
+    }
+
+    /// <inheritdoc cref="MenuButton"/>
+    public InnerResponse<R?> MenuImageButton<R>(Atoms atoms, Image image, Func<Ui, R> addContents)
+    {
+        var (response, inner) = MenuHelpers.IsInMenu(this) ?
+            SubMenuButton.FromButton(Widgets.Button.Image(image).RightText(SubMenuButton.RightArrow)).Ui(this, addContents) :
+            Containers.Menu.MenuButton.FromButton(Widgets.Button.Image(image)).Ui(this, addContents);
+
+        return new InnerResponse<R?>
+        {
+            Inner = inner.HasValue ? inner.Value.Inner : default,
+            Response = response
+        };
+    }
+    
+    /// <summary>
+    /// Create a menu button with an image and a text that when clicked will show the given menu.<br/>
+    ///
+    /// If called from within a menu this will instead create a button for a sub-menu.<br/>
+    /// 
+    /// See also <see cref="Close"/> and <see cref="Response.ContextMenu"/>. 
+    /// </summary>
+    public InnerResponse MenuImageTextButton(Atoms atoms, Image image, WidgetText title, Action<Ui> addContents)
+    {
+        return new InnerResponse
+        {
+            Response = MenuImageTextButton(atoms, image, title, ui =>
+            {
+                addContents(ui);
+                return false;
+            }).Response
+        };
+    }
+
+    /// <inheritdoc cref="MenuButton"/>
+    public InnerResponse<R?> MenuImageTextButton<R>(Atoms atoms, Image image, WidgetText title, Func<Ui, R> addContents)
+    {
+        var (response, inner) = MenuHelpers.IsInMenu(this) ?
+            SubMenuButton.FromButton(Widgets.Button.ImageAndText(image, title).RightText(SubMenuButton.RightArrow)).Ui(this, addContents) :
+            Containers.Menu.MenuButton.FromButton(Widgets.Button.ImageAndText(image, title)).Ui(this, addContents);
+
+        return new InnerResponse<R?>
+        {
+            Inner = inner.HasValue ? inner.Value.Inner : default,
+            Response = response
+        };
+    }
+
+    /// <summary>
     /// Throws an exception if this is a null object.
     /// </summary>
     internal readonly void AssertInitialized()
