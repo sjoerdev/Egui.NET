@@ -413,6 +413,9 @@ const IGNORE_FNS: &[&str] = &[
     "egui_context_Context_loaders",
     "egui_context_Context_on_begin_pass",
     "egui_context_Context_on_end_pass",
+    "egui_context_Context_add_bytes_loader",
+    "egui_context_Context_add_image_loader",
+    "egui_context_Context_add_texture_loader",
 
     // Frame: redudant function (same as NONE)
     "egui_containers_frame_Frame_new",
@@ -1628,6 +1631,10 @@ impl BindingsGenerator {
             else {
                 ""
             };
+
+            if enum_name == "epaint_shapes_shape___deserialize_visit_enum___Field" {
+                panic!("WTFF {id:?}");
+            }
 
             writeln!(f, "    .with(EguiFn::{enum_name}, |{param_decls}| unsafe {{ ({path}({args}){clone_return}, {returns}) }})")?;
         }
