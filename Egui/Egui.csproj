@@ -3,7 +3,7 @@
     <PackageId>Egui.NET</PackageId>
 	<Title>Egui.NET</Title>
 	<Description>An easy-to-use immediate mode GUI</Description>
-    <Version>0.1.0+0.32.0</Version>
+    <Version>0.1.1+0.32.0</Version>
 	<Authors>Douglas Dwyer</Authors>
 	<RepositoryUrl>https://github.com/DouglasDwyer/Egui.NET</RepositoryUrl>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -61,22 +61,22 @@
 			  WorkingDirectory=".." />
 
 		<ItemGroup>
-			<Content Include="../target/aarch64-pc-windows-msvc/$(CargoProfileOutput)/egui_net.dll" Condition="'%(RIDList.Identity)' == 'win-arm64'">
+			<Content Include="../target/aarch64-pc-windows-msvc/$(CargoProfileOutput)/egui_net.dll" Pack="true" Condition="'%(RIDList.Identity)' == 'win-arm64'">
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			</Content>
-			<Content Include="../target/x86_64-pc-windows-msvc/$(CargoProfileOutput)/egui_net.dll" Condition="'%(RIDList.Identity)' == 'win-x64'">
+			<Content Include="../target/x86_64-pc-windows-msvc/$(CargoProfileOutput)/egui_net.dll" Pack="true" Condition="'%(RIDList.Identity)' == 'win-x64'">
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			</Content>
-			<Content Include="../target/aarch64-apple-darwin/$(CargoProfileOutput)/libegui_net.dylib" Condition="'%(RIDList.Identity)' == 'osx-arm64'">
+			<Content Include="../target/aarch64-apple-darwin/$(CargoProfileOutput)/libegui_net.dylib" Pack="true" Condition="'%(RIDList.Identity)' == 'osx-arm64'">
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			</Content>
-			<Content Include="../target/x86_64-apple-darwin/$(CargoProfileOutput)/libegui_net.dylib" Condition="'%(RIDList.Identity)' == 'osx-x64'">
+			<Content Include="../target/x86_64-apple-darwin/$(CargoProfileOutput)/libegui_net.dylib" Pack="true" Condition="'%(RIDList.Identity)' == 'osx-x64'">
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			</Content>
-			<Content Include="../target/aarch64-unknown-linux-gnu/$(CargoProfileOutput)/libegui_net.so" Condition="'%(RIDList.Identity)' == 'linux-arm64'">
+			<Content Include="../target/aarch64-unknown-linux-gnu/$(CargoProfileOutput)/libegui_net.so" Pack="true" Condition="'%(RIDList.Identity)' == 'linux-arm64'">
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			</Content>
-			<Content Include="../target/x86_64-unknown-linux-gnu/$(CargoProfileOutput)/libegui_net.so" Condition="'%(RIDList.Identity)' == 'linux-x64'">
+			<Content Include="../target/x86_64-unknown-linux-gnu/$(CargoProfileOutput)/libegui_net.so" Pack="true" Condition="'%(RIDList.Identity)' == 'linux-x64'">
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			</Content>
 			<None Include="../README.md" Pack="true" PackagePath="/"/>
