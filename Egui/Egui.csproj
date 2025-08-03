@@ -1,13 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
+    <PackageId>Egui.NET</PackageId>
+	<Title>Egui.NET</Title>
+	<Description>An easy-to-use immediate mode GUI</Description>
+    <Version>0.1.0+0.32.0</Version>
+	<Authors>Douglas Dwyer</Authors>
+	<RepositoryUrl>https://github.com/DouglasDwyer/Egui.NET</RepositoryUrl>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+
   	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('Windows')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'Arm64'">win-arm64</RuntimeIdentifiers>
+	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('Windows')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'x64'">win-x64</RuntimeIdentifiers>
+	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('OSX')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'Arm64'">osx-arm64</RuntimeIdentifiers>
+	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('OSX')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'x64'">osx-x64</RuntimeIdentifiers>
+	<RuntimeIdentifiers Condition="'$(Configuration)'=='Release'">win-arm64;win-x64;osx-arm64;osx-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
-  <PropertyGroup>
+	<PropertyGroup>
+		<CargoExecutable Condition="'$(Configuration)'=='Debug'">cargo</CargoExecutable>
+		<CargoExecutable Condition="'$(Configuration)'=='Release'">cross</CargoExecutable>
+
 		<CargoProfile Condition="'$(Configuration)'=='Debug'">dev</CargoProfile>
 		<CargoProfile Condition="'$(Configuration)'=='Release'">release</CargoProfile>
 		
@@ -17,18 +32,44 @@
 		<CargoUnstableOptions Condition="'$(Configuration)'=='Debug'"></CargoUnstableOptions>
 		<CargoUnstableOptions Condition="'$(Configuration)'=='Release'"></CargoUnstableOptions>
 
-		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('Windows'))">x86_64-pc-windows-msvc</CargoTarget>
-		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('OSX')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'Arm64'">aarch64-apple-darwin</CargoTarget>
-		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('OSX')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'x64'">x86_64-apple-darwin</CargoTarget>
-		<CargoTarget Condition="$([MSBuild]::IsOSPlatform('Linux'))">x86_64-unknown-linux-gnu</CargoTarget>
-
 		<CargoProfileOutput Condition="'$(Configuration)'=='Debug'">debug</CargoProfileOutput>
 		<CargoProfileOutput Condition="'$(Configuration)'=='Release'">release</CargoProfileOutput>
+
+		<CargoVariables Condition="'$(Configuration)'=='Debug'"></CargoVariables>
+		<CargoVariables Condition="'$(Configuration)'=='Release'">CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_LINKER=rust-lld;CARGO_TARGET_AARCH64_PC_WINDOWS_MSVC_LINKER=rust-lld</CargoVariables>
 	</PropertyGroup>
 
-	<Target Name="BuildEgui" BeforeTargets="BeforeCompile">
-		<Exec Command="cargo build --profile $(CargoProfile) --target $(CargoTarget) $(CargoUnstableOptions) $(CargoFeatures)"
-			  WorkingDirectory=".."/>
+	<Target Name="BuildEgui" BeforeTargets="BeforeBuild">
+		<ItemGroup>
+			<RIDList Include="$(RuntimeIdentifiers)" />
+		</ItemGroup>
+
+		<ItemGroup>
+			<CargoTarget Include="aarch64-pc-windows-msvc" Condition="'%(RIDList.Identity)' == 'win-arm64'" />
+			<CargoTarget Include="x86_64-pc-windows-msvc" Condition="'%(RIDList.Identity)' == 'win-x64'" />
+			<CargoTarget Include="aarch64-apple-darwin" Condition="'%(RIDList.Identity)' == 'osx-arm64'" />
+			<CargoTarget Include="x86_64-apple-darwin" Condition="'%(RIDList.Identity)' == 'osx-x64'" />
+		</ItemGroup>
+
+		<Exec Command="$(CargoExecutable) build --profile $(CargoProfile) --target %(CargoTarget.Identity) $(CargoUnstableOptions) $(CargoFeatures) >> run.txt"
+			  EnvironmentVariables="$(CargoVariables)"
+			  WorkingDirectory=".." />
+
+		<ItemGroup>
+			<Content Include="../target/aarch64-pc-windows-msvc/$(CargoProfileOutput)/egui_net.dll" Condition="'%(RIDList.Identity)' == 'win-arm64'">
+				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			</Content>
+			<Content Include="../target/x86_64-pc-windows-msvc/$(CargoProfileOutput)/egui_net.dll" Condition="'%(RIDList.Identity)' == 'win-x64'">
+				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			</Content>
+			<Content Include="../target/aarch64-apple-darwin/$(CargoProfileOutput)/libegui_net.dylib" Condition="'%(RIDList.Identity)' == 'osx-arm64'">
+				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			</Content>
+			<Content Include="../target/x86_64-apple-darwin/$(CargoProfileOutput)/libegui_net.dylib" Condition="'%(RIDList.Identity)' == 'osx-x64'">
+				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			</Content>
+			<None Include="../README.md" Pack="true" PackagePath="/"/>
+		</ItemGroup>
 	</Target>
 
     <ItemGroup>
@@ -36,17 +77,4 @@
 		<Compile Include="../serde-generate/runtime/csharp/Bincode/*.cs" />
 		<Compile Include="../serde-generate/runtime/csharp/Serde/*.cs" />
 	</ItemGroup>
-
-  <ItemGroup>
-		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/egui_net.dll" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/libegui_net.dylib" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="../target/$(CargoTarget)/$(CargoProfileOutput)/libegui_net.so" Condition="$([MSBuild]::IsOSPlatform('Linux'))">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
 </Project>

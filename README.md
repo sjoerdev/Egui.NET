@@ -1,7 +1,7 @@
 # 🖌 Egui.NET: unofficial C# bindings for the easy-to-use `egui` library
 
 [<img alt="github" src="https://img.shields.io/badge/github-DouglasDwyer/Egui.NET-8da0cb?logo=github" height="20">](https://github.com/DouglasDwyer/Egui.NET)
-[![Latest version](https://img.shields.io/crates/v/egui.svg)](https://crates.io/crates/egui)
+[![NuGet version (Egui.NET)](https://img.shields.io/nuget/v/Egui.NET.svg)](https://www.nuget.org/packages/Egui.NET/)
 [![view - documentation](https://img.shields.io/badge/view-documentation-4cbf1e)](https://douglasdwyer.github.io/Egui.NET)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/emilk/egui/blob/main/LICENSE-MIT)
 [![Apache](https://img.shields.io/badge/license-Apache-blue.svg)](https://github.com/emilk/egui/blob/main/LICENSE-APACHE)
@@ -71,3 +71,27 @@ The project is organized in the following way:
 - serde-generate - a fork of the `serde-generate` crate, with some customizations for the Egui.NET API
 
 The project also compiles [a fork of `egui`](https://github.com/DouglasDwyer/egui/tree/egui_net_patches). The main purpose of the fork is to mark additional `egui` types as serializable, so that they may be shared with C# easily.
+
+### Supported platforms
+
+- `aarch64-pc-windows-msvc`
+- `x86_64-pc-windows-msvc`
+- `aarch64-apple-darwin`
+- `x86_64-apple-darwin`
+
+### Building from source
+
+To build from source, the following dependencies are required:
+
+- [`.NET 9.0 SDK`](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+- [`Rust`](https://www.rust-lang.org/tools/install)
+- [`cross-rs`](https://github.com/cross-rs/cross) (for cross-compiling the Nuget package)
+- [`Docker`](https://www.docker.com/products/docker-desktop/) (for cross-compiling the Nuget package)
+
+Once installed, the following commands should be available:
+
+- `cargo build` - generate the Rust library for the current platform
+- `cargo test` - build and update the `progress_report.txt`
+- `dotnet build Egui` - build the Egui.NET library for the current platform
+- `dotnet build Egui -c Release` - build the Egui.NET library in release mode for all platforms
+- `dotnet pack` - generate a Nuget package for all platforms

@@ -5,8 +5,33 @@ use std::path::*;
 
 /// Generates C# bindings for all C API files in the crate.
 fn main() {
-    println!("cargo::rerun-if-changed=../egui_net_bindgen");
+    // Workaround for cross-rs #1441 (https://github.com/cross-rs/cross/issues/1441)
+    if std::env::var("CARGO_CFG_TARGET_OS").expect("Failed to get OS") == "windows" {
+        if let Ok(root) = std::env::var("CROSS_SYSROOT") {
+            let arch = match std::env::var("CARGO_CFG_TARGET_ARCH")
+                .expect("Failed to get architecture").as_str() {
+                "x86_64" => "x64",
+                "aarch64" => "arm64",
+                _ => panic!("Unsupported architecture")
+            };
 
+            println!(r"cargo:rustc-link-search={root}/lib/{arch}");
+
+            let mut windows_kits = std::fs::read_dir("/opt/msvc/kits/10/lib")
+                .expect("Failed to get MSVC root directory").collect::<Result<Vec<_>, _>>()
+                .expect("Failed to get Windows kits");
+
+            windows_kits.retain(|x| x.file_type().expect("Failed to get file type").is_dir());
+            windows_kits.sort_by_key(|x| x.file_name());
+            let recent_kit = windows_kits.last().expect("No Windows kit installed");
+
+            println!(r"cargo:rustc-link-search={}/um/{arch}", recent_kit.path().display());
+            println!(r"cargo:rustc-link-search={}/ucrt/{arch}", recent_kit.path().display());
+        }
+    }
+    
+    println!("cargo::rerun-if-changed=../egui_net_bindgen");
+    
     let output_dir = PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").expect("Failed to get target directory"))
         .join("../target")
         .join("bindings");
