@@ -137,7 +137,7 @@ public unsafe class Program
                     age += 1;
                 }
                 ui.Label($"Hello '{name}', age {age}");
-                ui.Image(EguiHelpers.IncludeImageResource("ferris.png"));
+                ui.Image(EguiHelpers.IncludeImageResource("csharp.png"));
             });
 
             new Window("🗄 Widget Gallery")
