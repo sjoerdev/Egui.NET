@@ -34,6 +34,16 @@ ui.Image(EguiHelpers.IncludeImageResource("csharp.png"));
 
 <img alt="Dark mode" src="media/demo.gif" height="278"> &nbsp; &nbsp; <img alt="Light mode" src="media/light_theme.png" height="278">
 
+## Getting started
+
+Egui.NET is available as a Nuget package. Use the following command to add it to your project:
+
+```bash
+dotnet add package Egui.NET 
+```
+
+Then, create a `Context` and begin drawing UI as described in [the `egui` README](https://github.com/emilk/egui?tab=readme-ov-file#quick-start).
+
 ## Integrations
 
 The [`SilkOpenGl`](/examples/SilkOpenGl/) example demonstrates how to incorporate Egui.NET with an OpenGL application that uses [`Silk.NET`](https://github.com/dotnet/Silk.NET) for windowing. No off-the-shelf integrations for C# exist at this time, but [adding a new egui integration is easy](https://docs.rs/egui/latest/egui/#integrating-with-egui).
