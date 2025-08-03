@@ -7,6 +7,7 @@
 	<Authors>Douglas Dwyer</Authors>
 	<RepositoryUrl>https://github.com/DouglasDwyer/Egui.NET</RepositoryUrl>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
 
   	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>net9.0</TargetFramework>
@@ -16,7 +17,9 @@
 	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('Windows')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'x64'">win-x64</RuntimeIdentifiers>
 	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('OSX')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'Arm64'">osx-arm64</RuntimeIdentifiers>
 	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('OSX')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'x64'">osx-x64</RuntimeIdentifiers>
-	<RuntimeIdentifiers Condition="'$(Configuration)'=='Release'">win-arm64;win-x64;osx-arm64;osx-x64</RuntimeIdentifiers>
+	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('Linux')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'Arm64'">linux-arm64</RuntimeIdentifiers>
+	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('Linux')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'x64'">linux-x64</RuntimeIdentifiers>
+	<RuntimeIdentifiers Condition="'$(Configuration)'=='Release'">win-arm64;win-x64;osx-arm64;osx-x64;linux-arm64;linux-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
 	<PropertyGroup>
@@ -49,6 +52,8 @@
 			<CargoTarget Include="x86_64-pc-windows-msvc" Condition="'%(RIDList.Identity)' == 'win-x64'" />
 			<CargoTarget Include="aarch64-apple-darwin" Condition="'%(RIDList.Identity)' == 'osx-arm64'" />
 			<CargoTarget Include="x86_64-apple-darwin" Condition="'%(RIDList.Identity)' == 'osx-x64'" />
+			<CargoTarget Include="aarch64-unknown-linux-gnu" Condition="'%(RIDList.Identity)' == 'linux-arm64'" />
+			<CargoTarget Include="x86_64-unknown-linux-gnu" Condition="'%(RIDList.Identity)' == 'linux-x64'" />
 		</ItemGroup>
 
 		<Exec Command="$(CargoExecutable) build --profile $(CargoProfile) --target %(CargoTarget.Identity) $(CargoUnstableOptions) $(CargoFeatures) >> run.txt"
@@ -66,6 +71,12 @@
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			</Content>
 			<Content Include="../target/x86_64-apple-darwin/$(CargoProfileOutput)/libegui_net.dylib" Condition="'%(RIDList.Identity)' == 'osx-x64'">
+				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			</Content>
+			<Content Include="../target/aarch64-unknown-linux-gnu/$(CargoProfileOutput)/libegui_net.so" Condition="'%(RIDList.Identity)' == 'linux-arm64'">
+				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			</Content>
+			<Content Include="../target/x86_64-unknown-linux-gnu/$(CargoProfileOutput)/libegui_net.so" Condition="'%(RIDList.Identity)' == 'linux-x64'">
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			</Content>
 			<None Include="../README.md" Pack="true" PackagePath="/"/>

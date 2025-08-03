@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Egui\Egui.csproj" />
+    <!--ProjectReference Include="..\..\Egui\Egui.csproj" /-->
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Silk.NET.Input" Version="2.22.0" />
     <PackageReference Include="Silk.NET.OpenGLES" Version="2.22.0" />
     <PackageReference Include="Silk.NET.Windowing" Version="2.22.0" />
+    <PackageReference Include="Egui.NET" Version="0.1.0+0.32.0" />
 
 
   <Content Include="*.glsl">

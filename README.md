@@ -1,6 +1,6 @@
-# 🖌 Egui.NET: unofficial C# bindings for the easy-to-use `egui` library
+# 🖌 Egui.NET: unofficial C# bindings for the easy-to-use egui library
 
-[<img alt="github" src="https://img.shields.io/badge/github-DouglasDwyer/Egui.NET-8da0cb?logo=github" height="20">](https://github.com/DouglasDwyer/Egui.NET)
+[![Github](https://img.shields.io/badge/github-DouglasDwyer/Egui.NET-8da0cb?logo=github)](https://github.com/DouglasDwyer/Egui.NET)
 [![NuGet version (Egui.NET)](https://img.shields.io/nuget/v/Egui.NET.svg)](https://www.nuget.org/packages/Egui.NET/)
 [![view - documentation](https://img.shields.io/badge/view-documentation-4cbf1e)](https://douglasdwyer.github.io/Egui.NET)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/emilk/egui/blob/main/LICENSE-MIT)
@@ -78,6 +78,8 @@ The project also compiles [a fork of `egui`](https://github.com/DouglasDwyer/egu
 - `x86_64-pc-windows-msvc`
 - `aarch64-apple-darwin`
 - `x86_64-apple-darwin`
+- `aarch64-unknown-linux-gnu`
+- `x86_64-unknown-linux-gnu`
 
 ### Building from source
 

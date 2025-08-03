@@ -163,7 +163,7 @@ internal static class EguiMarshal
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private unsafe static void AssertSuccess(EguiInvokeResult result)
+    internal unsafe static void AssertSuccess(EguiInvokeResult result)
     {
         if (!result.success)
         {
