@@ -1,4 +1,4 @@
-# 🖌 Egui.NET: C# bindings for the easy-to-use `egui` library
+# 🖌 Egui.NET: unofficial C# bindings for the easy-to-use `egui` library
 
 [<img alt="github" src="https://img.shields.io/badge/github-DouglasDwyer/Egui.NET-8da0cb?logo=github" height="20">](https://github.com/DouglasDwyer/Egui.NET)
 [![Latest version](https://img.shields.io/crates/v/egui.svg)](https://crates.io/crates/egui)
