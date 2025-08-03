@@ -69,3 +69,5 @@ The project is organized in the following way:
 - examples - example programs demonstrating how to use the library in C#
 - media - images and other media used in documentation
 - serde-generate - a fork of the `serde-generate` crate, with some customizations for the Egui.NET API
+
+The project also compiles [a fork of `egui`](https://github.com/DouglasDwyer/egui/tree/egui_net_patches). The main purpose of the fork is to mark additional `egui` types as serializable, so that they may be shared with C# easily.

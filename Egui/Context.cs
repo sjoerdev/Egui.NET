@@ -8,7 +8,7 @@ namespace Egui;
 /// Your handle to egui.<br/>
 ///
 /// This is the first thing you need when working with egui.
-/// Contains the <see cref="InputState"/>, <see cref="Memory"/>, <see cref="PlatformOutput"/>, and more.
+/// Contains the <see cref="InputState"/>, <see cref="Egui.Memory"/>, <see cref="PlatformOutput"/>, and more.
 ///
 /// <see cref="Ui"/>  has many of the same accessor functions, and the same applies there.
 /// </summary>
