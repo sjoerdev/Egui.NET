@@ -10,10 +10,12 @@ public ref partial struct TextEdit : IWidget
     private ref string _textMutable;
     private TextEditInner _inner;
 
+#pragma warning disable CS8618
     private TextEdit(string textImmutable)
     {
         _textImmutable = textImmutable;
     }
+#pragma warning restore
 
     private TextEdit(ref string textMutable)
     {

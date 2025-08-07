@@ -624,7 +624,7 @@ public ref partial struct Popup
             if (value is not null)
             {
                 serializer.serialize_option_tag(true);
-                serialize_vector_RectAlign((value ?? default), serializer);
+                serialize_vector_RectAlign(value, serializer);
             }
             else
             {

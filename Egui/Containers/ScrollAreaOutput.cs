@@ -42,4 +42,18 @@ public struct ScrollAreaOutput<R>
     /// Where on the screen the content is (excludes scroll bars).
     /// </summary>
     public required Rect InnerRect;
+
+    /// <summary>
+    /// Strips the generic argument.
+    /// </summary>
+    internal readonly ScrollAreaOutput WithoutInner()
+    {
+        return new ScrollAreaOutput
+        {
+            InnerRect = InnerRect,
+            Id = Id,
+            State = State,
+            ContentSize = ContentSize,
+        };
+    }
 }

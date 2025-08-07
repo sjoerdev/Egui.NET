@@ -136,8 +136,6 @@ const CUSTOM_FNS: &[&str] = &[
     "egui_context_Context_ref_id",
     "egui_painter_Painter_add",
     "egui_ui_Ui_set_enabled",
-    "egui_load_BytesLoaderData_uri",
-    "egui_load_BytesLoaderData_set_result",
     "egui_memory_Memory_options",
     "egui_memory_Memory_set_options",
     "egui_containers_collapsing_header_EguiCollapsingStateShowToggleButtonParams_unpack"

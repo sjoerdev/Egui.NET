@@ -205,7 +205,7 @@ public partial struct Response : IEquatable<Response>
             return value;
         }
     }
-    
+
     /// <summary>
     /// Converts a response to its associated popup anchor.
     /// </summary>
@@ -225,4 +225,10 @@ public partial struct Response : IEquatable<Response>
             Value = widgetRect
         };
     }
+
+    /// <summary>
+    /// See <see cref="Union"/>.
+    ///
+    /// To summarize the response from many widgets you can use this pattern
+    public static Response operator |(Response lhs, Response rhs) => lhs.Union(rhs);
 }

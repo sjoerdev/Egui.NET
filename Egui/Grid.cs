@@ -1,6 +1,8 @@
 namespace Egui;
 
+#pragma warning disable CS0282
 public partial struct Grid
+#pragma warning restore
 {
     /// <summary>
     /// Whether to show the grid as striped.
@@ -40,7 +42,7 @@ public partial struct Grid
         {
             ui.SetStyle(style);
         }
-        
+
         return new InnerResponse
         {
             Response = response
@@ -63,12 +65,12 @@ public partial struct Grid
         var ctx = ui.Ctx;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
         var response = EguiMarshal.Call<nuint, Grid, EguiCallback, Response>(EguiFn.egui_grid_Grid_show, ui.Ptr, this, callback);
-        
+
         if (_striped.HasValue)
         {
             ui.SetStyle(style);
         }
-        
+
         return new InnerResponse<R>
         {
             Inner = result,
