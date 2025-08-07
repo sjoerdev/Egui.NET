@@ -11,7 +11,7 @@ public partial struct ScrollArea
         ui.AssertInitialized();
         var ctx = ui.Ctx;
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var (id, state, contentSize, innerRect) = EguiMarshal.Call<nuint, ScrollArea, EguiCallback, (Id, State, Vec2, Rect)>(EguiFn.egui_containers_scroll_area_ScrollArea_show, ui.Ptr, this, callback);
+        var (id, state, contentSize, innerRect) = EguiMarshal.Call<nuint, ScrollArea, EguiCallback, (Id, State, EVec2, Rect)>(EguiFn.egui_containers_scroll_area_ScrollArea_show, ui.Ptr, this, callback);
         return new ScrollAreaOutput
         {
             Id = id,
@@ -28,7 +28,7 @@ public partial struct ScrollArea
         var ctx = ui.Ctx;
         R result = default!;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
-        var (id, state, contentSize, innerRect) = EguiMarshal.Call<nuint, ScrollArea, EguiCallback, (Id, State, Vec2, Rect)>(EguiFn.egui_containers_scroll_area_ScrollArea_show, ui.Ptr, this, callback);
+        var (id, state, contentSize, innerRect) = EguiMarshal.Call<nuint, ScrollArea, EguiCallback, (Id, State, EVec2, Rect)>(EguiFn.egui_containers_scroll_area_ScrollArea_show, ui.Ptr, this, callback);
         return new ScrollAreaOutput<R>
         {
             Inner = result,
@@ -62,7 +62,7 @@ public partial struct ScrollArea
             var unpackedData = *(EguiScrollAreaShowRowsParams*)data;
             result = addContents(new Ui(ctx, unpackedData.ui), unpackedData.start, unpackedData.end);
         });
-        var (id, state, contentSize, innerRect) = EguiMarshal.Call<nuint, ScrollArea, float, nuint, EguiCallback, (Id, State, Vec2, Rect)>(EguiFn.egui_containers_scroll_area_ScrollArea_show_rows, ui.Ptr, this, rowHeightSansSpacing, totalRows, callback);
+        var (id, state, contentSize, innerRect) = EguiMarshal.Call<nuint, ScrollArea, float, nuint, EguiCallback, (Id, State, EVec2, Rect)>(EguiFn.egui_containers_scroll_area_ScrollArea_show_rows, ui.Ptr, this, rowHeightSansSpacing, totalRows, callback);
         return new ScrollAreaOutput<R>
         {
             Id = id,
@@ -95,9 +95,9 @@ public partial struct ScrollArea
         using var callback = new EguiCallback(data =>
         {
             var unpackedData = *(EguiScrollAreaShowViewportParams*)data;
-            result = addContents(new Ui(ctx, unpackedData.ui), Rect.FromMinMax(new Pos2(unpackedData.min_x, unpackedData.min_y), new Pos2(unpackedData.max_x, unpackedData.max_y)));
+            result = addContents(new Ui(ctx, unpackedData.ui), Rect.FromMinMax(new EPos2(unpackedData.min_x, unpackedData.min_y), new EPos2(unpackedData.max_x, unpackedData.max_y)));
         });
-        var (id, state, contentSize, innerRect) = EguiMarshal.Call<nuint, ScrollArea, EguiCallback, (Id, State, Vec2, Rect)>(EguiFn.egui_containers_scroll_area_ScrollArea_show_viewport, ui.Ptr, this, callback);
+        var (id, state, contentSize, innerRect) = EguiMarshal.Call<nuint, ScrollArea, EguiCallback, (Id, State, EVec2, Rect)>(EguiFn.egui_containers_scroll_area_ScrollArea_show_viewport, ui.Ptr, this, callback);
         return new ScrollAreaOutput<R>
         {
             Id = id,

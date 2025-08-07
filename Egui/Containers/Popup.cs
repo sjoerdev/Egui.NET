@@ -17,7 +17,7 @@ public ref partial struct Popup
     /// <summary>
     /// Get the expected size of the popup.
     /// </summary>
-    public Vec2? ExpectedSize => AreaState.Load(Ctx, _id)?.Size;
+    public EVec2? ExpectedSize => AreaState.Load(Ctx, _id)?.Size;
 
     /// <summary>
     /// Calculate the best alignment for the popup, based on the last size and screen rect.
@@ -26,7 +26,7 @@ public ref partial struct Popup
     {
         get
         {
-            var expectedPopupSize = ExpectedSize.GetValueOrDefault(new Vec2(_width.GetValueOrDefault(), 0));
+            var expectedPopupSize = ExpectedSize.GetValueOrDefault(new EVec2(_width.GetValueOrDefault(), 0));
             var maybeAnchorRect = _anchor.Rect(_id, Ctx);
             if (!maybeAnchorRect.HasValue)
             {
@@ -353,7 +353,7 @@ public ref partial struct Popup
     /// <summary>
     /// Show the popup relative to a specific position.
     /// </summary>
-    public readonly Popup AtPosition(Pos2 position)
+    public readonly Popup AtPosition(EPos2 position)
     {
         var result = this;
         result._anchor = new PopupAnchor.Position() { Value = position };

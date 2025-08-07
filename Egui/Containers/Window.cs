@@ -46,9 +46,9 @@ public ref struct Window
         _frame = null;
         _resize = new Resize()
             .WithStroke(false)
-            .MinSize(new Vec2(96.0f, 32.0f))
-            .DefaultSize(new Vec2(340.0f, 420.0f));
-        _scroll = ScrollArea.Neither.AutoShrink(new Vec2b(false, false));
+            .MinSize(new EVec2(96.0f, 32.0f))
+            .DefaultSize(new EVec2(340.0f, 420.0f));
+        _scroll = ScrollArea.Neither.AutoShrink(new EVec2b(false, false));
         _collapsible = true;
         _defaultOpen = true;
         _withTitleBar = true;
@@ -254,7 +254,7 @@ public ref struct Window
     /// <summary>
     /// Set minimum size of the window, equivalent to calling both MinWidth and MinHeight.
     /// </summary>
-    public readonly Window MinSize(Vec2 minSize)
+    public readonly Window MinSize(EVec2 minSize)
     {
         var result = this;
         result._resize = result._resize.MinSize(minSize);
@@ -284,7 +284,7 @@ public ref struct Window
     /// <summary>
     /// Set maximum size of the window, equivalent to calling both MaxWidth and MaxHeight.
     /// </summary>
-    public readonly Window MaxSize(Vec2 maxSize)
+    public readonly Window MaxSize(EVec2 maxSize)
     {
         var result = this;
         result._resize = result._resize.MaxSize(maxSize);
@@ -295,7 +295,7 @@ public ref struct Window
     /// Set current position of the window.
     /// If the window is movable it is up to you to keep track of where it moved to!
     /// </summary>
-    public readonly Window CurrentPos(Pos2 currentPos)
+    public readonly Window CurrentPos(EPos2 currentPos)
     {
         var result = this;
         result._area = result._area.CurrentPos(currentPos);
@@ -305,7 +305,7 @@ public ref struct Window
     /// <summary>
     /// Set initial position of the window.
     /// </summary>
-    public readonly Window DefaultPos(Pos2 defaultPos)
+    public readonly Window DefaultPos(EPos2 defaultPos)
     {
         var result = this;
         result._area = result._area.DefaultPos(defaultPos);
@@ -315,7 +315,7 @@ public ref struct Window
     /// <summary>
     /// Sets the window position and prevents it from being dragged around.
     /// </summary>
-    public readonly Window FixedPos(Pos2 pos)
+    public readonly Window FixedPos(EPos2 pos)
     {
         var result = this;
         result._area = result._area.FixedPos(pos);
@@ -377,7 +377,7 @@ public ref struct Window
     //
     /// It is an error to set both an anchor and a position.
     /// </summary>
-    public readonly Window Anchor(Align2 align, Vec2 offset)
+    public readonly Window Anchor(Align2 align, EVec2 offset)
     {
         var result = this;
         result._area = result._area.Anchor(align, offset);
@@ -397,7 +397,7 @@ public ref struct Window
     /// <summary>
     /// Set initial size of the window.
     /// </summary>
-    public readonly Window DefaultSize(Vec2 defaultSize)
+    public readonly Window DefaultSize(EVec2 defaultSize)
     {
         var result = this;
         result._resize = result._resize.DefaultSize(defaultSize);
@@ -430,7 +430,7 @@ public ref struct Window
     /// <summary>
     /// Sets the window size and prevents it from being resized by dragging its edges.
     /// </summary>
-    public readonly Window FixedSize(Vec2 size)
+    public readonly Window FixedSize(EVec2 size)
     {
         var result = this;
         result._resize = result._resize.FixedSize(size);
@@ -458,7 +458,7 @@ public ref struct Window
     /// <summary>
     /// Can the user resize the window by dragging its edges?
     /// </summary>
-    public readonly Window Resizable(Vec2b resizable)
+    public readonly Window Resizable(EVec2b resizable)
     {
         var result = this;
         result._resize = result._resize.Resizable(resizable);
@@ -499,7 +499,7 @@ public ref struct Window
     /// <summary>
     /// Enable/disable horizontal/vertical scrolling. <c>false</c> by default.
     /// </summary>
-    public readonly Window Scroll(Vec2b scroll)
+    public readonly Window Scroll(EVec2b scroll)
     {
         var result = this;
         result._scroll = result._scroll.Scroll(scroll);

@@ -208,7 +208,7 @@ public readonly ref partial struct Ui
     ///
     /// See also <see cref="AddSized"/>  and <see cref="Put"/> .
     /// </summary>
-    public unsafe readonly Response AddSized<T>(Vec2 maxSize, T widget) where T : IWidget, allows ref struct
+    public unsafe readonly Response AddSized<T>(EVec2 maxSize, T widget) where T : IWidget, allows ref struct
     {
 #pragma warning disable CS8500
         var tp = &widget;
@@ -269,13 +269,13 @@ public readonly ref partial struct Ui
     /// When finished, the amount of space actually used (<c>min_rect</c>) will be allocated.
     /// So you can request a lot of space and then use less.
     /// </summary>
-    public readonly InnerResponse AllocateUi(Vec2 desiredSize, Action<Ui> addContents)
+    public readonly InnerResponse AllocateUi(EVec2 desiredSize, Action<Ui> addContents)
     {
         return AllocateUiWithLayout(desiredSize, Layout, addContents);
     }
 
     /// <inheritdoc cref="AllocateUi"/>
-    public readonly InnerResponse<R> AllocateUi<R>(Vec2 desiredSize, Func<Ui, R> addContents)
+    public readonly InnerResponse<R> AllocateUi<R>(EVec2 desiredSize, Func<Ui, R> addContents)
     {
         return AllocateUiWithLayout(desiredSize, Layout, addContents);
     }
@@ -286,12 +286,12 @@ public readonly ref partial struct Ui
     /// When finished, the amount of space actually used (<c>min_rect</c>) will be allocated.
     /// So you can request a lot of space and then use less.
     /// </summary>
-    public readonly InnerResponse AllocateUiWithLayout(Vec2 desiredSize, Layout layout, Action<Ui> addContents)
+    public readonly InnerResponse AllocateUiWithLayout(EVec2 desiredSize, Layout layout, Action<Ui> addContents)
     {
         AssertInitialized();
         var ctx = Ctx;
         using var callback = new EguiCallback(ui => addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<nuint, Vec2, Layout, EguiCallback, Response>(EguiFn.egui_ui_Ui_allocate_ui_with_layout, Ptr, desiredSize, layout, callback);
+        var response = EguiMarshal.Call<nuint, EVec2, Layout, EguiCallback, Response>(EguiFn.egui_ui_Ui_allocate_ui_with_layout, Ptr, desiredSize, layout, callback);
         return new InnerResponse
         {
             Response = response
@@ -299,13 +299,13 @@ public readonly ref partial struct Ui
     }
 
     /// <inheritdoc cref="AllocateUiWithLayout"/>
-    public readonly InnerResponse<R> AllocateUiWithLayout<R>(Vec2 desiredSize, Layout layout, Func<Ui, R> addContents)
+    public readonly InnerResponse<R> AllocateUiWithLayout<R>(EVec2 desiredSize, Layout layout, Func<Ui, R> addContents)
     {
         AssertInitialized();
         R result = default!;
         var ctx = Ctx;
         using var callback = new EguiCallback(ui => result = addContents(new Ui(ctx, ui)));
-        var response = EguiMarshal.Call<nuint, Vec2, Layout, EguiCallback, Response>(EguiFn.egui_ui_Ui_allocate_ui_with_layout, Ptr, desiredSize, layout, callback);
+        var response = EguiMarshal.Call<nuint, EVec2, Layout, EguiCallback, Response>(EguiFn.egui_ui_Ui_allocate_ui_with_layout, Ptr, desiredSize, layout, callback);
         return new InnerResponse<R>
         {
             Inner = result,
@@ -826,10 +826,10 @@ public readonly ref partial struct Ui
     /// Convenience function to get a region to paint on.
     /// Note that egui uses screen coordinates for everything.
     /// </summary>
-    public readonly (Response, Painter) AllocatePainter(Vec2 desiredSize, Sense sense)
+    public readonly (Response, Painter) AllocatePainter(EVec2 desiredSize, Sense sense)
     {
         AssertInitialized();
-        var (response, handle) = EguiMarshal.Call<nuint, Vec2, Sense, (Response, EguiHandle)>(EguiFn.egui_ui_Ui_painter_at, Ptr, desiredSize, sense);
+        var (response, handle) = EguiMarshal.Call<nuint, EVec2, Sense, (Response, EguiHandle)>(EguiFn.egui_ui_Ui_painter_at, Ptr, desiredSize, sense);
         return (response, new Painter(Ctx, handle));
     }
 

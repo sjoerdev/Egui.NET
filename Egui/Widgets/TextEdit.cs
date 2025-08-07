@@ -294,7 +294,7 @@ public ref partial struct TextEdit : IWidget
     /// <summary>
     /// Set the minimum size of the <c>TextEdit</c>.
     /// </summary>
-    public readonly TextEdit MinSize(Vec2 minSize)
+    public readonly TextEdit MinSize(EVec2 minSize)
     {
         var result = this;
         result._inner.MinSize = minSize;
@@ -342,7 +342,7 @@ public ref partial struct TextEdit : IWidget
             Tab = false
         };
         result._inner.CursorAtEnd = true;
-        result._inner.MinSize = new Vec2(0, 0);
+        result._inner.MinSize = new EVec2(0, 0);
         result._inner.Align = Align2.LeftTop;
         result._inner.ClipText = false;
         result._inner.CharLimit = nuint.MaxValue;
@@ -382,7 +382,7 @@ public ref partial struct TextEdit : IWidget
         public ulong DesiredHeightRows;
         public Egui.EventFilter EventFilter;
         public bool CursorAtEnd;
-        public Egui.Vec2 MinSize;
+        public Egui.EVec2 MinSize;
         public Egui.Align2 Align;
         public bool ClipText;
         public ulong CharLimit;

@@ -49,7 +49,7 @@ public partial struct Response : IEquatable<Response>
     /// (that is handled by the <c>Painter</c> directly).
     /// </summary>
     public Egui.Sense Sense;
-    private Egui.Pos2? _interactPointerPos;
+    private Egui.EPos2? _interactPointerPos;
     /// <summary>
     /// The intrinsic / desired size of the widget.<br/>
     ///
@@ -62,7 +62,7 @@ public partial struct Response : IEquatable<Response>
     /// for improved layouting.
     /// See for instance <c>EguiFlex</c>.
     /// </summary>
-    public Egui.Vec2? IntrinsicSize;
+    public Egui.EVec2? IntrinsicSize;
     private Egui.Flags _flags;
 
     /// <summary>
@@ -143,8 +143,8 @@ public partial struct Response : IEquatable<Response>
         Rect.Serialize(serializer);
         InteractRect.Serialize(serializer);
         Sense.Serialize(serializer);
-        Egui.TraitHelpers.serialize_option_Pos2(_interactPointerPos, serializer);
-        Egui.TraitHelpers.serialize_option_Vec2(IntrinsicSize, serializer);
+        Egui.TraitHelpers.serialize_option_EPos2(_interactPointerPos, serializer);
+        Egui.TraitHelpers.serialize_option_EVec2(IntrinsicSize, serializer);
         _flags.Serialize(serializer);
         serializer.decrease_container_depth();
     }
@@ -160,8 +160,8 @@ public partial struct Response : IEquatable<Response>
         obj.Rect = Egui.Rect.Deserialize(deserializer);
         obj.InteractRect = Egui.Rect.Deserialize(deserializer);
         obj.Sense = Egui.Sense.Deserialize(deserializer);
-        obj._interactPointerPos = Egui.TraitHelpers.deserialize_option_Pos2(deserializer);
-        obj.IntrinsicSize = Egui.TraitHelpers.deserialize_option_Vec2(deserializer);
+        obj._interactPointerPos = Egui.TraitHelpers.deserialize_option_EPos2(deserializer);
+        obj.IntrinsicSize = Egui.TraitHelpers.deserialize_option_EVec2(deserializer);
         obj._flags = Egui.Flags.Deserialize(deserializer);
 
         deserializer.decrease_container_depth();

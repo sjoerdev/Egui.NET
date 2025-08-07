@@ -5,7 +5,7 @@ public partial struct Rect
     /// <summary>
     /// Infinite rectangle that contains every point.
     /// </summary>
-    public static readonly Rect Everything = Rect.FromMinMax(new Pos2(float.NegativeInfinity, float.NegativeInfinity), new Pos2(float.PositiveInfinity, float.PositiveInfinity));
+    public static readonly Rect Everything = Rect.FromMinMax(new EPos2(float.NegativeInfinity, float.NegativeInfinity), new EPos2(float.PositiveInfinity, float.PositiveInfinity));
 
     /// <summary>
     /// The inverse of <see cref="Everything"/> : stretches from positive infinity to negative infinity.
@@ -13,17 +13,17 @@ public partial struct Rect
     ///
     /// This is useful as the seed for bounding boxes.
     /// </summary>
-    public static readonly Rect Nothing = Rect.FromMinMax(new Pos2(float.PositiveInfinity, float.PositiveInfinity), new Pos2(float.NegativeInfinity, float.NegativeInfinity));
+    public static readonly Rect Nothing = Rect.FromMinMax(new EPos2(float.PositiveInfinity, float.PositiveInfinity), new EPos2(float.NegativeInfinity, float.NegativeInfinity));
 
     /// <summary>
     /// An invalid <see cref="Rect"/> filled with <see cref="float.NaN"/>. 
     /// </summary>
-    public static readonly Rect NaN = Rect.FromMinMax(new Pos2(float.NaN, float.NaN), new Pos2(float.NaN, float.NaN));
+    public static readonly Rect NaN = Rect.FromMinMax(new EPos2(float.NaN, float.NaN), new EPos2(float.NaN, float.NaN));
 
     /// <summary>
     /// A <see cref="Rect"/> filled with zeroes. 
     /// </summary>
-    public static readonly Rect Zero = Rect.FromMinMax(new Pos2(0, 0), new Pos2(0, 0));
+    public static readonly Rect Zero = Rect.FromMinMax(new EPos2(0, 0), new EPos2(0, 0));
 
     /// <summary>
     /// <c>Max.y</c>
@@ -34,10 +34,10 @@ public partial struct Rect
         set => Max.Y = value;
     }
 
-    public Pos2 Center
+    public EPos2 Center
     {
-        readonly get => EguiMarshal.Call<Rect, Pos2>(EguiFn.emath_rect_Rect_center, this);
-        set => this = EguiMarshal.Call<Rect, Pos2, Rect>(EguiFn.emath_rect_Rect_center, this, value);
+        readonly get => EguiMarshal.Call<Rect, EPos2>(EguiFn.emath_rect_Rect_center, this);
+        set => this = EguiMarshal.Call<Rect, EPos2, Rect>(EguiFn.emath_rect_Rect_center, this, value);
     }
 
     /// <summary>

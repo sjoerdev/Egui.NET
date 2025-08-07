@@ -105,7 +105,7 @@ public unsafe class Program
         _input.ViewportId = ViewportId.Root;
         _input.Focused = focus;
         _input.Time = _startTimer.Elapsed.TotalSeconds;
-        _input.ScreenRect = Rect.FromMinSize(new Pos2(0, 0), new Vec2(_window.Size.X, _window.Size.Y));
+        _input.ScreenRect = Rect.FromMinSize(EPos2.Zero, (_window.Size.X, _window.Size.Y));
 
         _input.SystemTheme = Theme.Light;
         _input.Viewports = _input.Viewports.SetItem(_input.ViewportId, new ViewportInfo
@@ -122,7 +122,7 @@ public unsafe class Program
         var output = _ctx.Run(_input, ctx =>
         {
             new Window("README Example")
-                .FixedSize(new Vec2(160, 160))
+                .FixedSize((160, 160))
                 .Show(ctx, ui =>
             {
                 ui.Heading("My egui Application");
@@ -141,7 +141,7 @@ public unsafe class Program
             });
 
             new Window("🗄 Widget Gallery")
-                .Resizable(new Vec2b(true, false))
+                .Resizable((true, false))
                 .DefaultWidth(280)
                 .Show(ctx, ui =>
             {
@@ -194,7 +194,7 @@ public unsafe class Program
                 ui.MultiplyOpacity(_opacity);
                 new Grid("my_grid")
                     .NumColumns(2)
-                    .Spacing(new Vec2(40, 4))
+                    .Spacing((40, 4))
                     .Striped(true)
                     .Show(ui, GalleryGridContents);
             });
@@ -421,7 +421,7 @@ public unsafe class Program
             // You can query the `ui` how much space is available,
             // but in this example we have a fixed size widget based on the height of a standard button:
             //var desiredSize = ui.Spacing.InteractSize.Y * new Vec2(2.0f, 1.0f);
-            var desiredSize = new Vec2(2.0f * ui.Spacing.InteractSize.Y, ui.Spacing.InteractSize.Y);
+            var desiredSize = (2.0f * ui.Spacing.InteractSize.Y, ui.Spacing.InteractSize.Y);
 
             // 2. Allocating space:
             // This is where we get a region of the screen assigned.
@@ -464,7 +464,7 @@ public unsafe class Program
                 // Paint the circle, animating it from left to right with `how_on`:
                 //var circleX = EguiHelpers.Lerp(rect.Left + radius, rect.Right - radius, howOn);
                 var circleX = (1.0f - howOn) * (rect.Left + radius) + howOn * (rect.Right - radius);
-                var center = new Pos2(circleX, rect.Center.Y);
+                var center = (circleX, rect.Center.Y);
                 ui.Painter
                     .Circle(center, 0.75f * radius, visuals.BgFill, visuals.FgStroke);
             }
@@ -672,7 +672,7 @@ public unsafe class Program
         {
             Button = (Egui.PointerButton)button,
             Pressed = true,
-            Pos = new Pos2(mouse.Position.X, mouse.Position.Y),
+            Pos = (mouse.Position.X, mouse.Position.Y),
             Modifiers = new()
             {
                 Alt = alt,
@@ -688,7 +688,7 @@ public unsafe class Program
         {
             Button = (Egui.PointerButton)button,
             Pressed = false,
-            Pos = new Pos2(mouse.Position.X, mouse.Position.Y),
+            Pos = (mouse.Position.X, mouse.Position.Y),
             Modifiers = new()
             {
                 Alt = alt,

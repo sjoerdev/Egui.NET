@@ -9,7 +9,7 @@ public struct ScrollAreaOutput
     public required State State;
     
     /// <inheritdoc cref="ScrollAreaOutput{R}.ContentSize"/>
-    public required Vec2 ContentSize;
+    public required EVec2 ContentSize;
 
     /// <inheritdoc cref="ScrollAreaOutput{R}.InnerRect"/>
     public required Rect InnerRect;
@@ -36,7 +36,7 @@ public struct ScrollAreaOutput<R>
     /// The size of the content. If this is larger than <see cref="InnerRect"/>, then there was
     /// need for scrolling.
     /// </summary>
-    public required Vec2 ContentSize;
+    public required EVec2 ContentSize;
 
     /// <summary>
     /// Where on the screen the content is (excludes scroll bars).

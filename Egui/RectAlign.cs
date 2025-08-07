@@ -138,9 +138,9 @@ public partial struct RectAlign
     /// If no alternative fits, the first is returned.
     /// If no alternatives are given, <c>null</c> is returned.
     /// </summary>
-    public static RectAlign? FindBestAlign(IEnumerable<RectAlign> valuesToTry, Rect screenRect, Rect parentRect, float gap, Vec2 expectedSize)
+    public static RectAlign? FindBestAlign(IEnumerable<RectAlign> valuesToTry, Rect screenRect, Rect parentRect, float gap, EVec2 expectedSize)
     {
-        return EguiMarshal.Call<ImmutableList<RectAlign>, Rect, Rect, float, Vec2, RectAlign?>(EguiFn.emath_rect_align_RectAlign_find_best_align,
+        return EguiMarshal.Call<ImmutableList<RectAlign>, Rect, Rect, float, EVec2, RectAlign?>(EguiFn.emath_rect_align_RectAlign_find_best_align,
             valuesToTry.ToImmutableList(), screenRect, parentRect, gap, expectedSize);
     }
 }
