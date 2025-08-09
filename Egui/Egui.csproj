@@ -3,7 +3,7 @@
     <PackageId>Egui.NET</PackageId>
 	<Title>Egui.NET</Title>
 	<Description>An easy-to-use immediate mode GUI</Description>
-    <Version>0.2.0+0.32.0</Version>
+    <Version>0.3.0+0.32.0</Version>
 	<Authors>Douglas Dwyer</Authors>
 	<RepositoryUrl>https://github.com/DouglasDwyer/Egui.NET</RepositoryUrl>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -19,12 +19,12 @@
 	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('OSX')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'x64'">osx-x64</RuntimeIdentifiers>
 	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('Linux')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'Arm64'">linux-arm64</RuntimeIdentifiers>
 	<RuntimeIdentifiers Condition="$([MSBuild]::IsOSPlatform('Linux')) AND $([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture) == 'x64'">linux-x64</RuntimeIdentifiers>
-	<!--RuntimeIdentifiers Condition="'$(Configuration)'=='Release'">win-arm64;win-x64;osx-arm64;osx-x64;linux-arm64;linux-x64</RuntimeIdentifiers-->
+	<RuntimeIdentifiers Condition="'$(Configuration)'=='Release'">win-arm64;win-x64;osx-arm64;osx-x64;linux-arm64;linux-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
 	<PropertyGroup>
 		<CargoExecutable Condition="'$(Configuration)'=='Debug'">cargo</CargoExecutable>
-		<CargoExecutable Condition="'$(Configuration)'=='Release'">cargo</CargoExecutable>
+		<CargoExecutable Condition="'$(Configuration)'=='Release'">cross</CargoExecutable>
 
 		<CargoProfile Condition="'$(Configuration)'=='Debug'">dev</CargoProfile>
 		<CargoProfile Condition="'$(Configuration)'=='Release'">release</CargoProfile>
@@ -56,7 +56,7 @@
 			<CargoTarget Include="x86_64-unknown-linux-gnu" Condition="'%(RIDList.Identity)' == 'linux-x64'" />
 		</ItemGroup>
 
-		<Exec Command="$(CargoExecutable) build --profile $(CargoProfile) --target %(CargoTarget.Identity) $(CargoUnstableOptions) $(CargoFeatures) >> run.txt"
+		<Exec Command="$(CargoExecutable) build --profile $(CargoProfile) --target %(CargoTarget.Identity) $(CargoUnstableOptions) $(CargoFeatures)"
 			  EnvironmentVariables="$(CargoVariables)"
 			  WorkingDirectory=".." />
 
