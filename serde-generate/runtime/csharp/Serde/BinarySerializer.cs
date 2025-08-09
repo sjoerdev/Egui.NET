@@ -8,6 +8,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Serde
@@ -17,22 +18,19 @@ namespace Serde
         protected readonly MemoryStream buffer;
         protected readonly BinaryWriter output;
         protected readonly Encoding utf8 = Encoding.GetEncoding("utf-8", new EncoderExceptionFallback(), new DecoderExceptionFallback());
-        private long containerDepthBudget;
 
-        public BinarySerializer(long maxContainerDepth)
+        public BinarySerializer()
         {
             buffer = new MemoryStream();
             output = new BinaryWriter(buffer);
-            containerDepthBudget = maxContainerDepth;
         }
 
-        public BinarySerializer(byte[] bufferArray, long maxContainerDepth) : this(new ArraySegment<byte>(bufferArray), maxContainerDepth) { }
+        public BinarySerializer(byte[] bufferArray) : this(new ArraySegment<byte>(bufferArray)) { }
 
-        public BinarySerializer(ArraySegment<byte> bufferArray, long maxContainerDepth)
+        public BinarySerializer(ArraySegment<byte> bufferArray)
         {
             buffer = new MemoryStream(bufferArray.Array, bufferArray.Offset, bufferArray.Count);
             output = new BinaryWriter(buffer);
-            containerDepthBudget = maxContainerDepth;
         }
 
         public void Reset() {
@@ -43,16 +41,10 @@ namespace Serde
 
         public void increase_container_depth()
         {
-            if (containerDepthBudget == 0)
-            {
-                throw new SerializationException("Exceeded maximum container depth");
-            }
-            containerDepthBudget -= 1;
         }
 
         public void decrease_container_depth()
         {
-            containerDepthBudget += 1;
         }
 
         public abstract void serialize_len(long len);
@@ -74,13 +66,22 @@ namespace Serde
 
         public ReadOnlySpan<byte> get_bytes() => new ReadOnlySpan<byte>(buffer.GetBuffer(), 0, (int)buffer.Length);
 
-        public void serialize_str(string value) => serialize_bytes(utf8.GetBytes(value).ToImmutableList());
+        public void serialize_str(string value) => serialize_bytes(utf8.GetBytes(value).ToImmutableArray());
 
-        public void serialize_bytes(ImmutableList<byte> value)
+        public void serialize_bytes(ImmutableArray<byte> value)
         {
-            serialize_len(value.Count);
+            serialize_len(value.Length);
             foreach (byte b in value)
                 output.Write(b);
+        }
+
+        public unsafe void serialize_seq_unmanaged<T>(ReadOnlySpan<T> value) where T : unmanaged
+        {
+            serialize_len(value.Length);
+            fixed (T* ptr = value)
+            {
+                output.Write(new ReadOnlySpan<byte>((byte*)ptr, sizeof(T) * value.Length));
+            }
         }
 
         public void serialize_bool(bool value) => output.Write(value);

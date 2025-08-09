@@ -9,7 +9,7 @@ public partial struct ColorImage
     /// Create a <see cref="ColorImage"/> from iterator over flat opaque gray data. 
     /// </summary>
     /// <exception cref="ArgumentException">If <c>size[0] * size[1] != grayIter.Count</c>.</exception>
-    public static ColorImage FromGrayIter(ImmutableList<nuint> size, IEnumerable<byte> grayIter)
+    public static ColorImage FromGrayIter(ImmutableArray<nuint> size, IEnumerable<byte> grayIter)
     {
         var pixels = grayIter.Select(Color32.FromGray).ToArray();
         if ((nuint)pixels.Length == size[0] * size[1])
@@ -25,8 +25,8 @@ public partial struct ColorImage
     /// <summary>
     /// Clone a sub-region as a new image.
     /// </summary>
-    public readonly ColorImage RegionByPixels(ImmutableList<nuint> xy, ImmutableList<nuint> wh)
+    public readonly ColorImage RegionByPixels(ImmutableArray<nuint> xy, ImmutableArray<nuint> wh)
     {
-        return EguiMarshal.Call<ColorImage, ImmutableList<nuint>, ImmutableList<nuint>, ColorImage>(EguiFn.epaint_image_ColorImage_region_by_pixels, this, xy, wh);
+        return EguiMarshal.Call<ColorImage, ImmutableArray<nuint>, ImmutableArray<nuint>, ColorImage>(EguiFn.epaint_image_ColorImage_region_by_pixels, this, xy, wh);
     }
 }

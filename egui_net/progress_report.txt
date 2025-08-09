@@ -1,5 +1,4 @@
-1752 / 1786 (98%) bound
-ecolor_hsva_gamma_HsvaGamma
+1752 / 1785 (98%) bound
 egui_containers_menu_MenuState_from_id
 egui_context_Context_interaction_snapshot
 egui_context_Context_try_load_bytes
@@ -32,4 +31,4 @@ egui_widgets_image_decode_animated_image_uri
 epaint_shapes_bezier_shape_CubicBezierShape_for_each_flattened_with_t
 epaint_shapes_bezier_shape_CubicBezierShape_split_range
 epaint_shapes_bezier_shape_QuadraticBezierShape_for_each_flattened_with_t
-epaint_stats_AllocInfo
+epaint_texture_atlas_Rectu

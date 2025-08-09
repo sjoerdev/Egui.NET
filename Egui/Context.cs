@@ -171,14 +171,14 @@ public sealed partial class Context : EguiObject
     /// <summary>
     /// Like <see cref="Run(RawInput, Action{Context})"/>, but takes in Bincode-serialized bytes
     /// representing the <see cref="RawInput"/> and produces Bincode-serialized bytes representing
-    /// the <see cref="FullOutput"/>. This may be used to pass data directly to a Rust-native integration
+    /// a tuple containing the <c>(FullOutput, Vec&lt;ClippedPrimitive&gt;)</c>. This may be used to pass data directly to a Rust-native integration
     /// library (like <c>egui-winit</c>) without a round-trip through C# data types.
     /// </summary>
     public unsafe ReadOnlyMemory<byte> Run(ReadOnlySpan<byte> serializedInput, Action<Context> runUi)
     {
         fixed (byte* input = serializedInput)
         {
-            var result = EguiBindings.egui_invoke(EguiFn.egui_context_Context_run, new EguiSliceU8
+            var result = EguiBindings.egui_invoke(EguiFn.egui_context_Context_run_tessellate, new EguiSliceU8
             {
                 ptr = input,
                 len = (nuint)serializedInput.Length

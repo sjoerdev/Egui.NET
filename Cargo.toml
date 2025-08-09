@@ -11,6 +11,14 @@ resolver = "2"
 edition = "2021"
 version = "0.1.0"
 
+[profile.release]
+codegen-units = 1
+incremental = false
+opt-level = 3
+debug = false
+debug-assertions = false
+lto = "fat"
+
 [workspace.dependencies]
 
 # Internal dependencies

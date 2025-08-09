@@ -6,7 +6,7 @@ using System;
 
 namespace Bincode
 {
-    internal class BincodeDeserializer : BinaryDeserializer
+    internal sealed class BincodeDeserializer : BinaryDeserializer
     {
         public BincodeDeserializer(Stream input) : base(input, long.MaxValue) { }
 

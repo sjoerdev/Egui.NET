@@ -7,7 +7,7 @@ public partial struct Bytes
     /// <summary>
     /// Creates a new bytes object for the given data.
     /// </summary>
-    public Bytes(ImmutableList<byte> value)
+    public Bytes(ImmutableArray<byte> value)
     {
         _value = value;
     }

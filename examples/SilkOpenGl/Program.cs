@@ -1,7 +1,6 @@
 ﻿#pragma warning disable
 
 using System.Diagnostics;
-using System.Drawing;
 using System.Collections.Immutable;
 
 using Egui;
@@ -16,14 +15,9 @@ using Silk.NET.Input;
 using Silk.NET.Maths;
 using Silk.NET.OpenGLES;
 using Silk.NET.Windowing;
-using System.Security.Cryptography;
-using Silk.NET.GLFW;
-using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
-using System.Numerics;
 using Window = Egui.Containers.Window;
-using Microsoft.VisualBasic;
-using System.Reflection;
+using System.Numerics;
+using System.Drawing;
 
 namespace MySilkProgram;
 
@@ -51,7 +45,7 @@ public unsafe class Program
     public static void Main(string[] args)
     {
         _ctx = new Context();
-        
+
         WindowOptions options = WindowOptions.Default;
         options.Size = new Vector2D<int>(800, 600);
         options.Title = "My first Silk.NET program!";
@@ -112,7 +106,7 @@ public unsafe class Program
         {
             Parent = null,
             Title = "egui test",
-            Events = ImmutableList<ViewportEvent>.Empty,
+            Events = ImmutableArray<ViewportEvent>.Empty,
             NativePixelsPerPoint = scaleFactor,
             MonitorSize = null,
             Focused = focus,
@@ -421,7 +415,7 @@ public unsafe class Program
             // You can query the `ui` how much space is available,
             // but in this example we have a fixed size widget based on the height of a standard button:
             //var desiredSize = ui.Spacing.InteractSize.Y * new Vec2(2.0f, 1.0f);
-            var desiredSize = (2.0f * ui.Spacing.InteractSize.Y, ui.Spacing.InteractSize.Y);
+            var desiredSize = ui.Spacing.InteractSize.Y * new EVec2(2, 1);
 
             // 2. Allocating space:
             // This is where we get a region of the screen assigned.
@@ -429,19 +423,21 @@ public unsafe class Program
             var (rect, response) = ui.AllocateExactSize(desiredSize, Sense.Click);
 
             // 3. Interact: Time to check for clicks!
-            if (response.Clicked) {
+            if (response.Clicked)
+            {
                 _on = !_on;
                 response.MarkChanged();
             }
 
             // Attach some meta-data to the response which can be used by screen readers:
-            /*response.widget_info(|| {
-                egui::WidgetInfo::selected(egui::WidgetType::Checkbox, ui.is_enabled(), *on, "")
-            });*/
+            var isEnabled = ui.IsEnabled;
+            var isOn = _on;
+            response.WidgetInfo(() => WidgetInfo.WithSelected(WidgetType.Checkbox, isEnabled, isOn, ""));
 
             // 4. Paint!
             // Make sure we need to paint:
-            if (ui.IsRectVisible(rect)) {
+            if (ui.IsRectVisible(rect))
+            {
                 // Let's ask for a simple animation from egui.
                 // egui keeps track of changes in the boolean associated with the id and
                 // returns an animated value in the 0-1 range for how much "on" we are.
@@ -607,7 +603,8 @@ public unsafe class Program
                 LogicalKey = mapped.Value,
                 PhysicalKey = mapped.Value,
                 Pressed = true,
-                Modifiers = new() { 
+                Modifiers = new()
+                {
                     Alt = alt,
                     Ctrl = ctrl,
                     Shift = shift
@@ -616,7 +613,7 @@ public unsafe class Program
             });
         }
     }
-    
+
     private static void KeyChar(IKeyboard keyboard, char data)
     {
         _input.Events = _input.Events.Add(new Event.Text(data.ToString()));
@@ -757,7 +754,7 @@ public unsafe class Program
             _vbo = _gl.GenBuffer();
 
             CheckGlErrors();
-            
+
             _a_pos_loc = _gl.GetAttribLocation(_program, "a_pos");
             _a_tc_loc = _gl.GetAttribLocation(_program, "a_tc");
             _a_srgba_loc = _gl.GetAttribLocation(_program, "a_srgba");
@@ -841,30 +838,30 @@ public unsafe class Program
                 switch (primitive.Primitive.Inner)
                 {
                     case Primitive.Mesh meshPrimitive:
-                    {
-                        Mesh mesh = meshPrimitive.Value;
-
-                        SetClipRect(width, height, pixelsPerPoint, primitive.ClipRect);
-
-                        var texture = _textures[mesh.TextureId];
-                        _gl.BindBuffer(GLEnum.ArrayBuffer, _vbo);
-
-                        fixed (Vertex* vertices = mesh.Vertices.ToArray())
                         {
-                            _gl.BufferData(GLEnum.ArrayBuffer, (nuint)(mesh.Vertices.Count * sizeof(Vertex)), vertices, BufferUsageARB.StreamDraw);
+                            Mesh mesh = meshPrimitive.Value;
+
+                            SetClipRect(width, height, pixelsPerPoint, primitive.ClipRect);
+
+                            var texture = _textures[mesh.TextureId];
+                            _gl.BindBuffer(GLEnum.ArrayBuffer, _vbo);
+
+                            fixed (Vertex* vertices = mesh.Vertices.AsSpan())
+                            {
+                                _gl.BufferData(GLEnum.ArrayBuffer, (nuint)(mesh.Vertices.Length * sizeof(Vertex)), vertices, BufferUsageARB.StreamDraw);
+                            }
+
+                            _gl.BindBuffer(GLEnum.ElementArrayBuffer, _eao);
+
+                            fixed (uint* indices = mesh.Indices.AsSpan())
+                            {
+                                _gl.BufferData(GLEnum.ElementArrayBuffer, (nuint)(mesh.Indices.Length * sizeof(uint)), indices, BufferUsageARB.StreamDraw);
+                            }
+
+                            _gl.BindTexture(GLEnum.Texture2D, texture);
+                            _gl.DrawElements(GLEnum.Triangles, (uint)mesh.Indices.Length, GLEnum.UnsignedInt, null);
+                            break;
                         }
-
-                        _gl.BindBuffer(GLEnum.ElementArrayBuffer, _eao);
-
-                        fixed (uint* indices = mesh.Indices.ToArray())
-                        {
-                            _gl.BufferData(GLEnum.ElementArrayBuffer, (nuint)(mesh.Indices.Count * sizeof(uint)), indices, BufferUsageARB.StreamDraw);
-                        }
-
-                        _gl.BindTexture(GLEnum.Texture2D, texture);
-                        _gl.DrawElements(GLEnum.Triangles, (uint)mesh.Indices.Count, GLEnum.UnsignedInt, null);
-                        break;
-                    }
                 }
             }
         }
@@ -889,38 +886,38 @@ public unsafe class Program
             switch (delta.Image.Inner)
             {
                 case ImageData.Color image:
-                {
-                    _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureMagFilter, (int)GlowCode(delta.Options.Magnification, null));
-                    _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureMinFilter, (int)GlowCode(delta.Options.Minification, delta.Options.MipmapMode));
-                    _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureWrapS, (int)GlowCode(delta.Options.WrapMode));
-                    _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureWrapT, (int)GlowCode(delta.Options.WrapMode));
-
-                    CheckGlErrors();
-                    _gl.PixelStore(GLEnum.UnpackAlignment, 1);
-                    CheckGlErrors();
-
-                    fixed (Color32* data = image.Value.Pixels.ToArray())
                     {
-                        if (delta.Pos is null)
-                        {
-                            _gl.TexImage2D(GLEnum.Texture2D, 0, (int)GLEnum.Rgba8, (uint)image.Value.Size[0], (uint)image.Value.Size[1], 0, GLEnum.Rgba, GLEnum.UnsignedByte,
-                                data);
-                        }
-                        else
-                        {
-                            _gl.TexSubImage2D(GLEnum.Texture2D, 0, (int)delta.Pos[0], (int)delta.Pos[1], (uint)image.Value.Size[0], (uint)image.Value.Size[1], GLEnum.Rgba, GLEnum.UnsignedByte,
-                                data);
-                        }
-                    }
-                    CheckGlErrors();
+                        _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureMagFilter, (int)GlowCode(delta.Options.Magnification, null));
+                        _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureMinFilter, (int)GlowCode(delta.Options.Minification, delta.Options.MipmapMode));
+                        _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureWrapS, (int)GlowCode(delta.Options.WrapMode));
+                        _gl.TexParameterI(GLEnum.Texture2D, GLEnum.TextureWrapT, (int)GlowCode(delta.Options.WrapMode));
 
-                    if (delta.Options.MipmapMode.HasValue)
-                    {
-                        _gl.GenerateMipmap(GLEnum.Texture2D);
+                        CheckGlErrors();
+                        _gl.PixelStore(GLEnum.UnpackAlignment, 1);
+                        CheckGlErrors();
+
+                        fixed (Color32* data = image.Value.Pixels.ToArray())
+                        {
+                            if (delta.Pos is null)
+                            {
+                                _gl.TexImage2D(GLEnum.Texture2D, 0, (int)GLEnum.Rgba8, (uint)image.Value.Size[0], (uint)image.Value.Size[1], 0, GLEnum.Rgba, GLEnum.UnsignedByte,
+                                    data);
+                            }
+                            else
+                            {
+                                _gl.TexSubImage2D(GLEnum.Texture2D, 0, (int)delta.Pos.Value[0], (int)delta.Pos.Value[1], (uint)image.Value.Size[0], (uint)image.Value.Size[1], GLEnum.Rgba, GLEnum.UnsignedByte,
+                                    data);
+                            }
+                        }
+                        CheckGlErrors();
+
+                        if (delta.Options.MipmapMode.HasValue)
+                        {
+                            _gl.GenerateMipmap(GLEnum.Texture2D);
+                        }
+                        CheckGlErrors();
+                        break;
                     }
-                    CheckGlErrors();
-                    break;
-                }
             }
         }
 

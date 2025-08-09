@@ -115,7 +115,7 @@ public partial struct RectAlign
     /// <summary>
     /// The 12 most common menu positions as an array, for use with <see cref="FindBestAlign"/>.
     /// </summary>
-    public static readonly ImmutableList<RectAlign> MenuAligns = [
+    public static ImmutableArray<RectAlign> MenuAligns => [
         BottomStart,
         BottomEnd,
         TopStart,
@@ -140,7 +140,7 @@ public partial struct RectAlign
     /// </summary>
     public static RectAlign? FindBestAlign(IEnumerable<RectAlign> valuesToTry, Rect screenRect, Rect parentRect, float gap, EVec2 expectedSize)
     {
-        return EguiMarshal.Call<ImmutableList<RectAlign>, Rect, Rect, float, EVec2, RectAlign?>(EguiFn.emath_rect_align_RectAlign_find_best_align,
-            valuesToTry.ToImmutableList(), screenRect, parentRect, gap, expectedSize);
+        return EguiMarshal.Call<ImmutableArray<RectAlign>, Rect, Rect, float, EVec2, RectAlign?>(EguiFn.emath_rect_align_RectAlign_find_best_align,
+            valuesToTry.ToImmutableArray(), screenRect, parentRect, gap, expectedSize);
     }
 }

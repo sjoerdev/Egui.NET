@@ -10,7 +10,7 @@ namespace Serde
     {
         void serialize_str(string value);
 
-        void serialize_bytes(ImmutableList<byte> value);
+        void serialize_bytes(ImmutableArray<byte> value);
 
         void serialize_bool(bool value);
 

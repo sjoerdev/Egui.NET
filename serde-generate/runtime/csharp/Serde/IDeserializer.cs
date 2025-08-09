@@ -10,7 +10,7 @@ namespace Serde
     {
         string deserialize_str();
 
-        ImmutableList<byte> deserialize_bytes();
+        ImmutableArray<byte> deserialize_bytes();
 
         bool deserialize_bool();
 

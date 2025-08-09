@@ -137,6 +137,7 @@ const CUSTOM_FNS: &[&str] = &[
     "egui_context_Context_ref_decrement",
     "egui_context_Context_ref_count",
     "egui_context_Context_ref_id",
+    "egui_context_Context_run_tessellate",
     "egui_painter_Painter_add",
     "egui_ui_Ui_set_enabled",
     "egui_memory_Memory_options",
@@ -1330,13 +1331,13 @@ impl BindingsGenerator {
             Type::Slice(type_) => {
                 let inner_ty = self.bound_ty_name(self_ty, type_)?;
                 BoundTypeName::cs_rs(
-                    format!("ImmutableList<{}>", inner_ty.cs_name),
+                    format!("ImmutableArray<{}>", inner_ty.cs_name),
                     format!("Vec<{}>", inner_ty.rs_name))
             },
             Type::Array { type_, len } => {
                 let inner_ty = self.bound_ty_name(self_ty, type_)?;
                 BoundTypeName::cs_rs(
-                    format!("ImmutableList<{}>", inner_ty.cs_name),
+                    format!("ImmutableArray<{}>", inner_ty.cs_name),
                     format!("[{}; {len}]", inner_ty.rs_name))
             },
             Type::DynTrait(_)

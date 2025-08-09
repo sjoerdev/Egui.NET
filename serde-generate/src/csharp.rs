@@ -16,6 +16,16 @@ use std::{
     path::PathBuf,
 };
 
+/// Serialization helpers that should be excluded as they are manually defined.
+const EXCLUDE_SERIALIZATION_HELPERS: &[&str] = &[
+    "vector_Color32",
+    "vector_u8",
+    "vector_u16",
+    "vector_u32",
+    "vector_u64",
+    "vector_Vertex",
+];
+
 /// Main configuration object for code-generation in C#.
 pub struct CodeGenerator<'a> {
     /// Language-independent configuration.
@@ -282,6 +292,10 @@ using System.Numerics;"
     }
 
     fn quote_type(&self, format: &Format) -> String {
+        self.quote_type2(format, false)
+    }
+
+    fn quote_type2(&self, format: &Format, is_nested_struct: bool) -> String {
         use Format::*;
         match format {
             TypeName(x) => self.quote_qualified_name(x),
@@ -301,10 +315,15 @@ using System.Numerics;"
             F64 => "double".into(),
             Char => "char".into(),
             Str => "string".into(),
-            Bytes => "ImmutableList<byte>".into(),
+            Bytes => "ImmutableArray<byte>".into(),
 
             Option(format) => format!("{}?", self.quote_type(format)),
-            Seq(format) => format!("ImmutableList<{}>", self.quote_type(format)),
+            Seq(format) => if is_nested_struct {
+                format!("ReadOnlyBox<ImmutableArray<{}>>", self.quote_type(format))
+            }
+            else {
+                format!("ImmutableArray<{}>", self.quote_type(format))
+            },
             Map { key, value } => format!(
                 "ImmutableDictionary<{}, {}>",
                 self.quote_type(key),
@@ -314,7 +333,7 @@ using System.Numerics;"
             TupleArray {
                 content,
                 size: _size,
-            } => format!("ImmutableList<{}>", self.quote_type(content),),
+            } => format!("ImmutableArray<{}>", self.quote_type(content),),
             Variable(_) => panic!("unexpected value"),
         }
     }
@@ -462,6 +481,8 @@ using System.Numerics;"
     fn output_serialization_helper(&mut self, name: &str, format0: &Format) -> Result<()> {
         use Format::*;
 
+        if EXCLUDE_SERIALIZATION_HELPERS.contains(&name) { return Ok(()); }
+
         write!(
             self.out,
             "public static void serialize_{}({} value, Bincode.BincodeSerializer serializer) {{",
@@ -489,7 +510,7 @@ if (value is not null) {{
                 write!(
                     self.out,
                     r#"
-serializer.serialize_len(value.Count);
+serializer.serialize_len(value.Length);
 foreach (var item in value) {{
     {}
 }}
@@ -531,8 +552,8 @@ serializer.sort_map_entries(offsets);
                 write!(
                     self.out,
                     r#"
-if (value.Count != {0}) {{
-    throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Count + " instead of " + {0});
+if (value.Length != {0}) {{
+    throw new Serde.SerializationException("Invalid length for fixed-size array: " + value.Length + " instead of " + {0});
 }}
 foreach (var item in value) {{
     {1}
@@ -551,6 +572,8 @@ foreach (var item in value) {{
 
     fn output_deserialization_helper(&mut self, name: &str, format0: &Format) -> Result<()> {
         use Format::*;
+
+        if EXCLUDE_SERIALIZATION_HELPERS.contains(&name) { return Ok(()); }
 
         write!(
             self.out,
@@ -584,7 +607,7 @@ long length = deserializer.deserialize_len();
 for (int i = 0; i < length; i++) {{
     obj[i] = {1};
 }}
-return obj.ToImmutableList();
+return obj.ToImmutableArray();
 "#,
                     self.quote_type(format),
                     self.quote_deserialize(format)
@@ -645,7 +668,7 @@ return ({}
 for (int i = 0; i < {1}; i++) {{
     obj[i] = {2};
 }}
-return obj.ToImmutableList();
+return obj.ToImmutableArray();
 "#,
                     self.quote_type(content),
                     size,
@@ -741,7 +764,7 @@ return obj.ToImmutableList();
                 self.out,
                 "{} {} {};",
                 ["public", "private"][field.name.starts_with("_") as usize],
-                self.quote_type(&field.value),
+                self.quote_type2(&field.value, variant_index.is_some()),
                 field.name
             )?;
         }

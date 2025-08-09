@@ -35,7 +35,7 @@ public ref partial struct Memory
         get
         {
             AssertInitialized();
-            return EguiMarshal.Call<nuint, ImmutableList<LayerId>>(EguiFn.egui_memory_Memory_layer_ids, Ptr);
+            return EguiMarshal.Call<nuint, ImmutableArray<LayerId>>(EguiFn.egui_memory_Memory_layer_ids, Ptr);
         }
     }
 

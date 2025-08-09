@@ -61,7 +61,7 @@ public sealed partial class Painter : EguiObject
     /// </summary>
     public void ForEachShape(Action<ClippedShape> reader)
     {
-        var shapes = EguiMarshal.Call<nuint, ImmutableList<ClippedShape>>(EguiFn.egui_painter_Painter_for_each_shape, Ptr);
+        var shapes = EguiMarshal.Call<nuint, ImmutableArray<ClippedShape>>(EguiFn.egui_painter_Painter_for_each_shape, Ptr);
         foreach (var shape in shapes)
         {
             reader(shape);

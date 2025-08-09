@@ -12,9 +12,9 @@ public partial struct GraphicLayers
         return EguiMarshal.Call<GraphicLayers, LayerId, PaintList?>(EguiFn.egui_layers_GraphicLayers_get, this, layerId);
     }
 
-    public ImmutableList<ClippedShape> Drain(ImmutableList<LayerId> areaOrder, ImmutableDictionary<LayerId, TSTransform> toGlobal)
+    public ImmutableArray<ClippedShape> Drain(ImmutableArray<LayerId> areaOrder, ImmutableDictionary<LayerId, TSTransform> toGlobal)
     {
-        var (result, newThis) = EguiMarshal.Call<GraphicLayers, ImmutableList<LayerId>, ImmutableDictionary<LayerId, TSTransform>, (ImmutableList<ClippedShape>, GraphicLayers)>(EguiFn.egui_layers_GraphicLayers_drain, this, areaOrder, toGlobal);
+        var (result, newThis) = EguiMarshal.Call<GraphicLayers, ImmutableArray<LayerId>, ImmutableDictionary<LayerId, TSTransform>, (ImmutableArray<ClippedShape>, GraphicLayers)>(EguiFn.egui_layers_GraphicLayers_drain, this, areaOrder, toGlobal);
         this = newThis;
         return result;
     }

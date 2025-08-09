@@ -6,11 +6,11 @@ using System;
 
 namespace Bincode
 {
-    internal class BincodeSerializer : BinarySerializer
+    internal sealed class BincodeSerializer : BinarySerializer
     {
-        public BincodeSerializer() : base(long.MaxValue) { }
-        public BincodeSerializer(byte[] buffer) : base(buffer, long.MaxValue) { }
-        public BincodeSerializer(ArraySegment<byte> buffer) : base(buffer, long.MaxValue) { }
+        public BincodeSerializer() : base() { }
+        public BincodeSerializer(byte[] buffer) : base(buffer) { }
+        public BincodeSerializer(ArraySegment<byte> buffer) : base(buffer) { }
 
         public override void serialize_len(long value) => output.Write(value);
 

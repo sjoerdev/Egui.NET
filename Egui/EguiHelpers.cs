@@ -32,7 +32,7 @@ public static partial class EguiHelpers
             return new ImageSource.Bytes
             {
                 Uri = $"bytes://{resourceName}",
-                Inner = new Bytes(span.ToImmutableList())
+                Inner = new Bytes(span.ToImmutableArray())
             };
         }
     }

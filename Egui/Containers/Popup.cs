@@ -91,7 +91,7 @@ public ref partial struct Popup
     public readonly Context Ctx;
     private PopupAnchor _anchor;
     private RectAlign _rectAlign;
-    private ImmutableList<RectAlign>? _alternativeAligns;
+    private ImmutableArray<RectAlign>? _alternativeAligns;
     private LayerId _layerId;
     private OpenKind _openKind;
     private SetOpenCommand? _memoryCommand;
@@ -284,7 +284,7 @@ public ref partial struct Popup
     /// always use the position you set with <see cref="Align"/> .
     /// By default, this will try <see cref="RectAlign.Symmetries"/> and then <see cref="RectAlign.MenuAligns"/> .
     /// </summary>
-    public readonly Popup AlignAlternatives(ImmutableList<RectAlign> alternatives)
+    public readonly Popup AlignAlternatives(ImmutableArray<RectAlign> alternatives)
     {
         var result = this;
         result._alternativeAligns = alternatives;
@@ -550,7 +550,7 @@ public ref partial struct Popup
         public Egui.Id Id;
         public Egui.Containers.PopupAnchor Anchor;
         public Egui.RectAlign RectAlign;
-        public ImmutableList<Egui.RectAlign>? AlternativeAligns;
+        public ImmutableArray<Egui.RectAlign>? AlternativeAligns;
         public Egui.LayerId LayerId;
         public byte OpenKind;
         public SetOpenCommand? OpenCommand;
@@ -619,12 +619,12 @@ public ref partial struct Popup
             throw new NotSupportedException();
         }
 
-        private static void serialize_option_vector_RectAlign(ImmutableList<Egui.RectAlign>? value, BincodeSerializer serializer)
+        private static void serialize_option_vector_RectAlign(ImmutableArray<Egui.RectAlign>? value, BincodeSerializer serializer)
         {
             if (value is not null)
             {
                 serializer.serialize_option_tag(true);
-                serialize_vector_RectAlign(value, serializer);
+                serialize_vector_RectAlign((value ?? default), serializer);
             }
             else
             {
@@ -658,8 +658,8 @@ public ref partial struct Popup
             }
         }
 
-        private static void serialize_vector_RectAlign(ImmutableList<Egui.RectAlign> value, BincodeSerializer serializer) {
-            serializer.serialize_len(value.Count);
+        private static void serialize_vector_RectAlign(ImmutableArray<Egui.RectAlign> value, BincodeSerializer serializer) {
+            serializer.serialize_len(value.Length);
             foreach (var item in value) {
                 item.Serialize(serializer);
             }

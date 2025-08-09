@@ -18,7 +18,7 @@ public partial struct AllocatedAtomLayout
         {
             x.Kind = f(x.Kind);
             return x;
-        }).ToImmutableList();
+        }).ToImmutableArray();
     }
 
     public void MapImages(Func<Image, Image> f)
@@ -30,6 +30,6 @@ public partial struct AllocatedAtomLayout
                 x.Kind = new SizedAtomKind.Image(f(image.Item1), image.Item2);
             }
             return x;
-        }).ToImmutableList();
+        }).ToImmutableArray();
     }
 }

@@ -54,7 +54,7 @@ public partial struct Atoms : IEnumerable<Atom>
                 x.Kind = new AtomKind.Image(f(image.Value));
             }
             return x;
-        }).ToImmutableList();
+        }).ToImmutableArray();
     }
 
     public void MapTexts(Func<WidgetText, WidgetText> f)
@@ -66,7 +66,7 @@ public partial struct Atoms : IEnumerable<Atom>
                 x.Kind = new AtomKind.Text(f(text.Value));
             }
             return x;
-        }).ToImmutableList();
+        }).ToImmutableArray();
     }
 
     /// <summary>
@@ -187,7 +187,7 @@ public partial struct Atoms : IEnumerable<Atom>
     /// <inheritdoc/>
     public IEnumerator<Atom> GetEnumerator()
     {
-        return _value.GetEnumerator();
+        return ((IEnumerable<Atom>)_value).GetEnumerator();
     }
 
     /// <inheritdoc/>
