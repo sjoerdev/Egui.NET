@@ -907,7 +907,7 @@ dependencies = [
 
 [[package]]
 name = "egui_net"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "bincode",
  "csbindgen",
@@ -922,7 +922,7 @@ dependencies = [
 
 [[package]]
 name = "egui_net_bindgen"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "convert_case",
  "egui",
@@ -935,7 +935,7 @@ dependencies = [
 
 [[package]]
 name = "egui_net_ffi"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "bincode",
  "egui",
