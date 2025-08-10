@@ -6,7 +6,7 @@ build = "build/main.rs"
 
 [dependencies]
 convert_case.workspace = true
-egui.workspace = true
+egui = { workspace = true, features = [ "serde" ] }
 rustdoc-types.workspace = true
 serde.workspace = true
 serde_json.workspace = true

@@ -914,6 +914,7 @@ dependencies = [
  "egui",
  "egui_extras",
  "egui_net_bindgen",
+ "egui_net_ffi",
  "image",
  "mimalloc",
  "serde",
@@ -930,6 +931,15 @@ dependencies = [
  "serde-generate",
  "serde-reflection",
  "serde_json",
+]
+
+[[package]]
+name = "egui_net_ffi"
+version = "0.1.0"
+dependencies = [
+ "bincode",
+ "egui",
+ "serde",
 ]
 
 [[package]]

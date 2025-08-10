@@ -169,24 +169,15 @@ public sealed partial class Context : EguiObject
     }
 
     /// <summary>
-    /// Like <see cref="Run(RawInput, Action{Context})"/>, but takes in Bincode-serialized bytes
-    /// representing the <see cref="RawInput"/> and produces Bincode-serialized bytes representing
-    /// a tuple containing the <c>(PlatformOutput, TexturesDelta, Vec&lt;ClippedPrimitive&gt;)</c>. This may be used to pass data directly to a Rust-native integration
+    /// Like <see cref="Run(RawInput, Action{Context})"/>, but reads input and
+    /// writes output to an <see cref="EguiFfi"/> object.
+    /// This may be used to pass data directly to a Rust-native integration
     /// library (like <c>egui-winit</c>) without a round-trip through C# data types.
     /// </summary>
-    public unsafe ReadOnlyMemory<byte> Run(ReadOnlySpan<byte> serializedInput, Action<Context> runUi)
+    public unsafe void RunFfi(EguiFfi ffi, Action<Context> runUi)
     {
-        fixed (byte* input = serializedInput)
-        {
-            var result = EguiBindings.egui_invoke(EguiFn.egui_context_Context_run_tessellate, new EguiSliceU8
-            {
-                ptr = input,
-                len = (nuint)serializedInput.Length
-            });
-
-            EguiMarshal.AssertSuccess(result);
-            return new ReadOnlySpan<byte>(result.return_value.ptr, (int)result.return_value.len).ToArray();
-        }
+        using var callback = new EguiCallback(_ => runUi(this));
+        EguiMarshal.Call(EguiFn.egui_context_Context_run_ffi, Ptr, ffi.Pointer, callback);
     }
 
     /// <summary>

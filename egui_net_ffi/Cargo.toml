@@ -1,0 +1,9 @@
+[package]
+name = "egui_net_ffi"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+bincode.workspace = true
+egui = { workspace = true, features = [ "serde" ] }
+serde.workspace = true

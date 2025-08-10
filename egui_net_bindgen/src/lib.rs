@@ -134,10 +134,11 @@ const NAMESPACE_OVERRIDES: &[(&str, &str)] = &[
 
 /// Custom function names to define.
 const CUSTOM_FNS: &[&str] = &[
+    "egui_EguiFfi_new",
     "egui_context_Context_ref_decrement",
     "egui_context_Context_ref_count",
     "egui_context_Context_ref_id",
-    "egui_context_Context_run_tessellate",
+    "egui_context_Context_run_ffi",
     "egui_painter_Painter_add",
     "egui_ui_Ui_set_enabled",
     "egui_memory_Memory_options",
