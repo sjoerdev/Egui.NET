@@ -2,6 +2,10 @@
 name = "egui_net_ffi"
 edition.workspace = true
 version.workspace = true
+description = "Rust-C# interop for Egui.NET"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/DouglasDwyer/Egui.NET"
 
 [dependencies]
 bincode.workspace = true
