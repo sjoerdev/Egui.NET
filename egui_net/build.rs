@@ -38,21 +38,11 @@ fn main() {
     
     BindingsGenerator::generate(&output_dir);
     
-    let lib_name;
-    #[cfg(windows)]
-    {
-        lib_name = "egui_net";
-    }
-    #[cfg(unix)]
-    {
-        lib_name = "libegui_net";
-    }
-
     let mut builder = Builder::default()
         .csharp_namespace("Egui")
         .csharp_class_name("EguiBindings")
         .csharp_class_accessibility("internal")
-        .csharp_dll_name(lib_name)
+        .csharp_dll_name("egui_net")
         .always_included_types(["EguiAnimatedUi", "EguiCallback", "EguiFn", "EguiScrollAreaShowRowsParams", "EguiScrollAreaShowViewportParams", "EguiContextRunTessellateParams"])
         .csharp_generate_const_filter(|_| true);
 
