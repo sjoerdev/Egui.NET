@@ -66,31 +66,37 @@
 				<Pack>true</Pack>
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 				<PackagePath>runtimes/win-arm64/native/egui_net.dll</PackagePath>
+  				<Link>egui_net.dll</Link>
 			</None>
 			<None Include="../target/x86_64-pc-windows-msvc/$(CargoProfileOutput)/egui_net.dll" Condition="'%(RIDList.Identity)' == 'win-x64'">
 				<Pack>true</Pack>
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 				<PackagePath>runtimes/win-x64/native/egui_net.dll</PackagePath>
+  				<Link>egui_net.dll</Link>
 			</None>
 			<None Include="../target/aarch64-apple-darwin/$(CargoProfileOutput)/libegui_net.dylib" Pack="true" Condition="'%(RIDList.Identity)' == 'osx-arm64'">
 				<Pack>true</Pack>
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 				<PackagePath>runtimes/osx-arm64/native/libegui_net.dylib</PackagePath>
+  				<Link>egui_net.dll</Link>
 			</None>
 			<None Include="../target/x86_64-apple-darwin/$(CargoProfileOutput)/libegui_net.dylib" Pack="true" Condition="'%(RIDList.Identity)' == 'osx-x64'">
 				<Pack>true</Pack>
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 				<PackagePath>runtimes/osx-x64/native/libegui_net.dylib</PackagePath>
+  				<Link>egui_net.dll</Link>
 			</None>
 			<None Include="../target/aarch64-unknown-linux-gnu/$(CargoProfileOutput)/libegui_net.so" Pack="true" Condition="'%(RIDList.Identity)' == 'linux-arm64'">
 				<Pack>true</Pack>
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 				<PackagePath>runtimes/linux-arm64/native/libegui_net.so</PackagePath>
+  				<Link>egui_net.dll</Link>
 			</None>
 			<None Include="../target/x86_64-unknown-linux-gnu/$(CargoProfileOutput)/libegui_net.so" Pack="true" Condition="'%(RIDList.Identity)' == 'linux-x64'">
 				<Pack>true</Pack>
 				<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 				<PackagePath>runtimes/linux-x64/native/libegui_net.so</PackagePath>
+  				<Link>egui_net.dll</Link>
 			</None>
 			<None Include="../README.md" Pack="true" PackagePath="/"/>
 		</ItemGroup>
