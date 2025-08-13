@@ -3,7 +3,7 @@
     <PackageId>Egui.NET</PackageId>
 	<Title>Egui.NET</Title>
 	<Description>An easy-to-use immediate mode GUI</Description>
-    <Version>0.3.2+0.32.0</Version>
+    <Version>0.3.3+0.32.0</Version>
 	<Authors>Douglas Dwyer</Authors>
 	<RepositoryUrl>https://github.com/DouglasDwyer/Egui.NET</RepositoryUrl>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -100,10 +100,13 @@
 			</None>
 			<None Include="../README.md" Pack="true" PackagePath="/"/>
 		</ItemGroup>
+
+		<ItemGroup>
+			<Compile Include="../target/bindings/**/*.cs" />
+		</ItemGroup>
 	</Target>
 
-    <ItemGroup>
-		<Compile Include="../target/bindings/**/*.cs" />
+	<ItemGroup>
 		<Compile Include="../serde-generate/runtime/csharp/Bincode/*.cs" />
 		<Compile Include="../serde-generate/runtime/csharp/Serde/*.cs" />
 	</ItemGroup>
