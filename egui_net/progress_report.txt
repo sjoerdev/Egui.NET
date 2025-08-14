@@ -1,4 +1,4 @@
-1754 / 1786 (98%) bound
+1745 / 1777 (98%) bound
 egui_containers_menu_MenuState_from_id
 egui_context_Context_interaction_snapshot
 egui_context_Context_try_load_bytes

@@ -2008,12 +2008,21 @@ impl BindingsGenerator {
 
     /// Computes a mapping from IDs to declaring types.
     fn declaring_types(krate: &Crate) -> HashMap<RdId, RdId> {
+        let mut extant_items = HashSet::new();
         let mut result = HashMap::new();
 
         for parent in krate.index.values() {
             if let ItemEnum::Impl(Impl { for_: Type::ResolvedPath(p), items, .. }) = &parent.inner {
                 for child in items {
-                    result.insert(*child, p.id);
+                    if matches!(krate.index[child].inner, ItemEnum::Function(_)) {
+                        // Prevent items with multiple parents from being processed
+                        if extant_items.insert(*child) {
+                            result.insert(*child, p.id);
+                        }
+                        else {
+                            result.remove(child);
+                        }
+                    }
                 }
             }
         }
