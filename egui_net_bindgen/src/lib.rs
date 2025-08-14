@@ -2411,7 +2411,8 @@ struct CrateIdRemapper {
 impl CrateIdRemapper {
     /// Creates a new remapper.
     pub fn new(target: &Crate) -> Self {
-        let next_id = target.index.keys().map(|x| x.0).max().unwrap_or_default() + 1;
+        let next_id = target.index.keys().map(|x| x.0).max().unwrap_or_default()
+            .max(target.paths.keys().map(|x| x.0).max().unwrap_or_default()) + 1;
         Self {
             next_id,
             remappings: HashMap::default()
