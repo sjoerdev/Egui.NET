@@ -628,7 +628,7 @@ pub unsafe extern "C" fn egui_invoke(f: EguiFn, args: EguiSliceU8) -> EguiInvoke
 
     match catch_unwind(|| {
         if let Some(invoker) = EGUI_FNS.inner[f as usize] {
-            invoker.invoke(args.to_ptr(), std::ptr::addr_of_mut!(RETURN_BUFFER));
+            invoker.invoke(f, args.to_ptr(), std::ptr::addr_of_mut!(RETURN_BUFFER));
             EguiInvokeResult {
                 success: true,
                 return_value: EguiSliceU8::from_slice(&*std::ptr::addr_of_mut!(RETURN_BUFFER))
@@ -691,7 +691,7 @@ struct EguiFnInvoker {
     /// The `fn` object to pass to `func`.
     data: *const (),
     /// The [`EguiFnInvokable::invoke`] method to call.
-    func: unsafe fn(*const (), *const [u8], *mut Vec<u8>)
+    func: unsafe fn(EguiFn, *const (), *const [u8], *mut Vec<u8>)
 }
 
 impl EguiFnInvoker {
@@ -716,7 +716,7 @@ impl EguiFnInvoker {
 
             Self {
                 data: std::ptr::read(&padded as *const _ as *const _),
-                func: transmute(Self::call_fn::<A, F> as unsafe fn(_, _, _))
+                func: transmute(Self::call_fn::<A, F> as unsafe fn(_, _, _, _))
             }
         }
     }
@@ -727,8 +727,8 @@ impl EguiFnInvoker {
     /// 
     /// For this function call to be sound, `ptr` must refer to a valid instance
     /// of the invoker function's type. 
-    pub unsafe fn invoke(&self, args: *const [u8], ret: *mut Vec<u8>) {
-        (self.func)(&self.data as *const _ as *const _, args, ret)
+    pub unsafe fn invoke(&self, fn_id: EguiFn, args: *const [u8], ret: *mut Vec<u8>) {
+        (self.func)(fn_id, &self.data as *const _ as *const _, args, ret)
     }
 
     /// Invokes the underlying function.
@@ -737,11 +737,13 @@ impl EguiFnInvoker {
     /// 
     /// For this function call to be sound, `ptr` must refer to a valid instance
     /// of the invoker function's type. 
-    unsafe fn call_fn<A: DeserializeOwned + Tuple, F: Copy + Fn<A, Output: Serialize>>(f: &F, args: *const [u8], ret: *mut Vec<u8>) {
-        let deserialized_args = bincode::deserialize(&*args).expect("Failed to decode args");
+    unsafe fn call_fn<A: DeserializeOwned + Tuple, F: Copy + Fn<A, Output: Serialize>>(fn_id: EguiFn, f: &F, args: *const [u8], ret: *mut Vec<u8>) {
+        let deserialized_args = bincode::deserialize(&*args)
+            .unwrap_or_else(|_| panic!("Failed to decode args for call {fn_id:?}"));
         let result = f.call(deserialized_args);
         (*ret).clear();
-        bincode::serialize_into(&mut *ret, &result).expect("Failed to encode result");
+        bincode::serialize_into(&mut *ret, &result)
+            .unwrap_or_else(|_| panic!("Failed to encode result for call {fn_id:?}"));
     }
 }
 
