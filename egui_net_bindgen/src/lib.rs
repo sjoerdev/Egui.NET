@@ -1674,10 +1674,6 @@ impl BindingsGenerator {
                 ""
             };
 
-            if enum_name == "epaint_shapes_shape___deserialize_visit_enum___Field" {
-                panic!("WTFF {id:?}");
-            }
-
             writeln!(f, "    .with(EguiFn::{enum_name}, |{param_decls}| unsafe {{ ({path}({args}){clone_return}, {returns}) }})")?;
         }
         writeln!(f, ";")?;
@@ -1938,7 +1934,8 @@ impl BindingsGenerator {
                 && matches!(item.inner, ItemEnum::Function(_))
                 && {
                     let variant_name = self.fn_enum_variant_name(*id);
-                    variant_name.starts_with("e") &&!ignore_fns.contains(&&*variant_name) && !variant_name.contains("___deserialize___")
+                    variant_name.starts_with("e") && !ignore_fns.contains(&&*variant_name) && !variant_name.contains("__")
+                    && !variant_name.rsplit_once("_").is_some_and(|(_, a)| a.chars().next() == a.chars().next().map(|x| x.to_ascii_uppercase()))
                 }
                 && item.name.as_deref().map(|x| !IGNORE_FN_NAMES.contains(&x)).unwrap_or(true)
             ).then_some(id.clone()))
