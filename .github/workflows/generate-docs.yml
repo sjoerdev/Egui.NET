@@ -21,13 +21,16 @@ jobs:
       - name: Install Rust
         uses: dsherret/rust-toolchain-file@v1
 
-      - name: Build
-        run: cargo build -r && ls ./target
-
-      - name: Generate DocFX Documentation
-        uses: nunit/docfx-action@v4.1.0
+      - name: Install C#
+        uses: actions/setup-dotnet@v4
         with:
-          args: docfx.json
+          dotnet-version: '9.0.x'
+      
+      - name: Install docfx
+        run: dotnet tool update -g docfx
+
+      - name: Build
+        run: dotnet build && docfx ./docfx.json
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
