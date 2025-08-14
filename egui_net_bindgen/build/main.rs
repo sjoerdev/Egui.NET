@@ -6,7 +6,6 @@ use std::path::*;
 const EXCLUDE_TYPES: &[&str] = &[
     "History",
     "OrderedFloat",
-    "Options",
     "PointerState",
     "Undoer",
 ];
