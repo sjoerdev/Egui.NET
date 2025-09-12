@@ -705,7 +705,7 @@ public unsafe class Program
         _gl.Clear(ClearBufferMask.ColorBufferBit);
         CheckGlErrors();
 
-        var clippedPrimitives = _ctx.Tessellate(output.Shapes.ToArray(), output.PixelsPerPoint);
+        var clippedPrimitives = _ctx.Tessellate(output.Shapes.ToImmutableArray(), output.PixelsPerPoint);
         _glPainter.PaintAndUpdateTextures((uint)_window.FramebufferSize.X, (uint)_window.FramebufferSize.Y, output.PixelsPerPoint, clippedPrimitives, output.TexturesDelta);
     }
 
@@ -784,7 +784,7 @@ public unsafe class Program
             CheckGlErrors();
         }
 
-        public readonly void PaintAndUpdateTextures(uint width, uint height, float pixelsPerPoint, ReadOnlyMemory<ClippedPrimitive> clippedPrimitives, TexturesDelta texturesDelta)
+        public readonly void PaintAndUpdateTextures(uint width, uint height, float pixelsPerPoint, ImmutableArray<ClippedPrimitive> clippedPrimitives, TexturesDelta texturesDelta)
         {
             CheckGlErrors();
             foreach (var (id, delta) in texturesDelta.Set)
@@ -829,11 +829,11 @@ public unsafe class Program
             _gl.BindBuffer(GLEnum.ElementArrayBuffer, _eao);
         }
 
-        private readonly void PaintPrimitives(uint width, uint height, float pixelsPerPoint, ReadOnlyMemory<ClippedPrimitive> primitives)
+        private readonly void PaintPrimitives(uint width, uint height, float pixelsPerPoint, ImmutableArray<ClippedPrimitive> primitives)
         {
             PreparePainting(width, height, pixelsPerPoint);
 
-            foreach (var primitive in primitives.Span)
+            foreach (var primitive in primitives)
             {
                 switch (primitive.Primitive.Inner)
                 {

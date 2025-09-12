@@ -693,6 +693,13 @@ public readonly ref partial struct Ui
     {
         return ScopeBuilder(new UiBuilder(), addContents);
     }
+    
+    /// <summary>
+    /// This is the <see cref="Id"/> that will be assigned to the next widget added to this <c>Ui</c>.
+    /// </summary>
+    public readonly Id NextAutoId() {
+        return EguiMarshal.Call<nuint, Id>(EguiFn.egui_ui_Ui_next_auto_id, Ptr);
+    }
 
     /// <summary>
     /// Create a child Ui with an explicit <see cref="Id"/>.
@@ -846,12 +853,21 @@ public readonly ref partial struct Ui
     /// <summary>
     /// Shortcut for <c>Default()</c><br/>
     /// 
-    /// See also <c>Separator</c>.
+    /// See also <see cref="Widgets.Separator"/> .
     /// </summary>
     public readonly Response Separator()
     {
         AssertInitialized();
         return EguiMarshal.Call<nuint, Response>(EguiFn.egui_ui_Ui_separator, Ptr);
+    }
+
+    /// <summary>
+    /// Shortcut for <c>Default()</c><br/>
+    /// 
+    /// See also <see cref="Widgets.Spinner"/>.
+    /// </summary>
+    public readonly Response Spinner() {
+        return EguiMarshal.Call<nuint, Response>(EguiFn.egui_ui_Ui_spinner, Ptr);
     }
 
     /// <summary>

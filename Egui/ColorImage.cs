@@ -9,9 +9,9 @@ public partial struct ColorImage
     /// Create a <see cref="ColorImage"/> from iterator over flat opaque gray data. 
     /// </summary>
     /// <exception cref="ArgumentException">If <c>size[0] * size[1] != grayIter.Count</c>.</exception>
-    public static ColorImage FromGrayIter(ImmutableArray<nuint> size, IEnumerable<byte> grayIter)
+    public static ColorImage FromGrayIter(Array2<nuint> size, IEnumerable<byte> grayIter)
     {
-        var pixels = grayIter.Select(Color32.FromGray).ToArray();
+        var pixels = grayIter.Select(Color32.FromGray).ToImmutableArray();
         if ((nuint)pixels.Length == size[0] * size[1])
         {
             return new ColorImage(size, pixels);

@@ -64,7 +64,9 @@ const BINDING_EXCLUDE_FNS: &[&str] = &[
     "egui_drag_and_drop_DragAndDrop_has_payload_of_type",
 
     // These functions generate as properties, but should be methods
+    "egui_ui_Ui_next_auto_id",
     "egui_ui_Ui_separator",
+    "egui_ui_Ui_spinner",
 
     // Popup: bound manually
     "egui_containers_popup_Popup_open_id",
@@ -1245,7 +1247,7 @@ impl BindingsGenerator {
                     let builtin_fn = match path.path.as_str() {
                         "Arc" => |x| x,
                         "Option" => |x| format!("{x}?"),
-                        "Vec" => |x| format!("ReadOnlyMemory<{x}>"),
+                        "Vec" => |x| format!("ImmutableArray<{x}>"),
                         _ => unreachable!()
                     };
 
@@ -1338,7 +1340,7 @@ impl BindingsGenerator {
             Type::Array { type_, len } => {
                 let inner_ty = self.bound_ty_name(self_ty, type_)?;
                 BoundTypeName::cs_rs(
-                    format!("ImmutableArray<{}>", inner_ty.cs_name),
+                    format!("Array{len}<{}>", inner_ty.cs_name),
                     format!("[{}; {len}]", inner_ty.rs_name))
             },
             Type::DynTrait(_)

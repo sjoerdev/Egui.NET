@@ -285,7 +285,7 @@ using System.Numerics;"
         use Format::*;
         match format {
             TypeName(_) => false,
-            Str | Seq(_) | Map { .. } | TupleArray { .. } => true,
+            Str | Seq(_) | Map { .. } => true,
             Variable(_) => panic!("unexpected value"),
             _ => false,
         }
@@ -332,8 +332,8 @@ using System.Numerics;"
             Tuple(formats) => format!("({})", self.quote_types(formats)),
             TupleArray {
                 content,
-                size: _size,
-            } => format!("ImmutableArray<{}>", self.quote_type(content),),
+                size,
+            } => format!("Array{size}<{}>", self.quote_type(content),),
             Variable(_) => panic!("unexpected value"),
         }
     }
@@ -397,14 +397,14 @@ using System.Numerics;"
         use Format::*;
         matches!(
             format,
-            Option(_) | Seq(_) | Map { .. } | Tuple(_) | TupleArray { .. }
+            Option(_) | Seq(_) | Map { .. } | Tuple(_)
         )
     }
 
     fn quote_serialize_value(&self, value: &str, format: &Format) -> String {
         use Format::*;
         match format {
-            TypeName(_) => format!("{}.Serialize(serializer);", value),
+            TypeName(_) | TupleArray { .. } => format!("{}.Serialize(serializer);", value),
             Unit => format!("serializer.serialize_unit({});", value),
             Bool => format!("serializer.serialize_bool({});", value),
             I8 => format!("serializer.serialize_i8({});", value),
@@ -453,6 +453,7 @@ using System.Numerics;"
                     )
                 }
             }
+            TupleArray { content, size } => format!("Array{size}<{}>.Deserialize(deserializer)", self.quote_type(content)),
             Unit => "deserializer.deserialize_unit()".to_string(),
             Bool => "deserializer.deserialize_bool()".to_string(),
             I8 => "deserializer.deserialize_i8()".to_string(),

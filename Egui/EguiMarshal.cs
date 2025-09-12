@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Bincode;
@@ -211,7 +212,7 @@ internal static class EguiMarshal
     /// Serializers for generic types.
     /// </summary>
     private static Dictionary<Type, (string, string)> SerializerPrototypes = new Dictionary<Type, (string, string)> {
-        { typeof(ReadOnlyMemory<>), ("ReadOnlyMemorySerializer", "ReadOnlyMemoryDeserializer") },
+        { typeof(ImmutableArray<>), ("ImmutableArraySerializer", "ImmutableArrayDeserializer") },
         { typeof(ValueTuple<,>), ("Tuple2Serializer", "Tuple2Deserializer") },
         { typeof(ValueTuple<,,>), ("Tuple3Serializer", "Tuple3Deserializer") },
         { typeof(ValueTuple<,,,>), ("Tuple4Serializer", "Tuple4Deserializer") },
@@ -222,7 +223,7 @@ internal static class EguiMarshal
     /// Caches serialization and deserialization methods for a type.
     /// </summary>
     /// <typeparam name="T">The type to cache.</typeparam>
-    private static class SerializerCache<T>
+    internal static class SerializerCache<T>
     {
         /// <summary>
         /// The serialization function to use.
@@ -375,21 +376,21 @@ internal static class EguiMarshal
     }
 
     /// <summary>
-    /// Serializes read-only memory.
+    /// Serializes an immutable array.
     /// </summary>
-    private static void ReadOnlyMemorySerializer<T>(BincodeSerializer serializer, ReadOnlyMemory<T> value)
+    private static void ImmutableArraySerializer<T>(BincodeSerializer serializer, ImmutableArray<T> value)
     {
         serializer.serialize_len(value.Length);
-        foreach (var item in value.Span)
+        foreach (var item in value)
         {
             SerializerCache<T>.Serialize(serializer, item);
         }
     }
 
     /// <summary>
-    /// Deserializes read-only memory.
+    /// Deserializes an immutable array.
     /// </summary>
-    private static ReadOnlyMemory<T> ReadOnlyMemoryDeserializer<T>(BincodeDeserializer deserializer)
+    private static ImmutableArray<T> ImmutableArrayDeserializer<T>(BincodeDeserializer deserializer)
     {
         var length = deserializer.deserialize_len();
         T[] obj = new T[length];
@@ -397,7 +398,7 @@ internal static class EguiMarshal
         {
             obj[i] = SerializerCache<T>.Deserialize(deserializer);
         }
-        return obj;
+        return obj.ToImmutableArray();
     }
 
     /// <summary>
